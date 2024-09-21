@@ -7,21 +7,21 @@ export const TextStyles: Record<string, TextStyle> = {
     RALEWAY_SEMI_BOLD: {
         fontFamily: 'RalewaySemiBold',
         color: COLORS.BLACK,
-        fontSize: FS(16),
+        fontSize: 16,
     },
     RALEWAY_BOLD: {
         fontFamily: 'RalewayBold',
         color: COLORS.BLACK,
-        fontSize: FS(16),
+        fontSize: 16,
     },
     RALEWAY_REGULAR: {
         fontFamily: 'RalewayRegular',
         color: COLORS.BLACK,
-        fontSize: FS(14),
+        fontSize: 14,
     },
     RALEWAY_MEDIUM: {
         fontFamily: 'RalewayMedium',
         color: COLORS.BLACK,
-        fontSize: FS(16),
+        fontSize: 16,
     }
 };

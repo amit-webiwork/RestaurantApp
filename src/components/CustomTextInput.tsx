@@ -56,7 +56,7 @@ const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
                     {iconClick ? (
                         <TouchableOpacity
                             onPress={iconAction}
-                            style={{ bottom: VP(0), position: 'absolute', right: HP(0) }}
+                            style={{ bottom: HP(0), position: 'absolute', right: HP(0) }}
                         >
                             <Image source={iconName} style={[styles.icon, iconStyle]} />
                         </TouchableOpacity>
@@ -74,16 +74,16 @@ const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
 
 const styles = StyleSheet.create({
     icon: {
-        width: HP(18),
+        width: FS(18),
         height: VP(18),
         position: 'absolute',
-        right: VP(0),
-        bottom: VP(20)
+        right: HP(0),
+        bottom: HP(20)
     },
     input: {
         ...TextStyles.RALEWAY_MEDIUM,
         color: COLORS.BLACK,
-        fontSize: FS(12),
+        fontSize: 12,
         paddingVertical: HP(15),
         borderBottomWidth: 1,
         width: "100%"
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     error: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         color: COLORS.RED,
-        fontSize: FS(10),
+        fontSize: 10,
         alignSelf: "flex-start",
         top: VP(2),
         textTransform: "capitalize"

@@ -63,7 +63,7 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                 })
                 .catch(error => {
                     setLoading(false);
-                    dispatch(setDialogContent({ title: <Warning width={40} height={40} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
                     console.log("Error sending data: ", error.message);
                 });
         } catch (err: any) {
@@ -99,18 +99,18 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                                     onPress={() => navigation.goBack()}
                                     style={{ alignSelf: "center", top: VP(2) }}
                                 >
-                                    <Left width={20} height={20} />
+                                    <Left width={FS(16)} height={VP(16)} />
                                 </TouchableOpacity>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", }}>Create New Password</Text>
                             </View>
                             <View style={{ marginTop: VP(50) }}>
-                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: VP(52.83), paddingLeft: HP(65.69), paddingRight: HP(63.9), paddingTop: VP(52.62), backgroundColor: "#FFEAFD", width: HP(202), height: VP(202), borderRadius: 202, alignSelf: "center" }}>
+                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: HP(52.83), paddingLeft: HP(65.69), paddingRight: HP(63.9), paddingTop: HP(52.62), backgroundColor: "#FFEAFD", width: FS(202), height: VP(202), borderRadius: 202, alignSelf: "center" }}>
                                     <Image source={require('../../assets/images/lock.png')} style={styles.icon} />
                                 </View>
                             </View>
 
                             <View style={{ marginTop: VP(36) }}>
-                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: FS(14), textTransform: "capitalize", textAlign: "center", width: HP(290), lineHeight: VP(22) }}>
+                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, textTransform: "capitalize", textAlign: "center", width: FS(290), lineHeight: VP(22) }}>
                                     your new password must be different from previously used password.
                                 </Text>
                             </View>
@@ -123,7 +123,7 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                                     secureTextEntry={true}
                                     styleInput={{
                                         height: "auto",
-                                        marginTop: VP(12)
+                                        marginTop: HP(12)
                                     }}
                                 />
 
@@ -134,7 +134,7 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                                     secureTextEntry={true}
                                     styleInput={{
                                         height: "auto",
-                                        marginTop: VP(13)
+                                        marginTop: HP(13)
                                     }}
                                 />
                             </View>
@@ -148,7 +148,7 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                             textStyle={styles.buttonStyle}
                             isLoading={loading}
                             activeButtonText={{ opacity: .65 }}
-                            mainContainerStyle={{ marginTop: VP(47) }}
+                            mainContainerStyle={{ marginTop: VP(17) }}
                             LinearGradienrColor={["#FF00E2", "#FF00E2"]}
                             contentContainerStyle={{ top: -2 }}
                         />
@@ -162,17 +162,17 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
 const styles = StyleSheet.create({
     main: {
         marginHorizontal: HP(40),
-        marginVertical: VP(53),
+        marginVertical: HP(20),
         flex: 1
     },
     buttonStyle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: FS(20),
+        fontSize: 20,
         color: COLORS.WHITE,
         textTransform: "capitalize",
     },
     icon: {
-        width: HP(72.41),
+        width: FS(72.41),
         height: VP(96.55),
         resizeMode: "contain"
     }

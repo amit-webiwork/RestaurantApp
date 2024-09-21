@@ -52,12 +52,12 @@ const OTPInput = ({ formProps }: { formProps: any }) => {
 const styles = StyleSheet.create({
     root: { padding: 0 },
     codeFieldRoot: {
-        width: 280,
+        width: FS(280),
         marginLeft: 'auto',
         marginRight: 'auto',
     },
     cellRoot: {
-        width: HP(54.29),
+        width: FS(54.29),
         height: VP(70),
         justifyContent: 'center',
         alignItems: 'center',
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     cellText: {
         ...TextStyles.RALEWAY_MEDIUM,
         color: COLORS.BLACK,
-        fontSize: FS(21.36),
+        fontSize: 21.36,
         textAlign: 'center',
     },
     focusCell: {

@@ -65,12 +65,12 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                         
                         navigation.navigate(`MainTabNavigator`)
                     } else {
-                        dispatch(setDialogContent({ title: <Warning width={40} height={40} />, message: errorMessage.commonMessage }));
+                        dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.commonMessage }));
                     }
                 })
                 .catch(error => {
                     setLoading(false);
-                    dispatch(setDialogContent({ title: <Warning width={40} height={40} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
                     console.log("Error sending data: ", error.message);
                 });
         } catch (err: any) {
@@ -114,7 +114,7 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                                 onPress={() => navigation.navigate(`ForgotScreen`)}
                                 style={{ marginTop: VP(16.5), alignSelf: "flex-end" }}
                             >
-                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: COLORS.BUTTON, fontSize: FS(12) }}>Forgot Password?</Text>
+                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: COLORS.BUTTON, fontSize: 12 }}>Forgot Password?</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -130,12 +130,12 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                                 contentContainerStyle={{ top: -2 }}
                             />
                             <View style={{ marginTop: VP(250), flexDirection: "row", justifyContent: "center", gap: 6,  }}>
-                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: FS(12), textTransform: "capitalize" }}>don’t have an account?</Text>
+                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12, textTransform: "capitalize" }}>don’t have an account?</Text>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`SignUpScreen`)}
                                     style={{}}
                                 >
-                                    <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: FS(12), color: COLORS.THEME }}>Sign Up</Text>
+                                    <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12, color: COLORS.THEME }}>Sign Up</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -155,12 +155,12 @@ const styles = StyleSheet.create({
     headingText: {
         ...TextStyles.RALEWAY_BOLD,
         color: COLORS.THEME,
-        fontSize: FS(38),
+        fontSize: 38,
         textTransform: "capitalize"
     },
     buttonStyle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: FS(20),
+        fontSize: 20,
         color: COLORS.WHITE,
         textTransform: "capitalize",
     },
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
         width: "20%",
     },
     icon: {
-        width: HP(24),
+        width: FS(24),
         height: VP(24),
         resizeMode: "contain"
     }

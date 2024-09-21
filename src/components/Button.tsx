@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { HP, VP } from '../utils/Responsive';
+import { FS, HP, VP } from '../utils/Responsive';
 import { COLORS } from '../utils/Constants';
 import { TextStyles } from '../utils/TextStyles';
 
@@ -106,7 +106,7 @@ export const Button: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <LinearGradient style={[{ borderRadius: HP(11) }, mainContainerStyle]} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }} colors={LinearGradienrColor}>
+            <LinearGradient style={[{ borderRadius: 11 }, mainContainerStyle]} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }} colors={LinearGradienrColor}>
                 <TouchableOpacity
                     onPress={handleButtonPress}
                     disabled={isButtonDisabled()}
@@ -121,7 +121,7 @@ export const Button: React.FunctionComponent<Props> = ({
 
 const styles = StyleSheet.create({
     button: {
-        width: HP(210),
+        width: FS(210),
         height: VP(50),
         justifyContent: 'center',
         alignSelf: "center",

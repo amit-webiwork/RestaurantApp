@@ -65,12 +65,12 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
 
                         navigation.navigate(`LoginScreen`)
                     } else {
-                        dispatch(setDialogContent({ title: <Warning width={40} height={40} />, message: errorMessage.commonMessage }));
+                        dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.commonMessage }));
                     }
                 })
                 .catch(error => {
                     setLoading(false);
-                    dispatch(setDialogContent({ title: <Warning width={40} height={40} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
                     console.warn("Error sending data: ", error.message);
                 });
 
@@ -141,7 +141,7 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
                                 onPress={() => navigation.navigate(`ForgotScreen`)}
                                 style={{ marginTop: VP(16.5), alignSelf: "flex-end" }}
                             >
-                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: COLORS.BUTTON, fontSize: FS(12) }}>Forgot Password?</Text>
+                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: COLORS.BUTTON, fontSize: 12 }}>Forgot Password?</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -161,7 +161,7 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
 
                             <View style={{ flexDirection: "row", marginTop: VP(11), justifyContent: "center", alignItems: "center", gap: 7 }}>
                                 <View style={styles.line}></View>
-                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: FS(12) }}>Or</Text>
+                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12 }}>Or</Text>
                                 <View style={styles.line}></View>
                             </View>
 
@@ -182,12 +182,12 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
                             </View>
 
                             <View style={{ marginTop: VP(42), flexDirection: "row", justifyContent: "center", gap: 6 }}>
-                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: FS(12) }}>Already Have An Account?</Text>
+                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12 }}>Already Have An Account?</Text>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`LoginScreen`)}
                                     style={{}}
                                 >
-                                    <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: FS(12), color: COLORS.THEME }}>Log In</Text>
+                                    <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12, color: COLORS.THEME }}>Log In</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -207,12 +207,12 @@ const styles = StyleSheet.create({
     headingText: {
         ...TextStyles.RALEWAY_BOLD,
         color: COLORS.THEME,
-        fontSize: FS(38),
+        fontSize: 38,
         textTransform: "capitalize"
     },
     buttonStyle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: FS(20),
+        fontSize: 20,
         color: COLORS.WHITE,
         textTransform: "capitalize",
     },
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
         width: "20%",
     },
     icon: {
-        width: HP(24),
+        width: FS(24),
         height: VP(24),
         resizeMode: "contain"
     }

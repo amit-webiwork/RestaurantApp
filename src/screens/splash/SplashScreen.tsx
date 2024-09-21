@@ -9,11 +9,14 @@ import { TextStyles } from '../../utils/TextStyles.ts';
 import { Button } from '../../components/Button.tsx';
 import Right from '../../assets/svgs/right.svg';
 import { submitLogin } from '../../utils/ApiCall.ts';
+import { ButtonSwipe } from '../../components/ButtonSwipe.tsx';
 
 function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [showButton, setShowButton] = useState(false);
 
     const getStarted = async () => {
+        navigation.navigate('SignUpScreen');
+        return;
         navigation.reset({
             index: 0,
             routes: [
@@ -77,13 +80,15 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
                     <ImageBackground source={require('../../assets/images/splash-bottom.png')} style={styles.bottomImg}>
                         <View style={{ alignSelf: "flex-start", paddingHorizontal: HP(37), paddingTop: VP(40), }}>
                             <Text style={styles.headingText}>choose the</Text>
-                            <Text style={{ ...styles.headingText, fontSize: FS(38) }}>drink you love</Text>
-                            <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: COLORS.WHITE, fontSize: FS(16), textTransform: "capitalize", marginTop: VP(13) }}>boost your energy</Text>
+                            <Text style={{ ...styles.headingText, fontSize: 38 }}>drink you love</Text>
+                            <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: COLORS.WHITE, fontSize: 16, textTransform: "capitalize", marginTop: VP(13) }}>boost your energy</Text>
                         </View>
 
                         {showButton && (
-                            <View style={{ justifyContent: "center", paddingHorizontal: HP(37) }}>
-                                <Button
+                            <View style={{ justifyContent: "center", marginHorizontal: HP(37) }}>
+                                <ButtonSwipe title="swipe to get started" backgroundColor="#CC9AFF" titleStyles={styles.titleStyles} swipeAction={getStarted} mainContainerStyle={{ top: VP(28) }} swipeBackgroundColor="#DF12CA" />
+
+                                {/* <Button
                                     text={'swipe to get started'}
                                     onPress={() => getStarted()}
                                     textStyle={styles.buttonStyle}
@@ -92,8 +97,8 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     contentContainerStyle={{}}
                                     mainContainerStyle={{ top: VP(28) }}
                                     LinearGradienrColor={["#CC9AFF", "#CC9AFF"]}
-                                    Icon={<View style={{ padding: 9.2, backgroundColor: "#FFFFFF", right: HP(30), borderRadius: 32, alignSelf: "center", width: HP(32), height: VP(32), alignItems: "center" }}><Right width={16} height={16} /></View>}
-                                />
+                                    Icon={<View style={{ padding: HP(9.2), backgroundColor: "#FFFFFF", right: HP(40), borderRadius: 32, alignSelf: "center", width: FS(32), height: VP(32), alignItems: "center" }}><Right width={FS(16)} height={VP(16)} /></View>}
+                                /> */}
                             </View>
                         )}
                     </ImageBackground>
@@ -105,7 +110,7 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
 const styles = StyleSheet.create({
     icon: {
-        width: HP(400),
+        width: FS(400),
         height: VP(457),
         resizeMode: "contain"
     },
@@ -128,7 +133,13 @@ const styles = StyleSheet.create({
     headingText: {
         ...TextStyles.RALEWAY_BOLD,
         color: COLORS.WHITE,
-        fontSize: FS(38)
+        fontSize: 38
+    },
+    titleStyles: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 20,
+        color: COLORS.WHITE,
+        textTransform: "capitalize",
     }
 });
 

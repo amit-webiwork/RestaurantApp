@@ -37,6 +37,8 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
     const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
 
     const handleOnPress = async () => {
+        navigation.navigate(`CreatePasswordScreen`);
+        return;
         try {
             const email = await loadStorage("forgotPasswordEmail");
 
@@ -61,7 +63,7 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                 })
                 .catch(error => {
                     setLoading(false);
-                    dispatch(setDialogContent({ title: <Warning width={40} height={40} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
                     console.log("Error sending data: ", error.message);
                 });
         } catch (err: any) {
@@ -83,11 +85,11 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                 .then(response => {
                     setLoading(false);
 
-                    dispatch(setDialogContent({ title: <Success width={40} height={40} />, message: response?.data?.message || "" }));
+                    dispatch(setDialogContent({ title: <Success width={FS(40)} height={VP(40)} />, message: response?.data?.message || "" }));
                 })
                 .catch(error => {
                     setLoading(false);
-                    dispatch(setDialogContent({ title: <Warning width={40} height={40} />, message: error?.response?.data?.message || errorMessage?.commonMessage }));
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage?.commonMessage }));
                     console.log("Error sending data: ", error);
                 });
         } catch (err: any) {
@@ -117,22 +119,22 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                     <View style={{ flexDirection: "row", gap: 33.72, }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}
-                            style={{ alignSelf: "center", top: VP(2) }}
+                            style={{ alignSelf: "center" }}
                         >
-                            <Left width={20} height={20} />
+                            <Left width={FS(16)} height={VP(16)} />
                         </TouchableOpacity>
                         <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textTransform: "capitalize" }}>verify your email</Text>
                     </View>
                     <View style={{ flex: 4 }}>
                         <ScrollView showsVerticalScrollIndicator={false}>
                             <View style={{ marginTop: VP(50) }}>
-                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: VP(54.70), paddingLeft: HP(54.70), paddingRight: HP(54.70), paddingTop: VP(54.70), backgroundColor: "#FFEAFD", width: HP(195), height: VP(195), borderRadius: 202, alignSelf: "center" }}>
+                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: HP(54.70), paddingLeft: HP(54.70), paddingRight: HP(54.70), paddingTop: HP(54.70), backgroundColor: "#FFEAFD", width: FS(195), height: VP(195), borderRadius: 202, alignSelf: "center" }}>
                                     <Image source={require('../../assets/images/letter.png')} style={styles.icon} />
                                 </View>
                             </View>
 
                             <View style={{ marginTop: VP(36) }}>
-                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: FS(14), textTransform: "capitalize", textAlign: "center", width: HP(290), lineHeight: VP(22) }}>
+                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, textTransform: "capitalize", textAlign: "center", width: FS(290), lineHeight: VP(22) }}>
                                     please enter the 4 digit code sent to <Text style={{ fontWeight: "bold" }}>
                                         {forgotPasswordEmail}
                                     </Text>
@@ -151,7 +153,7 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                                 onPress={handleOnResend}
                                 style={{}}
                             >
-                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: FS(14), color: COLORS.BUTTON, textAlign: "center", textDecorationStyle: "solid", textDecorationLine: "underline", }}>
+                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, color: COLORS.BUTTON, textAlign: "center", textDecorationStyle: "solid", textDecorationLine: "underline", }}>
                                     Resend Code
                                 </Text>
                             </TouchableOpacity>
@@ -186,7 +188,7 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: FS(20),
+        fontSize: 20,
         color: COLORS.WHITE,
         textTransform: "capitalize",
     },
@@ -196,7 +198,7 @@ const styles = StyleSheet.create({
         width: "20%",
     },
     icon: {
-        width: HP(86.61),
+        width: FS(86.61),
         height: VP(87.58),
         resizeMode: "contain"
     }

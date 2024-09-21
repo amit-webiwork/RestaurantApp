@@ -36,6 +36,8 @@ const ForgotScreen: React.FunctionComponent<NavigationProp> = ({
 
     const handleOnPress = async () => {
         try {
+            navigation.navigate(`VerifyCodeScreen`);
+            return;
             setError(errorObj);
 
             const resource = { username };
@@ -56,7 +58,7 @@ const ForgotScreen: React.FunctionComponent<NavigationProp> = ({
                 })
                 .catch(error => {
                     setLoading(false);
-                    dispatch(setDialogContent({ title: <Warning width={40} height={40} />, message: error?.response?.data?.message || errorMessage?.commonMessage }));
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage?.commonMessage }));
                     console.log("Error sending data: ", error);
                 });
         } catch (err: any) {
@@ -76,19 +78,19 @@ const ForgotScreen: React.FunctionComponent<NavigationProp> = ({
                                     onPress={() => navigation.goBack()}
                                     style={{ alignSelf: "center", top: VP(2) }}
                                 >
-                                    <Left width={20} height={20} />
+                                    <Left width={FS(16)} height={VP(16)} />
                                 </TouchableOpacity>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", }}>Forgot Password</Text>
                             </View>
 
                             <View style={{ marginTop: VP(50) }}>
-                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: VP(52.83), paddingLeft: HP(65.69), paddingRight: HP(63.9), paddingTop: VP(52.62), backgroundColor: "#FFEAFD", width: HP(202), height: VP(202), borderRadius: 500, alignSelf: "center" }}>
+                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: HP(52.83), paddingLeft: HP(65.69), paddingRight: HP(63.9), paddingTop: HP(52.62), backgroundColor: "#FFEAFD", width: FS(202), height: VP(202), borderRadius: 500, alignSelf: "center" }}>
                                     <Image source={require('../../assets/images/lock.png')} style={styles.icon} />
                                 </View>
                             </View>
 
                             <View style={{ marginTop: VP(36) }}>
-                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: FS(14), textTransform: "capitalize", textAlign: "center", lineHeight: VP(22) }}>
+                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, textTransform: "capitalize", textAlign: "center", lineHeight: VP(22) }}>
                                     please enter your email address or mobile number to recieve a verification code.
                                 </Text>
                             </View>
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: FS(20),
+        fontSize: 20,
         color: COLORS.WHITE,
         textTransform: "capitalize",
     },
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
         width: "20%",
     },
     icon: {
-        width: HP(72.41),
+        width: FS(72.41),
         height: VP(96.55),
         resizeMode: "contain"
     }
