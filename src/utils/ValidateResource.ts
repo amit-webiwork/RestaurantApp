@@ -1,0 +1,60 @@
+import { SetStateAction } from 'react';
+import * as Yup from 'yup';
+
+const validateResource = (resourceSchema: { validate: (arg0: any) => any; }, setState: any) => async (resource: any) => {
+    try {
+        // throws an error if not valid
+        const validData = await resourceSchema.validate(resource);
+        resource = validData;
+        return resource;
+    } catch (err: any) {
+        setState((pre: any) => ({ ...pre, [err.path]: { status: true, text: err.errors.join(", ") } }));
+        throw new Error(err.errors.join(", "));
+    }
+};
+
+const signup = Yup.object({
+    name: Yup.string()
+        .trim()
+        .required("Name is required"),
+    email: Yup.string()
+        .email()
+        .trim()
+        .required("Email is required"),
+    mobile: Yup.number()
+        .typeError("Only number allowed")
+        .required("Mobile is required"),
+    password: Yup.string()
+        .trim()
+        .required("Password is required")
+        .min(6)
+});
+
+const login = Yup.object({
+    username: Yup.string()
+        .trim()
+        .required("Email or mobile number is required"),
+    password: Yup.string()
+        .trim()
+        .required("Password is required")
+        .min(6)
+});
+
+const forgotPassword = Yup.object({
+    username: Yup.string()
+        .trim()
+        .required("Email or mobile number is required"),
+});
+
+const resetPassword = Yup.object({
+    password: Yup.string()
+        .trim()
+        .required("Password is required.")
+        .min(6, "The password must have at least 6 characters."),
+    confirmPassword: Yup.string()
+        .trim()
+        .required("Confirm password is required.")
+        .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+});
+
+export { validateResource, signup, login, forgotPassword, resetPassword };

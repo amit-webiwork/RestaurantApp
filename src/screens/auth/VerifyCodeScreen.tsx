@@ -1,0 +1,205 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ScrollView, TouchableOpacity, View, Image, BackHandler, Text, StyleSheet } from 'react-native';
+
+import OuterLayout from '../../components/OuterLayout';
+import { AuthStackParamList } from '../../navigations/AuthStackNavigator';
+import InnerBlock from '../../components/InnerBlock';
+import { Button } from '../../components/Button';
+import { FS, HP, VP } from '../../utils/Responsive';
+import { showAlert } from '../../utils/Alert';
+import { loadStorage, removeStorage, saveStorage } from '../../utils/Storage';
+import { TextStyles } from '../../utils/TextStyles';
+import { globalStyle } from '../../utils/GlobalStyle';
+import CustomTextInput from '../../components/CustomTextInput';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../utils/Constants';
+import Left from '../../assets/svgs/left.svg';
+import OTPInput from '../../components/OTPInput';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setDialogContent } from '../../redux/features/customDialog';
+import Warning from '../../assets/svgs/warning.svg';
+import Success from '../../assets/svgs/success.svg';
+
+type NavigationProp = NativeStackScreenProps<AuthStackParamList>;
+
+const pinCheck = /^[0-9]{4}$/;
+
+const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
+    navigation,
+}) => {
+    const dispatch = useDispatch();
+
+    const [value, setValue] = useState('');
+    const [error, setError] = useState({ status: false, text: "" });
+
+    const [loading, setLoading] = useState(false);
+    const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+
+    const handleOnPress = async () => {
+        try {
+            const email = await loadStorage("forgotPasswordEmail");
+
+            const otp = value.trim();
+
+            if (pinCheck.test(otp) == false) {
+                throw new Error(errorMessage.otp);
+            }
+
+            setError({ status: false, text: "" });
+
+            const dataPayload = { email, otp: +otp };
+
+            setLoading(true);
+
+            axios.post(BACKEND_URL + apiEndpoints.otpVerify, dataPayload)
+                .then((response) => {
+                    setLoading(false);
+
+                    saveStorage(dataPayload.otp, "forgotPasswordOTP");
+                    navigation.navigate(`CreatePasswordScreen`);
+                })
+                .catch(error => {
+                    setLoading(false);
+                    dispatch(setDialogContent({ title: <Warning width={40} height={40} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
+                    console.log("Error sending data: ", error.message);
+                });
+        } catch (err: any) {
+            setLoading(false);
+            setError({ status: true, text: err.message });
+            console.log(err.message, '---err');
+        }
+    };
+
+    const handleOnResend = async () => {
+        try {
+            const email = await loadStorage("forgotPasswordEmail");
+
+            const dataPayload = { email };
+
+            setLoading(true);
+
+            axios.post(BACKEND_URL + apiEndpoints.forgot, dataPayload)
+                .then(response => {
+                    setLoading(false);
+
+                    dispatch(setDialogContent({ title: <Success width={40} height={40} />, message: response?.data?.message || "" }));
+                })
+                .catch(error => {
+                    setLoading(false);
+                    dispatch(setDialogContent({ title: <Warning width={40} height={40} />, message: error?.response?.data?.message || errorMessage?.commonMessage }));
+                    console.log("Error sending data: ", error);
+                });
+        } catch (err: any) {
+            setLoading(false);
+            console.log(err, '---err');
+        }
+    };
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const email = await loadStorage("forgotPasswordEmail");
+
+                if (!email) {
+                    throw new Error("Email is empty");
+                }
+            } catch (err) {
+                navigation.navigate(`LoginScreen`);
+            }
+        })()
+    }, [])
+
+    return (
+        <OuterLayout containerStyle={globalStyle.containerStyle}>
+            <InnerBlock>
+                <View style={styles.main}>
+                    <View style={{ flexDirection: "row", gap: 33.72, }}>
+                        <TouchableOpacity
+                            onPress={() => navigation.goBack()}
+                            style={{ alignSelf: "center", top: VP(2) }}
+                        >
+                            <Left width={20} height={20} />
+                        </TouchableOpacity>
+                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textTransform: "capitalize" }}>verify your email</Text>
+                    </View>
+                    <View style={{ flex: 4 }}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            <View style={{ marginTop: VP(50) }}>
+                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: VP(54.70), paddingLeft: HP(54.70), paddingRight: HP(54.70), paddingTop: VP(54.70), backgroundColor: "#FFEAFD", width: HP(195), height: VP(195), borderRadius: 202, alignSelf: "center" }}>
+                                    <Image source={require('../../assets/images/letter.png')} style={styles.icon} />
+                                </View>
+                            </View>
+
+                            <View style={{ marginTop: VP(36) }}>
+                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: FS(14), textTransform: "capitalize", textAlign: "center", width: HP(290), lineHeight: VP(22) }}>
+                                    please enter the 4 digit code sent to <Text style={{ fontWeight: "bold" }}>
+                                        {forgotPasswordEmail}
+                                    </Text>
+                                </Text>
+                            </View>
+
+                            <View style={{ marginTop: VP(56) }}>
+                                <OTPInput formProps={{ value, setValue, error }} />
+                            </View>
+                        </ScrollView>
+                    </View>
+
+                    <View style={{ flex: 1 }}>
+                        <View style={{ marginTop: VP(17) }}>
+                            <TouchableOpacity
+                                onPress={handleOnResend}
+                                style={{}}
+                            >
+                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: FS(14), color: COLORS.BUTTON, textAlign: "center", textDecorationStyle: "solid", textDecorationLine: "underline", }}>
+                                    Resend Code
+                                </Text>
+                            </TouchableOpacity>
+
+                            <Button
+                                text={'verify'}
+                                onPress={handleOnPress}
+                                textStyle={styles.buttonStyle}
+                                isLoading={loading}
+                                activeButtonText={{ opacity: .65 }}
+                                mainContainerStyle={{ marginTop: VP(37) }}
+                                LinearGradienrColor={["#FF00E2", "#FF00E2"]}
+                                contentContainerStyle={{ top: -2 }}
+                            />
+                        </View>
+                    </View>
+                </View>
+            </InnerBlock>
+        </OuterLayout>
+    );
+};
+
+const styles = StyleSheet.create({
+    main: {
+        marginHorizontal: HP(40),
+        marginVertical: VP(20),
+        flex: 1,
+        flexDirection: 'column'
+    },
+    textInputStyle: {
+        width: "100%",
+    },
+    buttonStyle: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: FS(20),
+        color: COLORS.WHITE,
+        textTransform: "capitalize",
+    },
+    line: {
+        height: 1,
+        backgroundColor: "#929292",
+        width: "20%",
+    },
+    icon: {
+        width: HP(86.61),
+        height: VP(87.58),
+        resizeMode: "contain"
+    }
+});
+
+export default VerifyCodeScreen;
