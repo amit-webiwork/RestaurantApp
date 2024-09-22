@@ -34,9 +34,9 @@ export const ButtonSwipe: React.FunctionComponent<Props> = ({ title, backgroundC
                     disabled={false}
                     //disable the button by doing true (Optional)
                     swipeSuccessThreshold={100}
-                    height={45}
+                    height={VP(45)}
                     //height of the button (Optional)
-                    width={330}
+                    width={FS(330)}
                     //width of the button (Optional)
                     title={title}
                     titleStyles={titleStyles}

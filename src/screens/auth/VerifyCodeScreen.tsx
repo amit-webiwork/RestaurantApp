@@ -128,7 +128,7 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                     <View style={{ flex: 4 }}>
                         <ScrollView showsVerticalScrollIndicator={false}>
                             <View style={{ marginTop: VP(50) }}>
-                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: HP(54.70), paddingLeft: HP(54.70), paddingRight: HP(54.70), paddingTop: HP(54.70), backgroundColor: "#FFEAFD", width: FS(195), height: VP(195), borderRadius: 202, alignSelf: "center" }}>
+                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: FS(54.70), paddingLeft: FS(54.70), paddingRight: FS(54.70), paddingTop: FS(54.70), backgroundColor: "#FFEAFD", width: FS(195), height: FS(195), borderRadius: FS(97.5), alignSelf: "center" }}>
                                     <Image source={require('../../assets/images/letter.png')} style={styles.icon} />
                                 </View>
                             </View>

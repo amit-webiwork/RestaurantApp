@@ -104,7 +104,7 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", }}>Create New Password</Text>
                             </View>
                             <View style={{ marginTop: VP(50) }}>
-                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: HP(52.83), paddingLeft: HP(65.69), paddingRight: HP(63.9), paddingTop: HP(52.62), backgroundColor: "#FFEAFD", width: FS(202), height: VP(202), borderRadius: 202, alignSelf: "center" }}>
+                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: FS(52.83), paddingLeft: FS(65.69), paddingRight: FS(63.9), paddingTop: FS(52.62), backgroundColor: "#FFEAFD", width: FS(202), height: FS(202), borderRadius: FS(101), alignSelf: "center" }}>
                                     <Image source={require('../../assets/images/lock.png')} style={styles.icon} />
                                 </View>
                             </View>

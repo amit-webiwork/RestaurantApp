@@ -78,15 +78,15 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                 <View style={styles.parent}>
                     <ImageBackground source={require('../../assets/images/splash-bottom.png')} style={styles.bottomImg}>
-                        <View style={{ alignSelf: "flex-start", paddingHorizontal: HP(37), paddingTop: VP(40), }}>
+                        <View style={{ alignSelf: "flex-start", paddingHorizontal: FS(37), paddingTop: FS(40), }}>
                             <Text style={styles.headingText}>choose the</Text>
                             <Text style={{ ...styles.headingText, fontSize: 38 }}>drink you love</Text>
-                            <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: COLORS.WHITE, fontSize: 16, textTransform: "capitalize", marginTop: VP(13) }}>boost your energy</Text>
+                            <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: COLORS.WHITE, fontSize: 16, textTransform: "capitalize", marginTop: FS(13) }}>boost your energy</Text>
                         </View>
 
                         {showButton && (
                             <View style={{ justifyContent: "center", marginHorizontal: HP(37) }}>
-                                <ButtonSwipe title="swipe to get started" backgroundColor="#CC9AFF" titleStyles={styles.titleStyles} swipeAction={getStarted} mainContainerStyle={{ top: VP(28) }} swipeBackgroundColor="#DF12CA" />
+                                <ButtonSwipe title="swipe to get started" backgroundColor="#CC9AFF" titleStyles={styles.titleStyles} swipeAction={getStarted} mainContainerStyle={{ top: FS(28) }} swipeBackgroundColor="#DF12CA" />
 
                                 {/* <Button
                                     text={'swipe to get started'}
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     },
     bottomImg: {
         width: FS(400.5),
-        height: VP(371.86),
+        height: FS(371.86),
         resizeMode: "contain"
     },
     buttonStyle: {
