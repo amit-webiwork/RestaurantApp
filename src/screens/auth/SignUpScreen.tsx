@@ -102,7 +102,7 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
                                     placeholder='Full Name'
                                     formProps={{ text: name, setText: setName, error: error.name }}
                                     maxLength={100}
-                                    styleInput={{ height: "auto" }}
+                                    styleInput={{ height: "auto", marginTop: VP(13) }}
                                 />
 
                                 <CustomTextInput

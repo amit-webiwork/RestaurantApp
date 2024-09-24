@@ -101,7 +101,8 @@ const ForgotScreen: React.FunctionComponent<NavigationProp> = ({
                                     formProps={{ text: username, setText: setUsername, error: error.username }}
                                     maxLength={100}
                                     styleInput={{
-                                        height: "auto"
+                                        height: "auto",
+                                        marginTop: VP(13)
                                     }}
                                 />
                             </View>

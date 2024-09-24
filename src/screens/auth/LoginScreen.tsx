@@ -43,6 +43,8 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
 
     const handleOnPress = async () => {
         try {
+            navigation.navigate(`MainTabNavigator`)
+            return;
             setError(errorObj);
 
             const resource = { username, password }
@@ -92,7 +94,8 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                                     formProps={{ text: username, setText: setUsername, error: error.username }}
                                     maxLength={100}
                                     styleInput={{
-                                        height: "auto"
+                                        height: "auto",
+                                        marginTop: VP(13)
                                     }}
                                 />
 
@@ -129,7 +132,7 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                                 LinearGradienrColor={["#FF00E2", "#FF00E2"]}
                                 contentContainerStyle={{ top: -2 }}
                             />
-                            <View style={{ marginTop: VP(250), flexDirection: "row", justifyContent: "center", gap: 6,  }}>
+                            <View style={{ marginTop: VP(240), flexDirection: "row", justifyContent: "center", gap: 6,  }}>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12, textTransform: "capitalize" }}>don’t have an account?</Text>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`SignUpScreen`)}

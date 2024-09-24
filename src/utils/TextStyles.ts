@@ -14,6 +14,11 @@ export const TextStyles: Record<string, TextStyle> = {
         color: COLORS.BLACK,
         fontSize: 16,
     },
+    RALEWAY_EXTRA_BOLD: {
+        fontFamily: 'RalewayExtraBold',
+        color: COLORS.BLACK,
+        fontSize: 16,
+    },
     RALEWAY_REGULAR: {
         fontFamily: 'RalewayRegular',
         color: COLORS.BLACK,
@@ -23,5 +28,25 @@ export const TextStyles: Record<string, TextStyle> = {
         fontFamily: 'RalewayMedium',
         color: COLORS.BLACK,
         fontSize: 16,
-    }
+    },
+    ARCHITECTS_DAUGHTER_REGULAR: {
+        fontFamily: 'ArchitectsDaughterRegular',
+        color: COLORS.BLACK,
+        fontSize: 14,
+    },
+    LEXEND_REGULAR: {
+        fontFamily: 'LexendRegular',
+        color: COLORS.BLACK,
+        fontSize: 14,
+    },
+    ROBOTO_REGULAR: {
+        fontFamily: 'RobotoRegular',
+        color: COLORS.BLACK,
+        fontSize: 14
+    },
+    KANIT_REGULAR: {
+        fontFamily: 'KanitRegular',
+        color: COLORS.BLACK,
+        fontSize: 14
+    },
 };

@@ -32,6 +32,10 @@
 		2E4E42951E764D739A31FDE3 /* RalewaySemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 617BB5203EAC41429DE61C71 /* RalewaySemiBoldItalic.ttf */; };
 		1BBC6E09133E44B6AF61A111 /* RalewayThin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E0341D9F9A3494DAF33672A /* RalewayThin.ttf */; };
 		BCF9392F88154C708C0A844D /* RalewayThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EC53CC589B0C4664A7A90ECE /* RalewayThinItalic.ttf */; };
+		B622DD5360434405911C6C55 /* ArchitectsDaughterRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77B45E3AF9644BF58F751D3C /* ArchitectsDaughterRegular.ttf */; };
+		560735FFD6544EFCA1B85D7A /* LexendRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7751B43870B402BAAE90B11 /* LexendRegular.ttf */; };
+		2B7AB70B47C34D2D80C1B33E /* RobotoRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 551890816A0344B38B6329A7 /* RobotoRegular.ttf */; };
+		92B11082165143C2A92597FF /* KanitRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC54A33D178A49A7BAF1B4C0 /* KanitRegular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +85,10 @@
 		617BB5203EAC41429DE61C71 /* RalewaySemiBoldItalic.ttf */ = {isa = PBXFileReference; name = "RalewaySemiBoldItalic.ttf"; path = "../assets/fonts/RalewaySemiBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		9E0341D9F9A3494DAF33672A /* RalewayThin.ttf */ = {isa = PBXFileReference; name = "RalewayThin.ttf"; path = "../assets/fonts/RalewayThin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		EC53CC589B0C4664A7A90ECE /* RalewayThinItalic.ttf */ = {isa = PBXFileReference; name = "RalewayThinItalic.ttf"; path = "../assets/fonts/RalewayThinItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		77B45E3AF9644BF58F751D3C /* ArchitectsDaughterRegular.ttf */ = {isa = PBXFileReference; name = "ArchitectsDaughterRegular.ttf"; path = "../assets/fonts/ArchitectsDaughterRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E7751B43870B402BAAE90B11 /* LexendRegular.ttf */ = {isa = PBXFileReference; name = "LexendRegular.ttf"; path = "../assets/fonts/LexendRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		551890816A0344B38B6329A7 /* RobotoRegular.ttf */ = {isa = PBXFileReference; name = "RobotoRegular.ttf"; path = "../assets/fonts/RobotoRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BC54A33D178A49A7BAF1B4C0 /* KanitRegular.ttf */ = {isa = PBXFileReference; name = "KanitRegular.ttf"; path = "../assets/fonts/KanitRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +216,10 @@
 				617BB5203EAC41429DE61C71 /* RalewaySemiBoldItalic.ttf */,
 				9E0341D9F9A3494DAF33672A /* RalewayThin.ttf */,
 				EC53CC589B0C4664A7A90ECE /* RalewayThinItalic.ttf */,
+				77B45E3AF9644BF58F751D3C /* ArchitectsDaughterRegular.ttf */,
+				E7751B43870B402BAAE90B11 /* LexendRegular.ttf */,
+				551890816A0344B38B6329A7 /* RobotoRegular.ttf */,
+				BC54A33D178A49A7BAF1B4C0 /* KanitRegular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -326,6 +338,10 @@
 				2E4E42951E764D739A31FDE3 /* RalewaySemiBoldItalic.ttf in Resources */,
 				1BBC6E09133E44B6AF61A111 /* RalewayThin.ttf in Resources */,
 				BCF9392F88154C708C0A844D /* RalewayThinItalic.ttf in Resources */,
+				B622DD5360434405911C6C55 /* ArchitectsDaughterRegular.ttf in Resources */,
+				560735FFD6544EFCA1B85D7A /* LexendRegular.ttf in Resources */,
+				2B7AB70B47C34D2D80C1B33E /* RobotoRegular.ttf in Resources */,
+				92B11082165143C2A92597FF /* KanitRegular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

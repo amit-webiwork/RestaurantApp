@@ -15,8 +15,8 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [showButton, setShowButton] = useState(false);
 
     const getStarted = async () => {
-        navigation.navigate('SignUpScreen');
-        return;
+        // navigation.navigate('SignUpScreen');
+        // return;
         navigation.reset({
             index: 0,
             routes: [
@@ -85,9 +85,9 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         </View>
 
                         {showButton && (
-                            <View style={{ justifyContent: "center", marginHorizontal: HP(37) }}>
-                                <ButtonSwipe title="swipe to get started" backgroundColor="#CC9AFF" titleStyles={styles.titleStyles} swipeAction={getStarted} mainContainerStyle={{ top: FS(28) }} swipeBackgroundColor="#DF12CA" />
-
+                            <View style={{ justifyContent: "center", marginHorizontal: HP(30) }}>
+                                <ButtonSwipe title="swipe to get started" backgroundColor="#CC9AFF" titleStyles={styles.titleStyles} swipeAction={getStarted} mainContainerStyle={{ top: FS(28) }} swipeBackgroundColor="#CC9AFF" />
+                                {/* #DF12CA */}
                                 {/* <Button
                                     text={'swipe to get started'}
                                     onPress={() => getStarted()}

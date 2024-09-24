@@ -8,8 +8,9 @@ const validateResource = (resourceSchema: { validate: (arg0: any) => any; }, set
         resource = validData;
         return resource;
     } catch (err: any) {
-        setState((pre: any) => ({ ...pre, [err?.path]: { status: true, text: err?.errors.join(", ") } }));
-        throw new Error(err?.errors.join(", "));
+        console.log(err, '---err');
+        setState((pre: any) => ({ ...pre, [err?.path]: { status: true, text: err?.errors?.join(", ") || "" } }));
+        throw new Error(err?.errors?.join(", "));
     }
 };
 

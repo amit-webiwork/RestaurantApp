@@ -15,7 +15,7 @@ import SwipeButton from 'rn-swipe-button';
 import { FS, HP, VP } from '../utils/Responsive';
 import { COLORS } from '../utils/Constants';
 import { TextStyles } from '../utils/TextStyles';
-// import Right from '../assets/svgs/right.svg';
+import Right from '../assets/svgs/right.svg';
 
 type Props = {
     title: string;
@@ -25,6 +25,10 @@ type Props = {
     mainContainerStyle: StyleProp<TextStyle>;
     swipeBackgroundColor: string;
 };
+
+const IconButton = () => {
+    return <Right width={FS(16)} height={VP(16)} />
+}
 
 export const ButtonSwipe: React.FunctionComponent<Props> = ({ title, backgroundColor, titleStyles, swipeAction, mainContainerStyle, swipeBackgroundColor }) => {
     return (
@@ -41,7 +45,7 @@ export const ButtonSwipe: React.FunctionComponent<Props> = ({ title, backgroundC
                     title={title}
                     titleStyles={titleStyles}
                     shouldResetAfterSuccess={true}
-                    // thumbIconComponent={}
+                    thumbIconComponent={IconButton}
                     //Text inside the button (Optional)
                     // thumbIconImageSource={<Right width={FS(16)} height={VP(16)} />}
                     //You can also set your own icon (Optional)

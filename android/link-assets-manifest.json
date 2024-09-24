@@ -2,6 +2,18 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/ArchitectsDaughterRegular.ttf",
+      "sha1": "ad3cdcdb3f37ac12fe1833f984d4617b576a8c32"
+    },
+    {
+      "path": "assets/fonts/KanitRegular.ttf",
+      "sha1": "4d7b70e9717ae0adecc332fac9af7457063886a4"
+    },
+    {
+      "path": "assets/fonts/LexendRegular.ttf",
+      "sha1": "bc33fa22827ac530e6bf64d3b6f412067f200d6f"
+    },
+    {
       "path": "assets/fonts/RalewayBlack.ttf",
       "sha1": "008ce784e9f5a60f64677b8798a9bd7ccb253ba5"
     },
@@ -72,6 +84,10 @@
     {
       "path": "assets/fonts/RalewayThinItalic.ttf",
       "sha1": "e3f08e6c59b8038cdacfc8f45d93e495d1567b8a"
+    },
+    {
+      "path": "assets/fonts/RobotoRegular.ttf",
+      "sha1": "ce57fc6c6705cb20661ac325fac5d4598b6efbca"
     }
   ]
 }

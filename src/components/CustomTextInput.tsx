@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
     View,
     TextInput,
@@ -41,14 +41,54 @@ const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
 }) => {
     const { text, setText, error } = formProps;
 
+    const [isFocused, setIsFocused] = useState(false);
+    const animatedLabel = useRef(new Animated.Value(text ? 1 : 0)).current; // Initial position if there's text
+
+    useEffect(() => {
+        Animated.timing(animatedLabel, {
+            toValue: isFocused || text ? 1 : 0,
+            duration: 200,
+            useNativeDriver: false,
+        }).start();
+    }, [isFocused, text]);
+
+    const labelStyle = {
+        position: 'absolute',
+        left: 0,
+        top: animatedLabel.interpolate({
+            inputRange: [0, 1],
+            outputRange: [40, 10], // Moves label up
+        }),
+        fontSize: animatedLabel.interpolate({
+            inputRange: [0, 1],
+            outputRange: [12, 12], // Reduces font size
+        }),
+        color: animatedLabel.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['#A0A0A0', '#ADA4A5'], // Placeholder color when focused
+        }),
+    };
+
     return (
         <View style={[styles.inputContainer, styleContainer]}>
-            <TextInput
+             <Animated.Text style={[styles.placeholder, labelStyle]}>
+                {placeholder}
+            </Animated.Text>
+            {/* <TextInput
                 style={[styles.input, styleInput, { borderBottomColor: error.status ? COLORS.RED : "#A0A0A0" }]}
                 value={text}
                 onChangeText={setText}
                 placeholder={placeholder}
                 placeholderTextColor={COLORS.PLACEHOLDER_COLOR}
+                {...rest}
+            /> */}
+            <TextInput
+                style={[styles.input, styleInput, { borderBottomColor: error.status ? COLORS.RED : "#A0A0A0" }]}
+                value={text}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                onChangeText={setText}
+                placeholder=""
                 {...rest}
             />
             {iconName && (
@@ -100,6 +140,10 @@ const styles = StyleSheet.create({
         alignSelf: "flex-start",
         top: VP(2),
         textTransform: "capitalize"
+    },
+    placeholder: {
+        position: 'absolute',
+        left: 0,
     }
 });
 

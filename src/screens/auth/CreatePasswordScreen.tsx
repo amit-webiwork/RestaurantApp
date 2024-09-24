@@ -115,7 +115,7 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                                 </Text>
                             </View>
 
-                            <View style={{ marginTop: VP(25) }}>
+                            <View style={{ marginTop: VP(15) }}>
                                 <CustomTextInput
                                     placeholder='New Password'
                                     formProps={{ text: password, setText: setPassword, error: error.password }}
@@ -134,7 +134,7 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                                     secureTextEntry={true}
                                     styleInput={{
                                         height: "auto",
-                                        marginTop: HP(13)
+                                        marginTop: HP(12)
                                     }}
                                 />
                             </View>

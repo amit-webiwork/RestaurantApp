@@ -6,7 +6,8 @@ export const COLORS = {
     PLACEHOLDER_COLOR: '#ADA4A5',
     BLACK: '#000000',
     THEME: "#DD21CD",
-    BUTTON: '#FF00E2'
+    BUTTON: '#FF00E2',
+    HOME_ICONS: "#D3219B"
 };
 
 export const BACKEND_URL = "https://stable-gobbler-select.ngrok-free.app";

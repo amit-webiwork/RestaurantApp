@@ -8,6 +8,7 @@ export type MainStackParamList = {
     AuthStackNavigator: undefined;
     MainTabNavigator: undefined;
     SignUpScreen: undefined;
+    ForgotScreen: undefined;
 };
 
 const MainStackNavigator: React.FunctionComponent = () => {
