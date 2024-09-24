@@ -7,7 +7,9 @@ export const COLORS = {
     BLACK: '#000000',
     THEME: "#DD21CD",
     BUTTON: '#FF00E2',
-    HOME_ICONS: "#D3219B"
+    HOME_ICONS: "#D3219B",
+    ICON_DEFAULT: "#CBCBCB",
+    BACKGROUND_DEFAULT: "#F8F8F8"
 };
 
 export const BACKEND_URL = "https://stable-gobbler-select.ngrok-free.app";

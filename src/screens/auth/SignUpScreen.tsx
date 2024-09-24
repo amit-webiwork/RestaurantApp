@@ -1,21 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ScrollView, TouchableOpacity, View, Image, BackHandler, Text, StyleSheet } from 'react-native';
+import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 import OuterLayout from '../../components/OuterLayout';
 import { AuthStackParamList } from '../../navigations/AuthStackNavigator';
 import InnerBlock from '../../components/InnerBlock';
 import { Button } from '../../components/Button';
 import { FS, HP, VP } from '../../utils/Responsive';
-import { showAlert } from '../../utils/Alert';
 import { removeStorage, saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
 import { globalStyle } from '../../utils/GlobalStyle';
 import CustomTextInput from '../../components/CustomTextInput';
 import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../utils/Constants';
 import { signup, validateResource } from '../../utils/ValidateResource';
-import { useDispatch } from 'react-redux';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 

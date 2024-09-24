@@ -2,13 +2,8 @@ import React, { useRef, useState } from 'react';
 import {
     View,
     TouchableOpacity,
-    StyleProp,
-    ViewStyle,
     StyleSheet,
-    ActivityIndicator,
-    TextStyle,
     Text,
-    TextInput,
     Image,
     FlatList
 } from 'react-native';
@@ -44,7 +39,7 @@ const data = [
 const CategoryItem = ({ item, index }: { item: any, index: number }) => {
     const backgroundColor = colorsBG[index % colorsBG.length];
     return (
-        <View style={{ marginRight: HP(15), gap: 5 }}>
+        <View style={{ marginRight: HP(15), flexGrow: 1, width: "20%", }}>
             <TouchableOpacity
                 onPress={() => void (0)}
                 style={{}}

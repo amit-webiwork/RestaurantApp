@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { FS, HP, VP } from '../utils/Responsive';
+import { FS, VP } from '../utils/Responsive';
 import { COLORS } from '../utils/Constants';
 import { TextStyles } from '../utils/TextStyles';
 

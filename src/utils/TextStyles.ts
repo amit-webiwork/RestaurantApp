@@ -39,6 +39,11 @@ export const TextStyles: Record<string, TextStyle> = {
         color: COLORS.BLACK,
         fontSize: 14,
     },
+    LEXEND_BOLD: {
+        fontFamily: 'LexendBold',
+        color: COLORS.BLACK,
+        fontSize: 14,
+    },
     ROBOTO_REGULAR: {
         fontFamily: 'RobotoRegular',
         color: COLORS.BLACK,
@@ -48,5 +53,20 @@ export const TextStyles: Record<string, TextStyle> = {
         fontFamily: 'KanitRegular',
         color: COLORS.BLACK,
         fontSize: 14
+    },
+    CHEWY_REGULAR: {
+        fontFamily: 'ChewyRegular',
+        color: COLORS.BLACK,
+        fontSize: 16
+    },
+    POPPINS_REGULAR: {
+        fontFamily: 'PoppinsRegular',
+        color: COLORS.BLACK,
+        fontSize: 16
+    },
+    POPPINS_BOLD: {
+        fontFamily: 'PoppinsBold',
+        color: COLORS.BLACK,
+        fontSize: 16
     },
 };

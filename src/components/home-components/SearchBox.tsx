@@ -2,16 +2,10 @@ import React, { useState } from 'react';
 import {
     View,
     TouchableOpacity,
-    StyleProp,
-    ViewStyle,
     StyleSheet,
-    ActivityIndicator,
-    TextStyle,
-    Text,
     TextInput,
     Image
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';

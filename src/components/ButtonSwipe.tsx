@@ -1,18 +1,13 @@
 import React from 'react';
 import {
     View,
-    TouchableOpacity,
     StyleProp,
-    ViewStyle,
     StyleSheet,
-    ActivityIndicator,
-    TextStyle,
-    Text
+    TextStyle
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import SwipeButton from 'rn-swipe-button';
 
-import { FS, HP, VP } from '../utils/Responsive';
+import { FS, VP } from '../utils/Responsive';
 import { COLORS } from '../utils/Constants';
 import { TextStyles } from '../utils/TextStyles';
 import Right from '../assets/svgs/right.svg';

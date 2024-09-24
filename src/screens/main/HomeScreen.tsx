@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, View, Text, ImageBackground, ScrollView, TextInput } from 'react-native';
+import React from 'react';
+import { StyleSheet, Image, View, Text, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
-import { loadStorage, saveStorage } from '../../utils/Storage.ts';
 import { COLORS } from '../../utils/Constants.ts';
 import { TextStyles } from '../../utils/TextStyles.ts';
 import { Button } from '../../components/Button.tsx';
-import Right from '../../assets/svgs/right.svg';
-import { submitLogin } from '../../utils/ApiCall.ts';
-import CustomTextInput from '../../components/CustomTextInput.tsx';
 import { SearchBox } from '../../components/home-components/SearchBox.tsx';
 import { CategoryBox } from '../../components/home-components/CategoryBox.tsx';
 import { PromotionalBox } from '../../components/home-components/PromotionalBox.tsx';
+import { CategortyTabs } from '../../components/home-components/CategortyTabs.tsx';
+import { ItemBox } from '../../components/home-components/ItemBox.tsx';
+import { BannerOne } from '../../components/home-components/BannerOne.tsx';
+import { FeatureCategoryBox } from '../../components/home-components/FeatureCategoryBox.tsx';
+import { BannerTwo } from '../../components/home-components/BannerTwo.tsx';
+import { ItemVerticalBox } from '../../components/home-components/ItemVerticalBox.tsx';
 
 function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     return (
@@ -25,8 +27,8 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                     style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", }}
                 >
                     <View style={{ flex: 1 }}>
-                        <ScrollView showsVerticalScrollIndicator={false}>
-                            <View style={{ flexDirection: "row", flex: 2, }}>
+                        <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+                            <View style={{ flexDirection: "row", flex: 1, }}>
                                 <View style={{ flexBasis: "35%", gap: HP(13) }}>
                                     <View style={{ left: HP(17), marginTop: VP(30) }}>
                                         <Text style={{ ...TextStyles.ARCHITECTS_DAUGHTER_REGULAR, color: COLORS.WHITE, fontSize: 30, }}>
@@ -55,63 +57,87 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             </View>
 
                             <View style={[styles.itemContainer]}>
-                                <View style={{ flex: 1, marginVertical: VP(48), marginHorizontal: HP(20), }}>
+                                <View style={{ flex: 1, marginVertical: VP(48), }}>
 
                                     <SearchBox />
 
-                                    <View style={{ marginTop: VP(27) }}>
+                                    <View style={{ marginTop: VP(27), marginHorizontal: HP(17) }}>
                                         <CategoryBox />
                                     </View>
 
-                                    <View style={{ marginTop: VP(23) }}>
+                                    <View style={{ marginTop: VP(23), marginHorizontal: HP(21) }}>
                                         <PromotionalBox />
                                     </View>
+
+                                    <View style={{ flexDirection: "row", marginTop: VP(37), gap: 10, alignItems: "center", marginHorizontal: HP(21) }}>
+                                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 14 }}>MENU</Text>
+
+                                        <LinearGradient
+                                            colors={['#B20C79', '#E2E2E2']}
+                                            start={{ x: 0, y: 0 }}
+                                            end={{ x: 1, y: 0 }}
+                                            style={styles.line}
+                                        >
+                                        </LinearGradient>
+                                    </View>
+
+                                    <View style={{ marginTop: VP(24.66), marginHorizontal: HP(21) }}>
+                                        <CategortyTabs />
+                                    </View>
+
+                                    <View style={{ marginTop: VP(20), marginHorizontal: HP(21) }}>
+                                        <ItemBox />
+                                    </View>
+
+                                    <View style={{ marginTop: VP(31.66), marginHorizontal: HP(16) }}>
+                                        <BannerOne />
+                                    </View>
+
+                                    <View style={{ flexDirection: "row", marginTop: VP(32.87), gap: 10, alignItems: "center", marginHorizontal: HP(21) }}>
+                                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 14, textTransform: "uppercase" }}>Kylie, what’s on your mind?</Text>
+
+                                        <LinearGradient
+                                            colors={['#B20C79', '#E2E2E2']}
+                                            start={{ x: 0, y: 0 }}
+                                            end={{ x: 1, y: 0 }}
+                                            style={{ ...styles.line, width: "30%" }}
+                                        >
+                                        </LinearGradient>
+                                    </View>
+
+                                    <View style={{ marginTop: VP(20), marginHorizontal: HP(16) }}>
+                                        <FeatureCategoryBox />
+                                    </View>
+
+                                    <View style={{ marginTop: VP(20) }}>
+                                        <BannerTwo />
+                                    </View>
+
+                                    <View style={{ flexDirection: "row", marginTop: VP(32.87), gap: 10, alignItems: "center", marginHorizontal: HP(20) }}>
+                                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 16, textTransform: "capitalize" }}>"Sip and savor 50+ drinks and desserts"</Text>
+
+                                        <LinearGradient
+                                            colors={['#B20C79', '#E2E2E2']}
+                                            start={{ x: 0, y: 0 }}
+                                            end={{ x: 1, y: 0 }}
+                                            style={{ ...styles.line, width: "5%", }}
+                                        >
+                                        </LinearGradient>
+                                    </View>
+
+                                    <View style={{ marginTop: VP(22), marginHorizontal: HP(11) }}>
+                                        <ItemVerticalBox />
+                                    </View>
+
+                                    <View style={{ marginTop: VP(53) }}>
+                                        <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: 40, color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
+                                    </View>
+                                </View>
+                                <View style={{ height: VP(90), backgroundColor: "#FFF", position: "absolute", bottom: 0 }}>
+
                                 </View>
                             </View>
                         </ScrollView>
-                    </View>
-
-                    {/* Bottom Bar */}
-                    <View style={{
-                        bottom: 0,
-                        height: VP(79),
-                        position: "absolute",
-                        backgroundColor: "#FFFFFF",
-                        flex: 1,
-                        shadowColor: "#D9D9D9",
-                        shadowOffset: {
-                            width: -2,
-                            height: 4,
-                        },
-                        shadowOpacity: 0.2,
-                        shadowRadius: 3,
-                        elevation: 20,
-                    }}>
-                        <View style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            width: "100%",
-                            margin: "auto",
-                            padding: "auto",
-                            paddingHorizontal: 16,
-                            // paddingVertical: 12, 
-                            alignItems: "center",
-                            // paddingTop: 40,
-                            // paddingBottom: 40
-                        }}>
-                            <Image source={require(`../../assets/icons/shopping-bag.png`)} style={{ width: FS(30), height: VP(30) }} />
-
-                            <Image source={require(`../../assets/icons/heart.png`)} style={{ width: FS(30), height: VP(30) }} />
-
-                            <View style={{ backgroundColor: COLORS.HOME_ICONS, width: FS(65), height: FS(65), borderRadius: FS(32), alignItems: "center", justifyContent: "center", top: VP(-30) }}>
-                                <Image source={require(`../../assets/icons/home.png`)} style={{ width: FS(31), height: VP(31) }} />
-                            </View>
-
-
-                            <Image source={require(`../../assets/icons/bell.png`)} style={{ width: FS(35), height: VP(30) }} />
-
-                            <Image source={require(`../../assets/icons/user.png`)} style={{ width: FS(30), height: VP(30) }} />
-                        </View>
                     </View>
                 </LinearGradient >
             </View >
@@ -121,11 +147,11 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
 const styles = StyleSheet.create({
     itemContainer: {
-        flex: 3,
+        flex: 2,
         borderTopLeftRadius: 60,
         borderTopRightRadius: 0,
         backgroundColor: "#FDFDFD",
-        top: VP(-90)
+        top: VP(-100)
     },
     icon: {
         // width: FS(260.97),
@@ -138,6 +164,10 @@ const styles = StyleSheet.create({
     buttonStyle: {
         ...TextStyles.LEXEND_REGULAR,
         textTransform: "uppercase",
+    },
+    line: {
+        height: 1,
+        width: "85%"
     },
 });
 

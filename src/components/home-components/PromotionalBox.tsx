@@ -45,12 +45,12 @@ const data = [
 const BoxItems = ({ item, index }: { item: any, index: number }) => {
 
     return (
-        <View style={{ marginRight: HP(11.56), gap: 5 }}>
+        <View style={{ marginRight: HP(11.56), flexGrow: 1, width: "30%",}}>
             <TouchableOpacity
                 onPress={() => void (0)}
                 style={{}}
             >
-                <ImageBackground source={item.bg} style={styles.bg}>
+                <ImageBackground source={item.bg} style={styles.bg} imageStyle={{ borderRadius: FS(8.67) }}>
                     <View style={{ paddingHorizontal: HP(15), paddingBottom: HP(15) }}>
                         <Text style={styles.boxInsideFirstText}>{item.firstText}</Text>
                         <Text style={styles.boxInsideSecondText}>{item.secondText}</Text>
@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     bg: {
         width: FS(121.37),
         height: FS(96.23),
-        borderRadius: FS(8.67),
         justifyContent: "flex-end",
         resizeMode: "contain"
     },

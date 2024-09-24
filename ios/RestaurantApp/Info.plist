@@ -71,6 +71,10 @@
 		<string>LexendRegular.ttf</string>
 		<string>RobotoRegular.ttf</string>
 		<string>KanitRegular.ttf</string>
+		<string>ChewyRegular.ttf</string>
+		<string>LexendBold.ttf</string>
+		<string>PoppinsRegular.ttf</string>
+		<string>PoppinsBold.ttf</string>
 	</array>
 </dict>
 </plist>

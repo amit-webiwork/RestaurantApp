@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, View, Text, ImageBackground, ScrollView } from 'react-native';
+import { StyleSheet, Image, View, Text, ImageBackground } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
 import { loadStorage, saveStorage } from '../../utils/Storage.ts';
 import { COLORS } from '../../utils/Constants.ts';
 import { TextStyles } from '../../utils/TextStyles.ts';
-import { Button } from '../../components/Button.tsx';
-import Right from '../../assets/svgs/right.svg';
 import { submitLogin } from '../../utils/ApiCall.ts';
 import { ButtonSwipe } from '../../components/ButtonSwipe.tsx';
 
