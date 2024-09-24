@@ -6,12 +6,28 @@
       "sha1": "ad3cdcdb3f37ac12fe1833f984d4617b576a8c32"
     },
     {
+      "path": "assets/fonts/ChewyRegular.ttf",
+      "sha1": "a3ad025edbfd8e4c49ca201e2478d51e1027ef1c"
+    },
+    {
       "path": "assets/fonts/KanitRegular.ttf",
       "sha1": "4d7b70e9717ae0adecc332fac9af7457063886a4"
     },
     {
+      "path": "assets/fonts/LexendBold.ttf",
+      "sha1": "1a8d4599190b5057c425db5709a40c7ef03b1202"
+    },
+    {
       "path": "assets/fonts/LexendRegular.ttf",
       "sha1": "bc33fa22827ac530e6bf64d3b6f412067f200d6f"
+    },
+    {
+      "path": "assets/fonts/PoppinsBold.ttf",
+      "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
+    },
+    {
+      "path": "assets/fonts/PoppinsRegular.ttf",
+      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
     },
     {
       "path": "assets/fonts/RalewayBlack.ttf",
