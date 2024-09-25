@@ -7,10 +7,19 @@ const validateResource = (resourceSchema: { validate: (arg0: any) => any; }, set
         const validData = await resourceSchema.validate(resource);
         resource = validData;
         return resource;
-    } catch (err: any) {
-        console.log(err, '---err');
-        setState((pre: any) => ({ ...pre, [err?.path || ""]: { status: true, text: err?.errors?.join(", ") || "" } }));
-        throw new Error(err?.errors?.join(", "));
+    } catch (err: any) {        
+        const path = err?.path || "";
+        const errors = err?.errors?.join(", ") || "Unknown error";
+
+        setState((pre: any) => ({
+            ...pre,
+            [path]: {
+                status: true,
+                text: errors
+            }
+        }));
+
+        throw new Error(errors);
     }
 };
 

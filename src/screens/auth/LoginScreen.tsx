@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ScrollView, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { ScrollView, TouchableOpacity, View, Text, StyleSheet, Keyboard } from 'react-native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
@@ -17,6 +17,7 @@ import { login, validateResource } from '../../utils/ValidateResource';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 import { MainStackParamList } from '../../navigations/MainStackNavigator';
+import { setProflieDetails } from '../../redux/features/profile';
 
 type NavigationProp = NativeStackScreenProps<MainStackParamList>;
 
@@ -35,13 +36,14 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
     const [loading, setLoading] = useState(false);
 
     const handlePasswordHide = () => {
+        Keyboard.dismiss();
         setPasswordHide((pre) => !pre)
     }
 
     const handleOnPress = async () => {
         try {
-            navigation.navigate(`MainTabNavigator`)
-            return;
+            // navigation.navigate(`MainTabNavigator`)
+            // return;
             setError(errorObj);
 
             const resource = { username, password }
@@ -61,6 +63,8 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                     if (responseData.user && responseData.token) {
                         responseData['user']['password'] = dataPayload.password;
                         saveStorage(responseData, "userDetails");
+
+                        dispatch(setProflieDetails(responseData));
                         
                         navigation.navigate(`MainTabNavigator`)
                     } else {

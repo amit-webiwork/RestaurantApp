@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet } from 'react-native';
 import axios from 'axios';

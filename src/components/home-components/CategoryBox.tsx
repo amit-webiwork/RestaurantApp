@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -8,12 +8,16 @@ import {
     FlatList
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import LeftWhite from '../../assets/svgs/left-white.svg';
 import RightWhite from '../../assets/svgs/right-white.svg';
+import { categoryList, categoryLoaded, fetchCategories } from '../../redux/features/items';
+import { AppDispatch } from '../../redux/store';
+import CategoryBoxLoader from '../skeleton/CategoryBoxLoader';
 
 const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF4C399", "#CFF4C399"], ["#FDD6D699", "#FDD6D699"]]
 
@@ -61,7 +65,12 @@ const CategoryItem = ({ item, index }: { item: any, index: number }) => {
 }
 
 export const CategoryBox: React.FunctionComponent = () => {
+    const dispatch: AppDispatch = useDispatch();
+
     const flatListRef = useRef<any>();
+
+    const CategoryLoaded = useSelector(categoryLoaded);
+    const CategoryList = useSelector(categoryList);
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -77,37 +86,49 @@ export const CategoryBox: React.FunctionComponent = () => {
         flatListRef.current.scrollToIndex({ index: currentIndex + 1 });
     };
 
+    useEffect(() => {
+        if (!CategoryLoaded) {
+            dispatch(fetchCategories());
+        }
+    }, [CategoryLoaded])
+
+    // console.log(CategoryList, CategoryLoaded, '-----------CategoryList')
+
     return (
         <View style={styles.mainContainer}>
             <View style={styles.subContainer}>
                 <Text style={styles.heading}>
                     categories
                 </Text>
-                <View style={styles.iconMainContainer}>
-                    <TouchableOpacity
-                        onPress={scrollLeft}
-                        style={styles.iconContainer}
-                    >
-                        <LeftWhite width={FS(12)} height={VP(12)} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={scrollRight}
-                        style={styles.iconContainer}
-                    >
-                        <RightWhite width={FS(12)} height={VP(12)} />
-                    </TouchableOpacity>
-                </View>
+                {CategoryLoaded && (
+                    <View style={styles.iconMainContainer}>
+                        <TouchableOpacity
+                            onPress={scrollLeft}
+                            style={styles.iconContainer}
+                        >
+                            <LeftWhite width={FS(12)} height={VP(12)} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={scrollRight}
+                            style={styles.iconContainer}
+                        >
+                            <RightWhite width={FS(12)} height={VP(12)} />
+                        </TouchableOpacity>
+                    </View>
+                )}
             </View>
 
             <View>
-                <FlatList
-                    data={data}
-                    renderItem={({ item, index, separators }) => <CategoryItem item={item} index={index} />}
-                    contentContainerStyle={styles.listContainer}
-                    horizontal={true}
-                    ref={flatListRef}
-                // getItemLayout={getItemLayout}
-                />
+                {CategoryLoaded ? (
+                    <FlatList
+                        data={data}
+                        renderItem={({ item, index, separators }) => <CategoryItem item={item} index={index} />}
+                        contentContainerStyle={styles.listContainer}
+                        horizontal={true}
+                        ref={flatListRef}
+                    // getItemLayout={getItemLayout}
+                    />
+                ) : (<CategoryBoxLoader />)}
             </View>
         </View>
     );

@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const profileDefault = {
     details: {
-        fname: "",
-        lname: ""
+        user: {},
+        token: {}
     }
 }
 
@@ -23,4 +23,4 @@ export const { setProflieDetails } = profileSlice.actions
 
 export const proflieDetails = (state: { profile: { details: any } }) => state.profile.details;
 
-export default profileSlice.reducer
+export default profileSlice.reducer;

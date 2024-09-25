@@ -45,7 +45,7 @@ const data = [
 const BoxItems = ({ item, index }: { item: any, index: number }) => {
 
     return (
-        <View style={{ marginRight: HP(11.56), flexGrow: 1, width: "30%",}}>
+        <View style={{ marginRight: HP(11.56), flexGrow: 1, width: "30%" }}>
             <TouchableOpacity
                 onPress={() => void (0)}
                 style={{}}

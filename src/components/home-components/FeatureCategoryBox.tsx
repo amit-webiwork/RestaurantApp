@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 
 import { FS, HP, VP } from '../../utils/Responsive';
-import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 
 const data = [
@@ -71,6 +70,7 @@ export const FeatureCategoryBox: React.FunctionComponent = () => {
             numColumns={4}
             data={data}
             renderItem={({ item, index }) => <CategoryItem item={item} index={index} />}
+            scrollEnabled={false}
         />
     );
 };

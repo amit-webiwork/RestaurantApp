@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
@@ -15,6 +15,7 @@ import { BannerOne } from '../../components/home-components/BannerOne.tsx';
 import { FeatureCategoryBox } from '../../components/home-components/FeatureCategoryBox.tsx';
 import { BannerTwo } from '../../components/home-components/BannerTwo.tsx';
 import { ItemVerticalBox } from '../../components/home-components/ItemVerticalBox.tsx';
+import Icon, { Icons } from '../../components/Icons';
 
 function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     return (
@@ -27,8 +28,15 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                     style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", }}
                 >
                     <View style={{ flex: 1 }}>
-                        <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            {/* Top banner area */}
                             <View style={{ flexDirection: "row", flex: 1, }}>
+                                <TouchableOpacity
+                                    onPress={() => void (0)}
+                                    style={{ position: "absolute", marginVertical: HP(20), right: HP(20) }}
+                                >
+                                    <Icon type={Icons.Feather} size={18} name={`bell`} color={COLORS.WHITE} />
+                                </TouchableOpacity>
                                 <View style={{ flexBasis: "35%", gap: HP(13) }}>
                                     <View style={{ left: HP(17), marginTop: VP(30) }}>
                                         <Text style={{ ...TextStyles.ARCHITECTS_DAUGHTER_REGULAR, color: COLORS.WHITE, fontSize: 30, }}>
@@ -56,10 +64,13 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 </View>
                             </View>
 
+                            {/* Under bottom area */}
                             <View style={[styles.itemContainer]}>
                                 <View style={{ flex: 1, marginVertical: VP(48), }}>
 
-                                    <SearchBox />
+                                    <View style={{ marginHorizontal: HP(20) }}>
+                                        <SearchBox />
+                                    </View>
 
                                     <View style={{ marginTop: VP(27), marginHorizontal: HP(17) }}>
                                         <CategoryBox />
@@ -100,7 +111,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                             colors={['#B20C79', '#E2E2E2']}
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 0 }}
-                                            style={{ ...styles.line, width: "30%" }}
+                                            style={styles.line}
                                         >
                                         </LinearGradient>
                                     </View>
@@ -120,7 +131,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                             colors={['#B20C79', '#E2E2E2']}
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 0 }}
-                                            style={{ ...styles.line, width: "5%", }}
+                                            style={styles.line}
                                         >
                                         </LinearGradient>
                                     </View>
@@ -133,8 +144,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                         <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: 40, color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
                                     </View>
                                 </View>
-                                <View style={{ height: VP(90), backgroundColor: "#FFF", position: "absolute", bottom: 0 }}>
-
+                                <View style={{ height: VP(30), backgroundColor: "#FDFDFD", bottom: VP(-30) }}>
                                 </View>
                             </View>
                         </ScrollView>
@@ -167,7 +177,9 @@ const styles = StyleSheet.create({
     },
     line: {
         height: 1,
-        width: "85%"
+        width: "100%",
+        flex: 1,
+        flexGrow: 1
     },
 });
 

@@ -1,17 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import {
     View,
     TouchableOpacity,
     StyleSheet,
     Text,
-    Image,
     FlatList
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useSelector } from 'react-redux';
 
-import { FS, HP, VP } from '../../utils/Responsive';
+import { HP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
-import { TextStyles } from '../../utils/TextStyles';
+import { categoryLoaded } from '../../redux/features/items';
+import CategoryTabsLoader from '../skeleton/CategoryTabsLoader';
 
 const colorsBG = [[COLORS.HOME_ICONS, COLORS.HOME_ICONS], [COLORS.BACKGROUND_DEFAULT, COLORS.BACKGROUND_DEFAULT]]
 
@@ -34,7 +35,6 @@ const data = [
 ]
 
 const CategoryItems = ({ item, index }: { item: any, index: number }) => {
-
     return (
         <View style={{ marginRight: HP(6) }}>
             <TouchableOpacity
@@ -55,17 +55,18 @@ const CategoryItems = ({ item, index }: { item: any, index: number }) => {
 }
 
 export const CategortyTabs: React.FunctionComponent = () => {
+    const CategoryLoaded = useSelector(categoryLoaded);
 
     return (
         <View>
-            <View>
+            {CategoryLoaded ? (
                 <FlatList
                     data={data}
                     renderItem={({ item, index, separators }) => <CategoryItems item={item} index={index} />}
                     contentContainerStyle={{}}
                     horizontal={true}
                 />
-            </View>
+            ) : (<CategoryTabsLoader />)}
         </View>
     );
 };

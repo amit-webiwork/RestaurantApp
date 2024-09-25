@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import {
     View,
     TouchableOpacity,
@@ -66,15 +66,15 @@ const BoxItems = ({ item, index }: { item: any, index: number }) => {
                     >
                         <Text style={styles.boxTitle}>{item.title}</Text>
                         <Text style={styles.boxText}>{item.firstText}</Text>
-
-                        <View style={styles.line}>
-                        </View>
-
-                        <View style={styles.offerBox}>
-                            <Icon type={Icons.MaterialCommunityIcons} size={21.39} name={`sale`} color={COLORS.HOME_ICONS} />
-                            <Text style={styles.offerText}> {item.secondText}</Text>
-                        </View>
                     </TouchableOpacity>
+
+                    <View style={styles.line}>
+                    </View>
+
+                    <View style={styles.offerBox}>
+                       <Icon type={Icons.MaterialCommunityIcons} size={21.39} name={`sale`} color={COLORS.HOME_ICONS} />
+                        <Text style={styles.offerText}> {item.secondText}</Text>
+                    </View>
                 </View>
             </View>
         </View>
@@ -83,13 +83,12 @@ const BoxItems = ({ item, index }: { item: any, index: number }) => {
 
 export const ItemVerticalBox: React.FunctionComponent = () => {
     return (
-        <View>
-            <FlatList
-                data={data}
-                renderItem={({ item, index }) => <BoxItems item={item} index={index} />}
-                contentContainerStyle={{}}
-            />
-        </View>
+        <FlatList
+            data={data}
+            renderItem={({ item, index }) => <BoxItems item={item} index={index} />}
+            contentContainerStyle={{}}
+            scrollEnabled={false}
+        />
     );
 };
 
@@ -157,9 +156,9 @@ const styles = StyleSheet.create({
     },
     line: {
         height: 1,
-        width: "100%",
         backgroundColor: "#B4B4B4",
-        marginVertical: HP(6.2)
+        marginVertical: HP(6.2),
+        flex: 1
     },
     offerBox: {
         marginTop: HP(4.01),

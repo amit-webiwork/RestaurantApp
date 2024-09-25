@@ -53,13 +53,13 @@ const styles = StyleSheet.create({
     bg: {
         width: "100%",
         height: VP(133),
-        resizeMode: "contain",
+        resizeMode: "contain"
     },
     bannerBox: {
-        paddingVertical: HP(10),
         paddingHorizontal: HP(75),
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        flex: 1
     },
     buttonStyle: {
         ...TextStyles.LEXEND_BOLD,

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -7,11 +7,15 @@ import {
     FlatList,
     ImageBackground
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Icon, { Icons } from '../Icons';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
+import { fetchItems, itemCount, itemList, itemLoaded } from '../../redux/features/items';
+import { AppDispatch } from '../../redux/store';
+import ItemBoxLoader from '../skeleton/ItemBoxLoader';
 
 const data = [
     {
@@ -73,14 +77,32 @@ const BoxItems = ({ item, index }: { item: any, index: number }) => {
 }
 
 export const ItemBox: React.FunctionComponent = () => {
+    const dispatch: AppDispatch = useDispatch();
+
+    const ItemLoaded = useSelector(itemLoaded);
+    const ItemList = useSelector(itemList);
+    const ItemCount = useSelector(itemCount);
+
+    useEffect(() => {
+        if (!ItemLoaded) {
+            dispatch(fetchItems());
+        }
+    }, [ItemLoaded])
+
+    // console.log(ItemList, ItemLoaded, ItemCount, '-----------ItemList')
+
     return (
         <View>
-            <FlatList
-                data={data}
-                renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} />}
-                contentContainerStyle={{}}
-                horizontal={true}
-            />
+            {ItemLoaded ? (
+                <FlatList
+                    data={data}
+                    renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} />}
+                    contentContainerStyle={{}}
+                    horizontal={true}
+                />
+            ) : (
+                <ItemBoxLoader />
+            )}
         </View>
     );
 };

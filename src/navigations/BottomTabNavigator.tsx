@@ -4,20 +4,20 @@ import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, useColor
 import * as Animatable from 'react-native-animatable';
 
 import CartScreen from '../screens/main/CartScreen';
-import WishlistScreen from '../screens/main/WishlistScreen';
+import OrderScreen from '../screens/main/OrderScreen';
 import HomeScreen from '../screens/main/HomeScreen';
-import NotificationScreen from '../screens/main/NotificationScreen';
 import AccountScreen from '../screens/main/AccountScreen';
 import { COLORS } from '../utils/Constants';
 import { FS, HP, VP } from '../utils/Responsive';
 import { TextStyles } from '../utils/TextStyles';
 import Icon, { Icons } from '../components/Icons';
+import CategoryScreen from '../screens/main/CategoryScreen';
 
 const TabArr = [
     { route: 'CartScreen', label: 'Cart', type: Icons.Ionicons, icon: 'bag-handle', component: CartScreen },
-    { route: 'WishlistScreen', label: 'Wishlist', type: Icons.AntDesign, icon: 'heart', component: WishlistScreen },
+    { route: 'OrderScreen', label: 'Orders', type: Icons.MaterialIcons, icon: 'receipt', component: OrderScreen },
     { route: 'HomeScreen', label: 'Home', type: Icons.FontAwesome5, icon: 'home', component: HomeScreen },
-    { route: 'NotificationScreen', label: 'Notification', type: Icons.FontAwesome5, icon: 'concierge-bell', component: NotificationScreen },
+    { route: 'CategoryScreen', label: 'Category', type: Icons.FontAwesome5, icon: 'concierge-bell', component: CategoryScreen },
     { route: 'AccountScreen', label: 'Account', type: Icons.FontAwesome5, icon: 'user-alt', component: AccountScreen },
 ];
 
@@ -56,11 +56,11 @@ const TabButton = (props) => {
         <TouchableOpacity
             onPress={onPress}
             activeOpacity={1}
-            style={styles.container}>
+            style={[styles.container]}>
             <Animatable.View
                 ref={viewRef}
                 duration={1000}
-                style={styles.container}>
+                style={[styles.container]}>
                 <View style={[styles.btn, { borderColor: bgColor, backgroundColor: bgColor }]}>
                     <Animatable.View
                         ref={circleRef}
@@ -84,7 +84,7 @@ export default function BottomTabNavigator() {
                 initialRouteName="HomeScreen"
                 screenOptions={{
                     headerShown: false,
-                    tabBarStyle: styles.tabBar,
+                    tabBarStyle: [styles.tabBar, styles.shadow],
                 }}
             >
                 {TabArr.map((item, index) => {
@@ -109,9 +109,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: VP(79),
     },
+    shadow: {
+        shadowColor: "#000",  // iOS shadow color
+        shadowOffset: {
+            width: 0,
+            height: -4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4.65,
+        elevation: 20,
+        zIndex: 5,
+    },
     tabBar: {
         height: VP(79),
         position: 'absolute',
+        backgroundColor: COLORS.BACKGROUND,
+        bottom: 0
     },
     btn: {
         width: FS(65),
@@ -131,10 +144,10 @@ const styles = StyleSheet.create({
         borderRadius: FS(32.5),
     },
     text: {
-        ...TextStyles.ARCHITECTS_DAUGHTER_REGULAR,
+        ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 12,
         textAlign: 'center',
-        color: COLORS.BLACK
+        color: "#636363"
     },
     menuImage: {
         width: (30),

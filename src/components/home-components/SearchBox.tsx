@@ -4,7 +4,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
-    Image
+    Image,
+    Keyboard
 } from 'react-native';
 
 import { FS, HP, VP } from '../../utils/Responsive';
@@ -25,8 +26,27 @@ export const SearchBox: React.FunctionComponent = () => {
                     placeholder="Search like bubble tea"
                     placeholderTextColor={`#A0A0A0`}
                 />
+
                 <Image source={require(`../../assets/icons/search.png`)} style={[styles.inputIconLeft]} />
-                <Image source={require(`../../assets/icons/mic.png`)} style={[styles.inputIconRight]} />
+
+                <TouchableOpacity
+                    onPress={() => {
+                        // Dismiss the keyboard and input focus when mic is pressed
+                        Keyboard.dismiss();
+                        console.log("Mic icon pressed");
+                        // Add your voice search or mic functionality here
+                    }}
+                    style={{
+                        position: 'absolute',
+                        right: HP(10),
+                        margin: 5,
+                        borderLeftWidth: 1,
+                        borderLeftColor: "#CCCCCC",
+                        zIndex: 2
+                    }}
+                >
+                    <Image source={require(`../../assets/icons/mic.png`)} style={[styles.inputIconRight]} />
+                </TouchableOpacity>
             </View>
             <TouchableOpacity
                 onPress={() => void (0)}
@@ -46,8 +66,6 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     inputContainer: {
-        // marginVertical: VP(48),
-        // marginHorizontal: HP(20),
         justifyContent: 'center',
         alignContent: "center",
         alignItems: "center",
@@ -78,16 +96,12 @@ const styles = StyleSheet.create({
         height: VP(16.67),
         position: 'absolute',
         left: HP(10),
-        margin: HP(5)
+        marginLeft: HP(5)
     },
     inputIconRight: {
         width: FS(22),
         height: VP(22),
-        position: 'absolute',
-        right: HP(10),
-        margin: HP(5),
-        borderLeftWidth: 1,
-        borderLeftColor: "#666",
+        marginLeft: HP(7.5)
     },
     iconRight: {
         width: FS(16.67),
@@ -96,10 +110,10 @@ const styles = StyleSheet.create({
     },
     iconContainer: {
         backgroundColor: COLORS.HOME_ICONS,
-        width: FS(36), // Set width and height to make it square
-        height: FS(36), // Matches width to make a square
-        borderRadius: HP(6), // Adjust this to make rounded corners
+        width: FS(36),
+        height: FS(36),
+        borderRadius: HP(6),
         alignItems: 'center',
-        justifyContent: 'center', // Centers the image inside the container
+        justifyContent: 'center'
     }
 });
