@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -63,8 +63,7 @@ const CategoryItem = ({ item, index }: { item: any, index: number }) => {
     )
 }
 
-export const FeatureCategoryBox: React.FunctionComponent = () => {
-
+const FeatureCategoryBox: React.FunctionComponent = () => {
     return (
         <FlatList
             numColumns={4}
@@ -94,3 +93,6 @@ const styles = StyleSheet.create({
         gap: 5
     }
 });
+
+const FeatureCategoryBoxSection = memo(FeatureCategoryBox);
+export default FeatureCategoryBoxSection;

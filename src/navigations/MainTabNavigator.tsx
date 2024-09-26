@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, Animated, Easing, StyleSheet } from 'react-native';
 
-import HomeScreen from '../screens/main/HomeScreen';
-import { FS } from '../utils/Responsive';
-import { TextStyles } from '../utils/TextStyles';
 import BottomTabNavigator from './BottomTabNavigator';
+import NotificationScreen from '../screens/main/NotificationScreen';
 
 export type MainTabParamList = {
     HomeScreen: undefined;
     BottomTab: undefined;
+    NotificationScreen: undefined;
 };
 
 const MainTabNavigator: React.FunctionComponent = () => {
@@ -18,10 +16,10 @@ const MainTabNavigator: React.FunctionComponent = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="BottomTab" component={BottomTabNavigator} />
-            {/* <Stack.Screen
-                name={`HomeScreen`}
-                component={HomeScreen}
-            /> */}
+            <Stack.Screen
+                name={`NotificationScreen`}
+                component={NotificationScreen}
+            />
         </Stack.Navigator>
     );
 };

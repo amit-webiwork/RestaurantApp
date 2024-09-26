@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -45,7 +45,7 @@ const data = [
 const BoxItems = ({ item, index }: { item: any, index: number }) => {
 
     return (
-        <View style={{ marginRight: HP(11.56), flexGrow: 1, width: "30%" }}>
+        <View style={{ marginRight: HP(11.56), flexGrow: 1, width: "30%", gap: 5 }}>
             <TouchableOpacity
                 onPress={() => void (0)}
                 style={{}}
@@ -62,7 +62,7 @@ const BoxItems = ({ item, index }: { item: any, index: number }) => {
     )
 }
 
-export const PromotionalBox: React.FunctionComponent = () => {
+const PromotionalBox: React.FunctionComponent = () => {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.subContainer}>
@@ -142,3 +142,6 @@ const styles = StyleSheet.create({
         textAlign: "left"
     }
 });
+
+const PromotionalBoxSection = memo(PromotionalBox);
+export default PromotionalBoxSection;

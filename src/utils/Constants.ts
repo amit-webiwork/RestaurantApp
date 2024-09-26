@@ -9,7 +9,9 @@ export const COLORS = {
     BUTTON: '#FF00E2',
     HOME_ICONS: "#D3219B",
     ICON_DEFAULT: "#CBCBCB",
-    BACKGROUND_DEFAULT: "#F8F8F8"
+    BACKGROUND_DEFAULT: "#F8F8F8",
+    SUCCESS: "#27AE60",
+    FAILED: "#D93A3A",
 };
 
 export const BACKEND_URL = "http://192.168.0.111:3000";

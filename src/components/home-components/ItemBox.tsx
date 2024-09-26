@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -17,29 +17,9 @@ import { fetchItems, itemCount, itemList, itemLoaded } from '../../redux/feature
 import { AppDispatch } from '../../redux/store';
 import ItemBoxLoader from '../skeleton/ItemBoxLoader';
 
-const data = [
-    {
-        "title": "Brown Sugar Milk Tea",
-        "firstText": "700mL.",
-        "secondText": "Dairy-free ice crusher.",
-        "price": 12.00,
-        "bg": require(`../../assets/images/items/1.png`)
-    },
-    {
-        "title": "Brown Sugar Milk Tea",
-        "firstText": "700mL.",
-        "secondText": "Dairy-free ice crusher.",
-        "price": 12.00,
-        "bg": require(`../../assets/images/items/2.png`)
-    },
-    {
-        "title": "Brown Sugar Milk Tea",
-        "firstText": "700mL.",
-        "secondText": "Dairy-free ice crusher.",
-        "price": 12.00,
-        "bg": require(`../../assets/images/items/3.png`)
-    }
-]
+interface Props {
+    data: any[];
+}
 
 const BoxItems = ({ item, index }: { item: any, index: number }) => {
 
@@ -76,7 +56,7 @@ const BoxItems = ({ item, index }: { item: any, index: number }) => {
     )
 }
 
-export const ItemBox: React.FunctionComponent = () => {
+const ItemBox: React.FunctionComponent<Props> = ({ data }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const ItemLoaded = useSelector(itemLoaded);
@@ -89,11 +69,11 @@ export const ItemBox: React.FunctionComponent = () => {
         }
     }, [ItemLoaded])
 
-    // console.log(ItemList, ItemLoaded, ItemCount, '-----------ItemList')
+    console.log(ItemList, ItemLoaded, ItemCount, '-----------ItemList')
 
     return (
         <View>
-            {ItemLoaded ? (
+            {!ItemLoaded ? (
                 <FlatList
                     data={data}
                     renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} />}
@@ -167,3 +147,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 });
+
+const ItemBoxSection = memo(ItemBox);
+export default ItemBoxSection;

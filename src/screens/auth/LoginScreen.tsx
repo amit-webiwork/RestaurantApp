@@ -42,8 +42,8 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
 
     const handleOnPress = async () => {
         try {
-            // navigation.navigate(`MainTabNavigator`)
-            // return;
+            navigation.navigate(`MainTabNavigator`)
+            return;
             setError(errorObj);
 
             const resource = { username, password }

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -21,7 +21,7 @@ import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import { Button } from '../Button';
 
-export const BannerOne: React.FunctionComponent = () => {
+const BannerOne: React.FunctionComponent = () => {
     return (
         <View style={{}}>
             <ImageBackground source={require(`../../assets/images/banner.png`)} style={styles.bg} imageStyle={{ borderRadius: FS(17) }}>
@@ -100,3 +100,6 @@ const styles = StyleSheet.create({
         textAlign: "center"
     }
 });
+
+const BannerOneSection = memo(BannerOne);
+export default BannerOneSection;

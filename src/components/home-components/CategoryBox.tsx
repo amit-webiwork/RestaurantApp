@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -19,31 +19,16 @@ import { categoryList, categoryLoaded, fetchCategories } from '../../redux/featu
 import { AppDispatch } from '../../redux/store';
 import CategoryBoxLoader from '../skeleton/CategoryBoxLoader';
 
-const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF4C399", "#CFF4C399"], ["#FDD6D699", "#FDD6D699"]]
+interface Props {
+    data: any[]
+}
 
-const data = [
-    {
-        "title": "juice",
-        "icon": require(`../../assets/icons/categories/drink.png`)
-    },
-    {
-        "title": "dessert",
-        "icon": require(`../../assets/icons/categories/mousse.png`)
-    },
-    {
-        "title": "bubble tea",
-        "icon": require(`../../assets/icons/categories/bubble-tea.png`)
-    },
-    {
-        "title": "acai",
-        "icon": require(`../../assets/icons/categories/acai.png`)
-    }
-]
+const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF4C399", "#CFF4C399"], ["#FDD6D699", "#FDD6D699"]]
 
 const CategoryItem = ({ item, index }: { item: any, index: number }) => {
     const backgroundColor = colorsBG[index % colorsBG.length];
     return (
-        <View style={{ marginRight: HP(15), flexGrow: 1, width: "20%", }}>
+        <View style={{ marginRight: HP(15), flexGrow: 1, gap: 5 }}>
             <TouchableOpacity
                 onPress={() => void (0)}
                 style={{}}
@@ -64,7 +49,7 @@ const CategoryItem = ({ item, index }: { item: any, index: number }) => {
     )
 }
 
-export const CategoryBox: React.FunctionComponent = () => {
+const CategoryBox: React.FunctionComponent<Props> = ({ data }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const flatListRef = useRef<any>();
@@ -100,7 +85,7 @@ export const CategoryBox: React.FunctionComponent = () => {
                 <Text style={styles.heading}>
                     categories
                 </Text>
-                {CategoryLoaded && (
+                {!CategoryLoaded && (
                     <View style={styles.iconMainContainer}>
                         <TouchableOpacity
                             onPress={scrollLeft}
@@ -119,7 +104,7 @@ export const CategoryBox: React.FunctionComponent = () => {
             </View>
 
             <View>
-                {CategoryLoaded ? (
+                {!CategoryLoaded ? (
                     <FlatList
                         data={data}
                         renderItem={({ item, index, separators }) => <CategoryItem item={item} index={index} />}
@@ -180,3 +165,6 @@ const styles = StyleSheet.create({
         resizeMode: "contain"
     }
 });
+
+const CategoryBoxSection = memo(CategoryBox);
+export default CategoryBoxSection;

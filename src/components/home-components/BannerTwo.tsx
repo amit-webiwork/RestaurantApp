@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -21,7 +21,7 @@ import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import { Button } from '../Button';
 
-export const BannerTwo: React.FunctionComponent = () => {
+const BannerTwo: React.FunctionComponent = () => {
     return (
         <TouchableOpacity
             onPress={() => void (0)}
@@ -40,3 +40,6 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
     },
 });
+
+const BannerTwoSection = memo(BannerTwo);
+export default BannerTwoSection;

@@ -21,7 +21,7 @@ const getCategoryList = async (params: any = {}) => {
         return res.data;
     } catch (error: any) {
         const { response } = error;
-        const message = response?.data?.message || error.message || "Unknown error";
+        const message = response?.data?.message || error?.message || "Unknown error";
         throw new Error(message);
     }
 };

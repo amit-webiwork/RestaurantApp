@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -16,53 +16,41 @@ import CategoryTabsLoader from '../skeleton/CategoryTabsLoader';
 
 const colorsBG = [[COLORS.HOME_ICONS, COLORS.HOME_ICONS], [COLORS.BACKGROUND_DEFAULT, COLORS.BACKGROUND_DEFAULT]]
 
-const data = [
-    {
-        "title": "bubble tea",
-    },
-    {
-        "title": "fruit tea",
-    },
-    {
-        "title": "Acai drink",
-    },
-    {
-        "title": "waffle",
-    },
-    {
-        "title": "watermelon juice",
-    }
-]
+interface Props {
+    data: any[];
+    selectedCategory: number;
+    setSelectedCategory: any;
+}
 
-const CategoryItems = ({ item, index }: { item: any, index: number }) => {
+const CategoryItems = ({ item, index, selectedCategory, setSelectedCategory }: { item: any, index: number, selectedCategory: number, setSelectedCategory: any }) => {
     return (
         <View style={{ marginRight: HP(6) }}>
             <TouchableOpacity
-                onPress={() => void (0)}
+                onPress={() => setSelectedCategory(item.id)}
                 style={{}}
             >
                 <LinearGradient
-                    colors={index === 0 ? colorsBG[0] : colorsBG[1]}
+                    colors={selectedCategory === item.id ? colorsBG[0] : colorsBG[1]}
                     start={{ x: 1, y: 0 }}
                     end={{ x: 1, y: 0 }}
-                    style={styles.categoryBox}
+                    style={[styles.categoryBox, { borderColor: selectedCategory === item.id ? COLORS.HOME_ICONS : "#D0D0D0" }]}
                 >
-                    <Text style={{ ...styles.categoryText, color: index === 0 ? COLORS.WHITE : COLORS.BLACK, fontFamily: index === 0 ? "RalewaySemiBold" : "RalewayRegular" }}>{item.title}</Text>
+                    <Text style={{ ...styles.categoryText, color: selectedCategory === item.id ? COLORS.WHITE : COLORS.BLACK, fontFamily: selectedCategory === item.id ? "RalewaySemiBold" : "RalewayRegular" }}>{item.title}</Text>
                 </LinearGradient>
             </TouchableOpacity>
         </View>
     )
 }
 
-export const CategortyTabs: React.FunctionComponent = () => {
+const CategortyTabs: React.FunctionComponent<Props> = ({ data, selectedCategory, setSelectedCategory }) => {
     const CategoryLoaded = useSelector(categoryLoaded);
 
     return (
         <View>
-            {CategoryLoaded ? (
+            {!CategoryLoaded ? (
                 <FlatList
                     data={data}
-                    renderItem={({ item, index, separators }) => <CategoryItems item={item} index={index} />}
+                    renderItem={({ item, index, separators }) => <CategoryItems item={item} index={index} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />}
                     contentContainerStyle={{}}
                     horizontal={true}
                 />
@@ -78,11 +66,19 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     categoryBox: {
-        borderRadius: HP(20),
         justifyContent: "center",
         paddingTop: 9,
         paddingBottom: 9,
         paddingLeft: 18,
         paddingRight: 18,
+        borderWidth: 1,
+        borderRadius: HP(20),
+        borderTopEndRadius: HP(20),
+        borderTopStartRadius: HP(20),
+        borderBottomStartRadius: HP(20),
+        borderBottomEndRadius: HP(20),
     },
 });
+
+const CategortyTabsSection = memo(CategortyTabs);
+export default CategortyTabsSection;

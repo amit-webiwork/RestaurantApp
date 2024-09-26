@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -6,18 +6,104 @@ import { FS, HP, VP } from '../../utils/Responsive.ts';
 import { COLORS } from '../../utils/Constants.ts';
 import { TextStyles } from '../../utils/TextStyles.ts';
 import { Button } from '../../components/Button.tsx';
-import { SearchBox } from '../../components/home-components/SearchBox.tsx';
-import { CategoryBox } from '../../components/home-components/CategoryBox.tsx';
-import { PromotionalBox } from '../../components/home-components/PromotionalBox.tsx';
-import { CategortyTabs } from '../../components/home-components/CategortyTabs.tsx';
-import { ItemBox } from '../../components/home-components/ItemBox.tsx';
-import { BannerOne } from '../../components/home-components/BannerOne.tsx';
-import { FeatureCategoryBox } from '../../components/home-components/FeatureCategoryBox.tsx';
-import { BannerTwo } from '../../components/home-components/BannerTwo.tsx';
-import { ItemVerticalBox } from '../../components/home-components/ItemVerticalBox.tsx';
+import SearchBoxSection from '../../components/home-components/SearchBox.tsx';
+import CategoryBoxSection from '../../components/home-components/CategoryBox.tsx';
+import PromotionalBoxSection from '../../components/home-components/PromotionalBox.tsx';
+import CategortyTabsSection from '../../components/home-components/CategortyTabs.tsx';
+import BannerOneSection from '../../components/home-components/BannerOne.tsx';
+import FeatureCategoryBoxSection from '../../components/home-components/FeatureCategoryBox.tsx';
+import BannerTwoSection from '../../components/home-components/BannerTwo.tsx';
+import ItemVerticalBoxSection from '../../components/home-components/ItemVerticalBox.tsx';
 import Icon, { Icons } from '../../components/Icons';
+import ItemBoxSection from '../../components/home-components/ItemBox.tsx';
+
+const categoryData = [
+    {
+        "title": "juice",
+        "icon": require(`../../assets/icons/categories/drink.png`)
+    },
+    {
+        "title": "dessert",
+        "icon": require(`../../assets/icons/categories/mousse.png`)
+    },
+    {
+        "title": "bubble tea",
+        "icon": require(`../../assets/icons/categories/bubble-tea.png`)
+    },
+    {
+        "title": "acai",
+        "icon": require(`../../assets/icons/categories/acai.png`)
+    }
+]
+
+const itemData = [
+    {
+        "title": "Brown Sugar Milk Tea",
+        "firstText": "700mL.",
+        "secondText": "Dairy-free ice crusher.",
+        "price": 12.00,
+        "bg": require(`../../assets/images/items/1.png`),
+        "category": 1
+    },
+    {
+        "title": "Brown Sugar Milk Tea",
+        "firstText": "700mL.",
+        "secondText": "Dairy-free ice crusher.",
+        "price": 12.00,
+        "bg": require(`../../assets/images/items/2.png`),
+        "category": 2
+    },
+    {
+        "title": "Brown Sugar Milk Tea",
+        "firstText": "700mL.",
+        "secondText": "Dairy-free ice crusher.",
+        "price": 12.00,
+        "bg": require(`../../assets/images/items/3.png`),
+        "category": 3
+    }
+]
+
+const categoryTabData = [
+    {
+        "id": 1,
+        "title": "bubble tea",
+    },
+    {
+        "id": 2,
+        "title": "fruit tea",
+    },
+    {
+        "id": 3,
+        "title": "Acai drink",
+    },
+    {
+        "id": 4,
+        "title": "waffle",
+    },
+    {
+        "id": 5,
+        "title": "watermelon juice",
+    }
+]
 
 function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
+    const [searchText, setSearchText] = useState<any>("");
+
+    const [categoryList, setCategoryList] = useState<any[]>(categoryData);
+
+    const [selectedCategory, setSelectedCategory] = useState<number>(1);
+    const [itemList, setItemList] = useState<any[]>(itemData);
+    const [itemListFiltered, setItemListFiltered] = useState<any[]>(itemData);
+
+    const selectCategoryHandler = useCallback((id: number) => {
+        setSelectedCategory(id);
+
+        // find in items
+        const filtered = itemList.filter(item => item['category'] === id);
+
+        setItemListFiltered(filtered);
+    }, [itemList]);
+
     return (
         <>
             <View style={{ flex: 1 }}>
@@ -32,7 +118,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             {/* Top banner area */}
                             <View style={{ flexDirection: "row", flex: 1, }}>
                                 <TouchableOpacity
-                                    onPress={() => void (0)}
+                                    onPress={() => navigation.navigate(`NotificationScreen`)}
                                     style={{ position: "absolute", marginVertical: HP(20), right: HP(20) }}
                                 >
                                     <Icon type={Icons.Feather} size={18} name={`bell`} color={COLORS.WHITE} />
@@ -65,19 +151,19 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             </View>
 
                             {/* Under bottom area */}
-                            <View style={[styles.itemContainer]}>
+                            <View style={styles.itemContainer}>
                                 <View style={{ flex: 1, marginVertical: VP(48), }}>
 
                                     <View style={{ marginHorizontal: HP(20) }}>
-                                        <SearchBox />
+                                        <SearchBoxSection text={searchText} setText={setSearchText} />
                                     </View>
 
                                     <View style={{ marginTop: VP(27), marginHorizontal: HP(17) }}>
-                                        <CategoryBox />
+                                        <CategoryBoxSection data={categoryList} />
                                     </View>
 
                                     <View style={{ marginTop: VP(23), marginHorizontal: HP(21) }}>
-                                        <PromotionalBox />
+                                        <PromotionalBoxSection />
                                     </View>
 
                                     <View style={{ flexDirection: "row", marginTop: VP(37), gap: 10, alignItems: "center", marginHorizontal: HP(21) }}>
@@ -93,15 +179,15 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     </View>
 
                                     <View style={{ marginTop: VP(24.66), marginHorizontal: HP(21) }}>
-                                        <CategortyTabs />
+                                        <CategortyTabsSection data={categoryTabData} selectedCategory={selectedCategory} setSelectedCategory={selectCategoryHandler} />
                                     </View>
 
                                     <View style={{ marginTop: VP(20), marginHorizontal: HP(21) }}>
-                                        <ItemBox />
+                                        <ItemBoxSection data={itemListFiltered} />
                                     </View>
 
                                     <View style={{ marginTop: VP(31.66), marginHorizontal: HP(16) }}>
-                                        <BannerOne />
+                                        <BannerOneSection />
                                     </View>
 
                                     <View style={{ flexDirection: "row", marginTop: VP(32.87), gap: 10, alignItems: "center", marginHorizontal: HP(21) }}>
@@ -117,11 +203,11 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     </View>
 
                                     <View style={{ marginTop: VP(20), marginHorizontal: HP(16) }}>
-                                        <FeatureCategoryBox />
+                                        <FeatureCategoryBoxSection />
                                     </View>
 
                                     <View style={{ marginTop: VP(20) }}>
-                                        <BannerTwo />
+                                        <BannerTwoSection />
                                     </View>
 
                                     <View style={{ flexDirection: "row", marginTop: VP(32.87), gap: 10, alignItems: "center", marginHorizontal: HP(20) }}>
@@ -137,7 +223,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     </View>
 
                                     <View style={{ marginTop: VP(22), marginHorizontal: HP(11) }}>
-                                        <ItemVerticalBox />
+                                        <ItemVerticalBoxSection />
                                     </View>
 
                                     <View style={{ marginTop: VP(53) }}>
@@ -157,11 +243,10 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
 const styles = StyleSheet.create({
     itemContainer: {
-        flex: 2,
-        borderTopLeftRadius: 60,
-        borderTopRightRadius: 0,
         backgroundColor: "#FDFDFD",
-        top: VP(-100)
+        flex: 2,
+        // borderTopLeftRadius: 60,
+        top: VP(-100),
     },
     icon: {
         // width: FS(260.97),

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -81,7 +81,7 @@ const BoxItems = ({ item, index }: { item: any, index: number }) => {
     )
 }
 
-export const ItemVerticalBox: React.FunctionComponent = () => {
+const ItemVerticalBox: React.FunctionComponent = () => {
     return (
         <FlatList
             data={data}
@@ -173,3 +173,6 @@ const styles = StyleSheet.create({
         top: VP(-2)
     }
 });
+
+const ItemVerticalBoxSection = memo(ItemVerticalBox);
+export default ItemVerticalBoxSection;

@@ -18,6 +18,7 @@ import Left from '../../assets/svgs/left.svg';
 import { resetPassword, validateResource } from '../../utils/ValidateResource';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
+import Icon, { Icons } from '../../components/Icons';
 
 type NavigationProp = NativeStackScreenProps<AuthStackParamList>;
 
@@ -98,7 +99,7 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                                     onPress={() => navigation.goBack()}
                                     style={{ alignSelf: "center", top: VP(2) }}
                                 >
-                                    <Left width={FS(16)} height={VP(16)} />
+                                    <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", }}>Create New Password</Text>
                             </View>
@@ -160,7 +161,7 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
 
 const styles = StyleSheet.create({
     main: {
-        marginHorizontal: HP(40),
+        marginHorizontal: HP(30),
         marginVertical: HP(20),
         flex: 1
     },

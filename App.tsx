@@ -14,7 +14,7 @@ import { LogBox } from 'react-native';
 axios.interceptors.request.use(
   async config => {
     const userDetails = await loadStorage("userDetails");
-    
+
     const token = userDetails?.token?.accessToken || "";
 
     // console.log(userDetails, token, '----userDetails')
@@ -34,41 +34,58 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
-    return response
+    return response;
   },
   async function (error) {
     const originalRequest = error.config;
 
-    if (error.code === 'ERR_NETWORK') {
+    // console.log(error?.response, '-----error.response.status')
+
+    if (error?.code === 'ERR_NETWORK') {
       showFadeAlert('Network error, Try again later!')
     }
 
-    if (error.code === 'ECONNABORTED') {
+    if (error?.code === 'ECONNABORTED') {
       showFadeAlert('Request timed out')
     }
 
-    if (error.response.status === 401 || error.response.status === 403) {
+    if (error?.response?.status === 401 || error?.response?.status === 403) {
       console.log('------------------unauthorized');
       originalRequest._retry = true;
 
       const userDetails = await loadStorage("userDetails");
 
-      const dataPayload = {
-        "email": userDetails?.user?.email ?? "",
-        "password": userDetails?.user?.password ?? ""
-      };
+      if (userDetails && userDetails.hasOwnProperty("token") && userDetails.hasOwnProperty("user")) {
+        if (userDetails?.user?.email && userDetails?.user?.password) {
+          try {
+            const dataPayload = {
+              "email": userDetails?.user?.email ?? "",
+              "password": userDetails?.user?.password ?? ""
+            };
 
-      const response: any = await submitLogin(dataPayload);
+            const response: any = await submitLogin(dataPayload);
 
-      const responseData = { ...response.data };
+            const responseData = { ...response.data };
 
-      if (responseData.user && responseData.token) {
-        responseData['user']['password'] = dataPayload.password;
+            if (responseData.user && responseData.token) {
+              responseData['user']['password'] = dataPayload.password;
 
-        saveStorage(responseData, "userDetails");
+              saveStorage(responseData, "userDetails");
 
-        axios.defaults.headers.common['Authorization'] =
-          'Bearer ' + (responseData?.token?.accessToken || "")
+              axios.defaults.headers.common['Authorization'] =
+                'Bearer ' + (responseData?.token?.accessToken || "")
+            }
+          } catch (err) {
+            console.log(err, '------refresh token API err')
+            return Promise.reject(error)
+          }
+        } else {
+          console.log('------userDetails?.user?.email && userDetails?.user?.password')
+          return Promise.reject(error)
+        }
+      } else {
+        console.log('------userDetails')
+        return Promise.reject(error)
       }
 
       return axios(originalRequest)

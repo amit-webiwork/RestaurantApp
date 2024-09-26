@@ -18,6 +18,7 @@ import OTPInput from '../../components/OTPInput';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 import Success from '../../assets/svgs/success.svg';
+import Icon, { Icons } from '../../components/Icons';
 
 type NavigationProp = NativeStackScreenProps<AuthStackParamList>;
 
@@ -119,7 +120,7 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                             onPress={() => navigation.goBack()}
                             style={{ alignSelf: "center" }}
                         >
-                            <Left width={FS(16)} height={VP(16)} />
+                            <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
                         </TouchableOpacity>
                         <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textTransform: "capitalize" }}>verify your email</Text>
                     </View>
@@ -176,7 +177,7 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
 
 const styles = StyleSheet.create({
     main: {
-        marginHorizontal: HP(40),
+        marginHorizontal: HP(30),
         marginVertical: VP(20),
         flex: 1,
         flexDirection: 'column'

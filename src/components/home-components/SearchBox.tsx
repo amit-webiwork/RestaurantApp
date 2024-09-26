@@ -1,28 +1,36 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import {
     View,
     TouchableOpacity,
     StyleSheet,
     TextInput,
     Image,
-    Keyboard
+    Keyboard,
+    StyleProp,
+    ViewStyle
 } from 'react-native';
 
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 
-export const SearchBox: React.FunctionComponent = () => {
+interface Props {
+    inputContainerStyle?: StyleProp<ViewStyle>;
+    text: any;
+    setText: any;
+}
+
+const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, text, setText }) => {
     const [searchText, setSearchText] = useState<any>("");
     const [error, setError] = useState({ status: false, text: "" });
 
     return (
         <View style={styles.mainContainer}>
-            <View style={styles.inputContainer}>
+            <View style={[styles.inputContainer, inputContainerStyle]}>
                 <TextInput
                     style={[styles.input, { borderBottomColor: error.status ? COLORS.RED : "#A0A0A0" }]}
-                    value={searchText}
-                    onChangeText={setSearchText}
+                    value={text}
+                    onChangeText={setText}
                     placeholder="Search like bubble tea"
                     placeholderTextColor={`#A0A0A0`}
                 />
@@ -89,7 +97,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.2,
         shadowRadius: 3,
-        elevation: 20,
+        elevation: 20
     },
     inputIconLeft: {
         width: FS(16.67),
@@ -117,3 +125,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     }
 });
+
+const SearchBoxSection = memo(SearchBox);
+export default SearchBoxSection;

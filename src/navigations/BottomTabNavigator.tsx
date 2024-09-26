@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect, useRef } from 'react'
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, useColorScheme } from 'react-native'
+import { SafeAreaView, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 
 import CartScreen from '../screens/main/CartScreen';
