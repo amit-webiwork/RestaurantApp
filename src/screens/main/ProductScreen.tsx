@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView, Dimensions, TextInput } from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView, Dimensions, TextInput, Animated } from 'react-native';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
 import { COLORS } from '../../utils/Constants.ts';
@@ -18,6 +18,8 @@ const { width, height } = Dimensions.get('window');
 
 function ProductScreen({ route, navigation }: { navigation: any, route: any }): React.JSX.Element {
     const { id } = route.params;
+
+    const scrollY = useRef(new Animated.Value(0)).current;
 
     const [instructionText, setInstructionText] = useState<string>("");
     const [errorInstruction, setErrorInstruction] = useState({ status: false, text: "" });
@@ -44,14 +46,27 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
     const incrementCart = () => setCartQuantity(prevQty => prevQty + 1);
     const decrementCart = () => setCartQuantity(prevQty => (prevQty > 1 ? prevQty - 1 : 1));
 
+    const imageHeight = scrollY.interpolate({
+        inputRange: [0, 300], // Adjust the second value to control how quickly the image scales
+        outputRange: [height * 0.5, height * 0.1], // Adjust the values to control the min and max image height
+        extrapolate: 'clamp',
+    });
+
     return (
         <>
             <OuterLayout containerStyle={globalStyle.containerStyle}>
                 <InnerBlock>
                     <View style={{ flex: 1, backgroundColor: "#FDF6F5" }}>
-                        <ScrollView showsVerticalScrollIndicator={false}>
+                        <Animated.ScrollView
+                            showsVerticalScrollIndicator={false}
+                            scrollEventThrottle={16}
+                            onScroll={Animated.event(
+                                [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                                { useNativeDriver: false }
+                            )}
+                        >
                             {/* Top banner area */}
-                            <View style={styles.imageContainer}>
+                            <Animated.View style={[styles.imageContainer, { height: imageHeight }]}>
                                 <Image
                                     // source={{ uri: 'https://example.com/mango-boba-tea.png' }}
                                     source={require('../../assets/images/fruit.png')}
@@ -67,7 +82,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                 <View style={{ position: 'absolute', top: VP(31), right: HP(20), backgroundColor: "#0000006E", padding: HP(10), borderRadius: FS(32) }}>
                                     <Text style={styles.title}>Mango Boba Tea</Text>
                                 </View>
-                            </View>
+                            </Animated.View>
 
                             {/* Under bottom area */}
                             <View style={styles.main}>
@@ -180,7 +195,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                 </View>
 
                             </View>
-                        </ScrollView>
+                        </Animated.ScrollView>
                     </View>
                 </InnerBlock>
             </OuterLayout>

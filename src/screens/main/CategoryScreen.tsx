@@ -90,7 +90,7 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
                         </View>
 
                         <View style={{ marginTop: HP(24) }}>
-                            <SearchBoxSection text={searchText} setText={searchTextHandler} inputContainerStyle={{ flexBasis: "90%" }} />
+                            <SearchBoxSection text={searchText} setText={searchTextHandler} inputContainerStyle={{ flexBasis: "90%" }} navigation={navigation} />
                         </View>
 
                         <View>

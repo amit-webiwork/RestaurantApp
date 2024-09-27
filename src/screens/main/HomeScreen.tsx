@@ -88,7 +88,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 <View style={{ flex: 1, marginVertical: VP(48), }}>
 
                                     <View style={{ marginHorizontal: HP(20) }}>
-                                        <SearchBoxSection text={searchText} setText={setSearchText} />
+                                        <SearchBoxSection text={searchText} setText={setSearchText} navigation={navigation} />
                                     </View>
 
                                     <View style={{ marginTop: VP(27), marginHorizontal: HP(17) }}>

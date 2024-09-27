@@ -4,12 +4,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigator from './BottomTabNavigator';
 import NotificationScreen from '../screens/main/NotificationScreen';
 import ProductScreen from '../screens/main/ProductScreen';
+import FilterScreen from '../screens/main/FilterScreen';
 
 export type MainTabParamList = {
     HomeScreen: undefined;
     BottomTab: undefined;
     NotificationScreen: undefined;
     ProductScreen: undefined;
+    FilterScreen: undefined;
 };
 
 const MainTabNavigator: React.FunctionComponent = () => {
@@ -26,6 +28,13 @@ const MainTabNavigator: React.FunctionComponent = () => {
                 name={`ProductScreen`}
                 component={ProductScreen}
             />
+
+            <Stack.Group screenOptions={{
+                presentation: 'transparentModal',
+                animation: 'slide_from_bottom',   // Slide from bottom animation
+            }}>
+                <Stack.Screen name="FilterScreen" component={FilterScreen} />
+            </Stack.Group>
         </Stack.Navigator>
     );
 };

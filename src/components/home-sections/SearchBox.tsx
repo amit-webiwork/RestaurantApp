@@ -18,9 +18,10 @@ interface Props {
     inputContainerStyle?: StyleProp<ViewStyle>;
     text: any;
     setText: any;
+    navigation: any;
 }
 
-const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, text, setText }) => {
+const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, text, setText, navigation }) => {
     const [searchText, setSearchText] = useState<any>("");
     const [error, setError] = useState({ status: false, text: "" });
 
@@ -57,7 +58,7 @@ const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, text, 
                 </TouchableOpacity>
             </View>
             <TouchableOpacity
-                onPress={() => void (0)}
+                onPress={() => navigation.navigate(`FilterScreen`)}
                 style={styles.iconContainer}
             >
                 <Image source={require(`../../assets/icons/filter.png`)} style={[styles.iconRight]} />
