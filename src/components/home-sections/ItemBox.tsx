@@ -19,15 +19,18 @@ import ItemBoxLoader from '../skeleton/ItemBoxLoader';
 
 interface Props {
     data: any[];
+    navigation: any;
 }
 
-const BoxItems = ({ item, index }: { item: any, index: number }) => {
+const BoxItems = ({ item, index, navigation }: { item: any, index: number, navigation: any }) => {
 
     return (
         <View style={styles.boxContainer}>
             <View style={styles.boxSubContainer}>
                 <TouchableOpacity
-                    onPress={() => void (0)}
+                    onPress={() => navigation.navigate(`ProductScreen`, {
+                        id: 1
+                    })}
                 >
                     <ImageBackground source={item.bg} style={styles.bg} imageStyle={{ borderRadius: FS(16.42) }}>
                     </ImageBackground>
@@ -56,7 +59,7 @@ const BoxItems = ({ item, index }: { item: any, index: number }) => {
     )
 }
 
-const ItemBox: React.FunctionComponent<Props> = ({ data }) => {
+const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const ItemLoaded = useSelector(itemLoaded);
@@ -76,7 +79,7 @@ const ItemBox: React.FunctionComponent<Props> = ({ data }) => {
             {!ItemLoaded ? (
                 <FlatList
                     data={data}
-                    renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} />}
+                    renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} navigation={navigation} />}
                     contentContainerStyle={{}}
                     horizontal={true}
                 />

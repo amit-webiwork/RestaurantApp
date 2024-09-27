@@ -8,7 +8,7 @@ import { FS, HP, VP } from '../../utils/Responsive';
 import Icon, { Icons } from '../../components/Icons';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import SearchBoxSection from '../../components/home-components/SearchBox';
+import SearchBoxSection from '../../components/home-sections/SearchBox';
 import LinearGradient from 'react-native-linear-gradient';
 
 const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF4C399", "#CFF4C399"], ["#FDD6D699", "#FDD6D699"]];
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     boxStyle: {
         // aspectRatio: .6,
         flexGrow: 0,
-        width: "33%",
+        width: "30%",
         gap: 5.38
     },
     categoryIcon: {

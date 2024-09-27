@@ -84,6 +84,7 @@ const PromotionalBox: React.FunctionComponent = () => {
                     renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} />}
                     contentContainerStyle={styles.listContainer}
                     horizontal={true}
+                    showsVerticalScrollIndicator={false}
                 />
             </View>
         </View>

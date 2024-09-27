@@ -9,7 +9,7 @@ import { FS, HP, VP } from '../../utils/Responsive';
 import Icon, { Icons } from '../../components/Icons';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import SearchBoxSection from '../../components/home-components/SearchBox';
+import SearchBoxSection from '../../components/home-sections/SearchBox';
 import LinearGradient from 'react-native-linear-gradient';
 import { getNotificationIcon, getNotificationTitle, groupNotificationData } from '../../utils/helper/NotificationHelper';
 
@@ -109,9 +109,9 @@ function NotificationScreen({ navigation }: { navigation: any }): React.JSX.Elem
                                                 {d[1].map((item: any, j: number) => (
                                                     <View style={styles.itemRow} key={`notification-item-${i}-${j}`}>
                                                         <View style={styles.iconBtn}>
-                                                            <Icon style={{}} type={getNotificationIcon(item?.type || 'message')['iconType']} size={24.41} name={getNotificationIcon(item?.type || 'message')['icon']} color={getNotificationIcon(item?.type || 'message')['color']} />
+                                                            <Icon type={getNotificationIcon(item?.type || 'message')['iconType']} size={FS(24.41)} name={getNotificationIcon(item?.type || 'message')['icon']} color={getNotificationIcon(item?.type || 'message')['color']} />
                                                         </View>
-                                                        <View style={{ flexBasis: "80%" }}>
+                                                        <View style={{ flexBasis: "80%", flexShrink: 1 }}>
                                                             <Text style={styles.itemTitle}>{item.title}</Text>
 
                                                             <Text style={styles.itemText}>{item.text}</Text>
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     main: {
         marginHorizontal: HP(20),
         marginVertical: VP(28),
-        flex: 1
+        // flex: 1
     },
     top: {
         flexDirection: "row",
@@ -161,11 +161,11 @@ const styles = StyleSheet.create({
     itemRow: {
         flexDirection: "row",
         gap: 19.53,
-
+        alignItems: "center"
     },
     itemTitle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: 16.53,
+        fontSize: 19.53,
         lineHeight: 29.3,
         textTransform: "capitalize"
     },
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     },
     itemText: {
         ...TextStyles.RALEWAY_REGULAR,
-        fontSize: 14.09,
+        fontSize: 17.09,
         lineHeight: 24.4,
         marginTop: HP(4.88)
     },

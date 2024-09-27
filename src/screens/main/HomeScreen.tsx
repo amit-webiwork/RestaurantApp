@@ -6,85 +6,18 @@ import { FS, HP, VP } from '../../utils/Responsive.ts';
 import { COLORS } from '../../utils/Constants.ts';
 import { TextStyles } from '../../utils/TextStyles.ts';
 import { Button } from '../../components/Button.tsx';
-import SearchBoxSection from '../../components/home-components/SearchBox.tsx';
-import CategoryBoxSection from '../../components/home-components/CategoryBox.tsx';
-import PromotionalBoxSection from '../../components/home-components/PromotionalBox.tsx';
-import CategortyTabsSection from '../../components/home-components/CategortyTabs.tsx';
-import BannerOneSection from '../../components/home-components/BannerOne.tsx';
-import FeatureCategoryBoxSection from '../../components/home-components/FeatureCategoryBox.tsx';
-import BannerTwoSection from '../../components/home-components/BannerTwo.tsx';
-import ItemVerticalBoxSection from '../../components/home-components/ItemVerticalBox.tsx';
+import SearchBoxSection from '../../components/home-sections/SearchBox.tsx';
+import CategoryBoxSection from '../../components/home-sections/CategoryBox.tsx';
+import PromotionalBoxSection from '../../components/home-sections/PromotionalBox.tsx';
+import CategortyTabsSection from '../../components/home-sections/CategortyTabs.tsx';
+import BannerOneSection from '../../components/home-sections/BannerOne.tsx';
+import FeatureCategoryBoxSection from '../../components/home-sections/FeatureCategoryBox.tsx';
+import BannerTwoSection from '../../components/home-sections/BannerTwo.tsx';
+import ItemVerticalBoxSection from '../../components/home-sections/ItemVerticalBox.tsx';
 import Icon, { Icons } from '../../components/Icons';
-import ItemBoxSection from '../../components/home-components/ItemBox.tsx';
-
-const categoryData = [
-    {
-        "title": "juice",
-        "icon": require(`../../assets/icons/categories/drink.png`)
-    },
-    {
-        "title": "dessert",
-        "icon": require(`../../assets/icons/categories/mousse.png`)
-    },
-    {
-        "title": "bubble tea",
-        "icon": require(`../../assets/icons/categories/bubble-tea.png`)
-    },
-    {
-        "title": "acai",
-        "icon": require(`../../assets/icons/categories/acai.png`)
-    }
-]
-
-const itemData = [
-    {
-        "title": "Brown Sugar Milk Tea",
-        "firstText": "700mL.",
-        "secondText": "Dairy-free ice crusher.",
-        "price": 12.00,
-        "bg": require(`../../assets/images/items/1.png`),
-        "category": 1
-    },
-    {
-        "title": "Brown Sugar Milk Tea",
-        "firstText": "700mL.",
-        "secondText": "Dairy-free ice crusher.",
-        "price": 12.00,
-        "bg": require(`../../assets/images/items/2.png`),
-        "category": 2
-    },
-    {
-        "title": "Brown Sugar Milk Tea",
-        "firstText": "700mL.",
-        "secondText": "Dairy-free ice crusher.",
-        "price": 12.00,
-        "bg": require(`../../assets/images/items/3.png`),
-        "category": 3
-    }
-]
-
-const categoryTabData = [
-    {
-        "id": 1,
-        "title": "bubble tea",
-    },
-    {
-        "id": 2,
-        "title": "fruit tea",
-    },
-    {
-        "id": 3,
-        "title": "Acai drink",
-    },
-    {
-        "id": 4,
-        "title": "waffle",
-    },
-    {
-        "id": 5,
-        "title": "watermelon juice",
-    }
-]
+import ItemBoxSection from '../../components/home-sections/ItemBox.tsx';
+import HeadingSection from '../../components/Heading.tsx';
+import { categoryData, categoryTabData, itemData } from '../../utils/MockData.ts';
 
 function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [searchText, setSearchText] = useState<any>("");
@@ -166,16 +99,8 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                         <PromotionalBoxSection />
                                     </View>
 
-                                    <View style={{ flexDirection: "row", marginTop: VP(37), gap: 10, alignItems: "center", marginHorizontal: HP(21) }}>
-                                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 14 }}>MENU</Text>
-
-                                        <LinearGradient
-                                            colors={['#B20C79', '#E2E2E2']}
-                                            start={{ x: 0, y: 0 }}
-                                            end={{ x: 1, y: 0 }}
-                                            style={styles.line}
-                                        >
-                                        </LinearGradient>
+                                    <View style={{ marginTop: VP(37), marginHorizontal: HP(21) }}>
+                                        <HeadingSection title={`MENU`} />
                                     </View>
 
                                     <View style={{ marginTop: VP(24.66), marginHorizontal: HP(21) }}>
@@ -183,23 +108,16 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     </View>
 
                                     <View style={{ marginTop: VP(20), marginHorizontal: HP(21) }}>
-                                        <ItemBoxSection data={itemListFiltered} />
+                                        <ItemBoxSection data={itemListFiltered} navigation={navigation} />
                                     </View>
 
                                     <View style={{ marginTop: VP(31.66), marginHorizontal: HP(16) }}>
                                         <BannerOneSection />
                                     </View>
 
-                                    <View style={{ flexDirection: "row", marginTop: VP(32.87), gap: 10, alignItems: "center", marginHorizontal: HP(21) }}>
-                                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 14, textTransform: "uppercase" }}>Kylie, what’s on your mind?</Text>
 
-                                        <LinearGradient
-                                            colors={['#B20C79', '#E2E2E2']}
-                                            start={{ x: 0, y: 0 }}
-                                            end={{ x: 1, y: 0 }}
-                                            style={styles.line}
-                                        >
-                                        </LinearGradient>
+                                    <View style={{ marginTop: VP(32.87), marginHorizontal: HP(21) }}>
+                                        <HeadingSection textStyle={{ textTransform: "uppercase" }} title={`Kylie, what’s on your mind?`} />
                                     </View>
 
                                     <View style={{ marginTop: VP(20), marginHorizontal: HP(16) }}>
@@ -210,16 +128,8 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                         <BannerTwoSection />
                                     </View>
 
-                                    <View style={{ flexDirection: "row", marginTop: VP(32.87), gap: 10, alignItems: "center", marginHorizontal: HP(20) }}>
-                                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 16, textTransform: "capitalize" }}>"Sip and savor 50+ drinks and desserts"</Text>
-
-                                        <LinearGradient
-                                            colors={['#B20C79', '#E2E2E2']}
-                                            start={{ x: 0, y: 0 }}
-                                            end={{ x: 1, y: 0 }}
-                                            style={styles.line}
-                                        >
-                                        </LinearGradient>
+                                    <View style={{ marginTop: VP(32.87), marginHorizontal: HP(20) }}>
+                                        <HeadingSection textStyle={{ fontSize: 16, textTransform: "capitalize" }} title={`"Sip and savor 50+ drinks and desserts"`} />
                                     </View>
 
                                     <View style={{ marginTop: VP(22), marginHorizontal: HP(11) }}>

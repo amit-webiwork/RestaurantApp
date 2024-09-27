@@ -69,4 +69,9 @@ export const TextStyles: Record<string, TextStyle> = {
         color: COLORS.BLACK,
         fontSize: 16
     },
+    INTER_MEDIUM: {
+        fontFamily: 'InterMedium',
+        color: COLORS.BLACK,
+        fontSize: 14,
+    },
 };
