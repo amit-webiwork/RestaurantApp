@@ -5,6 +5,7 @@ import BottomTabNavigator from './BottomTabNavigator';
 import NotificationScreen from '../screens/main/NotificationScreen';
 import ProductScreen from '../screens/main/ProductScreen';
 import FilterScreen from '../screens/main/FilterScreen';
+import UpdateProfile from '../screens/main/account/UpdateProfile';
 
 export type MainTabParamList = {
     HomeScreen: undefined;
@@ -12,6 +13,7 @@ export type MainTabParamList = {
     NotificationScreen: undefined;
     ProductScreen: undefined;
     FilterScreen: undefined;
+    UpdateProfile: undefined;
 };
 
 const MainTabNavigator: React.FunctionComponent = () => {
@@ -27,6 +29,10 @@ const MainTabNavigator: React.FunctionComponent = () => {
             <Stack.Screen
                 name={`ProductScreen`}
                 component={ProductScreen}
+            />
+            <Stack.Screen
+                name={`UpdateProfile`}
+                component={UpdateProfile}
             />
 
             <Stack.Group screenOptions={{

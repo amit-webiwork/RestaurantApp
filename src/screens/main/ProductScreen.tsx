@@ -48,7 +48,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
     const imageHeight = scrollY.interpolate({
         inputRange: [0, 300], // Adjust the second value to control how quickly the image scales
-        outputRange: [height * 0.5, height * 0.1], // Adjust the values to control the min and max image height
+        outputRange: [height * 0.5, height * 0.3], // Adjust the values to control the min and max image height
         extrapolate: 'clamp',
     });
 

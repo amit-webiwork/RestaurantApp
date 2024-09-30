@@ -53,6 +53,7 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ data, selectedCategory,
                     renderItem={({ item, index, separators }) => <CategoryItems item={item} index={index} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />}
                     contentContainerStyle={{}}
                     horizontal={true}
+                    showsHorizontalScrollIndicator={false}
                 />
             ) : (<CategoryTabsLoader />)}
         </View>

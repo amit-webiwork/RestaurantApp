@@ -82,6 +82,7 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
                     renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} navigation={navigation} />}
                     contentContainerStyle={{}}
                     horizontal={true}
+                    showsHorizontalScrollIndicator={false}
                 />
             ) : (
                 <ItemBoxLoader />

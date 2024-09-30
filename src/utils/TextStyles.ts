@@ -44,6 +44,11 @@ export const TextStyles: Record<string, TextStyle> = {
         color: COLORS.BLACK,
         fontSize: 14,
     },
+    LEXEND_SEMI_BOLD: {
+        fontFamily: 'LexendSemiBold',
+        color: COLORS.BLACK,
+        fontSize: 14,
+    },
     ROBOTO_REGULAR: {
         fontFamily: 'RobotoRegular',
         color: COLORS.BLACK,

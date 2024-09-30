@@ -148,9 +148,5 @@ const styles = StyleSheet.create({
         fontSize: 12,
         textAlign: 'center',
         color: "#636363"
-    },
-    menuImage: {
-        width: (30),
-        height: (30)
     }
 })

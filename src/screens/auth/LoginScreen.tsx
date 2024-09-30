@@ -122,7 +122,7 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                             </TouchableOpacity>
                         </View>
 
-                        <View style={{ flex: 1,}}>
+                        <View style={{ flex: 1}}>
                             <Button
                                 text={'log in'}
                                 onPress={handleOnPress}

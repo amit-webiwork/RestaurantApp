@@ -111,7 +111,7 @@ const CategoryBox: React.FunctionComponent<Props> = ({ data }) => {
                         contentContainerStyle={styles.listContainer}
                         horizontal={true}
                         ref={flatListRef}
-                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
                     // getItemLayout={getItemLayout}
                     />
                 ) : (<CategoryBoxLoader />)}

@@ -9,8 +9,6 @@ import { FS, HP, VP } from '../../utils/Responsive';
 import Icon, { Icons } from '../../components/Icons';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import SearchBoxSection from '../../components/home-sections/SearchBox';
-import LinearGradient from 'react-native-linear-gradient';
 import { getNotificationIcon, getNotificationTitle, groupNotificationData } from '../../utils/helper/NotificationHelper';
 
 const data = [
@@ -172,7 +170,7 @@ const styles = StyleSheet.create({
     iconBtn: {
         width: FS(58.58),
         height: FS(58.58),
-        borderRadius: FS(29.29),
+        borderRadius: FS(58.58) / 2,
         backgroundColor: "#E50ACE1A",
         alignItems: "center",
         justifyContent: "center",
