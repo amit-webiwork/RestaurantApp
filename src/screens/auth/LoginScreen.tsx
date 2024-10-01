@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import OuterLayout from '../../components/OuterLayout';
 import InnerBlock from '../../components/InnerBlock';
-import { Button } from '../../components/Button';
+import { ButtonSection as Button } from '../../components/Button';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';

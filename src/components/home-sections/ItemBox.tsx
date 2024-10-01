@@ -15,7 +15,7 @@ import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import { fetchItems, itemCount, itemList, itemLoaded } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
-import ItemBoxLoader from '../skeleton/ItemBoxLoader';
+import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
 
 interface Props {
     data: any[];
@@ -85,7 +85,7 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
                     showsHorizontalScrollIndicator={false}
                 />
             ) : (
-                <ItemBoxLoader />
+                <ItemBoxLoaderSection />
             )}
         </View>
     );

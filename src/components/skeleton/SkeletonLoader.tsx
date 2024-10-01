@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { View, Animated, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -60,4 +60,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SkeletonLoader;
+const SkeletonLoaderSection = memo(SkeletonLoader);
+export default SkeletonLoaderSection;

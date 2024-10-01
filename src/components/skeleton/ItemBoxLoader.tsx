@@ -1,21 +1,21 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
     View,
     StyleSheet,
 } from 'react-native';
 
 import { FS, HP, VP } from '../../utils/Responsive';
-import SkeletonLoader from './SkeletonLoader';
+import SkeletonLoaderSection from './SkeletonLoader';
 
 
 const ItemBoxLoader: React.FunctionComponent = () => {
 
     return (
         <View style={styles.mainContainer}>
-            <SkeletonLoader width={FS(183)} height={VP(194)} borderRadius={FS(16.42)} style={styles.loaderStyles} />
-            <SkeletonLoader width={FS(183)} height={VP(194)} borderRadius={FS(16.42)} style={styles.loaderStyles} />
-            <SkeletonLoader width={FS(183)} height={VP(194)} borderRadius={FS(16.42)} style={styles.loaderStyles} />
-            <SkeletonLoader width={FS(183)} height={VP(194)} borderRadius={FS(16.42)} style={styles.loaderStyles} />
+            <SkeletonLoaderSection width={FS(183)} height={VP(194)} borderRadius={FS(16.42)} style={styles.loaderStyles} />
+            <SkeletonLoaderSection width={FS(183)} height={VP(194)} borderRadius={FS(16.42)} style={styles.loaderStyles} />
+            <SkeletonLoaderSection width={FS(183)} height={VP(194)} borderRadius={FS(16.42)} style={styles.loaderStyles} />
+            <SkeletonLoaderSection width={FS(183)} height={VP(194)} borderRadius={FS(16.42)} style={styles.loaderStyles} />
         </View>
     );
 };
@@ -29,4 +29,5 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ItemBoxLoader;
+const ItemBoxLoaderSection = memo(ItemBoxLoader);
+export default ItemBoxLoaderSection;

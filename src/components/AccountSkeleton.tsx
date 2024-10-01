@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, ImageBackground, Dimensions, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -58,7 +58,7 @@ function AccountSkeleton({ children, navigation }: { children: any, navigation: 
 
                     {/* Bottom container */}
                     <View style={{ flex: 3 }}>
-                        <ImageBackground source={require(`../assets/images/white-bg.png`)} style={styles.bg}>
+                        <ImageBackground source={require(`../assets/images/white-bg.png`)} style={styles.bg} resizeMode='contain'>
                             {children}
                         </ImageBackground>
                     </View>
@@ -77,8 +77,10 @@ const styles = StyleSheet.create({
     },
     bg: {
         width: "100%",
-        height: height * .92
+        height: height * 1,
+        marginBottom: VP(-40)
     }
 });
 
-export default AccountSkeleton;
+const AccountSkeletonSection = memo(AccountSkeleton);
+export default AccountSkeletonSection;

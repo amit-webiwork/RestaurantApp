@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -31,7 +31,7 @@ type Props = {
     mainContainerStyle?: StyleProp<TextStyle>;
 };
 
-export const Button: React.FunctionComponent<Props> = ({
+const Button: React.FunctionComponent<Props> = ({
     text,
     onPress,
     style,
@@ -139,3 +139,5 @@ const styles = StyleSheet.create({
         color: COLORS.WHITE
     },
 });
+
+export const ButtonSection = memo(Button);

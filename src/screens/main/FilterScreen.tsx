@@ -57,6 +57,10 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
         setPriceRange(values);
     };
 
+    const itemClickedHandler = (id) => {
+        setItemClicked(id);
+    }
+
     return (
         <GestureHandlerRootView>
             <PanGestureHandler
@@ -86,7 +90,7 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
                                 <Text style={styles.headingFilterText}>popular items</Text>
 
                                 <View style={{ marginTop: VP(14) }}>
-                                    <PopularItemsSection items={popular_items} clickHandler={setItemClicked} clickedItem={itemClicked} />
+                                    <PopularItemsSection items={popular_items} clickHandler={itemClickedHandler} />
                                 </View>
                             </View>
 
@@ -116,7 +120,7 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
 
                             {/* price range */}
                             <View style={{ paddingHorizontal: HP(24) }}>
-                                <PriceRangeSection headingTextStyle={styles.headingFilterText} range={priceRange} onRangeChange={onRangeChange} />
+                                <PriceRangeSection headingTextStyle={styles.headingFilterText} onRangeChange={onRangeChange} />
                             </View>
 
                         </ScrollView>

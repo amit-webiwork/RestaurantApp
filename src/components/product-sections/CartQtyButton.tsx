@@ -1,25 +1,14 @@
-import React, { memo, useRef, useState } from 'react';
+import React, { memo } from 'react';
 import {
     View,
     TouchableOpacity,
-    StyleProp,
-    ViewStyle,
     StyleSheet,
-    ActivityIndicator,
-    TextStyle,
     Text,
-    TextInput,
-    Image,
-    FlatList,
-    ImageBackground
+    TextInput
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
-import Icon, { Icons } from '../Icons';
-import { FS, HP, VP } from '../../utils/Responsive';
+import { FS, HP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
-import { TextStyles } from '../../utils/TextStyles';
-import { Button } from '../Button';
 
 interface Props {
     decrement: any;

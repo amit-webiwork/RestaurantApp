@@ -17,7 +17,7 @@ import LeftWhite from '../../assets/svgs/left-white.svg';
 import RightWhite from '../../assets/svgs/right-white.svg';
 import { categoryList, categoryLoaded, fetchCategories } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
-import CategoryBoxLoader from '../skeleton/CategoryBoxLoader';
+import CategoryBoxLoaderSection from '../skeleton/CategoryBoxLoader';
 
 interface Props {
     data: any[]
@@ -114,7 +114,7 @@ const CategoryBox: React.FunctionComponent<Props> = ({ data }) => {
                         showsHorizontalScrollIndicator={false}
                     // getItemLayout={getItemLayout}
                     />
-                ) : (<CategoryBoxLoader />)}
+                ) : (<CategoryBoxLoaderSection />)}
             </View>
         </View>
     );

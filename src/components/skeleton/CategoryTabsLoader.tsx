@@ -1,21 +1,21 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
     View,
     StyleSheet,
 } from 'react-native';
 
 import { FS, HP, VP } from '../../utils/Responsive';
-import SkeletonLoader from './SkeletonLoader';
+import SkeletonLoaderSection from './SkeletonLoader';
 
 
 const CategoryTabsLoader: React.FunctionComponent = () => {
 
     return (
         <View style={styles.mainContainer}>
-            <SkeletonLoader width={FS(100)} height={VP(25)} borderRadius={HP(20)} style={styles.loaderStyles} />
-            <SkeletonLoader width={FS(100)} height={VP(25)} borderRadius={HP(20)} style={styles.loaderStyles} />
-            <SkeletonLoader width={FS(100)} height={VP(25)} borderRadius={HP(20)} style={styles.loaderStyles} />
-            <SkeletonLoader width={FS(100)} height={VP(25)} borderRadius={HP(20)} style={styles.loaderStyles} />
+            <SkeletonLoaderSection width={FS(100)} height={VP(25)} borderRadius={HP(20)} style={styles.loaderStyles} />
+            <SkeletonLoaderSection width={FS(100)} height={VP(25)} borderRadius={HP(20)} style={styles.loaderStyles} />
+            <SkeletonLoaderSection width={FS(100)} height={VP(25)} borderRadius={HP(20)} style={styles.loaderStyles} />
+            <SkeletonLoaderSection width={FS(100)} height={VP(25)} borderRadius={HP(20)} style={styles.loaderStyles} />
         </View>
     );
 };
@@ -29,4 +29,5 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CategoryTabsLoader;
+const CategoryTabsLoaderSection = memo(CategoryTabsLoader);
+export default CategoryTabsLoaderSection;

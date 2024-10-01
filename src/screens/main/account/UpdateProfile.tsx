@@ -6,9 +6,9 @@ import Icon, { Icons } from '../../../components/Icons';
 import { COLORS } from '../../../utils/Constants';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import { TextStyles } from '../../../utils/TextStyles';
-import AccountSkeleton from '../../../components/AccountSkeleton';
+import AccountSkeletonSection from '../../../components/AccountSkeleton';
 import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect';
-import { Button } from '../../../components/Button';
+import { ButtonSection as Button } from '../../../components/Button';
 
 const { width, height } = Dimensions.get('window');
 
@@ -23,7 +23,7 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
     }
 
     return (
-        <AccountSkeleton navigation={navigation}>
+        <AccountSkeletonSection navigation={navigation}>
             <View style={{ paddingHorizontal: HP(34), paddingVertical: HP(150), gap: 17.97 }}>
                 <View style={{}}>
                     <Text style={styles.label}>full name</Text>
@@ -63,7 +63,7 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                     <Button
                         text={'cancel'}
                         onPress={handleOnPress}
-                        textStyle={styles.cacnelButtonStyle}
+                        textStyle={styles.cancelButtonStyle}
                         isLoading={false}
                         activeButtonText={{ opacity: .65 }}
                         mainContainerStyle={{ flex: 1, borderColor: COLORS.BUTTON, borderWidth: 1, borderRadius: HP(8) }}
@@ -83,7 +83,7 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                     />
                 </View>
             </View>
-        </AccountSkeleton>
+        </AccountSkeletonSection>
     )
 }
 
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         color: COLORS.WHITE,
         textTransform: "uppercase",
     },
-    cacnelButtonStyle: {
+    cancelButtonStyle: {
         ...TextStyles.LEXEND_REGULAR,
         fontSize: 18,
         color: COLORS.BLACK,

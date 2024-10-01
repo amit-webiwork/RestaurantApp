@@ -16,14 +16,18 @@ import { TextStyles } from '../../utils/TextStyles';
 
 interface Props {
     inputContainerStyle?: StyleProp<ViewStyle>;
-    text: any;
-    setText: any;
+    setHandler: any;
     navigation: any;
 }
 
-const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, text, setText, navigation }) => {
-    const [searchText, setSearchText] = useState<any>("");
+const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, setHandler, navigation }) => {
+    const [text, setText] = useState<any>("");
     const [error, setError] = useState({ status: false, text: "" });
+
+    const setTextHandler = (e: any) => {
+        setText(e);
+        setHandler(e);
+    }
 
     return (
         <View style={styles.mainContainer}>
@@ -31,7 +35,7 @@ const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, text, 
                 <TextInput
                     style={[styles.input, { borderBottomColor: error.status ? COLORS.RED : "#A0A0A0" }]}
                     value={text}
-                    onChangeText={setText}
+                    onChangeText={setTextHandler}
                     placeholder="Search like bubble tea"
                     placeholderTextColor={`#A0A0A0`}
                 />

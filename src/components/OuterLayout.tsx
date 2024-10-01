@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 
 import { COLORS } from '../utils/Constants';
-import CustomDialog from './CustomDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { dialogData, hideDialog } from '../redux/features/customDialog';
+import CustomActionDialogComp from './dialogs/CustomActionDialog';
 
 interface OuterLayoutProps {
     children: ReactNode;
@@ -27,7 +27,7 @@ const OuterLayout: React.FC<OuterLayoutProps> = ({
 
     return (
         <>
-            <CustomDialog
+            <CustomActionDialogComp
                 visible={visible}
                 title={title}
                 message={message}

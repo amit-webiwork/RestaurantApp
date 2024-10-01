@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { StyleSheet, View, Text, StyleProp, TextStyle } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
@@ -8,11 +8,16 @@ import { FS, HP, VP } from '../../utils/Responsive.ts';
 
 interface Props {
     headingTextStyle: StyleProp<TextStyle>;
-    range: number[];
     onRangeChange: any;
 }
 
-function PriceRange({ headingTextStyle, range, onRangeChange }: Props): React.JSX.Element {
+function PriceRange({ headingTextStyle, onRangeChange }: Props): React.JSX.Element {
+    const [range, setRange] = useState([50, 300]);
+
+    const setRangeHandler = (values: React.SetStateAction<number[]>) => {
+        setRange(values);
+        onRangeChange(values);
+    }
 
     return (
         <View>
@@ -25,7 +30,7 @@ function PriceRange({ headingTextStyle, range, onRangeChange }: Props): React.JS
                 <MultiSlider
                     values={range}
                     sliderLength={FS(300)}
-                    onValuesChangeFinish={onRangeChange}
+                    onValuesChangeFinish={setRangeHandler}
                     min={0}
                     max={500}
                     step={1}

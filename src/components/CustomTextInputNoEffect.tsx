@@ -25,6 +25,7 @@ interface OutlinedTextInputProps extends TextInputProps {
     styleContainer?: TextStyle;
     iconClick?: boolean;
     iconAction?: () => void;
+    errorStyle?: TextStyle
 }
 
 const CustomTextInputNoEffect: React.FC<OutlinedTextInputProps> = ({
@@ -36,6 +37,7 @@ const CustomTextInputNoEffect: React.FC<OutlinedTextInputProps> = ({
     styleContainer,
     iconClick,
     iconAction,
+    errorStyle,
     ...rest
 }) => {
     const { text, setText, error } = formProps;
@@ -55,17 +57,22 @@ const CustomTextInputNoEffect: React.FC<OutlinedTextInputProps> = ({
                     {iconClick ? (
                         <TouchableOpacity
                             onPress={iconAction}
-                            style={{ bottom: HP(0), position: 'absolute', right: HP(0) }}
+                            style={{ bottom: HP(40), right: HP(-130) }}
                         >
                             <Image source={iconName} style={[styles.icon, iconStyle]} />
                         </TouchableOpacity>
                     ) : (
-                        <Image source={iconName} style={[styles.icon, iconStyle]} />
+                        <TouchableOpacity
+                            onPress={() => void (0)}
+                            style={{ bottom: HP(40), right: HP(-130) }}
+                        >
+                            <Image source={iconName} style={[styles.icon, iconStyle]} />
+                        </TouchableOpacity>
                     )}
                 </>
             )}
             {error.status && (
-                <Text style={styles.error}>{error.text}</Text>
+                <Text style={[styles.error, errorStyle]}>{error.text}</Text>
             )}
         </View>
     );
@@ -74,10 +81,7 @@ const CustomTextInputNoEffect: React.FC<OutlinedTextInputProps> = ({
 const styles = StyleSheet.create({
     icon: {
         width: FS(18),
-        height: VP(18),
-        position: 'absolute',
-        right: HP(0),
-        bottom: HP(20)
+        height: VP(18)
     },
     input: {
         ...TextStyles.RALEWAY_MEDIUM,
@@ -97,7 +101,6 @@ const styles = StyleSheet.create({
         color: COLORS.RED,
         fontSize: 10,
         alignSelf: "flex-start",
-        top: VP(2),
         textTransform: "capitalize"
     }
 });

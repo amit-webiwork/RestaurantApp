@@ -19,7 +19,7 @@ import Icon, { Icons } from '../Icons';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import { Button } from '../Button';
+import { ButtonSection as Button } from '../Button';
 
 const BannerOne: React.FunctionComponent = () => {
     return (

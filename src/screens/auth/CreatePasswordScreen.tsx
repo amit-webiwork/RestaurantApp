@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import OuterLayout from '../../components/OuterLayout';
 import { AuthStackParamList } from '../../navigations/AuthStackNavigator';
 import InnerBlock from '../../components/InnerBlock';
-import { Button } from '../../components/Button';
+import { ButtonSection as Button } from '../../components/Button';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { loadStorage, removeStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
@@ -94,14 +94,14 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                 <View style={styles.main}>
                     <View style={{ flex: 9 }}>
                         <ScrollView showsVerticalScrollIndicator={false}>
-                            <View style={{ flexDirection: "row", gap: 33.72, }}>
+                            <View style={{ flexDirection: "row" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
                                     style={{ alignSelf: "center", top: VP(2) }}
                                 >
                                     <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
-                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", }}>Create New Password</Text>
+                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textAlign: "center", flex: 1 }}>Create New Password</Text>
                             </View>
                             <View style={{ marginTop: VP(50) }}>
                                 <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: FS(52.83), paddingLeft: FS(65.69), paddingRight: FS(63.9), paddingTop: FS(52.62), backgroundColor: "#FFEAFD", width: FS(202), height: FS(202), borderRadius: FS(101), alignSelf: "center" }}>

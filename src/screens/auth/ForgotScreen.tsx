@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import OuterLayout from '../../components/OuterLayout';
 import { AuthStackParamList } from '../../navigations/AuthStackNavigator';
 import InnerBlock from '../../components/InnerBlock';
-import { Button } from '../../components/Button';
+import { ButtonSection as Button } from '../../components/Button';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
@@ -73,14 +73,14 @@ const ForgotScreen: React.FunctionComponent<NavigationProp> = ({
                 <View style={styles.main}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={{ flex: 5 }}>
-                            <View style={{ flexDirection: "row", gap: 33.72, }}>
+                            <View style={{ flexDirection: "row" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
                                     style={{ alignSelf: "center", top: VP(2) }}
                                 >
                                     <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
-                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", }}>Forgot Password</Text>
+                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textAlign: "center", flex: 1 }}>Forgot Password</Text>
                             </View>
 
                             <View style={{ marginTop: VP(50) }}>

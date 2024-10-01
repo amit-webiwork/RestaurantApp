@@ -79,4 +79,14 @@ export const TextStyles: Record<string, TextStyle> = {
         color: COLORS.BLACK,
         fontSize: 14,
     },
+    INTER_SEMI_BOLD: {
+        fontFamily: 'InterSemiBold',
+        color: COLORS.BLACK,
+        fontSize: 14,
+    },
+    LATO_REGULAR: {
+        fontFamily: 'LatoRegular',
+        color: COLORS.BLACK,
+        fontSize: 14
+    },
 };

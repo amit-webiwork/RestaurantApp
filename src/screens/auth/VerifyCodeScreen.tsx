@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import OuterLayout from '../../components/OuterLayout';
 import { AuthStackParamList } from '../../navigations/AuthStackNavigator';
 import InnerBlock from '../../components/InnerBlock';
-import { Button } from '../../components/Button';
+import { ButtonSection as Button } from '../../components/Button';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { loadStorage, saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
@@ -115,14 +115,14 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
                 <View style={styles.main}>
-                    <View style={{ flexDirection: "row", gap: 33.72, }}>
+                    <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}
                             style={{ alignSelf: "center" }}
                         >
                             <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
                         </TouchableOpacity>
-                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textTransform: "capitalize" }}>verify your email</Text>
+                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textTransform: "capitalize", textAlign: "center", flex: 1 }}>verify your email</Text>
                     </View>
                     <View style={{ flex: 4 }}>
                         <ScrollView showsVerticalScrollIndicator={false}>

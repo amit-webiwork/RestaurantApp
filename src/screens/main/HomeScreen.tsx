@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { FS, HP, VP } from '../../utils/Responsive.ts';
 import { COLORS } from '../../utils/Constants.ts';
 import { TextStyles } from '../../utils/TextStyles.ts';
-import { Button } from '../../components/Button.tsx';
+import { ButtonSection as Button } from '../../components/Button.tsx';
 import SearchBoxSection from '../../components/home-sections/SearchBox.tsx';
 import CategoryBoxSection from '../../components/home-sections/CategoryBox.tsx';
 import PromotionalBoxSection from '../../components/home-sections/PromotionalBox.tsx';
@@ -36,6 +36,10 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
         setItemListFiltered(filtered);
     }, [itemList]);
+
+    const setSearchTextHandler = (e: any) => {
+        setSearchText(e);
+    }
 
     return (
         <>
@@ -88,7 +92,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 <View style={{ flex: 1, marginVertical: VP(48), }}>
 
                                     <View style={{ marginHorizontal: HP(20) }}>
-                                        <SearchBoxSection text={searchText} setText={setSearchText} navigation={navigation} />
+                                        <SearchBoxSection setHandler={setSearchTextHandler} navigation={navigation} />
                                     </View>
 
                                     <View style={{ marginTop: VP(27), marginHorizontal: HP(17) }}>
@@ -104,7 +108,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     </View>
 
                                     <View style={{ marginTop: VP(24.66), marginHorizontal: HP(21) }}>
-                                        <CategortyTabsSection data={categoryTabData} selectedCategory={selectedCategory} setSelectedCategory={selectCategoryHandler} />
+                                        <CategortyTabsSection data={categoryTabData} setSelectedCategory={selectCategoryHandler} />
                                     </View>
 
                                     <View style={{ marginTop: VP(20), marginHorizontal: HP(21) }}>
