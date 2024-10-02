@@ -40,8 +40,9 @@ function AccountSkeleton({ children, navigation }: { children: any, navigation: 
                                     borderRadius: FS(25.33) / 2,
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    top: VP(-30),
-                                    left: HP(40)
+                                    top: FS(85),
+                                    right: FS(120),
+                                    position: "absolute"
                                 }}
                             >
                                 <Image source={require(`../assets/icons/pencil.png`)} style={{ width: FS(12.68), height: VP(11.98) }} />
@@ -57,8 +58,8 @@ function AccountSkeleton({ children, navigation }: { children: any, navigation: 
                     </View>
 
                     {/* Bottom container */}
-                    <View style={{ flex: 3 }}>
-                        <ImageBackground source={require(`../assets/images/white-bg.png`)} style={styles.bg} resizeMode='contain'>
+                    <View style={{ flex: 1 }}>
+                        <ImageBackground source={require(`../assets/images/white-bg.png`)} style={[styles.bg]} resizeMode='stretch'>
                             {children}
                         </ImageBackground>
                     </View>
@@ -72,13 +73,14 @@ const styles = StyleSheet.create({
     img: {
         resizeMode: "cover",
         width: FS(115.47),
-        height: VP(118.49),
-        borderRadius: HP(60)
+        height: FS(118.49),
+        borderRadius: FS(115.47) / 2
     },
     bg: {
         width: "100%",
         height: height * 1,
-        marginBottom: VP(-40)
+        marginBottom: VP(-40),
+        flex: 1
     }
 });
 

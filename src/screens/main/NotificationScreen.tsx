@@ -103,11 +103,11 @@ function NotificationScreen({ navigation }: { navigation: any }): React.JSX.Elem
                                             <View>
                                                 <Text style={styles.title}>{getNotificationTitle(d[0])}</Text>
                                             </View>
-                                            <View style={{ gap: 19.53, marginTop: VP(19.53) }}>
+                                            <View style={{ gap: HP(19.53), marginTop: VP(19.53) }}>
                                                 {d[1].map((item: any, j: number) => (
                                                     <View style={styles.itemRow} key={`notification-item-${i}-${j}`}>
                                                         <View style={styles.iconBtn}>
-                                                            <Icon type={getNotificationIcon(item?.type || 'message')['iconType']} size={FS(24.41)} name={getNotificationIcon(item?.type || 'message')['icon']} color={getNotificationIcon(item?.type || 'message')['color']} />
+                                                            <Icon type={getNotificationIcon(item?.type || 'message')['iconType']} size={FS(24)} name={getNotificationIcon(item?.type || 'message')['icon']} color={getNotificationIcon(item?.type || 'message')['color']} />
                                                         </View>
                                                         <View style={{ flexBasis: "80%", flexShrink: 1 }}>
                                                             <Text style={styles.itemTitle}>{item.title}</Text>
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     },
     itemRow: {
         flexDirection: "row",
-        gap: 19.53,
+        gap: HP(19.53),
         alignItems: "center"
     },
     itemTitle: {
@@ -168,9 +168,9 @@ const styles = StyleSheet.create({
         textTransform: "capitalize"
     },
     iconBtn: {
-        width: FS(58.58),
-        height: FS(58.58),
-        borderRadius: FS(58.58) / 2,
+        width: FS(58),
+        height: FS(58),
+        borderRadius: FS(29),
         backgroundColor: "#E50ACE1A",
         alignItems: "center",
         justifyContent: "center",

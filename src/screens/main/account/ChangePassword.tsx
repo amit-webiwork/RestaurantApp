@@ -51,14 +51,14 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
                             <Text style={styles.topHeading}>change Password</Text>
                         </View>
 
-                        <View style={{ marginTop: VP(74.85) }}>
-                            <View style={{ gap: 9.62 }}>
+                        <View style={{ marginTop: VP(34.85) }}>
+                            <View style={{ gap: HP(9.62) }}>
                                 <Text style={styles.heading}>change Password</Text>
                                 <Text style={styles.info}>Your new password must be different from the previously used password.</Text>
                             </View>
 
                             {/* Old Password */}
-                            <View style={{ marginTop: VP(43.54) }}>
+                            <View style={{ marginTop: VP(33.54) }}>
                                 <Text style={styles.label}>Old Password</Text>
 
                                 <CustomTextInputNoEffect
@@ -76,7 +76,7 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
                             </View>
 
                             {/* New Password */}
-                            <View style={{ marginTop: VP(19.92) }}>
+                            <View style={{ marginTop: VP(16.92) }}>
                                 <Text style={styles.label}>New Password</Text>
 
                                 <CustomTextInputNoEffect
@@ -94,7 +94,7 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
                             </View>
 
                             {/* Confirm Password */}
-                            <View style={{ marginTop: VP(19.92) }}>
+                            <View style={{ marginTop: VP(16.92) }}>
                                 <Text style={styles.label}>Confirm Password</Text>
 
                                 <CustomTextInputNoEffect
@@ -111,7 +111,7 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
                                 />
                             </View>
                             
-                            <View style={{ marginTop: VP(74.85) }}>
+                            <View style={{ marginTop: VP(24.85) }}>
                                 <Button
                                     text={'verify'}
                                     onPress={handleOnPress}
@@ -183,14 +183,14 @@ const styles = StyleSheet.create({
     heading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         color: "#101010",
-        fontSize: 32.46,
+        fontSize: 26.46,
         lineHeight: 48.1,
         textTransform: "capitalize"
     },
     info: {
         ...TextStyles.RALEWAY_MEDIUM,
         color: "#878787",
-        fontSize: 16.83,
+        fontSize: 14.83,
         lineHeight: 24
     },
     styleInput: {
@@ -206,11 +206,11 @@ const styles = StyleSheet.create({
     },
     iconClosedStyle: {
         width: FS(21),
-        height: VP(15),
+        height: FS(15),
     },
     iconOpenStyle: {
         width: FS(22.5),
-        height: VP(15),
+        height: FS(15),
     },
     errorStyle: {
         ...TextStyles.RALEWAY_MEDIUM,

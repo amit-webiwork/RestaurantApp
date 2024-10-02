@@ -93,12 +93,12 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         <View style={{ flexDirection: "row" }}>
                                             <Image
                                                 source={require('../../assets/images/person-1.png')}
-                                                style={{ height: VP(28), width: FS(28) }}
+                                                style={{ height: FS(28), width: FS(28) }}
                                                 resizeMode="cover"
                                             />
                                             <Image
                                                 source={require('../../assets/images/person-2.png')}
-                                                style={{ height: VP(28), width: FS(28), left: HP(-5) }}
+                                                style={{ height: FS(28), width: FS(28), left: HP(-5) }}
                                                 resizeMode="cover"
                                             />
                                         </View>
@@ -114,7 +114,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         style={{
                                             backgroundColor: "#FFFFFF",
                                             width: FS(38),
-                                            height: VP(38),
+                                            height: FS(38),
                                             borderRadius: FS(19),
                                             borderWidth: 2,
                                             borderColor: COLORS.BUTTON,
@@ -170,11 +170,11 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
                                         <TouchableOpacity
                                             onPress={() => void (0)}
-                                            style={{ width: FS(31), height: VP(31), borderRadius: HP(15.5), backgroundColor: COLORS.WHITE, alignItems: "center", justifyContent: "center" }}
+                                            style={{ width: FS(31), height: FS(31), borderRadius: FS(15.5), backgroundColor: COLORS.WHITE, alignItems: "center", justifyContent: "center" }}
                                         >
                                             <Image
                                                 source={require('../../assets/icons/cart.png')}
-                                                style={{ width: FS(21), height: VP(20), }}
+                                                style={{ width: FS(21), height: FS(20), }}
                                                 resizeMode="cover"
                                             />
                                         </TouchableOpacity>

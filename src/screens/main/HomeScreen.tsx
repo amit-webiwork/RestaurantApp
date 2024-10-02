@@ -62,7 +62,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 </TouchableOpacity>
                                 <View style={{ flexBasis: "35%", gap: HP(13) }}>
                                     <View style={{ left: HP(17), marginTop: VP(30) }}>
-                                        <Text style={{ ...TextStyles.ARCHITECTS_DAUGHTER_REGULAR, color: COLORS.WHITE, fontSize: 30, }}>
+                                        <Text style={{ ...TextStyles.ARCHITECTS_DAUGHTER_REGULAR, color: COLORS.WHITE, fontSize: HP(30) }}>
                                             not your
                                             average
                                             bubble

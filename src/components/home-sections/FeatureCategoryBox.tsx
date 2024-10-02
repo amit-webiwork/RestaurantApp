@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         aspectRatio: .7,
         flexGrow: 1,
         width: "24%",
-        gap: 5
+        gap: HP(5)
     }
 });
 

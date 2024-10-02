@@ -9,7 +9,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { useSelector } from 'react-redux';
 
-import { HP } from '../../utils/Responsive';
+import { FS, HP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { categoryLoaded } from '../../redux/features/items';
 import CategoryTabsLoaderSection from '../skeleton/CategoryTabsLoader';
@@ -68,7 +68,7 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ data, setSelectedCatego
 
 const styles = StyleSheet.create({
     categoryText: {
-        fontSize: 14,
+        fontSize: HP(14),
         textTransform: "capitalize",
         textAlign: "center",
     },

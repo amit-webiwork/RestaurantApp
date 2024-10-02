@@ -133,7 +133,7 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                                 LinearGradienrColor={["#FF00E2", "#FF00E2"]}
                                 contentContainerStyle={{ top: -2 }}
                             />
-                            <View style={{ marginTop: VP(240), flexDirection: "row", justifyContent: "center", gap: 6,  }}>
+                            <View style={{ marginTop: VP(240), flexDirection: "row", justifyContent: "center", gap: HP(6) }}>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12, textTransform: "capitalize" }}>don’t have an account?</Text>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`SignUpScreen`)}

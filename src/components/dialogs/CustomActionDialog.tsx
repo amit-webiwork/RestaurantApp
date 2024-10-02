@@ -124,16 +124,16 @@ const styles = StyleSheet.create({
     dialogButtons: {
         marginTop: VP(10),
         flexDirection: "row",
-        gap: 5
+        gap: HP(5)
     },
     buttonStyle1: {
         ...TextStyles.RALEWAY_BOLD,
-        fontSize: 18,
+        fontSize: 16,
         color: COLORS.WHITE
     },
     buttonStyle2: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: 18,
+        fontSize: 16,
         color: "#303030"
     }
 });

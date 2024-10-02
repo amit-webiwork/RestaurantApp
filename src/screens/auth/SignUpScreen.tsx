@@ -158,13 +158,13 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
                                 />
                             </View>
 
-                            <View style={{ flexDirection: "row", marginTop: VP(11), justifyContent: "center", alignItems: "center", gap: 7 }}>
+                            <View style={{ flexDirection: "row", marginTop: VP(11), justifyContent: "center", alignItems: "center", gap: HP(7) }}>
                                 <View style={styles.line}></View>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12 }}>Or</Text>
                                 <View style={styles.line}></View>
                             </View>
 
-                            <View style={{ flexDirection: "row", marginTop: VP(24.5), justifyContent: "center", gap: 14 }}>
+                            <View style={{ flexDirection: "row", marginTop: VP(24.5), justifyContent: "center", gap: HP(14) }}>
                                 <TouchableOpacity
                                     onPress={() => void (0)}
                                     style={{}}
@@ -180,7 +180,7 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
                                 </TouchableOpacity>
                             </View>
 
-                            <View style={{ marginTop: VP(42), flexDirection: "row", justifyContent: "center", gap: 6 }}>
+                            <View style={{ marginTop: VP(42), flexDirection: "row", justifyContent: "center", gap: HP(6) }}>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12 }}>Already Have An Account?</Text>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`LoginScreen`)}

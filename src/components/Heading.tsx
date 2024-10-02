@@ -9,6 +9,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 
 import { TextStyles } from '../utils/TextStyles';
+import { FS, HP } from '../utils/Responsive';
 
 interface Props {
     title: string;
@@ -34,7 +35,7 @@ const Heading: React.FunctionComponent<Props> = ({ title, textStyle }) => {
 const styles = StyleSheet.create({
     main: {
         flexDirection: "row",
-        gap: 10,
+        gap: HP(10),
         alignItems: "center"
     },
     textStyle: {

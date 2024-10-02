@@ -45,7 +45,7 @@ const data = [
 const BoxItems = ({ item, index }: { item: any, index: number }) => {
 
     return (
-        <View style={{ marginRight: HP(11.56), flexGrow: 1, width: "30%", gap: 5 }}>
+        <View style={{ marginRight: HP(11.56), flexGrow: 1, width: "30%", gap: HP(5) }}>
             <TouchableOpacity
                 onPress={() => void (0)}
                 style={{}}
@@ -106,13 +106,13 @@ const styles = StyleSheet.create({
     },
     headingRightContainer: {
         flexDirection: "row",
-        gap: 2,
+        gap: HP(2),
         alignItems: 'center',
         justifyContent: 'center'
     },
     boxText: {
         ...TextStyles.ROBOTO_REGULAR,
-        fontSize: 12,
+        fontSize: HP(12),
         textTransform: "capitalize",
         textAlign: "center",
     },
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     },
     headingRightTitleStyle: {
         ...TextStyles.RALEWAY_MEDIUM,
-        fontSize: 12,
+        fontSize: HP(12),
         textTransform: "capitalize",
     },
     boxInsideFirstText: {

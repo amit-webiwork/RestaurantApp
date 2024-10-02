@@ -90,20 +90,9 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                         {showButton && (
                             <View style={{ justifyContent: "center", marginHorizontal: HP(30) }}>
-                                <ButtonSwipe title="swipe to get started" backgroundColor="#CC9AFF" titleStyles={styles.titleStyles} swipeAction={getStarted} mainContainerStyle={{ top: "50%" }} swipeBackgroundColor="#CC9AFF" />
+                                <ButtonSwipe title="swipe to get started" backgroundColor="#CC9AFF" titleStyles={styles.titleStyles} swipeAction={getStarted} mainContainerStyle={{ top: "50%", alignItems: "center" }} swipeBackgroundColor="#CC9AFF" />
                                 {/* VP(28) */}
                                 {/* #DF12CA */}
-                                {/* <Button
-                                    text={'swipe to get started'}
-                                    onPress={() => getStarted()}
-                                    textStyle={styles.buttonStyle}
-                                    isLoading={false}
-                                    activeButtonText={{ opacity: .65 }}
-                                    contentContainerStyle={{}}
-                                    mainContainerStyle={{ top: VP(28) }}
-                                    LinearGradienrColor={["#CC9AFF", "#CC9AFF"]}
-                                    Icon={<View style={{ padding: HP(9.2), backgroundColor: "#FFFFFF", right: HP(40), borderRadius: 32, alignSelf: "center", width: FS(32), height: VP(32), alignItems: "center" }}><Right width={FS(16)} height={VP(16)} /></View>}
-                                /> */}
                             </View>
                         )}
                     </ImageBackground>

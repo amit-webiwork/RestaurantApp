@@ -44,10 +44,8 @@ const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, setHan
 
                 <TouchableOpacity
                     onPress={() => {
-                        // Dismiss the keyboard and input focus when mic is pressed
                         Keyboard.dismiss();
                         console.log("Mic icon pressed");
-                        // Add your voice search or mic functionality here
                     }}
                     style={{
                         position: 'absolute',
@@ -74,7 +72,7 @@ const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, setHan
 const styles = StyleSheet.create({
     mainContainer: {
         flexDirection: "row",
-        gap: 15,
+        gap: HP(15),
         justifyContent: "center",
         alignItems: "center"
     },
@@ -88,7 +86,7 @@ const styles = StyleSheet.create({
     input: {
         ...TextStyles.RALEWAY_MEDIUM,
         color: "#A0A0A0",
-        fontSize: 12,
+        fontSize: HP(12),
         paddingVertical: HP(15),
         paddingHorizontal: HP(40),
         width: "100%",
@@ -106,7 +104,7 @@ const styles = StyleSheet.create({
     },
     inputIconLeft: {
         width: FS(16.67),
-        height: VP(16.67),
+        height: FS(16.67),
         position: 'absolute',
         left: HP(10),
         marginLeft: HP(5)

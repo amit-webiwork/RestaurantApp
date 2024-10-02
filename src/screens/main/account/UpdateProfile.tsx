@@ -24,7 +24,7 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
 
     return (
         <AccountSkeletonSection navigation={navigation}>
-            <View style={{ paddingHorizontal: HP(34), paddingVertical: HP(150), gap: 17.97 }}>
+            <View style={{ flex: 1, paddingHorizontal: HP(34), paddingVertical: HP(150), gap: HP(17.97) }}>
                 <View style={{}}>
                     <Text style={styles.label}>full name</Text>
 
@@ -59,7 +59,7 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                 </View>
 
                 {/* Buttons */}
-                <View style={{ marginTop: VP(30), flexDirection: "row", gap: 7 }}>
+                <View style={{ marginTop: VP(30), flexDirection: "row", gap: HP(7) }}>
                     <Button
                         text={'cancel'}
                         onPress={handleOnPress}

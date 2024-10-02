@@ -19,7 +19,7 @@ function PopularItems({ items, clickHandler }: Props): React.JSX.Element {
     }
 
     return (
-        <View style={{ flexDirection: "row", gap: 10, flexWrap: "wrap" }}>
+        <View style={{ flexDirection: "row", gap: HP(10), flexWrap: "wrap" }}>
             {items.map((d, i) => (
                 <TouchableOpacity
                     key={`popular-items-${i}`}

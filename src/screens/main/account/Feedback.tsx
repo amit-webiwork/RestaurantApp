@@ -81,13 +81,13 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                                 <Image source={require(`../../../assets/images/feedback.png`)} style={styles.img} />
                             </View>
 
-                            <View style={{ marginTop: VP(48.77), gap: 16 }}>
+                            <View style={{ marginTop: VP(48.77), gap: HP(16) }}>
                                 <Text style={styles.heading}>share your feedback</Text>
                                 <Text style={styles.info}>please select a topic below and let us know about your concern</Text>
                             </View>
                         </View>
 
-                        <View style={{ flexDirection: "row", marginTop: VP(26), justifyContent: "center", gap: 28.5 }}>
+                        <View style={{ flexDirection: "row", marginTop: VP(26), justifyContent: "center", gap: HP(28.5) }}>
                             <TouchableOpacity
                                 onPress={() => setRating(1)}
                             >
@@ -124,7 +124,7 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                             <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 11.56, color: "#A7A7A7", position: "absolute", bottom: 10, right: 10 }}>{textLength}</Text>
                         </View>
 
-                        <View style={{ marginTop: VP(89) }}>
+                        <View style={{ marginTop: VP(49) }}>
                             <Button
                                 text={'send'}
                                 onPress={() => setShowPopUp(true)}

@@ -57,14 +57,14 @@ const CustomTextInputNoEffect: React.FC<OutlinedTextInputProps> = ({
                     {iconClick ? (
                         <TouchableOpacity
                             onPress={iconAction}
-                            style={{ bottom: HP(40), right: HP(-130) }}
+                            style={{ bottom: HP(40), right: FS(-120) }}
                         >
                             <Image source={iconName} style={[styles.icon, iconStyle]} />
                         </TouchableOpacity>
                     ) : (
                         <TouchableOpacity
                             onPress={() => void (0)}
-                            style={{ bottom: HP(40), right: HP(-130) }}
+                            style={{ bottom: HP(40), right: FS(-130) }}
                         >
                             <Image source={iconName} style={[styles.icon, iconStyle]} />
                         </TouchableOpacity>

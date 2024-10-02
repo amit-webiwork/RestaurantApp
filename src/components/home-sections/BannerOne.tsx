@@ -91,11 +91,11 @@ const styles = StyleSheet.create({
     contactBox: {
         flexDirection: "row",
         marginTop: VP(8),
-        gap: 8,
+        gap: HP(8),
     },
     contactText: {
         ...TextStyles.POPPINS_REGULAR,
-        fontSize: 6.27,
+        fontSize: HP(6.27),
         color: COLORS.WHITE,
         textAlign: "center"
     }

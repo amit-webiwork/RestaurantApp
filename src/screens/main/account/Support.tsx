@@ -34,13 +34,13 @@ function Support({ navigation }: { navigation: any }): React.JSX.Element {
                                 <Image source={require(`../../../assets/images/support.png`)} style={styles.img} />
                             </View>
 
-                            <View style={{ marginTop: VP(40.77), gap: 16, }}>
+                            <View style={{ marginTop: VP(40.77), gap: HP(16) }}>
                                 <Text style={styles.heading}>how can we help?</Text>
                                 <Text style={styles.info}>welcome to our app support. ask anything. support community can help you find answers to all your queries.</Text>
                             </View>
                         </View>
 
-                        <View style={{ flexDirection: "row", marginTop: VP(49), gap: 13.11, justifyContent: "center" }}>
+                        <View style={{ flexDirection: "row", marginTop: VP(49), gap: HP(13.11), justifyContent: "center" }}>
                             <View style={styles.mainBox}>
                                 <View style={styles.box}>
                                     <Image source={require(`../../../assets/icons/phone.png`)} style={styles.boxImg1} />
@@ -128,12 +128,12 @@ const styles = StyleSheet.create({
         marginTop: VP(12)
     },
     mainBox: {
-        borderRadius: HP(7.55),
+        borderRadius: HP(2),
         borderColor: "#C0C0C0",
         flexBasis: "49%",
         alignItems: "center",
-        gap: 12,
-        padding: HP(10),
+        gap: HP(12),
+        padding: FS(10),
         shadowOpacity: 0.2,
         shadowColor: "#000",
         shadowOffset: {

@@ -45,7 +45,7 @@ function PriceRange({ headingTextStyle, onRangeChange }: Props): React.JSX.Eleme
                     markerStyle={{
                         backgroundColor: COLORS.BUTTON,
                         height: FS(10),
-                        width: VP(10),
+                        width: FS(10),
                         marginTop: HP(2)
                     }}
                 />

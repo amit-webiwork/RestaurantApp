@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
         marginTop: HP(4.01),
         flexDirection: 'row',
         alignItems: "center",
-        gap: 2
+        gap: HP(2)
     },
     offerText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

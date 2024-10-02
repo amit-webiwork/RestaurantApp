@@ -62,14 +62,14 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
             />
             <View style={{ flex: 1, marginBottom: VP(40), backgroundColor: "#FFF" }}>
                 <AccountSkeletonSection navigation={navigation}>
-                    <View style={{ paddingHorizontal: HP(39), paddingVertical: VP(120), gap: 15 }}>
+                    <View style={{ paddingHorizontal: HP(39), paddingVertical: HP(120), gap: HP(15) }}>
                         {/* edit profile */}
-                        <View style={{ flexDirection: "row", gap: 15, alignItems: "center" }}>
+                        <View style={{ flexDirection: "row", gap: HP(15), alignItems: "center" }}>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(`UpdateProfile`)}
                                 style={styles.iconContainer}
                             >
-                                <Image source={require(`../../assets/icons/pencil.png`)} style={{ width: FS(16.91), height: VP(16.91) }} />
+                                <Image source={require(`../../assets/icons/pencil.png`)} style={{ width: FS(16.91), height: FS(16.91) }} />
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -82,9 +82,9 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         <View style={styles.line}></View>
 
                         {/* order history */}
-                        <View style={{ flexDirection: "row", gap: 15, alignItems: "center" }}>
+                        <View style={{ flexDirection: "row", gap: HP(15), alignItems: "center" }}>
                             <View style={[styles.iconContainer, { backgroundColor: "#FFDBFB" }]}>
-                                <Image source={require(`../../assets/icons/order.png`)} style={{ width: FS(21.14), height: VP(24.03) }} />
+                                <Image source={require(`../../assets/icons/order.png`)} style={{ width: FS(21.14), height: FS(24.03) }} />
                             </View>
 
                             <Text style={styles.accountLabel}>order history</Text>
@@ -94,23 +94,23 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                         {/* Payment & refunds */}
                         <View>
-                            <View style={{ flexDirection: "row", gap: 15, alignItems: "center" }}>
+                            <View style={{ flexDirection: "row", gap: HP(15), alignItems: "center" }}>
                                 <TouchableOpacity
-                                    onPress={() => setIsPaymentMenuOpen((pre) => !pre)}
+                                    onPress={() => { setIsPaymentMenuOpen((pre) => !pre); setIsSettingMenuOpen(false) }}
                                     style={[styles.iconContainer, { backgroundColor: "#CFF4C3" }]}
                                 >
-                                    <Image source={require(`../../assets/icons/dollor.png`)} style={{ width: FS(24), height: VP(24) }} />
+                                    <Image source={require(`../../assets/icons/dollor.png`)} style={{ width: FS(24), height: FS(24) }} />
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
-                                    onPress={() => setIsPaymentMenuOpen((pre) => !pre)}
+                                    onPress={() => { setIsPaymentMenuOpen((pre) => !pre); setIsSettingMenuOpen(false) }}
                                     style={{ flex: 1 }}
                                 >
                                     <Text style={styles.accountLabel}>Payment & refunds</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
-                                    onPress={() => setIsPaymentMenuOpen((pre) => !pre)}
+                                    onPress={() => { setIsPaymentMenuOpen((pre) => !pre); setIsSettingMenuOpen(false) }}
                                 >
                                     <Icon
                                         type={Icons.Feather}
@@ -121,10 +121,10 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             </View>
                             {/* Conditional Child Menu */}
                             {isPaymentMenuOpen && (
-                                <View style={{ marginTop: VP(11), paddingLeft: HP(20), gap: 15 }}>
+                                <View style={{ marginTop: VP(11), paddingLeft: HP(20), gap: HP(15) }}>
                                     <TouchableOpacity
                                         onPress={() => console.log("Refund Status clicked")}
-                                        style={{ flexDirection: "row", gap: 16, alignItems: "center" }}
+                                        style={{ flexDirection: "row", gap: HP(16), alignItems: "center" }}
                                     >
                                         <Image source={require(`../../assets/icons/refund.png`)} style={{ width: FS(24), height: VP(24) }} />
 
@@ -133,7 +133,7 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                                     <TouchableOpacity
                                         onPress={() => console.log("Refund Status clicked")}
-                                        style={{ flexDirection: "row", gap: 16, alignItems: "center" }}
+                                        style={{ flexDirection: "row", gap: HP(16), alignItems: "center" }}
                                     >
                                         <Image source={require(`../../assets/icons/payment.png`)} style={{ width: FS(24), height: VP(24) }} />
 
@@ -148,23 +148,23 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                         {/* Settings */}
                         <View>
-                            <View style={{ flexDirection: "row", gap: 15, alignItems: "center" }}>
+                            <View style={{ flexDirection: "row", gap: HP(15), alignItems: "center" }}>
                                 <TouchableOpacity
-                                    onPress={() => setIsSettingMenuOpen((pre) => !pre)}
+                                    onPress={() => {setIsSettingMenuOpen((pre) => !pre); setIsPaymentMenuOpen(false)}}
                                     style={[styles.iconContainer, { backgroundColor: "#E9D4FF" }]}
                                 >
-                                    <Image source={require(`../../assets/icons/setting.png`)} style={{ width: FS(24), height: VP(24) }} />
+                                    <Image source={require(`../../assets/icons/setting.png`)} style={{ width: FS(24), height: FS(24) }} />
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
-                                    onPress={() => setIsSettingMenuOpen((pre) => !pre)}
+                                    onPress={() => {setIsSettingMenuOpen((pre) => !pre); setIsPaymentMenuOpen(false)}}
                                     style={{ flex: 1 }}
                                 >
                                     <Text style={styles.accountLabel}>settings</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
-                                    onPress={() => setIsSettingMenuOpen((pre) => !pre)}
+                                    onPress={() => {setIsSettingMenuOpen((pre) => !pre); setIsPaymentMenuOpen(false)}}
                                 >
                                     <Icon
                                         type={Icons.Feather}
@@ -175,21 +175,21 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             </View>
                             {/* Conditional Child Menu */}
                             {isSettingMenuOpen && (
-                                <View style={{ marginTop: VP(11), paddingLeft: HP(20), gap: 15 }}>
+                                <View style={{ marginTop: VP(11), paddingLeft: HP(20), gap: HP(15) }}>
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate(`ChangePassword`)}
-                                        style={{ flexDirection: "row", gap: 16, alignItems: "center" }}
+                                        style={{ flexDirection: "row", gap: HP(16), alignItems: "center" }}
                                     >
-                                        <Image source={require(`../../assets/icons/change-password.png`)} style={{ width: FS(19), height: VP(19) }} />
+                                        <Image source={require(`../../assets/icons/change-password.png`)} style={{ width: FS(19), height: FS(19) }} />
 
                                         <Text style={styles.childMenuItem}>change password</Text>
                                     </TouchableOpacity>
 
                                     <TouchableOpacity
                                         onPress={deleteAccountAction}
-                                        style={{ flexDirection: "row", gap: 16, alignItems: "center", start: 6 }}
+                                        style={{ flexDirection: "row", gap: HP(16), alignItems: "center", start: HP(6) }}
                                     >
-                                        <Image source={require(`../../assets/icons/delete.png`)} style={{ width: FS(13), height: VP(16) }} />
+                                        <Image source={require(`../../assets/icons/delete.png`)} style={{ width: FS(13), height: FS(16) }} />
 
                                         <Text style={styles.childMenuItem}>delete account</Text>
                                     </TouchableOpacity>
@@ -200,12 +200,12 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         <View style={styles.line}></View>
 
                         {/* Support / help */}
-                        <View style={{ flexDirection: "row", gap: 15, alignItems: "center" }}>
+                        <View style={{ flexDirection: "row", gap: HP(15), alignItems: "center" }}>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(`Support`)}
                                 style={[styles.iconContainer, { backgroundColor: "#DAF8FB" }]}
                             >
-                                <Image source={require(`../../assets/icons/support.png`)} style={{ width: FS(24), height: VP(24) }} />
+                                <Image source={require(`../../assets/icons/support.png`)} style={{ width: FS(24), height: FS(24) }} />
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -220,10 +220,10 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         {/* Logout */}
                         <TouchableOpacity
                             onPress={logoutAccountAction}
-                            style={{ flexDirection: "row", gap: 15, alignItems: "center" }}
+                            style={{ flexDirection: "row", gap: HP(15), alignItems: "center" }}
                         >
                             <View style={[styles.iconContainer, { backgroundColor: "#FDD6D6" }]}>
-                                <Image source={require(`../../assets/icons/logout.png`)} style={{ width: FS(24), height: VP(24), padding: 0 }} />
+                                <Image source={require(`../../assets/icons/logout.png`)} style={{ width: FS(24), height: FS(24), padding: 0 }} />
                             </View>
 
                             <Text style={styles.accountLabel}>logout</Text>
@@ -232,7 +232,7 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         <View style={styles.line}></View>
 
                         {/* Feedback */}
-                        <View style={{ flexDirection: "row", gap: 15, alignItems: "center", paddingBottom: HP(100) }}>
+                        <View style={{ flexDirection: "row", gap: HP(15), alignItems: "center", paddingBottom: HP(100) }}>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(`Feedback`)}
                                 style={[styles.iconContainer, { backgroundColor: "#37360633" }]}
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     },
     dialogTitleStyle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: 26.94,
+        fontSize: 22.94,
         lineHeight: 38.6,
         color: "#101010"
     },

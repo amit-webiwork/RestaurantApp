@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         // aspectRatio: .6,
         flexGrow: 0,
         width: "30%",
-        gap: 5.38
+        gap: HP(5.38)
     },
     categoryIcon: {
         width: "100%",

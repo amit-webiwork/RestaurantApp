@@ -28,7 +28,7 @@ const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF
 const CategoryItem = ({ item, index }: { item: any, index: number }) => {
     const backgroundColor = colorsBG[index % colorsBG.length];
     return (
-        <View style={{ marginRight: HP(15), flexGrow: 1, gap: 5 }}>
+        <View style={{ marginRight: HP(15), flexGrow: 1, gap: HP(5) }}>
             <TouchableOpacity
                 onPress={() => void (0)}
                 style={{}}
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     },
     iconMainContainer: {
         flexDirection: "row",
-        gap: 5
+        gap: HP(5)
     },
     iconContainer: {
         width: FS(20),
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     },
     categoryText: {
         ...TextStyles.RALEWAY_MEDIUM,
-        fontSize: 12,
+        fontSize: HP(12),
         textTransform: "capitalize",
         textAlign: "center",
     },
