@@ -40,11 +40,11 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{ paddingHorizontal: HP(30), paddingVertical: HP(27.79) }}>
-                        <View style={{ flexDirection: "row" }}>
+                    <View style={{ paddingHorizontal: HP(21), paddingVertical: HP(27.79) }}>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <TouchableOpacity
                                 onPress={() => navigation.goBack()}
-                                style={{ alignSelf: "center", top: VP(3) }}
+                                style={{ alignSelf: "center" }}
                             >
                                 <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
                             </TouchableOpacity>
@@ -177,8 +177,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",
-        flex: 1,
-        lineHeight: 28.8
+        flex: 1
     },
     heading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

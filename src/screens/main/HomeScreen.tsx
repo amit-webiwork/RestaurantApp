@@ -91,6 +91,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             <View style={styles.itemContainer}>
                                 <View style={{ flex: 1, marginVertical: VP(48), }}>
 
+                                    {/* Search Box */}
                                     <View style={{ marginHorizontal: HP(20) }}>
                                         <SearchBoxSection setHandler={setSearchTextHandler} navigation={navigation} />
                                     </View>
@@ -141,7 +142,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     </View>
 
                                     <View style={{ marginTop: VP(53) }}>
-                                        <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: 40, color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
+                                        <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: HP(40), color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
                                     </View>
                                 </View>
                                 <View style={{ height: VP(30), backgroundColor: "#FDFDFD", bottom: VP(-30) }}>

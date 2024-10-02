@@ -12,12 +12,32 @@ import { FS, HP, VP } from '../utils/Responsive';
 import { TextStyles } from '../utils/TextStyles';
 import Icon, { Icons } from '../components/Icons';
 import CategoryScreen from '../screens/main/CategoryScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MenuScreen from '../screens/main/MenuScreen';
+
+export type MenuStackParamList = {
+    CategoryScreen: undefined;
+    MenuScreen: undefined;
+};
+
+function MenuStack() {
+    const Stack = createNativeStackNavigator<MenuStackParamList>();
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false
+            }}>
+            <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
+            <Stack.Screen name="MenuScreen" options={{ title: `Menu` }} component={MenuScreen} />
+        </Stack.Navigator>
+    );
+}
 
 const TabArr = [
     { route: 'CartScreen', label: 'Cart', type: Icons.Ionicons, icon: 'bag-handle', component: CartScreen },
     { route: 'OrderScreen', label: 'Orders', type: Icons.MaterialIcons, icon: 'receipt', component: OrderScreen },
     { route: 'HomeScreen', label: 'Home', type: Icons.FontAwesome5, icon: 'home', component: HomeScreen },
-    { route: 'CategoryScreen', label: 'Category', type: Icons.FontAwesome5, icon: 'concierge-bell', component: CategoryScreen },
+    { route: 'Category', label: 'Category', type: Icons.FontAwesome5, icon: 'concierge-bell', component: MenuStack },
     { route: 'AccountScreen', label: 'Account', type: Icons.FontAwesome5, icon: 'user-alt', component: AccountScreen },
 ];
 

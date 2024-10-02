@@ -32,30 +32,6 @@ const data = [
     },
 ]
 
-const CategoryItem = ({ item, index }: { item: any, index: number }) => {
-    const backgroundColor = colorsBG[index % colorsBG.length];
-    return (
-        <View style={styles.boxStyle}>
-            <TouchableOpacity
-                onPress={() => void (0)}
-                style={{}}
-            >
-                <LinearGradient
-                    colors={backgroundColor}
-                    start={{ x: 1, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.categoryBox}
-                >
-                    <View style={{ alignItems: "center" }}>
-                        <Image source={item.icon} style={styles.categoryIcon} />
-                    </View>
-                </LinearGradient>
-            </TouchableOpacity>
-            <Text style={styles.categoryText}>{item.title}</Text>
-        </View>
-    )
-}
-
 function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [searchText, setSearchText] = useState<any>("");
     const [categoryList, setCategoryList] = useState<any[]>([...data, ...data, ...data, ...data]);
@@ -69,6 +45,30 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
 
         setCategoryListFiltered(filtered);
     }, [categoryList]);
+
+    const CategoryItem = ({ item, index }: { item: any, index: number }) => {
+        const backgroundColor = colorsBG[index % colorsBG.length];
+        return (
+            <View style={styles.boxStyle}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate(`MenuScreen`)}
+                    style={{}}
+                >
+                    <LinearGradient
+                        colors={backgroundColor}
+                        start={{ x: 1, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        style={styles.categoryBox}
+                    >
+                        <View style={{ alignItems: "center" }}>
+                            <Image source={item.icon} style={styles.categoryIcon} />
+                        </View>
+                    </LinearGradient>
+                </TouchableOpacity>
+                <Text style={styles.categoryText}>{item.title}</Text>
+            </View>
+        )
+    }
 
     return (
         <>

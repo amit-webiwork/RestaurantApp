@@ -86,12 +86,12 @@ const styles = StyleSheet.create({
     input: {
         ...TextStyles.RALEWAY_MEDIUM,
         color: "#A0A0A0",
-        fontSize: HP(12),
+        fontSize: 12,
         paddingVertical: HP(15),
         paddingHorizontal: HP(40),
         width: "100%",
         height: VP(50),
-        borderRadius: 10,
+        borderRadius: HP(10),
         backgroundColor: COLORS.WHITE,
         shadowColor: "#171717",
         shadowOffset: {

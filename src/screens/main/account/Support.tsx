@@ -19,10 +19,10 @@ function Support({ navigation }: { navigation: any }): React.JSX.Element {
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingHorizontal: HP(20), paddingVertical: HP(27.79) }}>
-                        <View style={{ flexDirection: "row" }}>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <TouchableOpacity
                                 onPress={() => navigation.goBack()}
-                                style={{ alignSelf: "center", marginTop: VP(10) }}
+                                style={{ alignSelf: "center" }}
                             >
                                 <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
                             </TouchableOpacity>
@@ -85,8 +85,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",
-        flex: 1,
-        lineHeight: 28.8
+        flex: 1
     },
     heading: {
         ...TextStyles.RALEWAY_BOLD,

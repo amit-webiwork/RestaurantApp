@@ -21,7 +21,7 @@ export const itemData = [
     {
         "title": "Brown Sugar Milk Tea",
         "firstText": "700mL.",
-        "secondText": "Dairy-free ice crusher.",
+        "secondText": "Dairy-free ice.",
         "price": 12.00,
         "bg": require(`../assets/images/items/1.png`),
         "category": 1
@@ -29,7 +29,7 @@ export const itemData = [
     {
         "title": "Brown Sugar Milk Tea",
         "firstText": "700mL.",
-        "secondText": "Dairy-free ice crusher.",
+        "secondText": "Dairy-free ice.",
         "price": 12.00,
         "bg": require(`../assets/images/items/2.png`),
         "category": 2
@@ -37,7 +37,31 @@ export const itemData = [
     {
         "title": "Brown Sugar Milk Tea",
         "firstText": "700mL.",
-        "secondText": "Dairy-free ice crusher.",
+        "secondText": "Dairy-free ice.",
+        "price": 12.00,
+        "bg": require(`../assets/images/items/3.png`),
+        "category": 3
+    },
+    {
+        "title": "Brown Sugar Milk Tea",
+        "firstText": "700mL.",
+        "secondText": "Dairy-free ice.",
+        "price": 12.00,
+        "bg": require(`../assets/images/items/1.png`),
+        "category": 1
+    },
+    {
+        "title": "Brown Sugar Milk Tea",
+        "firstText": "700mL.",
+        "secondText": "Dairy-free ice.",
+        "price": 12.00,
+        "bg": require(`../assets/images/items/2.png`),
+        "category": 2
+    },
+    {
+        "title": "Brown Sugar Milk Tea",
+        "firstText": "700mL.",
+        "secondText": "Dairy-free ice.",
         "price": 12.00,
         "bg": require(`../assets/images/items/3.png`),
         "category": 3

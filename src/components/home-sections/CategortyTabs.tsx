@@ -68,7 +68,7 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ data, setSelectedCatego
 
 const styles = StyleSheet.create({
     categoryText: {
-        fontSize: HP(14),
+        fontSize: 14,
         textTransform: "capitalize",
         textAlign: "center",
     },
