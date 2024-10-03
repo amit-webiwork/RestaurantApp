@@ -22,7 +22,7 @@ function AccountSkeleton({ children, navigation }: { children: any, navigation: 
                     {/* Top container */}
                     <View style={{ marginTop: VP(25), flex: 1 }}>
                         <TouchableOpacity
-                            onPress={() => navigation.goBack()}
+                            onPress={() => navigation.navigate(`HomeScreen`)}
                             style={{ marginHorizontal: HP(18) }}
                         >
                             <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.WHITE} />

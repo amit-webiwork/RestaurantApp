@@ -62,7 +62,11 @@ const BoxItems = ({ item, index }: { item: any, index: number }) => {
     )
 }
 
-const PromotionalBox: React.FunctionComponent = () => {
+interface Props {
+    navigation: any;
+}
+
+const PromotionalBox: React.FunctionComponent<Props> = ({ navigation }) => {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.subContainer}>
@@ -70,7 +74,9 @@ const PromotionalBox: React.FunctionComponent = () => {
                     De lounge Popular Tea
                 </Text>
                 <TouchableOpacity
-                    onPress={() => void (0)}
+                    onPress={() => navigation.navigate(`PopularMenuScreen`, {
+                        category: "Tea"
+                    })}
                     style={styles.headingRightContainer}
                 >
                     <Text style={styles.headingRightTitleStyle}>view all</Text>

@@ -9,6 +9,10 @@ import UpdateProfile from '../screens/main/account/UpdateProfile';
 import ChangePassword from '../screens/main/account/ChangePassword';
 import Support from '../screens/main/account/Support';
 import Feedback from '../screens/main/account/Feedback';
+import CartMenuScreen from '../screens/main/cart/CartMenuScreen';
+import OrderPlacedScreen from '../screens/main/cart/OrderPlacedScreen';
+import MenuScreen from '../screens/main/menu/MenuScreen';
+import PopularMenuScreen from '../screens/main/menu/PopularMenuScreen';
 
 export type MainTabParamList = {
     HomeScreen: undefined;
@@ -20,6 +24,10 @@ export type MainTabParamList = {
     ChangePassword: undefined;
     Support: undefined;
     Feedback: undefined;
+    CartMenuScreen: undefined;
+    OrderPlacedScreen: undefined;
+    MenuScreen: undefined;
+    PopularMenuScreen: undefined;
 };
 
 const MainTabNavigator: React.FunctionComponent = () => {
@@ -51,6 +59,22 @@ const MainTabNavigator: React.FunctionComponent = () => {
             <Stack.Screen
                 name={`Feedback`}
                 component={Feedback}
+            />
+            <Stack.Screen
+                name={`CartMenuScreen`}
+                component={CartMenuScreen}
+            />
+            <Stack.Screen
+                name={`OrderPlacedScreen`}
+                component={OrderPlacedScreen}
+            />
+            <Stack.Screen
+                name={`MenuScreen`}
+                component={MenuScreen}
+            />
+            <Stack.Screen
+                name={`PopularMenuScreen`}
+                component={PopularMenuScreen}
             />
 
             <Stack.Group screenOptions={{

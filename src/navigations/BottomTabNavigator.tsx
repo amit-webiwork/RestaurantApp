@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import { SafeAreaView, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 
-import CartScreen from '../screens/main/CartScreen';
+import CartScreen from '../screens/main/cart/CartScreen';
 import OrderScreen from '../screens/main/OrderScreen';
 import HomeScreen from '../screens/main/HomeScreen';
 import AccountScreen from '../screens/main/AccountScreen';
@@ -13,7 +13,7 @@ import { TextStyles } from '../utils/TextStyles';
 import Icon, { Icons } from '../components/Icons';
 import CategoryScreen from '../screens/main/CategoryScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MenuScreen from '../screens/main/MenuScreen';
+import MenuScreen from '../screens/main/menu/MenuScreen';
 
 export type MenuStackParamList = {
     CategoryScreen: undefined;
@@ -112,6 +112,7 @@ export default function BottomTabNavigator() {
                         <Tab.Screen key={index} name={item.route} component={item.component}
                             options={{
                                 tabBarShowLabel: false,
+                                tabBarStyle: item.route === 'CartScreen' ? { display: 'none' } : [styles.tabBar, styles.shadow],
                                 tabBarButton: (props) => <TabButton {...props} item={item} />
                             }}
                         />

@@ -10,14 +10,21 @@ import ItemBoxSection from '../../components/home-sections/ItemBox.tsx';
 import OuterLayout from '../../components/OuterLayout.tsx';
 import InnerBlock from '../../components/InnerBlock.tsx';
 import { globalStyle } from '../../utils/GlobalStyle.ts';
-import CartQtyButtonSection from '../../components/product-sections/CartQtyButton.tsx';
 import HeadingSection from '../../components/Heading.tsx';
-import { categoryTabData, itemData } from '../../utils/MockData.ts';
+import { categoryTabData, itemData, productRatings } from '../../utils/MockData.ts';
+import ProductRatingsSection from '../../components/product-sections/ProductRatings.tsx';
+import CartQtyButtonV1Section from '../../components/product-sections/CartQtyButtonV1.tsx';
+import CookingRequestSection from '../../components/product-sections/CookingRequest.tsx';
+import CartLayout from '../../components/cart/CartLayout.tsx';
+import { addToCart } from '../../utils/helper/CartHelper.ts';
+import { useDispatch } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
 function ProductScreen({ route, navigation }: { navigation: any, route: any }): React.JSX.Element {
     const { id } = route.params;
+
+    const dispatch = useDispatch();
 
     const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -138,26 +145,12 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         <Text style={styles.requestText}>Add a cooking request (optional)</Text>
 
                                         <View style={{ marginTop: VP(14) }}>
-                                            <TextInput
-                                                value={instructionText}
-                                                onChangeText={setInstructionTextHandler}
-                                                placeholder="e.g. Don’t make it too sweet"
-                                                maxLength={100}
-                                                multiline={true}
-                                                numberOfLines={5}
-                                                placeholderTextColor={`#A7A7A7`}
-                                                style={{
-                                                    ...TextStyles.RALEWAY_MEDIUM,
-                                                    fontSize: 11.56,
-                                                    backgroundColor: "#EAEAEA",
-                                                    borderRadius: HP(7.71),
-                                                    textAlignVertical: 'top',
-                                                    padding: 10,
-                                                    borderBottomColor: errorInstruction.status ? COLORS.RED : "transparent"
-                                                }}
-                                            />
-                                            <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 11.56, color: "#A7A7A7", position: "absolute", bottom: 10, right: 10 }}>{textLength}</Text>
+                                            <CookingRequestSection />
                                         </View>
+                                    </View>
+
+                                    <View style={{ marginTop: VP(27) }}>
+                                        <ProductRatingsSection data={productRatings} />
                                     </View>
 
                                     {/* Cart with qty Button */}
@@ -166,10 +159,10 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                             <Text style={{ ...TextStyles.RALEWAY_BOLD, fontSize: 20, color: COLORS.WHITE }}>$12.00</Text>
                                         </View>
 
-                                        <CartQtyButtonSection decrement={decrementCart} qty={cartQuantity} setQty={setCartQuantity} increment={incrementCart} />
+                                        <CartQtyButtonV1Section decrement={decrementCart} qty={cartQuantity} setQty={setCartQuantity} increment={incrementCart} />
 
                                         <TouchableOpacity
-                                            onPress={() => void (0)}
+                                            onPress={() => addToCart(dispatch)}
                                             style={{ width: FS(31), height: FS(31), borderRadius: FS(15.5), backgroundColor: COLORS.WHITE, alignItems: "center", justifyContent: "center" }}
                                         >
                                             <Image
@@ -185,10 +178,12 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         <HeadingSection title={`MENU`} />
                                     </View>
 
+                                    {/* Category Tab */}
                                     <View style={{ marginTop: VP(25.66) }}>
-                                        <CategortyTabsSection data={categoryTabData} selectedCategory={selectedCategory} setSelectedCategory={selectCategoryHandler} />
+                                        <CategortyTabsSection data={categoryTabData} setSelectedCategory={selectCategoryHandler} />
                                     </View>
 
+                                    {/* item boxes */}
                                     <View style={{ marginTop: VP(20) }}>
                                         <ItemBoxSection data={itemListFiltered} navigation={navigation} />
                                     </View>
@@ -199,6 +194,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                     </View>
                 </InnerBlock>
             </OuterLayout>
+            <CartLayout children={undefined}></CartLayout>
         </>
     )
 }

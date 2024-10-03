@@ -22,43 +22,6 @@ interface Props {
     navigation: any;
 }
 
-const BoxItems = ({ item, index, navigation }: { item: any, index: number, navigation: any }) => {
-
-    return (
-        <View style={styles.boxContainer}>
-            <View style={styles.boxSubContainer}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate(`ProductScreen`, {
-                        id: 1
-                    })}
-                >
-                    <ImageBackground source={item.bg} style={styles.bg} imageStyle={{ borderRadius: FS(16.42) }}>
-                    </ImageBackground>
-                </TouchableOpacity>
-
-                <View style={styles.contentBox}>
-                    <TouchableOpacity
-                        onPress={() => void (0)}
-                    >
-                        <Text style={styles.boxTitle}>{item.title}</Text>
-                        <Text style={styles.boxText}>{item.firstText} {item.secondText}</Text>
-                    </TouchableOpacity>
-
-                    <View style={styles.priceBox}>
-                        <Text style={styles.priceText}>${item.price.toFixed(2)}</Text>
-                        <TouchableOpacity
-                            onPress={() => void (0)}
-                            style={styles.iconBox}
-                        >
-                            <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-        </View>
-    )
-}
-
 const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
     const dispatch: AppDispatch = useDispatch();
 
@@ -72,14 +35,51 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
         }
     }, [ItemLoaded])
 
-    console.log(ItemList, ItemLoaded, ItemCount, '-----------ItemList')
+    // console.log(data, ItemLoaded, '-----------ItemList')
+
+    const BoxItems = ({ item, index }: { item: any, index: number }) => {
+        
+        return (
+            <View style={styles.boxContainer}>
+                <View style={styles.boxSubContainer}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate(`ProductScreen`, {
+                            id: 1
+                        })}
+                    >
+                        <ImageBackground source={item.bg} style={styles.bg} imageStyle={{ borderRadius: FS(16.42) }}>
+                        </ImageBackground>
+                    </TouchableOpacity>
+
+                    <View style={styles.contentBox}>
+                        <TouchableOpacity
+                            onPress={() => void (0)}
+                        >
+                            <Text style={styles.boxTitle}>{item.title}</Text>
+                            <Text style={styles.boxText}>{item.firstText} {item.secondText}</Text>
+                        </TouchableOpacity>
+
+                        <View style={styles.priceBox}>
+                            <Text style={styles.priceText}>${item.price.toFixed(2)}</Text>
+                            <TouchableOpacity
+                                onPress={() => void (0)}
+                                style={styles.iconBox}
+                            >
+                                <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        )
+    }
 
     return (
         <View>
             {!ItemLoaded ? (
                 <FlatList
                     data={data}
-                    renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} navigation={navigation} />}
+                    renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} />}
                     contentContainerStyle={{}}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -96,8 +96,7 @@ const styles = StyleSheet.create({
         marginRight: HP(14),
         paddingBottom: 10,
         paddingLeft: 5,
-        flexGrow: 1,
-        width: "30%",
+        flexGrow: 1
     },
     boxSubContainer: {
         borderRadius: FS(16.42),

@@ -17,7 +17,7 @@ interface Props {
     increment: any;
 }
 
-const CartQtyButton: React.FunctionComponent<Props> = ({ decrement, qty, setQty, increment }) => {
+const CartQtyButtonV1: React.FunctionComponent<Props> = ({ decrement, qty, setQty, increment }) => {
     return (
         <View style={styles.qtyContainer}>
             {/* Minus button */}
@@ -80,5 +80,5 @@ const styles = StyleSheet.create({
     }
 });
 
-const CartQtyButtonSection = memo(CartQtyButton);
-export default CartQtyButtonSection;
+const CartQtyButtonV1Section = memo(CartQtyButtonV1);
+export default CartQtyButtonV1Section;

@@ -96,51 +96,62 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                         <SearchBoxSection setHandler={setSearchTextHandler} navigation={navigation} />
                                     </View>
 
+                                    {/* Category Boxes */}
                                     <View style={{ marginTop: VP(27), marginHorizontal: HP(17) }}>
-                                        <CategoryBoxSection data={categoryList} />
+                                        <CategoryBoxSection data={categoryList} navigation={navigation} />
                                     </View>
 
+                                    {/* Promotional Box */}
                                     <View style={{ marginTop: VP(23), marginHorizontal: HP(21) }}>
-                                        <PromotionalBoxSection />
+                                        <PromotionalBoxSection navigation={navigation} />
                                     </View>
 
+                                    {/* Heading Menu */}
                                     <View style={{ marginTop: VP(37), marginHorizontal: HP(21) }}>
                                         <HeadingSection title={`MENU`} />
                                     </View>
 
+                                    {/* Category Tabs */}
                                     <View style={{ marginTop: VP(24.66), marginHorizontal: HP(21) }}>
                                         <CategortyTabsSection data={categoryTabData} setSelectedCategory={selectCategoryHandler} />
                                     </View>
 
+                                    {/* Item Boxes */}
                                     <View style={{ marginTop: VP(20), marginHorizontal: HP(21) }}>
                                         <ItemBoxSection data={itemListFiltered} navigation={navigation} />
                                     </View>
 
+                                    {/* Banner One */}
                                     <View style={{ marginTop: VP(31.66), marginHorizontal: HP(16) }}>
                                         <BannerOneSection />
                                     </View>
 
-
+                                    {/* Heading Section */}
                                     <View style={{ marginTop: VP(32.87), marginHorizontal: HP(21) }}>
                                         <HeadingSection textStyle={{ textTransform: "uppercase" }} title={`Kylie, what’s on your mind?`} />
                                     </View>
 
+                                    {/* Feature Category Boxes */}
                                     <View style={{ marginTop: VP(20), marginHorizontal: HP(16) }}>
                                         <FeatureCategoryBoxSection />
                                     </View>
 
+                                    {/* Banner Two */}
                                     <View style={{ marginTop: VP(20) }}>
                                         <BannerTwoSection />
                                     </View>
 
+                                    {/* Heading Section */}
                                     <View style={{ marginTop: VP(32.87), marginHorizontal: HP(20) }}>
                                         <HeadingSection textStyle={{ fontSize: 16, textTransform: "capitalize" }} title={`"Sip and savor 50+ drinks and desserts"`} />
                                     </View>
 
+                                    {/* Item Vertical Boxes */}
                                     <View style={{ marginTop: VP(22), marginHorizontal: HP(11) }}>
                                         <ItemVerticalBoxSection />
                                     </View>
 
+                                    {/* Bottom Heading */}
                                     <View style={{ marginTop: VP(53) }}>
                                         <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: HP(40), color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
                                     </View>

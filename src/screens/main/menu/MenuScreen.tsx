@@ -1,17 +1,18 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 
-import OuterLayout from '../../components/OuterLayout';
-import InnerBlock from '../../components/InnerBlock';
-import { globalStyle } from '../../utils/GlobalStyle';
-import { FS, HP, VP } from '../../utils/Responsive';
-import Icon, { Icons } from '../../components/Icons';
-import { TextStyles } from '../../utils/TextStyles';
-import { COLORS } from '../../utils/Constants';
-import { categoryTabData, itemData } from '../../utils/MockData';
-import SearchBoxSection from '../../components/home-sections/SearchBox';
-import CategortyTabsSection from '../../components/home-sections/CategortyTabs';
-import MenuItemsSection from '../../components/MenuItems';
+import OuterLayout from '../../../components/OuterLayout';
+import InnerBlock from '../../../components/InnerBlock';
+import { globalStyle } from '../../../utils/GlobalStyle';
+import { FS, HP, VP } from '../../../utils/Responsive';
+import Icon, { Icons } from '../../../components/Icons';
+import { TextStyles } from '../../../utils/TextStyles';
+import { COLORS } from '../../../utils/Constants';
+import { categoryTabData, itemData } from '../../../utils/MockData';
+import SearchBoxSection from '../../../components/home-sections/SearchBox';
+import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
+import MenuItemsSection from '../../../components/items/MenuItems';
+import CartLayout from '../../../components/cart/CartLayout';
 
 function MenuScreen({ navigation }: { navigation: any }): React.JSX.Element {
     return (
@@ -49,6 +50,7 @@ function MenuScreen({ navigation }: { navigation: any }): React.JSX.Element {
                     </View>
                 </ScrollView>
             </InnerBlock>
+            <CartLayout children={undefined}></CartLayout>
         </OuterLayout>
     )
 }

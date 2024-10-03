@@ -20,36 +20,13 @@ import { AppDispatch } from '../../redux/store';
 import CategoryBoxLoaderSection from '../skeleton/CategoryBoxLoader';
 
 interface Props {
-    data: any[]
+    data: any[];
+    navigation: any;
 }
 
-const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF4C399", "#CFF4C399"], ["#FDD6D699", "#FDD6D699"]]
+const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF4C399", "#CFF4C399"], ["#FDD6D699", "#FDD6D699"]];
 
-const CategoryItem = ({ item, index }: { item: any, index: number }) => {
-    const backgroundColor = colorsBG[index % colorsBG.length];
-    return (
-        <View style={{ marginRight: HP(15), flexGrow: 1, gap: HP(5) }}>
-            <TouchableOpacity
-                onPress={() => void (0)}
-                style={{}}
-            >
-                <LinearGradient
-                    colors={backgroundColor}
-                    start={{ x: 1, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.categoryBox}
-                >
-                    <View style={{ alignItems: "center" }}>
-                        <Image source={item.icon} style={styles.categoryIcon} />
-                    </View>
-                </LinearGradient>
-            </TouchableOpacity>
-            <Text style={styles.categoryText}>{item.title}</Text>
-        </View>
-    )
-}
-
-const CategoryBox: React.FunctionComponent<Props> = ({ data }) => {
+const CategoryBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const flatListRef = useRef<any>();
@@ -76,6 +53,30 @@ const CategoryBox: React.FunctionComponent<Props> = ({ data }) => {
             dispatch(fetchCategories());
         }
     }, [CategoryLoaded])
+
+    const CategoryItem = ({ item, index }: { item: any, index: number }) => {
+        const backgroundColor = colorsBG[index % colorsBG.length];
+        return (
+            <View style={{ marginRight: HP(15), flexGrow: 1, gap: HP(5) }}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate(`MenuScreen`)}
+                    style={{}}
+                >
+                    <LinearGradient
+                        colors={backgroundColor}
+                        start={{ x: 1, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        style={styles.categoryBox}
+                    >
+                        <View style={{ alignItems: "center" }}>
+                            <Image source={item.icon} style={styles.categoryIcon} />
+                        </View>
+                    </LinearGradient>
+                </TouchableOpacity>
+                <Text style={styles.categoryText}>{item.title}</Text>
+            </View>
+        )
+    }
 
     // console.log(CategoryList, CategoryLoaded, '-----------CategoryList')
 
