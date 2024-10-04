@@ -15,6 +15,7 @@ import {
 import { COLORS } from '../utils/Constants';
 import { FS, HP, VP } from '../utils/Responsive';
 import { TextStyles } from '../utils/TextStyles';
+import { globalStyle } from '../utils/GlobalStyle';
 
 interface OutlinedTextInputProps extends TextInputProps {
     placeholder: string;
@@ -72,7 +73,7 @@ const CustomTextInputNoEffect: React.FC<OutlinedTextInputProps> = ({
                 </>
             )}
             {error.status && (
-                <Text style={[styles.error, errorStyle]}>{error.text}</Text>
+                <Text style={[globalStyle.error, errorStyle]}>{error.text}</Text>
             )}
         </View>
     );
@@ -95,13 +96,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: "center",
         alignItems: "center"
-    },
-    error: {
-        ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: COLORS.RED,
-        fontSize: 10,
-        alignSelf: "flex-start",
-        textTransform: "capitalize"
     }
 });
 

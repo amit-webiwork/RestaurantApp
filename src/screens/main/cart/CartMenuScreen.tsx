@@ -4,16 +4,13 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-nati
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
-import { FS, HP, VP } from '../../../utils/Responsive';
+import { HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
-import { categoryTabData, itemData } from '../../../utils/MockData';
-import SearchBoxSection from '../../../components/home-sections/SearchBox';
-import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
+import { itemData } from '../../../utils/MockData';
 import MenuItemsSection from '../../../components/items/MenuItems';
 import { ButtonSection as Button } from '../../../components/Button';
-import CartLayout from '../../../components/cart/CartLayout';
 
 function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element {
     return (
@@ -57,7 +54,6 @@ function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element 
                     </View>
                 </ScrollView>
             </InnerBlock>
-            <CartLayout children={undefined}></CartLayout>
         </OuterLayout>
     )
 }

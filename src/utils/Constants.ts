@@ -14,8 +14,8 @@ export const COLORS = {
     FAILED: "#D93A3A",
 };
 
-export const BACKEND_URL = "http://192.168.0.111:3000";
+export const BACKEND_URL = "http://192.168.0.110:3000";
 
-export const apiEndpoints = { signup: "/auth/user/sign-up", login: "/auth/user/sign-in", forgot: "/auth/user/forgot-password", otpVerify: "/auth/user/otp-verify", resetPassword: "/auth/user/reset-password", categoryList: "/user/item-category/list", itemList: "/user/item/list" };
+export const apiEndpoints = { signup: "/auth/user/sign-up", login: "/auth/user/sign-in", forgot: "/auth/user/forgot-password", otpVerify: "/auth/user/otp-verify", resetPassword: "/auth/user/reset-password", categoryList: "/user/item-category/list", itemList: "/user/item/list", updateProfile: "/user/profile", profileUpload: "/user/profile-upload", changePassword: "/user/change-password", deleteAccount: "/user/account", topicList: "/user/feedback-topics", feedback: "/user/feedback" };
 
 export const errorMessage = { commonError: "Failed to process!", otp: "Invalid OTP entered.", commonMessage: "Something went wrong. Please try again later.", }

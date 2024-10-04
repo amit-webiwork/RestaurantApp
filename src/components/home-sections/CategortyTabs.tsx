@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -7,12 +7,13 @@ import {
     FlatList
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FS, HP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
-import { categoryLoaded } from '../../redux/features/items';
+import { categoryList, categoryLoaded, fetchCategories } from '../../redux/features/items';
 import CategoryTabsLoaderSection from '../skeleton/CategoryTabsLoader';
+import { AppDispatch } from '../../redux/store';
 
 const colorsBG = [[COLORS.HOME_ICONS, COLORS.HOME_ICONS], [COLORS.BACKGROUND_DEFAULT, COLORS.BACKGROUND_DEFAULT]]
 
@@ -23,13 +24,23 @@ interface Props {
 
 
 const CategortyTabs: React.FunctionComponent<Props> = ({ data, setSelectedCategory }) => {
+    const dispatch: AppDispatch = useDispatch();
+
     const CategoryLoaded = useSelector(categoryLoaded);
+    const CategoryList = useSelector(categoryList);
+    
     const [selected, setSelected] = useState(0);
 
     const handleSelect = (item: { id: number; }) => {
         setSelectedCategory(item.id);
         setSelected(item.id);
     };
+
+    useEffect(() => {
+        if (!CategoryLoaded) {
+            dispatch(fetchCategories());
+        }
+    }, [CategoryLoaded])
 
     const categoryItems = ({ item }: { item: any }) => {
         return (
@@ -44,7 +55,7 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ data, setSelectedCatego
                         end={{ x: 1, y: 0 }}
                         style={[styles.categoryBox, { borderColor: selected === item.id ? COLORS.HOME_ICONS : "#D0D0D0" }]}
                     >
-                        <Text style={{ ...styles.categoryText, color: selected === item.id ? COLORS.WHITE : COLORS.BLACK, fontFamily: selected === item.id ? "RalewaySemiBold" : "RalewayRegular" }}>{item.title}</Text>
+                        <Text style={{ ...styles.categoryText, color: selected === item.id ? COLORS.WHITE : COLORS.BLACK, fontFamily: selected === item.id ? "RalewaySemiBold" : "RalewayRegular" }}>{item.name}</Text>
                     </LinearGradient>
                 </TouchableOpacity>
             </View>
@@ -53,9 +64,9 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ data, setSelectedCatego
 
     return (
         <View>
-            {!CategoryLoaded ? (
+            {CategoryLoaded ? (
                 <FlatList
-                    data={data}
+                    data={CategoryList}
                     renderItem={categoryItems}
                     contentContainerStyle={{}}
                     horizontal={true}

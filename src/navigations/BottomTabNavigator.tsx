@@ -14,6 +14,9 @@ import Icon, { Icons } from '../components/Icons';
 import CategoryScreen from '../screens/main/CategoryScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MenuScreen from '../screens/main/menu/MenuScreen';
+import CartNotificationBarSection from '../components/cart/CartNotificationBar';
+import { useSelector } from 'react-redux';
+import { itemAdded } from '../redux/features/cart';
 
 export type MenuStackParamList = {
     CategoryScreen: undefined;
@@ -98,8 +101,11 @@ const TabButton = (props) => {
 }
 
 export default function BottomTabNavigator() {
+    const ItemAdded = useSelector(itemAdded);
+    
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            <CartNotificationBarSection isVisible={ItemAdded} />
             <Tab.Navigator
                 initialRouteName="HomeScreen"
                 screenOptions={{
@@ -112,7 +118,7 @@ export default function BottomTabNavigator() {
                         <Tab.Screen key={index} name={item.route} component={item.component}
                             options={{
                                 tabBarShowLabel: false,
-                                tabBarStyle: item.route === 'CartScreen' ? { display: 'none' } : [styles.tabBar, styles.shadow],
+                                tabBarStyle: (item.route === 'CartScreen') ? { display: 'none' } : [styles.tabBar, styles.shadow],
                                 tabBarButton: (props) => <TabButton {...props} item={item} />
                             }}
                         />

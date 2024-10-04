@@ -56,6 +56,7 @@ const CategoryBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
 
     const CategoryItem = ({ item, index }: { item: any, index: number }) => {
         const backgroundColor = colorsBG[index % colorsBG.length];
+
         return (
             <View style={{ marginRight: HP(15), flexGrow: 1, gap: HP(5) }}>
                 <TouchableOpacity
@@ -69,16 +70,16 @@ const CategoryBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
                         style={styles.categoryBox}
                     >
                         <View style={{ alignItems: "center" }}>
-                            <Image source={item.icon} style={styles.categoryIcon} />
+                            <Image
+                                source={{ uri: item.imgUrl }}
+                                style={styles.categoryIcon} />
                         </View>
                     </LinearGradient>
                 </TouchableOpacity>
-                <Text style={styles.categoryText}>{item.title}</Text>
+                <Text style={styles.categoryText}>{item.name}</Text>
             </View>
         )
     }
-
-    // console.log(CategoryList, CategoryLoaded, '-----------CategoryList')
 
     return (
         <View style={styles.mainContainer}>
@@ -86,7 +87,7 @@ const CategoryBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
                 <Text style={styles.heading}>
                     categories
                 </Text>
-                {!CategoryLoaded && (
+                {CategoryLoaded && (
                     <View style={styles.iconMainContainer}>
                         <TouchableOpacity
                             onPress={scrollLeft}
@@ -105,9 +106,9 @@ const CategoryBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
             </View>
 
             <View>
-                {!CategoryLoaded ? (
+                {CategoryLoaded ? (
                     <FlatList
-                        data={data}
+                        data={CategoryList}
                         renderItem={({ item, index, separators }) => <CategoryItem item={item} index={index} />}
                         contentContainerStyle={styles.listContainer}
                         horizontal={true}

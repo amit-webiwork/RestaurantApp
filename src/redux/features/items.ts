@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getCategoryList, getItemList } from '../../utils/ApiCall';
+import { getCategoryList, getItemList, getTopicList } from '../../utils/ApiCall';
 import { AppDispatch } from '../store';
 
 const itemDefault = {
@@ -7,7 +7,8 @@ const itemDefault = {
     categoryLoaded: false,
     items: [],
     itemLoaded: false,
-    itemCount: 0
+    topics: [],
+    topicLoaded: false
 }
 
 export const itemSlice = createSlice({
@@ -21,7 +22,10 @@ export const itemSlice = createSlice({
         setItemList: (state, action) => {
             state.items = action?.payload?.data || []
             state.itemLoaded = true
-            state.itemCount = +action?.payload?.count || 0
+        },
+        setTopicList: (state, action) => {
+            state.topics = action?.payload || []
+            state.topicLoaded = true
         },
     },
 })
@@ -44,13 +48,24 @@ export const fetchItems = () => async (dispatch: AppDispatch) => {
     }
 };
 
-export const { setCategoryList, setItemList } = itemSlice.actions
+export const fetchTopics = () => async (dispatch: AppDispatch) => {
+    try {
+        const data = await getTopicList();
+        dispatch(setTopicList(data));
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const { setCategoryList, setItemList, setTopicList } = itemSlice.actions
 
 export const categoryList = (state: { items: { categories: any[] } }) => state.items.categories;
 export const categoryLoaded = (state: { items: { categoryLoaded: boolean; }; }) => state.items.categoryLoaded;
 
 export const itemList = (state: { items: { items: any[] } }) => state.items.items;
 export const itemLoaded = (state: { items: { itemLoaded: boolean; }; }) => state.items.itemLoaded;
-export const itemCount = (state: { items: { itemCount: number; }; }) => state.items.itemCount;
+
+export const topicList = (state: { items: { topics: any[] } }) => state.items.topics;
+export const topicLoaded = (state: { items: { topicLoaded: boolean } }) => state.items.topicLoaded;
 
 export default itemSlice.reducer;

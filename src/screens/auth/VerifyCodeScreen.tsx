@@ -36,8 +36,8 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
     const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
 
     const handleOnPress = async () => {
-        navigation.navigate(`CreatePasswordScreen`);
-        return;
+        // navigation.navigate(`CreatePasswordScreen`);
+        // return;
         try {
             const email = await loadStorage("forgotPasswordEmail");
 

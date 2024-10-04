@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 
 import OuterLayout from '../../components/OuterLayout';
@@ -10,41 +10,38 @@ import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import SearchBoxSection from '../../components/home-sections/SearchBox';
 import LinearGradient from 'react-native-linear-gradient';
+import { AppDispatch } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { categoryList, categoryLoaded, fetchCategories } from '../../redux/features/items';
+import CategoryBoxLoaderSection from '../../components/skeleton/CategoryBoxLoader';
+import MenuItemLoader from '../../components/skeleton/MenuItemLoader';
+import CategoryItemLoaderSection from '../../components/skeleton/CategoryItemLoader';
 
 const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF4C399", "#CFF4C399"], ["#FDD6D699", "#FDD6D699"]];
 
-const data = [
-    {
-        "title": "juice",
-        "icon": require(`../../assets/icons/categories/drink.png`)
-    },
-    {
-        "title": "dessert",
-        "icon": require(`../../assets/icons/categories/mousse.png`)
-    },
-    {
-        "title": "bubble tea",
-        "icon": require(`../../assets/icons/categories/bubble-tea.png`)
-    },
-    {
-        "title": "acai",
-        "icon": require(`../../assets/icons/categories/acai.png`)
-    },
-]
-
 function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element {
+    const dispatch: AppDispatch = useDispatch();
+
+    const CategoryLoaded = useSelector(categoryLoaded);
+    const CategoryList = useSelector(categoryList);
+
     const [searchText, setSearchText] = useState<any>("");
-    const [categoryList, setCategoryList] = useState<any[]>([...data, ...data, ...data, ...data]);
-    const [categoryListFiltered, setCategoryListFiltered] = useState<any[]>([...data, ...data, ...data, ...data]);
+    const [categoryListFiltered, setCategoryListFiltered] = useState<any[]>();
+
+    useEffect(() => {
+        if (!CategoryLoaded) {
+            dispatch(fetchCategories());
+        } else {
+            setCategoryListFiltered(CategoryList);
+        }
+    }, [CategoryLoaded])
 
     const searchTextHandler = useCallback((e: string) => {
-        setSearchText(e);
-
         // find in Categories
-        const filtered = categoryList.filter(item => item['title'].toLowerCase().indexOf(e.toLowerCase()) > -1);
+        const filtered = CategoryList.filter(item => item['name'].toLowerCase().indexOf(e.toLowerCase()) > -1);
 
         setCategoryListFiltered(filtered);
-    }, [categoryList]);
+    }, [CategoryList]);
 
     const CategoryItem = ({ item, index }: { item: any, index: number }) => {
         const backgroundColor = colorsBG[index % colorsBG.length];
@@ -61,11 +58,11 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
                         style={styles.categoryBox}
                     >
                         <View style={{ alignItems: "center" }}>
-                            <Image source={item.icon} style={styles.categoryIcon} />
+                            <Image source={{ uri: item.imgUrl }} style={styles.categoryIcon} />
                         </View>
                     </LinearGradient>
                 </TouchableOpacity>
-                <Text style={styles.categoryText}>{item.title}</Text>
+                <Text style={styles.categoryText}>{item.name}</Text>
             </View>
         )
     }
@@ -94,14 +91,20 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
                         </View>
 
                         <View>
-                            <FlatList
-                                numColumns={3}
-                                data={categoryListFiltered}
-                                renderItem={({ item, index }) => <CategoryItem item={item} index={index} />}
-                                contentContainerStyle={styles.listContainer}
-                                columnWrapperStyle={styles.columnWrapper}
-                                showsVerticalScrollIndicator={false}
-                            />
+                            {CategoryLoaded ? (
+                                <FlatList
+                                    numColumns={3}
+                                    data={categoryListFiltered}
+                                    renderItem={({ item, index }) => <CategoryItem item={item} index={index} />}
+                                    contentContainerStyle={styles.listContainer}
+                                    columnWrapperStyle={styles.columnWrapper}
+                                    showsVerticalScrollIndicator={false}
+                                />
+                            ) : (
+                                <View style={styles.listContainer}>
+                                    <CategoryItemLoaderSection />
+                                </View>
+                            )}
                         </View>
                     </View>
                 </InnerBlock>

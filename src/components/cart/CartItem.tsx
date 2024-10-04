@@ -1,25 +1,15 @@
 import React, { memo, useEffect, useState } from 'react';
 import {
     View,
-    TouchableOpacity,
     StyleSheet,
     Text,
-    FlatList,
-    ImageBackground,
-    ScrollView,
     Dimensions,
     Image
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
-import Icon, { Icons } from '../Icons';
+
 import { FS, HP, VP } from '../../utils/Responsive';
-import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import { fetchItems, itemCount, itemList, itemLoaded } from '../../redux/features/items';
-import { AppDispatch } from '../../redux/store';
-import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
-import MenuItemLoaderSection from '../skeleton/MenuItemLoader';
 import CartQtyButtonV2Section from '../product-sections/CartQtyButtonV2';
 
 interface Props {

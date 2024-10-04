@@ -5,7 +5,13 @@ import { TextStyles } from '../utils/TextStyles';
 import Icon, { Icons } from './Icons';
 import { COLORS } from '../utils/Constants';
 
-const DropDown = ({ label, data, onSelect }) => {
+interface Props {
+    label: string;
+    data: any[];
+    onSelect: any;
+}
+
+const DropDown = ({ label, data, onSelect }: Props) => {
     const [visible, setVisible] = useState(false);
     const [selected, setSelected] = useState(null);
 
@@ -13,13 +19,13 @@ const DropDown = ({ label, data, onSelect }) => {
         setVisible(!visible);
     };
 
-    const handleSelect = (item) => {
+    const handleSelect = (item: any) => {
         setSelected(item.text);
         onSelect(item);
         setVisible(false);
     };
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item }: { item: any }) => (
         <TouchableOpacity style={styles.item} onPress={() => handleSelect(item)}>
             <Text style={styles.itemText}>{item.text}</Text>
         </TouchableOpacity>

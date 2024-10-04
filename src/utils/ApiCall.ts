@@ -39,4 +39,28 @@ const getItemList = async (limit = 10, offset = 0) => {
     }
 };
 
-export { submitLogin, getCategoryList, getItemList };
+const deleteAccount = async () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.delete(BACKEND_URL + apiEndpoints.deleteAccount);
+            resolve(res);
+        } catch (error: any) {
+            console.log('API ERROR (deleteAccount)', (error?.response?.data?.message || error?.message));
+            reject(error);
+        }
+    });
+}
+
+const getTopicList = async () => {
+    try {
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.topicList}`);
+
+        return res.data;
+    } catch (error: any) {
+        const { response } = error;
+        const message = response?.data?.message || error?.message || "Unknown error";
+        throw new Error(message);
+    }
+};
+
+export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList };

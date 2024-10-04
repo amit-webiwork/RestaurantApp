@@ -16,7 +16,7 @@ import Icon, { Icons } from '../Icons';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import { fetchItems, itemCount, itemList, itemLoaded } from '../../redux/features/items';
+import { fetchItems, itemLoaded } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
 import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
 import MenuItemLoaderSection from '../skeleton/MenuItemLoader';
@@ -90,7 +90,7 @@ const MenuItems: React.FunctionComponent<Props> = ({ data, navigation }) => {
 
     return (
         <View>
-            {!ItemLoaded ? (
+            {(!ItemLoaded || 1==1) ? (
                 <FlatList
                     numColumns={2}
                     data={data}

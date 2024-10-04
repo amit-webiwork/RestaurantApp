@@ -36,8 +36,8 @@ const ForgotScreen: React.FunctionComponent<NavigationProp> = ({
 
     const handleOnPress = async () => {
         try {
-            navigation.navigate(`VerifyCodeScreen`);
-            return;
+            // navigation.navigate(`VerifyCodeScreen`);
+            // return;
             setError(errorObj);
 
             const resource = { username };

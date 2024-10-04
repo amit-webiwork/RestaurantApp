@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 
 import Icon, { Icons } from '../../components/Icons';
-import { COLORS } from '../../utils/Constants';
+import { COLORS, errorMessage } from '../../utils/Constants';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomActionDialogComp from '../../components/dialogs/CustomActionDialog';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 import AccountSkeletonSection from '../../components/AccountSkeleton';
+import { removeStorage } from '../../utils/Storage';
+import { proflieDetails, setProflieDetails } from '../../redux/features/profile';
+import { deleteAccount, submitLogin } from '../../utils/ApiCall';
+import LottieLoader from '../../components/LottieLoader';
 
 const titleDelete = `Confirm Delete`;
 const messageDelete = `Are you sure you want to delete this account?`;
@@ -20,11 +24,17 @@ const messageLogout = `Are you sure you want to logout from this device?`;
 function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch = useDispatch();
 
+    const ProflieDetails = useSelector(proflieDetails);
+
+    const { token, user } = ProflieDetails;
+
     const [isPaymentMenuOpen, setIsPaymentMenuOpen] = useState(false);
     const [isSettingMenuOpen, setIsSettingMenuOpen] = useState(false);
 
     const [accountDeleteDialogVisible, setAccountDeleteDialogVisible] = useState(false);
     const [accountLogoutDialogVisible, setAccountLogoutDialogVisible] = useState(false);
+
+    const [loader, setLoader] = useState(false);
 
     const deleteAccountAction = () => {
         setAccountDeleteDialogVisible(true)
@@ -34,14 +44,46 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
         setAccountLogoutDialogVisible(true)
     }
 
+    const logoutAccountClickAction = async () => {
+        await removeStorage('userDetails');
+        dispatch(setProflieDetails({}));
+
+        setAccountLogoutDialogVisible(false);
+
+        navigation.reset({
+            index: 0,
+            routes: [
+                {
+                    name: 'AuthStackNavigator',
+                },
+            ],
+        });
+    }
+
+    const deleteAccountClickAction = async () => {
+        try {
+            setLoader(true);
+            const response = await deleteAccount();
+            setAccountDeleteDialogVisible(false);
+            setLoader(false);
+            await logoutAccountClickAction();
+        } catch (error: any) {
+            setLoader(false);
+            setAccountDeleteDialogVisible(false);
+
+            dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: `${error?.response?.data?.message}` || errorMessage.commonMessage }));
+        }
+    }
+
     return (
         <>
+            <LottieLoader visible={loader} />
             <CustomActionDialogComp
                 visible={accountDeleteDialogVisible}
                 title={titleDelete}
                 message={messageDelete}
                 onClose={() => setAccountDeleteDialogVisible(false)}
-                onAction={() => setAccountDeleteDialogVisible(false)}
+                onAction={deleteAccountClickAction}
                 dialogTitleStyle={styles.dialogTitleStyle}
                 dialogMessageStyle={styles.dialogMessageStyle}
                 buttonAction={true}
@@ -53,7 +95,7 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                 title={titleLogout}
                 message={messageLogout}
                 onClose={() => setAccountLogoutDialogVisible(false)}
-                onAction={() => setAccountLogoutDialogVisible(false)}
+                onAction={logoutAccountClickAction}
                 dialogTitleStyle={styles.dialogTitleStyle}
                 dialogMessageStyle={styles.dialogMessageStyle}
                 buttonAction={true}
@@ -61,7 +103,7 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                 buttonText2='Yes, Of course'
             />
             <View style={{ flex: 1, marginBottom: VP(40), backgroundColor: "#FFF" }}>
-                <AccountSkeletonSection navigation={navigation}>
+                <AccountSkeletonSection navigation={navigation} user={user}>
                     <View style={{ paddingHorizontal: HP(39), paddingVertical: HP(120), gap: HP(15) }}>
                         {/* edit profile */}
                         <View style={{ flexDirection: "row", gap: HP(15), alignItems: "center" }}>
@@ -150,21 +192,21 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         <View>
                             <View style={{ flexDirection: "row", gap: HP(15), alignItems: "center" }}>
                                 <TouchableOpacity
-                                    onPress={() => {setIsSettingMenuOpen((pre) => !pre); setIsPaymentMenuOpen(false)}}
+                                    onPress={() => { setIsSettingMenuOpen((pre) => !pre); setIsPaymentMenuOpen(false) }}
                                     style={[styles.iconContainer, { backgroundColor: "#E9D4FF" }]}
                                 >
                                     <Image source={require(`../../assets/icons/setting.png`)} style={{ width: FS(24), height: FS(24) }} />
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
-                                    onPress={() => {setIsSettingMenuOpen((pre) => !pre); setIsPaymentMenuOpen(false)}}
+                                    onPress={() => { setIsSettingMenuOpen((pre) => !pre); setIsPaymentMenuOpen(false) }}
                                     style={{ flex: 1 }}
                                 >
                                     <Text style={styles.accountLabel}>settings</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
-                                    onPress={() => {setIsSettingMenuOpen((pre) => !pre); setIsPaymentMenuOpen(false)}}
+                                    onPress={() => { setIsSettingMenuOpen((pre) => !pre); setIsPaymentMenuOpen(false) }}
                                 >
                                     <Icon
                                         type={Icons.Feather}

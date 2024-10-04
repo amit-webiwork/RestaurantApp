@@ -85,7 +85,7 @@ function NotificationScreen({ navigation }: { navigation: any }): React.JSX.Elem
                         <View style={styles.top}>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(`HomeScreen`)}
-                                style={{ position: 'absolute', left: 0 }}
+                                style={{ position: 'absolute', left: 0, alignSelf: "center" }}
                             >
                                 <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
                             </TouchableOpacity>
@@ -133,15 +133,12 @@ function NotificationScreen({ navigation }: { navigation: any }): React.JSX.Elem
 const styles = StyleSheet.create({
     main: {
         marginHorizontal: HP(20),
-        marginVertical: VP(28),
-        // flex: 1
+        marginVertical: VP(28)
     },
     top: {
         flexDirection: "row",
         justifyContent: "center",
-        alignItems: "center",
-        width: '100%',
-        paddingBottom: HP(20)
+        alignItems: "center"
     },
     headingText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

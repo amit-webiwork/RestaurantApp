@@ -8,12 +8,8 @@ import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
-import { categoryTabData, itemData } from '../../../utils/MockData';
-import SearchBoxSection from '../../../components/home-sections/SearchBox';
-import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
-import MenuItemsSection from '../../../components/items/MenuItems';
+import { itemData } from '../../../utils/MockData';
 import PopularMenuItemsSection from '../../../components/items/PopularMenuItems';
-import CartNotificationBarSection from '../../../components/cart/CartNotificationBar';
 import CartLayout from '../../../components/cart/CartLayout';
 
 function PopularMenuScreen({ route, navigation }: { route: any; navigation: any }): React.JSX.Element {

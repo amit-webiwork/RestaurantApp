@@ -22,7 +22,7 @@ axios.interceptors.request.use(
     if (token) {
       config.headers['Authorization'] = 'Bearer ' + token
     }
-    config.headers['Content-Type'] = 'application/json';
+    // config.headers['Content-Type'] = 'application/json';
     config.timeout = 10000; // Wait for 10 seconds before timing out
     // console.log(config, '--------config');
     return config;

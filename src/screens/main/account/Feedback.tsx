@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions, ScrollView } from 'react-native';
 
 import Icon, { Icons } from '../../../components/Icons';
-import { COLORS } from '../../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../../utils/Constants';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import { TextStyles } from '../../../utils/TextStyles';
 import OuterLayout from '../../../components/OuterLayout';
@@ -11,46 +11,36 @@ import { globalStyle } from '../../../utils/GlobalStyle';
 import DropDown from '../../../components/DropDown';
 import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect';
 import { ButtonSection as Button } from '../../../components/Button';
+import { AppDispatch } from '../../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTopics, topicList, topicLoaded } from '../../../redux/features/items';
+import LottieLoader from '../../../components/LottieLoader';
+import { feedbackForm, validateResource } from '../../../utils/ValidateResource';
+import axios from 'axios';
+import { setDialogContent } from '../../../redux/features/customDialog';
+import Warning from '../../../assets/svgs/warning.svg';
+import CheckmarkWithConfetti from '../../../components/CheckmarkWithConfetti';
 
 const { width, height } = Dimensions.get('window');
 
-const options = [
-    {
-        id: 1,
-        text: "boba tea is very tasty"
-    },
-    {
-        id: 2,
-        text: "somthing is wrong with the app not working properly"
-    },
-    {
-        id: 3,
-        text: "by mistake place order, please cancel"
-    },
-    {
-        id: 4,
-        text: "how much time my order will take"
-    },
-    {
-        id: 5,
-        text: "i recently added one dessert not showing in my cart"
-    },
-    {
-        id: 6,
-        text: "when will i get my refund amount"
-    }
-];
-
-const errorObj = { topic: { status: false, text: "" }, feedback: { status: false, text: "" } }
+const errorObj = { topicId: { status: false, text: "" }, feedback: { status: false, text: "" } }
 
 function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
-    const [rating, setRating] = useState(3);
+    const dispatch: AppDispatch = useDispatch();
+
+    const TopicLoaded = useSelector(topicLoaded);
+    const TopicList = useSelector(topicList);
+
+    const [rating, setRating] = useState(5);
     const [topicId, setTopicId] = useState(0);
     const [feedback, setFeedback] = useState("");
     const [error, setError] = useState(errorObj);
 
     const [textLength, setTextLength] = useState(200);
     const [showPopUp, setShowPopUp] = useState(false);
+
+    const [loader, setLoader] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleSelection = (item: { id: number }) => {
         setTopicId(item.id)
@@ -61,11 +51,54 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
         setTextLength(200 - e.length);
     }
 
+    const submitHandler = async () => {
+        try {
+            setError(errorObj);
+
+            const resource = { topicId, rating, feedback }
+
+            const dataPayload = await validateResource(feedbackForm, setError)(resource);
+
+            dataPayload['description'] = dataPayload['feedback'];
+
+            delete dataPayload['feedback'];
+
+            setLoading(true);
+
+            axios.post(BACKEND_URL + apiEndpoints.feedback, dataPayload)
+                .then(async (response: any) => {
+                    setLoading(false);
+
+                    setShowPopUp(true);
+                })
+                .catch(error => {
+                    setLoading(false);
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: `${error?.response?.data?.message}` || errorMessage.commonMessage }));
+                    console.log("Error sending data: ", error.message);
+                });
+
+        } catch (err: any) {
+            setLoading(false);
+            console.log(err.message, '---err');
+        }
+    }
+
+    useEffect(() => {
+        setLoader(true);
+        if (!TopicLoaded) {
+            dispatch(fetchTopics());
+        } else {
+            setLoader(false);
+        }
+    }, [TopicLoaded])
+
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
+            <LottieLoader visible={loader} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingHorizontal: HP(20), paddingVertical: HP(27.79) }}>
+                        {/* Top Navigation */}
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <TouchableOpacity
                                 onPress={() => navigation.goBack()}
@@ -76,6 +109,7 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                             <Text style={styles.topHeading}>feedback</Text>
                         </View>
 
+                        {/* Center Image and text */}
                         <View style={{ marginTop: VP(50), alignItems: "center" }}>
                             <View style={{ width: FS(167.22), height: VP(139.23), }}>
                                 <Image source={require(`../../../assets/images/feedback.png`)} style={styles.img} />
@@ -87,6 +121,7 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                             </View>
                         </View>
 
+                        {/* Rating Section */}
                         <View style={{ flexDirection: "row", marginTop: VP(26), justifyContent: "center", gap: HP(28.5) }}>
                             <TouchableOpacity
                                 onPress={() => setRating(1)}
@@ -95,27 +130,30 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                onPress={() => setRating(2)}
+                                onPress={() => setRating(3)}
                             >
-                                <Image source={rating === 2 ? require(`../../../assets/icons/smiley-sad-active.png`) : require(`../../../assets/icons/smiley-sad.png`)} style={styles.icon} />
+                                <Image source={rating === 3 ? require(`../../../assets/icons/smiley-sad-active.png`) : require(`../../../assets/icons/smiley-sad.png`)} style={styles.icon} />
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                onPress={() => setRating(3)}
+                                onPress={() => setRating(5)}
                             >
-                                <Image source={rating === 3 ? require(`../../../assets/icons/smiley-active.png`) : require(`../../../assets/icons/smiley.png`)} style={styles.icon} />
+                                <Image source={rating === 5 ? require(`../../../assets/icons/smiley-active.png`) : require(`../../../assets/icons/smiley.png`)} style={styles.icon} />
                             </TouchableOpacity>
                         </View>
 
                         <View style={{ marginTop: VP(31.63) }}>
-                            <DropDown label="Select Topic" data={options} onSelect={handleSelection} />
+                            <DropDown label="Select Topic" data={TopicList} onSelect={handleSelection} />
+                            {error.topicId.status && (
+                                <Text style={globalStyle.error}>{error.topicId.text}</Text>
+                            )}
                         </View>
 
                         <View style={{ marginTop: VP(26) }}>
                             <CustomTextInputNoEffect
                                 formProps={{ text: feedback, setText: setFeedbackHandler, error: error.feedback }}
                                 placeholder="I Really Like Their Desserts And Boba Tea |"
-                                maxLength={255}
+                                maxLength={200}
                                 styleInput={styles.styleInput}
                                 multiline={true}
                                 numberOfLines={10}
@@ -127,9 +165,9 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                         <View style={{ marginTop: VP(49) }}>
                             <Button
                                 text={'send'}
-                                onPress={() => setShowPopUp(true)}
+                                onPress={submitHandler}
                                 textStyle={styles.buttonStyle}
-                                isLoading={false}
+                                isLoading={loading}
                                 activeButtonText={{ opacity: .65 }}
                                 mainContainerStyle={{ flex: 1, borderRadius: HP(8) }}
                                 LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
@@ -143,7 +181,7 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                     <View style={styles.successPopUpMain}>
                         <View style={styles.successPopUp}>
                             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}>
-                                <Image source={require(`../../../assets/images/success.png`)} style={[styles.popUpImg]} />
+                                <CheckmarkWithConfetti />
                                 <Text style={styles.popUpHeading}>thank you!</Text>
                                 <Text style={styles.popUpText}>thankyou for sharing your thoughts we appreciate your feedback!</Text>
 

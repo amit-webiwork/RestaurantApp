@@ -3,15 +3,12 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-nati
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
-import { globalStyle } from '../../../utils/GlobalStyle';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
 import { cartItems, categoryTabData, itemData } from '../../../utils/MockData';
-import SearchBoxSection from '../../../components/home-sections/SearchBox';
 import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
-import MenuItemsSection from '../../../components/items/MenuItems';
 import CartItemSection from '../../../components/cart/CartItem';
 import ItemBoxSection from '../../../components/home-sections/ItemBox';
 import CookingRequestSection from '../../../components/product-sections/CookingRequest';
@@ -52,14 +49,14 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 {/* add more items */}
                                 <View style={styles.textBox}>
                                     <TouchableOpacity
-                                        onPress={() => void (0)}
+                                        onPress={() => navigation.navigate(`CartMenuScreen`)}
                                         style={{}}
                                     >
                                         <Text style={styles.linkText}>add more items</Text>
                                     </TouchableOpacity>
 
                                     <TouchableOpacity
-                                        onPress={() => void (0)}
+                                        onPress={() => navigation.navigate(`CartMenuScreen`)}
                                         style={styles.iconBox}
                                     >
                                         <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />

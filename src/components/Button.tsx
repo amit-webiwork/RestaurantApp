@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     disabledButton: {
-        backgroundColor: "#FF00E2",
+        // backgroundColor: "#FF00E2",
     },
     activeButtonText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

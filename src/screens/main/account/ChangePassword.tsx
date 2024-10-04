@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions, Keyboard, ScrollView } from 'react-native';
 
 import Icon, { Icons } from '../../../components/Icons';
-import { COLORS } from '../../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../../utils/Constants';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import { TextStyles } from '../../../utils/TextStyles';
 import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect';
@@ -10,15 +10,27 @@ import { ButtonSection as Button } from '../../../components/Button';
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
+import { changePassword, validateResource } from '../../../utils/ValidateResource';
+import axios from 'axios';
+import { loadStorage, saveStorage } from '../../../utils/Storage';
+import { setProflieDetails } from '../../../redux/features/profile';
+import { useDispatch } from 'react-redux';
+import Warning from '../../../assets/svgs/warning.svg';
+import { setDialogContent } from '../../../redux/features/customDialog';
+import { showFadeAlert } from '../../../utils/Alert';
+import CheckmarkWithConfetti from '../../../components/CheckmarkWithConfetti';
 
 const { width, height } = Dimensions.get('window');
 
 const errorObj = { password: { status: false, text: "" }, confirmPassword: { status: false, text: "" }, oldPassword: { status: false, text: "" } }
 
 function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element {
+    const dispatch = useDispatch();
+
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [oldPassword, setOldPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const [error, setError] = useState(errorObj);
 
@@ -31,10 +43,40 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
         setPasswordHide((pre: any) => ({ ...pre, [key]: !pre[key] }))
     }
 
-    const handleOnPress = () => {
-        // setError((pre: any) => ({ ...pre, password: { status: true, text: "Must be at least 8 character" } }))
-        setShowPopUp(true);
-    }
+    const handleOnPress = async () => {
+        try {
+            setError(errorObj);
+
+            const resource = { password, confirmPassword, oldPassword }
+
+            const dataPayload = await validateResource(changePassword, setError)(resource);
+
+            setLoading(true);
+
+            axios.put(BACKEND_URL + apiEndpoints.changePassword, dataPayload)
+                .then(async (response: any) => {
+                    setLoading(false);
+
+                    const responseData = response.data;
+
+                    const userDetails = await loadStorage('userDetails');
+                    userDetails['user']['password'] = password;
+
+                    saveStorage(userDetails, "userDetails");
+                    dispatch(setProflieDetails(userDetails));
+                    setShowPopUp(true);
+                })
+                .catch(error => {
+                    setLoading(false);
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: `${error?.response?.data?.message}` || errorMessage.commonMessage }));
+                    console.log("Error sending data: ", error.message);
+                });
+
+        } catch (err: any) {
+            setLoading(false);
+            console.log(err.message, '---err');
+        }
+    };
 
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
@@ -110,13 +152,13 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
                                     errorStyle={styles.errorStyle}
                                 />
                             </View>
-                            
+
                             <View style={{ marginTop: VP(24.85) }}>
                                 <Button
                                     text={'verify'}
                                     onPress={handleOnPress}
                                     textStyle={styles.saveButtonStyle}
-                                    isLoading={false}
+                                    isLoading={loading}
                                     activeButtonText={{ opacity: .65 }}
                                     mainContainerStyle={{ flex: 1, borderRadius: HP(8) }}
                                     LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
@@ -132,7 +174,11 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
                     <View style={styles.successPopUpMain}>
                         <View style={styles.successPopUp}>
                             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}>
-                                <Image source={require(`../../../assets/images/success.png`)} style={[styles.img]} />
+                                {/* <Image source={require(`../../../assets/images/success.png`)} style={[styles.img]} /> */}
+                                <View style={{}}>
+                                    <CheckmarkWithConfetti />
+                                </View>
+
                                 <Text style={styles.popUpHeading}>Password Changed</Text>
                                 <Text style={styles.popUpText}>Password changed successfully, you can login again with a new password</Text>
 

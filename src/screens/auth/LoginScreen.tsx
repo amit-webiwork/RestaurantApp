@@ -42,8 +42,8 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
 
     const handleOnPress = async () => {
         try {
-            navigation.navigate(`MainTabNavigator`)
-            return;
+            // navigation.navigate(`MainTabNavigator`)
+            // return;
             setError(errorObj);
 
             const resource = { username, password }
@@ -66,7 +66,14 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
 
                         dispatch(setProflieDetails(responseData));
                         
-                        navigation.navigate(`MainTabNavigator`)
+                        navigation.reset({
+                            index: 0,
+                            routes: [
+                                {
+                                    name: 'MainTabNavigator',
+                                },
+                            ],
+                        });
                     } else {
                         dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.commonMessage }));
                     }
@@ -122,7 +129,7 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                             </TouchableOpacity>
                         </View>
 
-                        <View style={{ flex: 1}}>
+                        <View style={{ flex: 1 }}>
                             <Button
                                 text={'log in'}
                                 onPress={handleOnPress}

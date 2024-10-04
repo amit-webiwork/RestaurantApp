@@ -13,9 +13,10 @@ import Icon, { Icons } from '../Icons';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import { fetchItems, itemCount, itemList, itemLoaded } from '../../redux/features/items';
+import { fetchItems, itemList, itemLoaded } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
 import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
+import { addToCart } from '../../utils/helper/CartHelper';
 
 interface Props {
     data: any[];
@@ -27,7 +28,6 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
 
     const ItemLoaded = useSelector(itemLoaded);
     const ItemList = useSelector(itemList);
-    const ItemCount = useSelector(itemCount);
 
     useEffect(() => {
         if (!ItemLoaded) {
@@ -38,7 +38,7 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
     // console.log(data, ItemLoaded, '-----------ItemList')
 
     const BoxItems = ({ item, index }: { item: any, index: number }) => {
-        
+
         return (
             <View style={styles.boxContainer}>
                 <View style={styles.boxSubContainer}>
@@ -62,7 +62,7 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
                         <View style={styles.priceBox}>
                             <Text style={styles.priceText}>${item.price.toFixed(2)}</Text>
                             <TouchableOpacity
-                                onPress={() => void (0)}
+                                onPress={() => addToCart(dispatch)}
                                 style={styles.iconBox}
                             >
                                 <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />
@@ -76,7 +76,7 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
 
     return (
         <View>
-            {!ItemLoaded ? (
+            {(!ItemLoaded || 1 == 1) ? (
                 <FlatList
                     data={data}
                     renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} />}

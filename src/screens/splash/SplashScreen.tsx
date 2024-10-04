@@ -10,6 +10,7 @@ import { TextStyles } from '../../utils/TextStyles.ts';
 import { submitLogin } from '../../utils/ApiCall.ts';
 import { ButtonSwipe } from '../../components/ButtonSwipe.tsx';
 import { setProflieDetails } from '../../redux/features/profile.ts';
+import LottieLoader from '../../components/LottieLoader.tsx';
 
 function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
     }
 
     useEffect(() => {
+        // return;
         setTimeout(async () => {
             try {
                 const userDetails = await loadStorage("userDetails");
@@ -51,7 +53,16 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                         dispatch(setProflieDetails(responseData));
 
-                        navigation.navigate(`MainTabNavigator`)
+                        // navigation.navigate(`MainTabNavigator`);
+
+                        navigation.reset({
+                            index: 0,
+                            routes: [
+                                {
+                                    name: 'MainTabNavigator',
+                                },
+                            ],
+                        });
                     } else {
                         throw new Error('Logged Out User');
                     }
@@ -67,6 +78,7 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
     return (
         <>
+        {/* <LottieLoader visible={loader} /> */}
             <LinearGradient
                 colors={['#DF12CA', '#8027C9']}
                 start={{ x: 1, y: 0 }}

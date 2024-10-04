@@ -81,7 +81,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                     resizeMode="cover"
                                 />
                                 <TouchableOpacity
-                                    onPress={() => navigation.navigate(`HomeScreen`)}
+                                    onPress={() => navigation.goBack()}
                                     style={{ position: 'absolute', left: HP(20), top: VP(41) }}
                                 >
                                     <Icon type={Icons.Feather} size={25.66} name={`chevron-left`} color={COLORS.WHITE} />

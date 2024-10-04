@@ -33,7 +33,7 @@ const CartNotificationBar = ({ isVisible, message = "Item added to cart" }: Prop
                         duration: 300,
                         useNativeDriver: true,
                     }).start();
-                }, 3000); // Display for 2 seconds
+                }, 2000); // Display for 2 seconds
             });
         }
     }, [isVisible]);
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         left: 0,
-        right: 0
+        right: 0,
+        zIndex: 9999
     },
     gradientBar: {
         padding: HP(16),
