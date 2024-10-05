@@ -53,7 +53,7 @@ function OrderPlacedScreen({ navigation }: { navigation: any }): React.JSX.Eleme
 
                 <TouchableOpacity
                     onPress={() => navigation.navigate(`HomeScreen`)}
-                    style={{ alignSelf: "center" }}
+                    style={{ alignSelf: "center", padding: HP(10) }}
                 >
                     <Text style={[styles.heading, { fontSize: 20 }]}>order details</Text>
                 </TouchableOpacity>

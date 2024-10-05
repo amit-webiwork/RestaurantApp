@@ -180,7 +180,7 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                 {showPopUp && (
                     <View style={styles.successPopUpMain}>
                         <View style={styles.successPopUp}>
-                            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}>
+                            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
                                 <CheckmarkWithConfetti />
                                 <Text style={styles.popUpHeading}>thank you!</Text>
                                 <Text style={styles.popUpText}>thankyou for sharing your thoughts we appreciate your feedback!</Text>
@@ -259,8 +259,8 @@ const styles = StyleSheet.create({
     },
     successPopUpMain: {
         position: "absolute",
-        width: width * 1,
-        height: height * 1,
+        width: "100%",
+        height: "100%",
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.4)',
     },
@@ -305,6 +305,10 @@ const styles = StyleSheet.create({
         width: FS(243.55),
         height: VP(201.93),
         marginTop: VP(50)
+    },
+    scrollContainer: {
+        justifyContent: "center",
+        alignItems: "center"
     }
 });
 

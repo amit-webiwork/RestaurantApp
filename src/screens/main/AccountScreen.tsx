@@ -102,7 +102,7 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                 buttonText1={`No, I won’t`}
                 buttonText2='Yes, Of course'
             />
-            <View style={{ flex: 1, marginBottom: VP(40), backgroundColor: "#FFF" }}>
+            <View style={{ flex: 1, marginBottom: VP(80), backgroundColor: "#FFF" }}>
                 <AccountSkeletonSection navigation={navigation} user={user}>
                     <View style={{ paddingHorizontal: HP(39), paddingVertical: HP(120), gap: HP(15) }}>
                         {/* edit profile */}
