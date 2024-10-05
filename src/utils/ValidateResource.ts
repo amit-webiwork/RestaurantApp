@@ -1,4 +1,3 @@
-import { SetStateAction } from 'react';
 import * as Yup from 'yup';
 
 const validateResource = (resourceSchema: { validate: (arg0: any) => any; }, setState: any) => async (resource: any) => {

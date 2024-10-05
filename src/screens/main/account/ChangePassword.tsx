@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions, Keyboard, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Keyboard, ScrollView } from 'react-native';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import Icon, { Icons } from '../../../components/Icons';
 import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../../utils/Constants';
@@ -11,13 +13,10 @@ import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
 import { changePassword, validateResource } from '../../../utils/ValidateResource';
-import axios from 'axios';
 import { loadStorage, saveStorage } from '../../../utils/Storage';
 import { setProflieDetails } from '../../../redux/features/profile';
-import { useDispatch } from 'react-redux';
 import Warning from '../../../assets/svgs/warning.svg';
 import { setDialogContent } from '../../../redux/features/customDialog';
-import { showFadeAlert } from '../../../utils/Alert';
 import CheckmarkWithConfetti from '../../../components/CheckmarkWithConfetti';
 
 const { width, height } = Dimensions.get('window');

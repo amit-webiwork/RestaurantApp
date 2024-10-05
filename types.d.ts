@@ -1,5 +1,14 @@
-interface UpdateProfile {
+interface CartItemDetails {
+    imgUrl: string;
     name: string;
-    email: string;
-    phoneNo: string;
+    itemId: number;
+    price: string;
+    qty: number;
+}
+
+interface ItemDetails {
+    imgUrl: string;
+    name: string;
+    id: number;
+    price: string;
 }

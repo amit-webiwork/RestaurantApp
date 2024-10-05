@@ -1,5 +1,6 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView, Dimensions, TextInput, Animated } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { StyleSheet, Image, View, Text, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
 import { COLORS } from '../../utils/Constants.ts';
@@ -11,20 +12,26 @@ import OuterLayout from '../../components/OuterLayout.tsx';
 import InnerBlock from '../../components/InnerBlock.tsx';
 import { globalStyle } from '../../utils/GlobalStyle.ts';
 import HeadingSection from '../../components/Heading.tsx';
-import { categoryTabData, itemData, productRatings } from '../../utils/MockData.ts';
+import { productRatings } from '../../utils/MockData.ts';
 import ProductRatingsSection from '../../components/product-sections/ProductRatings.tsx';
 import CartQtyButtonV1Section from '../../components/product-sections/CartQtyButtonV1.tsx';
 import CookingRequestSection from '../../components/product-sections/CookingRequest.tsx';
 import CartLayout from '../../components/cart/CartLayout.tsx';
 import { addToCart } from '../../utils/helper/CartHelper.ts';
-import { useDispatch } from 'react-redux';
+import { fetchPopularItems, papularItemLoaded, papularItems } from '../../redux/features/items.ts';
+import { AppDispatch } from '../../redux/store.ts';
+import { cartItemList, getCartQty } from '../../redux/features/cart.ts';
 
 const { width, height } = Dimensions.get('window');
 
 function ProductScreen({ route, navigation }: { navigation: any, route: any }): React.JSX.Element {
-    const { id } = route.params;
+    const { id, item } = route.params;
 
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
+
+    const PapularItemLoaded = useSelector(papularItemLoaded);
+    const PapularItems = useSelector(papularItems);
+    const CartItemList = useSelector(cartItemList);
 
     const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -33,8 +40,8 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
     const [textLength, setTextLength] = useState<number>(100);
     const [cartQuantity, setCartQuantity] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState<number>(1);
-    const [itemList, setItemList] = useState<any[]>(itemData);
-    const [itemListFiltered, setItemListFiltered] = useState<any[]>(itemData);
+    const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
+    const [itemDetails, setItemDetails] = useState<any>({});
 
     const setInstructionTextHandler = (e: string) => {
         setInstructionText(e);
@@ -45,10 +52,25 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
         setSelectedCategory(id);
 
         // find in items
-        const filtered = itemList.filter(item => item['category'] === id);
+        const filtered = PapularItems.filter(item => (item?.category_id === id || id === 0));
 
         setItemListFiltered(filtered);
-    }, [itemList]);
+    }, [PapularItems]);
+
+    useEffect(() => {
+        if (!PapularItemLoaded) {
+            dispatch(fetchPopularItems());
+        } else {
+            setItemListFiltered(PapularItems);
+        }
+    }, [PapularItemLoaded])
+
+    useEffect(() => {
+        if (id) {
+            setItemDetails(item);
+            setCartQuantity(getCartQty(item?.id, CartItemList))
+        }
+    }, [id])
 
     const incrementCart = () => setCartQuantity(prevQty => prevQty + 1);
     const decrementCart = () => setCartQuantity(prevQty => (prevQty > 1 ? prevQty - 1 : 1));
@@ -75,8 +97,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                             {/* Top banner area */}
                             <Animated.View style={[styles.imageContainer, { height: imageHeight }]}>
                                 <Image
-                                    // source={{ uri: 'https://example.com/mango-boba-tea.png' }}
-                                    source={require('../../assets/images/fruit.png')}
+                                    source={itemDetails?.imgUrl ? { uri: itemDetails?.imgUrl } : require('../../assets/images/item-placeholder.jpg')}
                                     style={styles.image}
                                     resizeMode="cover"
                                 />
@@ -86,8 +107,8 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                 >
                                     <Icon type={Icons.Feather} size={25.66} name={`chevron-left`} color={COLORS.WHITE} />
                                 </TouchableOpacity>
-                                <View style={{ position: 'absolute', top: VP(31), right: HP(20), backgroundColor: "#0000006E", padding: HP(10), borderRadius: FS(32) }}>
-                                    <Text style={styles.title}>Mango Boba Tea</Text>
+                                <View style={{ position: 'absolute', top: VP(31), right: HP(20), backgroundColor: "#0000006E", padding: HP(10), borderRadius: FS(32), minWidth: FS(100) }}>
+                                    <Text style={styles.title}>{itemDetails?.name}</Text>
                                 </View>
                             </Animated.View>
 
@@ -137,7 +158,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                     {/* Description and info text */}
                                     <View>
                                         <Text style={styles.descText}>description</Text>
-                                        <Text style={styles.infoText}>Our Mango Boba Tea is crafted from the finest ingredients and fresh, juicy mangoes. Every drink is blended with smooth milk and natural mango puree for a burst of tropical flavor. Each cup is served with our signature chewy tapioca pearls and a complimentary smile!</Text>
+                                        <Text style={styles.infoText}>{itemDetails?.description}</Text>
                                     </View>
 
                                     {/* Cooking request */}
@@ -156,13 +177,13 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                     {/* Cart with qty Button */}
                                     <View style={{ flexDirection: "row", marginTop: VP(44), backgroundColor: COLORS.BUTTON, borderRadius: HP(40), padding: HP(17), justifyContent: "space-between", alignItems: "center" }}>
                                         <View>
-                                            <Text style={{ ...TextStyles.RALEWAY_BOLD, fontSize: 20, color: COLORS.WHITE }}>$12.00</Text>
+                                            <Text style={{ ...TextStyles.RALEWAY_BOLD, fontSize: 20, color: COLORS.WHITE }}>${itemDetails?.price}</Text>
                                         </View>
 
                                         <CartQtyButtonV1Section decrement={decrementCart} qty={cartQuantity} setQty={setCartQuantity} increment={incrementCart} />
 
                                         <TouchableOpacity
-                                            onPress={() => addToCart(dispatch)}
+                                            onPress={() => addToCart(itemDetails, cartQuantity, dispatch)}
                                             style={{ width: FS(31), height: FS(31), borderRadius: FS(15.5), backgroundColor: COLORS.WHITE, alignItems: "center", justifyContent: "center" }}
                                         >
                                             <Image
@@ -180,12 +201,12 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
                                     {/* Category Tab */}
                                     <View style={{ marginTop: VP(25.66) }}>
-                                        <CategortyTabsSection data={categoryTabData} setSelectedCategory={selectCategoryHandler} />
+                                        <CategortyTabsSection setSelectedCategory={selectCategoryHandler} />
                                     </View>
 
                                     {/* item boxes */}
                                     <View style={{ marginTop: VP(20) }}>
-                                        <ItemBoxSection data={itemListFiltered} navigation={navigation} />
+                                        <ItemBoxSection data={itemListFiltered} dataLoaded={PapularItemLoaded} navigation={navigation} />
                                     </View>
                                 </View>
 
@@ -194,7 +215,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                     </View>
                 </InnerBlock>
             </OuterLayout>
-            <CartLayout children={undefined}></CartLayout>
+            <CartLayout children={undefined} navigation={navigation}></CartLayout>
         </>
     )
 }

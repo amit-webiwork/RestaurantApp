@@ -1,22 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
-import { FS, HP, VP } from '../../../utils/Responsive';
+import { HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
-import { categoryTabData, itemData } from '../../../utils/MockData';
 import SearchBoxSection from '../../../components/home-sections/SearchBox';
 import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
 import MenuItemsSection from '../../../components/items/MenuItems';
 import CartLayout from '../../../components/cart/CartLayout';
+import { getItemList } from '../../../utils/ApiCall';
 
-function MenuScreen({ navigation }: { navigation: any }): React.JSX.Element {
+function MenuScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
+    const { categoryId } = route.params;
+
+    const [selectedCategory, setSelectedCategory] = useState(categoryId);
+    const [itemList, setItemList] = useState([]);
+    const [loader, setLoader] = useState(false);
+
+    const setSelectedCategoryhandler = (id: number) => {
+        setSelectedCategory(id);
+    }
+
+    const fetchItem = async () => {
+        try {
+            setLoader(true);
+            const response = await getItemList();
+            setItemList(response.data);
+            setLoader(false);
+        } catch (err) {
+            setLoader(false);
+            setItemList([]);
+        }
+    }
+
+    useEffect(() => {
+        fetchItem();
+    }, [])
+
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
+            {/* <LottieLoader visible={loader} /> */}
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
@@ -33,7 +60,7 @@ function MenuScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         </View>
 
                         <View style={{ marginTop: VP(45), paddingHorizontal: HP(21) }}>
-                            <CategortyTabsSection data={categoryTabData} setSelectedCategory={() => void (0)} />
+                            <CategortyTabsSection setSelectedCategory={setSelectedCategoryhandler} selectedCategory={categoryId} />
                         </View>
 
                         <View style={{ marginTop: HP(24), paddingHorizontal: HP(18) }}>
@@ -41,7 +68,7 @@ function MenuScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         </View>
 
                         <View style={{ marginTop: VP(27.59), paddingHorizontal: HP(15) }}>
-                            <MenuItemsSection data={itemData} navigation={navigation} />
+                            <MenuItemsSection data={itemList} dataLoaded={loader} navigation={navigation} />
                         </View>
 
                         <View style={{ marginTop: VP(41) }}>
@@ -50,7 +77,7 @@ function MenuScreen({ navigation }: { navigation: any }): React.JSX.Element {
                     </View>
                 </ScrollView>
             </InnerBlock>
-            <CartLayout children={undefined}></CartLayout>
+            <CartLayout children={undefined} navigation={navigation}></CartLayout>
         </OuterLayout>
     )
 }

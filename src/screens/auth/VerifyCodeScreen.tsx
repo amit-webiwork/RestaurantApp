@@ -13,7 +13,6 @@ import { loadStorage, saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
 import { globalStyle } from '../../utils/GlobalStyle';
 import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../utils/Constants';
-import Left from '../../assets/svgs/left.svg';
 import OTPInput from '../../components/OTPInput';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';

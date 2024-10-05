@@ -1,25 +1,17 @@
 import React, { ReactNode } from 'react';
-import {
-    SafeAreaView,
-    StatusBar,
-    StyleProp,
-    StyleSheet,
-    View,
-    ViewStyle,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
-import { COLORS } from '../../utils/Constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { dialogData, hideDialog } from '../../redux/features/customDialog';
-import CustomActionDialogComp from '../dialogs/CustomActionDialog';
 import CartNotificationBarSection from './CartNotificationBar';
-import { cartItemList, itemAdded } from '../../redux/features/cart';
+import { itemAdded } from '../../redux/features/cart';
 
 interface LayoutProps {
+    navigation: any;
     children: ReactNode;
 }
 
 const CartLayout: React.FC<LayoutProps> = ({
+    navigation,
     children
 }) => {
     const ItemAdded = useSelector(itemAdded);
@@ -30,7 +22,7 @@ const CartLayout: React.FC<LayoutProps> = ({
                 {children}
 
                 {/* Cart Notification bar */}
-                <CartNotificationBarSection isVisible={ItemAdded} />
+                <CartNotificationBarSection isVisible={ItemAdded} navigation={navigation} />
             </View>
         </>
     );

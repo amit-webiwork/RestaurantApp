@@ -10,7 +10,7 @@ import { TextStyles } from '../../utils/TextStyles.ts';
 import { submitLogin } from '../../utils/ApiCall.ts';
 import { ButtonSwipe } from '../../components/ButtonSwipe.tsx';
 import { setProflieDetails } from '../../redux/features/profile.ts';
-import LottieLoader from '../../components/LottieLoader.tsx';
+import { recoverCart } from '../../redux/features/cart.ts';
 
 function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch = useDispatch();
@@ -55,6 +55,12 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                         // navigation.navigate(`MainTabNavigator`);
 
+                        const cartItems = await loadStorage("cartItems");
+
+                        if (cartItems.length && cartItems.length > 0) {
+                            dispatch(recoverCart(cartItems));
+                        }
+
                         navigation.reset({
                             index: 0,
                             routes: [
@@ -78,7 +84,7 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
     return (
         <>
-        {/* <LottieLoader visible={loader} /> */}
+            {/* <LottieLoader visible={loader} /> */}
             <LinearGradient
                 colors={['#DF12CA', '#8027C9']}
                 start={{ x: 1, y: 0 }}

@@ -1,10 +1,10 @@
-import React, { memo, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, ImageBackground, Dimensions, ScrollView } from 'react-native';
+import React, { memo } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, ImageBackground, Dimensions, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Icon, { Icons } from '../components/Icons';
 import { COLORS } from '../utils/Constants';
-import { FS, HP, VP } from '../utils/Responsive';
+import { HP, VP } from '../utils/Responsive';
 import { TextStyles } from '../utils/TextStyles';
 import ProfileImageContainer from './account/ProfileImageContainer';
 import OuterLayout from './OuterLayout';

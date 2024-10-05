@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image, ScrollView } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import moment from 'moment';
 
 import OuterLayout from '../../components/OuterLayout';

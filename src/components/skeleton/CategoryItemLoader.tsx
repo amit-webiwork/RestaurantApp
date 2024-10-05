@@ -1,9 +1,7 @@
 import React, { memo } from 'react';
 import {
     View,
-    StyleSheet,
-    Dimensions,
-    ScrollView,
+    StyleSheet
 } from 'react-native';
 
 import { FS, HP, VP } from '../../utils/Responsive';

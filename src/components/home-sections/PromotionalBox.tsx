@@ -2,23 +2,15 @@ import React, { memo, useRef, useState } from 'react';
 import {
     View,
     TouchableOpacity,
-    StyleProp,
-    ViewStyle,
     StyleSheet,
-    ActivityIndicator,
-    TextStyle,
     Text,
-    TextInput,
-    Image,
     FlatList,
     ImageBackground
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import LeftWhite from '../../assets/svgs/left-white.svg';
 import Right from '../../assets/svgs/right.svg';
 
 const data = [

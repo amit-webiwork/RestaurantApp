@@ -8,7 +8,9 @@ const itemDefault = {
     items: [],
     itemLoaded: false,
     topics: [],
-    topicLoaded: false
+    topicLoaded: false,
+    papularItems: [],
+    papularItemLoaded: false
 }
 
 export const itemSlice = createSlice({
@@ -26,6 +28,10 @@ export const itemSlice = createSlice({
         setTopicList: (state, action) => {
             state.topics = action?.payload || []
             state.topicLoaded = true
+        },
+        setPapularItemList: (state, action) => {
+            state.papularItems = action?.payload?.data || []
+            state.papularItemLoaded = true
         },
     },
 })
@@ -48,6 +54,15 @@ export const fetchItems = () => async (dispatch: AppDispatch) => {
     }
 };
 
+export const fetchPopularItems = () => async (dispatch: AppDispatch) => {
+    try {
+        const data = await getItemList({ popular: 1 });
+        dispatch(setPapularItemList(data));
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const fetchTopics = () => async (dispatch: AppDispatch) => {
     try {
         const data = await getTopicList();
@@ -57,13 +72,16 @@ export const fetchTopics = () => async (dispatch: AppDispatch) => {
     }
 };
 
-export const { setCategoryList, setItemList, setTopicList } = itemSlice.actions
+export const { setCategoryList, setItemList, setTopicList, setPapularItemList } = itemSlice.actions
 
 export const categoryList = (state: { items: { categories: any[] } }) => state.items.categories;
 export const categoryLoaded = (state: { items: { categoryLoaded: boolean; }; }) => state.items.categoryLoaded;
 
 export const itemList = (state: { items: { items: any[] } }) => state.items.items;
 export const itemLoaded = (state: { items: { itemLoaded: boolean; }; }) => state.items.itemLoaded;
+
+export const papularItems = (state: { items: { papularItems: any[] } }) => state.items.papularItems;
+export const papularItemLoaded = (state: { items: { papularItemLoaded: boolean; }; }) => state.items.papularItemLoaded;
 
 export const topicList = (state: { items: { topics: any[] } }) => state.items.topics;
 export const topicLoaded = (state: { items: { topicLoaded: boolean } }) => state.items.topicLoaded;

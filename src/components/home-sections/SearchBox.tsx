@@ -45,7 +45,6 @@ const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, setHan
                 <TouchableOpacity
                     onPress={() => {
                         Keyboard.dismiss();
-                        console.log("Mic icon pressed");
                     }}
                     style={{
                         position: 'absolute',

@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-nati
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
-import { FS, HP, VP } from '../../../utils/Responsive';
+import { HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
@@ -47,7 +47,7 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
                     </View>
                 </ScrollView>
             </InnerBlock>
-            <CartLayout children={undefined}></CartLayout>
+            <CartLayout children={undefined} navigation={navigation}></CartLayout>
         </OuterLayout>
     )
 }

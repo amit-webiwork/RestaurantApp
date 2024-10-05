@@ -3,26 +3,41 @@ import {
     View,
     StyleSheet,
     Text,
-    Dimensions,
-    Image
+    Image,
+    TouchableOpacity
 } from 'react-native';
+import { useDispatch } from 'react-redux'; 
 
 
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
 import CartQtyButtonV2Section from '../product-sections/CartQtyButtonV2';
+import { addToCart } from '../../utils/helper/CartHelper';
+import { AppDispatch } from '../../redux/store';
+import { removeFromCart } from '../../redux/features/cart';
 
 interface Props {
     data: any;
 }
 
-const { width, height } = Dimensions.get('window');
-
 const CartItem: React.FunctionComponent<Props> = ({ data }) => {
+    const dispatch: AppDispatch = useDispatch();
+
     const [cartQuantity, setCartQuantity] = useState(1);
 
-    const incrementCart = () => setCartQuantity(prevQty => prevQty + 1);
-    const decrementCart = () => setCartQuantity(prevQty => (prevQty > 1 ? prevQty - 1 : 1));
+    const incrementCart = () => {
+        addToCart({ ...data, id: data.itemId }, 1, dispatch, 'add');
+    }
+
+    const decrementCart = () => {
+        if (cartQuantity > 1) {
+            addToCart({ ...data, id: data.itemId }, -1, dispatch, 'add');
+        }
+    }
+
+    const removeItemFromCart = () => {
+        dispatch(removeFromCart(data.itemId));
+    }
 
     useEffect(() => {
         setCartQuantity(+data?.qty || 1)
@@ -31,15 +46,20 @@ const CartItem: React.FunctionComponent<Props> = ({ data }) => {
     return (
         <View style={styles.boxContainer}>
             <View style={styles.boxSubContainer}>
-                <Image source={data?.bg} style={[styles.img]} />
+                <Image source={{ uri: data?.imgUrl }} style={[styles.img]} />
 
                 <View style={styles.itemInfoContainer}>
                     <View style={{ flex: 1 }}>
-                        <Text style={styles.itemTitle}>{data?.title || ""}</Text>
-                        <Text style={styles.itemPrice}>${(data?.price || 0).toFixed(2)}</Text>
+                        <Text style={styles.itemTitle}>{data?.name || ""}</Text>
+                        <Text style={styles.itemPrice}>${(data?.price || 0.00)}</Text>
                     </View>
 
                     <CartQtyButtonV2Section decrement={decrementCart} qty={cartQuantity} increment={incrementCart} />
+
+                    {/* Remove button */}
+                    <TouchableOpacity onPress={removeItemFromCart}>
+                        <Image source={require(`../../assets/icons/cart-remove.png`)} style={[styles.iconImg]} />
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -61,8 +81,8 @@ const styles = StyleSheet.create({
     img: {
         width: FS(83),
         height: VP(83),
-        resizeMode: "contain",
-        borderRadius: HP(14)
+        resizeMode: "cover",
+        borderRadius: HP(14),
     },
     itemTitle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
@@ -75,10 +95,15 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        gap: HP(8)
     },
     itemPrice: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 14,
+    },
+    iconImg: {
+        width: FS(20),
+        height: VP(20)
     }
 });
 

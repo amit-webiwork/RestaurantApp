@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
@@ -8,11 +9,30 @@ import { HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
-import { itemData } from '../../../utils/MockData';
 import MenuItemsSection from '../../../components/items/MenuItems';
 import { ButtonSection as Button } from '../../../components/Button';
+import { fetchPopularItems, papularItemLoaded, papularItems } from '../../../redux/features/items';
+import { AppDispatch } from '../../../redux/store';
+import CartLayout from '../../../components/cart/CartLayout';
+import { cartItemList } from '../../../redux/features/cart';
 
 function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element {
+    const dispatch: AppDispatch = useDispatch();
+
+    const CartItemList = useSelector(cartItemList);
+    const PapularItemLoaded = useSelector(papularItemLoaded);
+    const PapularItems = useSelector(papularItems);
+
+    const [itemList, setItemList] = useState<any[]>([]);
+
+    useEffect(() => {
+        if (!PapularItemLoaded) {
+            dispatch(fetchPopularItems());
+        } else {
+            setItemList(PapularItems);
+        }
+    }, [PapularItemLoaded])
+
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
@@ -36,24 +56,27 @@ function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element 
                         </View>
 
                         <View style={{ marginTop: VP(26), paddingHorizontal: HP(15) }}>
-                            <MenuItemsSection data={itemData} navigation={navigation} />
+                            <MenuItemsSection data={itemList} dataLoaded={!PapularItemLoaded} navigation={navigation} />
                         </View>
 
-                        <View style={{ marginTop: VP(54), paddingHorizontal: HP(20) }}>
-                            <Button
-                                text={'No thanks'}
-                                onPress={() => navigation.navigate(`OrderPlacedScreen`)}
-                                textStyle={styles.buttonStyle}
-                                isLoading={false}
-                                activeButtonText={{ opacity: .65 }}
-                                mainContainerStyle={{ flex: 1, borderRadius: HP(8) }}
-                                LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
-                                contentContainerStyle={{ top: -2 }}
-                            />
-                        </View>
+                        {CartItemList.length > 0 && (
+                            <View style={{ marginTop: VP(54), paddingHorizontal: HP(20) }}>
+                                <Button
+                                    text={'continue'}
+                                    onPress={() => navigation.navigate(`OrderPlacedScreen`)}
+                                    textStyle={styles.buttonStyle}
+                                    isLoading={false}
+                                    activeButtonText={{ opacity: .65 }}
+                                    mainContainerStyle={{ flex: 1, borderRadius: HP(8) }}
+                                    LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
+                                    contentContainerStyle={{ top: -2 }}
+                                />
+                            </View>
+                        )}
                     </View>
                 </ScrollView>
             </InnerBlock>
+            <CartLayout children={undefined} navigation={navigation}></CartLayout>
         </OuterLayout>
     )
 }

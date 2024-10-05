@@ -1,6 +1,5 @@
 import { TextStyle } from 'react-native';
 
-import { FS } from './Responsive';
 import { COLORS } from './Constants';
 
 export const TextStyles: Record<string, TextStyle> = {

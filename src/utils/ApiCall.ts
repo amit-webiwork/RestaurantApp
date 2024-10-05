@@ -26,10 +26,11 @@ const getCategoryList = async (params: any = {}) => {
     }
 };
 
-const getItemList = async (limit = 10, offset = 0) => {
+const getItemList = async (params = {}, limit = 10, offset = 0) => {
     try {
-        const params = new URLSearchParams({ limit: String(limit), offset: String(offset) });
-        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.itemList}?${params}`);
+        const paramData = new URLSearchParams({ limit: String(limit), offset: String(offset), ...params });
+        
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.itemList}?${paramData}`);
 
         return res.data;
     } catch (error: any) {

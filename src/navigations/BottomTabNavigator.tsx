@@ -2,20 +2,21 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect, useRef } from 'react'
 import { SafeAreaView, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native'
 import * as Animatable from 'react-native-animatable';
+import { useSelector } from 'react-redux';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
 import CartScreen from '../screens/main/cart/CartScreen';
 import OrderScreen from '../screens/main/OrderScreen';
 import HomeScreen from '../screens/main/HomeScreen';
 import AccountScreen from '../screens/main/AccountScreen';
 import { COLORS } from '../utils/Constants';
-import { FS, HP, VP } from '../utils/Responsive';
+import { FS, VP } from '../utils/Responsive';
 import { TextStyles } from '../utils/TextStyles';
 import Icon, { Icons } from '../components/Icons';
 import CategoryScreen from '../screens/main/CategoryScreen';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MenuScreen from '../screens/main/menu/MenuScreen';
 import CartNotificationBarSection from '../components/cart/CartNotificationBar';
-import { useSelector } from 'react-redux';
 import { itemAdded } from '../redux/features/cart';
 
 export type MenuStackParamList = {
@@ -101,11 +102,13 @@ const TabButton = (props) => {
 }
 
 export default function BottomTabNavigator() {
+    const navigation = useNavigation(); // Access navigation prop
+    
     const ItemAdded = useSelector(itemAdded);
     
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <CartNotificationBarSection isVisible={ItemAdded} />
+            <CartNotificationBarSection isVisible={ItemAdded} navigation={navigation} />
             <Tab.Navigator
                 initialRouteName="HomeScreen"
                 screenOptions={{

@@ -3,11 +3,10 @@ import {
     View,
     TouchableOpacity,
     StyleSheet,
-    Text,
-    TextInput
+    Text
 } from 'react-native';
 
-import { FS, HP, VP } from '../../utils/Responsive';
+import { HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import Icon, { Icons } from '../Icons';

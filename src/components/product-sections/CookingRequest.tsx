@@ -1,17 +1,14 @@
 import React, { memo, useState } from 'react';
 import {
     View,
-    TouchableOpacity,
     StyleSheet,
     Text,
-    TextInput,
-    Image
+    TextInput
 } from 'react-native';
 
-import { FS, HP, VP } from '../../utils/Responsive';
+import { HP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import Icon, { Icons } from '../Icons';
 
 interface Props {
 }

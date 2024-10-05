@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import OuterLayout from '../../components/OuterLayout';
 import { globalStyle } from '../../utils/GlobalStyle';
@@ -11,10 +12,7 @@ import { TextStyles } from '../../utils/TextStyles';
 import SearchBoxSection from '../../components/home-sections/SearchBox';
 import LinearGradient from 'react-native-linear-gradient';
 import { AppDispatch } from '../../redux/store';
-import { useDispatch, useSelector } from 'react-redux';
 import { categoryList, categoryLoaded, fetchCategories } from '../../redux/features/items';
-import CategoryBoxLoaderSection from '../../components/skeleton/CategoryBoxLoader';
-import MenuItemLoader from '../../components/skeleton/MenuItemLoader';
 import CategoryItemLoaderSection from '../../components/skeleton/CategoryItemLoader';
 
 const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF4C399", "#CFF4C399"], ["#FDD6D699", "#FDD6D699"]];
@@ -48,7 +46,9 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
         return (
             <View style={styles.boxStyle}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate(`MenuScreen`)}
+                    onPress={() => navigation.navigate(`MenuScreen`, {
+                        categoryId: item?.id
+                    })}
                     style={{}}
                 >
                     <LinearGradient

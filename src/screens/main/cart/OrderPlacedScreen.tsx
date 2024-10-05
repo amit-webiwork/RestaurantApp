@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
-import { FS, HP, VP } from '../../../utils/Responsive';
+import { HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
-import { cartItems, categoryTabData, itemData } from '../../../utils/MockData';
-import SearchBoxSection from '../../../components/home-sections/SearchBox';
-import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
-import MenuItemsSection from '../../../components/items/MenuItems';
-import CartItemSection from '../../../components/cart/CartItem';
-import ItemBoxSection from '../../../components/home-sections/ItemBox';
-import CookingRequestSection from '../../../components/product-sections/CookingRequest';
-import { ButtonSection as Button } from '../../../components/Button';
+import CheckmarkWithConfetti from '../../../components/CheckmarkWithConfetti';
+import { AppDispatch } from '../../../redux/store';
+import { resetCart } from '../../../redux/features/cart';
 
 function OrderPlacedScreen({ navigation }: { navigation: any }): React.JSX.Element {
-    const [cookingRequestShow, setCookingRequestShow] = useState(false);
+    const dispatch: AppDispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(resetCart());
+    }, [])
 
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
@@ -39,7 +39,9 @@ function OrderPlacedScreen({ navigation }: { navigation: any }): React.JSX.Eleme
                             <Text style={styles.orderNo}>#8565565646</Text>
 
                             <View style={{ justifyContent: "center", alignItems: "center" }}>
-                                <Image source={require(`../../../assets/images/success.png`)} style={[styles.popUpImg]} />
+                                <View style={styles.popUpImg}>
+                                    <CheckmarkWithConfetti />
+                                </View>
 
                                 <Text style={styles.heading}>order placed</Text>
                                 <Text style={styles.text1}>your order is placed sucessfully</Text>
@@ -53,7 +55,7 @@ function OrderPlacedScreen({ navigation }: { navigation: any }): React.JSX.Eleme
                     onPress={() => navigation.navigate(`HomeScreen`)}
                     style={{ alignSelf: "center" }}
                 >
-                    <Text style={[styles.heading, { fontSize: 14 }]}>order details</Text>
+                    <Text style={[styles.heading, { fontSize: 20 }]}>order details</Text>
                 </TouchableOpacity>
             </InnerBlock>
         </OuterLayout >
@@ -62,10 +64,7 @@ function OrderPlacedScreen({ navigation }: { navigation: any }): React.JSX.Eleme
 
 const styles = StyleSheet.create({
     popUpImg: {
-        resizeMode: "contain",
-        width: FS(243.55),
-        height: VP(201.93),
-        marginTop: VP(124)
+        marginTop: VP(55)
     },
     topHeading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

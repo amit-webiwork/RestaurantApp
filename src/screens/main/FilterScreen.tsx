@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView, PanGestureHandler, ScrollView } from 'react-native-gesture-handler';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';

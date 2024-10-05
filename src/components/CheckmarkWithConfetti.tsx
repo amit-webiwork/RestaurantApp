@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React  from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import LottieView from 'lottie-react-native';
 import Svg, { Circle, Path } from 'react-native-svg';

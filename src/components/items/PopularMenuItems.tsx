@@ -12,15 +12,12 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Icon, { Icons } from '../Icons';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import { fetchItems, itemLoaded } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
-import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
 import MenuItemLoaderSection from '../skeleton/MenuItemLoader';
-import CartNotificationBarSection from '../cart/CartNotificationBar';
 import { addToCart } from '../../utils/helper/CartHelper';
 
 interface Props {

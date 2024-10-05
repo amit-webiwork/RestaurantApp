@@ -9,7 +9,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { FS, HP } from '../../utils/Responsive';
+import { HP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { categoryList, categoryLoaded, fetchCategories } from '../../redux/features/items';
 import CategoryTabsLoaderSection from '../skeleton/CategoryTabsLoader';
@@ -18,17 +18,21 @@ import { AppDispatch } from '../../redux/store';
 const colorsBG = [[COLORS.HOME_ICONS, COLORS.HOME_ICONS], [COLORS.BACKGROUND_DEFAULT, COLORS.BACKGROUND_DEFAULT]]
 
 interface Props {
-    data: any[];
     setSelectedCategory: any;
+    selectedCategory?: number;
 }
 
+const allCategory = {
+    "id": 0,
+    "name": "All"
+}
 
-const CategortyTabs: React.FunctionComponent<Props> = ({ data, setSelectedCategory }) => {
+const CategortyTabs: React.FunctionComponent<Props> = ({ setSelectedCategory, selectedCategory }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const CategoryLoaded = useSelector(categoryLoaded);
     const CategoryList = useSelector(categoryList);
-    
+
     const [selected, setSelected] = useState(0);
 
     const handleSelect = (item: { id: number; }) => {
@@ -39,6 +43,8 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ data, setSelectedCatego
     useEffect(() => {
         if (!CategoryLoaded) {
             dispatch(fetchCategories());
+        } else {
+            setSelected(selectedCategory || 0);
         }
     }, [CategoryLoaded])
 
@@ -66,7 +72,7 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ data, setSelectedCatego
         <View>
             {CategoryLoaded ? (
                 <FlatList
-                    data={CategoryList}
+                    data={[allCategory, ...CategoryList]}
                     renderItem={categoryItems}
                     contentContainerStyle={{}}
                     horizontal={true}

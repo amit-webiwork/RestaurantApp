@@ -9,7 +9,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 
 import { TextStyles } from '../utils/TextStyles';
-import { FS, HP } from '../utils/Responsive';
+import { HP } from '../utils/Responsive';
 
 interface Props {
     title: string;

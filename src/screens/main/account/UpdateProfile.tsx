@@ -1,26 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, ImageBackground, Dimensions, ScrollView } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { StyleSheet, View, Text } from 'react-native';
+import axios  from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Icon, { Icons } from '../../../components/Icons';
 import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../../utils/Constants';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import { TextStyles } from '../../../utils/TextStyles';
 import AccountSkeletonSection from '../../../components/AccountSkeleton';
 import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect';
 import { ButtonSection as Button } from '../../../components/Button';
-import { useDispatch, useSelector } from 'react-redux';
 import { proflieDetails, setProflieDetails } from '../../../redux/features/profile';
 import { updateProfile, validateResource } from '../../../utils/ValidateResource';
-import axios, { AxiosResponse } from 'axios';
 import { loadStorage, saveStorage } from '../../../utils/Storage';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import OuterLayout from '../../../components/OuterLayout';
 import { globalStyle } from '../../../utils/GlobalStyle';
 import InnerBlock from '../../../components/InnerBlock';
-
-const { width, height } = Dimensions.get('window');
 
 const errorObj = { "name": { "error": false, "text": "" }, "phone": { "error": false, "text": "" }, "email": { "error": false, "text": "" } }
 

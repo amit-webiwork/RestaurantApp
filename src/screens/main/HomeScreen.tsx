@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
 import { COLORS } from '../../utils/Constants.ts';
@@ -17,29 +18,43 @@ import ItemVerticalBoxSection from '../../components/home-sections/ItemVerticalB
 import Icon, { Icons } from '../../components/Icons';
 import ItemBoxSection from '../../components/home-sections/ItemBox.tsx';
 import HeadingSection from '../../components/Heading.tsx';
-import { categoryData, categoryTabData, itemData } from '../../utils/MockData.ts';
+import { categoryData } from '../../utils/MockData.ts';
+import { fetchPopularItems, papularItemLoaded, papularItems } from '../../redux/features/items.ts';
+import { AppDispatch } from '../../redux/store.ts';
 
 function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
+    const dispatch: AppDispatch = useDispatch();
+
+    const PapularItemLoaded = useSelector(papularItemLoaded);
+    const PapularItems = useSelector(papularItems);
+
     const [searchText, setSearchText] = useState<any>("");
 
     const [categoryList, setCategoryList] = useState<any[]>(categoryData);
 
     const [selectedCategory, setSelectedCategory] = useState<number>(1);
-    const [itemList, setItemList] = useState<any[]>(itemData);
-    const [itemListFiltered, setItemListFiltered] = useState<any[]>(itemData);
+    const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
 
     const selectCategoryHandler = useCallback((id: number) => {
         setSelectedCategory(id);
 
         // find in items
-        const filtered = itemList.filter(item => item['category'] === id);
+        const filtered = PapularItems.filter(item => (item?.category_id === id || id === 0));
 
         setItemListFiltered(filtered);
-    }, [itemList]);
+    }, [PapularItems]);
 
     const setSearchTextHandler = (e: any) => {
         setSearchText(e);
     }
+
+    useEffect(() => {
+        if (!PapularItemLoaded) {
+            dispatch(fetchPopularItems());
+        } else {
+            setItemListFiltered(PapularItems);
+        }
+    }, [PapularItemLoaded])
 
     return (
         <>
@@ -113,12 +128,12 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                                     {/* Category Tabs */}
                                     <View style={{ marginTop: VP(24.66), marginHorizontal: HP(21) }}>
-                                        <CategortyTabsSection data={categoryTabData} setSelectedCategory={selectCategoryHandler} />
+                                        <CategortyTabsSection setSelectedCategory={selectCategoryHandler} />
                                     </View>
 
                                     {/* Item Boxes */}
                                     <View style={{ marginTop: VP(20), marginHorizontal: HP(21) }}>
-                                        <ItemBoxSection data={itemListFiltered} navigation={navigation} />
+                                        <ItemBoxSection data={itemListFiltered} dataLoaded={PapularItemLoaded} navigation={navigation} />
                                     </View>
 
                                     {/* Banner One */}

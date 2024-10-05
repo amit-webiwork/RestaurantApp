@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -7,35 +7,42 @@ import {
     FlatList,
     ImageBackground
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Icon, { Icons } from '../Icons';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import { fetchItems, itemList, itemLoaded } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
 import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
 import { addToCart } from '../../utils/helper/CartHelper';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface Props {
     data: any[];
+    dataLoaded: boolean;
     navigation: any;
 }
 
-const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
+const ItemBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation }) => {
     const dispatch: AppDispatch = useDispatch();
 
-    const ItemLoaded = useSelector(itemLoaded);
-    const ItemList = useSelector(itemList);
+    const flatlistRef = useRef<any>();
 
-    useEffect(() => {
-        if (!ItemLoaded) {
-            dispatch(fetchItems());
-        }
-    }, [ItemLoaded])
+    useFocusEffect(
+        useCallback(() => {
+            if (data.length > 0) {
+                scrollToIndex(0)
+            }
+        }, [data.length])
+    )
 
-    // console.log(data, ItemLoaded, '-----------ItemList')
+    const scrollToIndex = (index: number) => {
+        flatlistRef?.current?.scrollToIndex({
+            animated: true,
+            index: index,
+        });
+    }
 
     const BoxItems = ({ item, index }: { item: any, index: number }) => {
 
@@ -44,10 +51,15 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
                 <View style={styles.boxSubContainer}>
                     <TouchableOpacity
                         onPress={() => navigation.navigate(`ProductScreen`, {
-                            id: 1
+                            id: item?.id,
+                            item: item
                         })}
                     >
-                        <ImageBackground source={item.bg} style={styles.bg} imageStyle={{ borderRadius: FS(16.42) }}>
+                        <ImageBackground
+                            source={{ 'uri': item?.imgUrl }}
+                            style={styles.bg}
+                            imageStyle={{ borderRadius: FS(16.42) }}
+                        >
                         </ImageBackground>
                     </TouchableOpacity>
 
@@ -55,14 +67,14 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
                         <TouchableOpacity
                             onPress={() => void (0)}
                         >
-                            <Text style={styles.boxTitle}>{item.title}</Text>
-                            <Text style={styles.boxText}>{item.firstText} {item.secondText}</Text>
+                            <Text style={styles.boxTitle}>{item.name}</Text>
+                            <Text style={styles.boxText}>{`700mL.`} {`Dairy-free ice crusher.`}</Text>
                         </TouchableOpacity>
 
                         <View style={styles.priceBox}>
-                            <Text style={styles.priceText}>${item.price.toFixed(2)}</Text>
+                            <Text style={styles.priceText}>${item.price}</Text>
                             <TouchableOpacity
-                                onPress={() => addToCart(dispatch)}
+                                onPress={() => addToCart(item, 1, dispatch, 'add')}
                                 style={styles.iconBox}
                             >
                                 <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />
@@ -76,13 +88,14 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
 
     return (
         <View>
-            {(!ItemLoaded || 1 == 1) ? (
+            {(dataLoaded) ? (
                 <FlatList
                     data={data}
                     renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} />}
                     contentContainerStyle={{}}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
+                    ref={flatlistRef}
                 />
             ) : (
                 <ItemBoxLoaderSection />

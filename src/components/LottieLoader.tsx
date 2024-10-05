@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Modal } from 'react-native';
+
 import LottieView from 'lottie-react-native';
 import { FS, VP } from '../utils/Responsive';
 

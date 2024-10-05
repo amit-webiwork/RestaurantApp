@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions, ScrollView } from 'react-native';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Icon, { Icons } from '../../../components/Icons';
 import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../../utils/Constants';
@@ -12,11 +14,9 @@ import DropDown from '../../../components/DropDown';
 import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect';
 import { ButtonSection as Button } from '../../../components/Button';
 import { AppDispatch } from '../../../redux/store';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchTopics, topicList, topicLoaded } from '../../../redux/features/items';
 import LottieLoader from '../../../components/LottieLoader';
 import { feedbackForm, validateResource } from '../../../utils/ValidateResource';
-import axios from 'axios';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import CheckmarkWithConfetti from '../../../components/CheckmarkWithConfetti';

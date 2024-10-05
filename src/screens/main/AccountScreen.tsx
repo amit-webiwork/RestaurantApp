@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Icon, { Icons } from '../../components/Icons';
 import { COLORS, errorMessage } from '../../utils/Constants';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
-import { useDispatch, useSelector } from 'react-redux';
 import CustomActionDialogComp from '../../components/dialogs/CustomActionDialog';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 import AccountSkeletonSection from '../../components/AccountSkeleton';
 import { removeStorage } from '../../utils/Storage';
 import { proflieDetails, setProflieDetails } from '../../redux/features/profile';
-import { deleteAccount, submitLogin } from '../../utils/ApiCall';
+import { deleteAccount } from '../../utils/ApiCall';
 import LottieLoader from '../../components/LottieLoader';
 
 const titleDelete = `Confirm Delete`;

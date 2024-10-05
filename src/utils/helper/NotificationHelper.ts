@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import Icon, { Icons } from '../../components/Icons';
+import { Icons } from '../../components/Icons';
 import { COLORS } from '../Constants';
 
 // Get today's and yesterday's date

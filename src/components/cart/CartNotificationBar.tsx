@@ -1,18 +1,21 @@
 import React, { memo, useRef } from 'react';
-import { View, Text, TouchableOpacity, Animated, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, Animated, StyleSheet } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { useDispatch } from 'react-redux';
+
 import { TextStyles } from '../../utils/TextStyles';
 import { COLORS } from '../../utils/Constants';
-import LinearGradient from 'react-native-linear-gradient';
-import { HP, VP } from '../../utils/Responsive';
-import { useDispatch } from 'react-redux';
+import { FS, HP, VP } from '../../utils/Responsive';
 import { hideCartNotification } from '../../redux/features/cart';
+import Icon, { Icons } from '../Icons';
 
 interface Props {
     isVisible: boolean;
+    navigation: any;
     message?: string;
 }
 
-const CartNotificationBar = ({ isVisible, message = "Item added to cart" }: Props) => {
+const CartNotificationBar = ({ isVisible, navigation, message = "Item added to cart" }: Props) => {
     const dispatch = useDispatch();
 
     const translateY = useRef(new Animated.Value(100)).current; // start hidden
@@ -47,6 +50,13 @@ const CartNotificationBar = ({ isVisible, message = "Item added to cart" }: Prop
                 style={styles.gradientBar}
             >
                 <Text style={styles.notificationText}>{message}</Text>
+
+                <TouchableOpacity
+                    onPress={() => navigation.navigate(`CartScreen`)}
+                    style={styles.iconBox}
+                >
+                    <Icon type={Icons.Feather} size={16} name={`arrow-right`} color={`#8027C9`} />
+                </TouchableOpacity>
             </LinearGradient>
         </Animated.View>
     );
@@ -64,12 +74,24 @@ const styles = StyleSheet.create({
         padding: HP(16),
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: "row",
+        gap: HP(6)
     },
     notificationText: {
         ...TextStyles.RALEWAY_BOLD,
         color: COLORS.WHITE,
         textTransform: "uppercase"
     },
+    iconBox: {
+        alignItems: "center",
+        width: FS(20),
+        height: VP(20),
+        backgroundColor: COLORS.WHITE,
+        borderRadius: HP(10),
+        justifyContent: "center",
+        borderWidth: 1,
+        borderColor: COLORS.WHITE
+    }
 });
 
 const CartNotificationBarSection = memo(CartNotificationBar);

@@ -83,6 +83,7 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
         removeStorage("userDetails");
         removeStorage("forgotPasswordEmail");
         removeStorage("forgotPasswordOTP");
+        removeStorage("cartItems");
     }
 
     useEffect(() => {

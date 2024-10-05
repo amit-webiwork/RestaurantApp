@@ -14,7 +14,6 @@ import { TextStyles } from '../../utils/TextStyles';
 import { globalStyle } from '../../utils/GlobalStyle';
 import CustomTextInput from '../../components/CustomTextInput';
 import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../utils/Constants';
-import Left from '../../assets/svgs/left.svg';
 import { resetPassword, validateResource } from '../../utils/ValidateResource';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
@@ -48,8 +47,6 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
 
             dataPayload['email'] = email;
             dataPayload['otp'] = +otp;
-
-            console.log(dataPayload, '----otp')
 
             setLoading(true);
 

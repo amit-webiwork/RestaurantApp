@@ -7,7 +7,7 @@ import {
     useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
-import { FS, HP, VP } from '../utils/Responsive';
+import { FS, VP } from '../utils/Responsive';
 import { COLORS } from '../utils/Constants';
 import { TextStyles } from '../utils/TextStyles';
 

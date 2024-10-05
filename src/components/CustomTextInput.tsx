@@ -74,14 +74,6 @@ const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
              <Animated.Text style={[styles.placeholder, labelStyle]}>
                 {placeholder}
             </Animated.Text>
-            {/* <TextInput
-                style={[styles.input, styleInput, { borderBottomColor: error.status ? COLORS.RED : "#A0A0A0" }]}
-                value={text}
-                onChangeText={setText}
-                placeholder={placeholder}
-                placeholderTextColor={COLORS.PLACEHOLDER_COLOR}
-                {...rest}
-            /> */}
             <TextInput
                 style={[styles.input, styleInput, { borderBottomColor: error.status ? COLORS.RED : "#A0A0A0" }]}
                 value={text}

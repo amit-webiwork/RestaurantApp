@@ -60,7 +60,9 @@ const CategoryBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
         return (
             <View style={{ marginRight: HP(15), flexGrow: 1, gap: HP(5) }}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate(`MenuScreen`)}
+                    onPress={() => navigation.navigate(`MenuScreen`, {
+                        categoryId: item?.id
+                    })}
                     style={{}}
                 >
                     <LinearGradient
@@ -109,12 +111,11 @@ const CategoryBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
                 {CategoryLoaded ? (
                     <FlatList
                         data={CategoryList}
-                        renderItem={({ item, index, separators }) => <CategoryItem item={item} index={index} />}
+                        renderItem={({ item, index }) => <CategoryItem item={item} index={index} />}
                         contentContainerStyle={styles.listContainer}
                         horizontal={true}
                         ref={flatListRef}
                         showsHorizontalScrollIndicator={false}
-                    // getItemLayout={getItemLayout}
                     />
                 ) : (<CategoryBoxLoaderSection />)}
             </View>
