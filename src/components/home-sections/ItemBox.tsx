@@ -17,6 +17,7 @@ import { AppDispatch } from '../../redux/store';
 import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
 import { addToCart } from '../../utils/helper/CartHelper';
 import { useFocusEffect } from '@react-navigation/native';
+import { getItemPriceComponents } from '../../utils/helper/ItemHelper';
 
 interface Props {
     data: any[];
@@ -44,7 +45,8 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation 
         });
     }
 
-    const BoxItems = ({ item, index }: { item: any, index: number }) => {
+    const BoxItems = ({ itemData, index }: { itemData: any, index: number }) => {
+        const item = getItemPriceComponents(itemData);
 
         return (
             <View style={styles.boxContainer}>
@@ -67,12 +69,18 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation 
                         <TouchableOpacity
                             onPress={() => void (0)}
                         >
-                            <Text style={styles.boxTitle}>{item.name}</Text>
+                            <Text style={styles.boxTitle}>{item?.name}</Text>
                             <Text style={styles.boxText}>{`700mL.`} {`Dairy-free ice crusher.`}</Text>
                         </TouchableOpacity>
 
                         <View style={styles.priceBox}>
-                            <Text style={styles.priceText}>${item.price}</Text>
+                            <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.priceText, item.discountPrice > 0 && styles.discountedPriceText]}>${item.itemPrice.toFixed(2)}</Text>
+
+                            {item.discountPrice > 0 && (
+                                <>
+                                    <Text numberOfLines={1} ellipsizeMode="tail" style={styles.priceText}>${item.discountPrice.toFixed(2)}</Text>
+                                </>
+                            )}
                             <TouchableOpacity
                                 onPress={() => addToCart(item, 1, dispatch, 'add')}
                                 style={styles.iconBox}
@@ -91,7 +99,7 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation 
             {(dataLoaded) ? (
                 <FlatList
                     data={data}
-                    renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} />}
+                    renderItem={({ item, index }) => <BoxItems itemData={item} index={index} />}
                     contentContainerStyle={{}}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -152,6 +160,12 @@ const styles = StyleSheet.create({
     },
     priceText: {
         ...TextStyles.RALEWAY_SEMI_BOLD
+    },
+    discountedPriceText: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        color: "#939393",
+        textDecorationLine: "line-through",
+        textDecorationStyle: "solid"
     },
     iconBox: {
         width: FS(20),

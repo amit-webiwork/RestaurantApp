@@ -21,6 +21,8 @@ import { addToCart } from '../../utils/helper/CartHelper.ts';
 import { fetchPopularItems, papularItemLoaded, papularItems } from '../../redux/features/items.ts';
 import { AppDispatch } from '../../redux/store.ts';
 import { cartItemList, getCartQty } from '../../redux/features/cart.ts';
+import ProductScreenLoader from '../../components/skeleton/ProductScreenLoader.tsx';
+import { getItemPriceComponents } from '../../utils/helper/ItemHelper.ts';
 
 const { width, height } = Dimensions.get('window');
 
@@ -67,7 +69,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
     useEffect(() => {
         if (id) {
-            setItemDetails(item);
+            setItemDetails(getItemPriceComponents(item));
             setCartQuantity(getCartQty(item?.id, CartItemList))
         }
     }, [id])
@@ -80,6 +82,18 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
         outputRange: [height * 0.5, height * 0.3], // Adjust the values to control the min and max image height
         extrapolate: 'clamp',
     });
+
+    if (!itemDetails?.name) {
+        return (
+            <OuterLayout containerStyle={globalStyle.containerStyle}>
+                <InnerBlock>
+                    <View style={{ flex: 1, backgroundColor: "#FDF6F5" }}>
+                        <ProductScreenLoader />
+                    </View>
+                </InnerBlock>
+            </OuterLayout>
+        )
+    }
 
     return (
         <>
@@ -137,7 +151,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         </View>
                                     </View>
 
-                                    <TouchableOpacity
+                                    {/* <TouchableOpacity
                                         onPress={() => void (0)}
                                         style={{
                                             backgroundColor: "#FFFFFF",
@@ -151,7 +165,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         }}
                                     >
                                         <Icon type={Icons.Feather} size={FS(24.1)} name={`heart`} color={COLORS.BUTTON} />
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                 </View>
 
                                 <View style={{ paddingHorizontal: HP(30), paddingVertical: HP(3), }}>
@@ -177,7 +191,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                     {/* Cart with qty Button */}
                                     <View style={{ flexDirection: "row", marginTop: VP(44), backgroundColor: COLORS.BUTTON, borderRadius: HP(40), padding: HP(17), justifyContent: "space-between", alignItems: "center" }}>
                                         <View>
-                                            <Text style={{ ...TextStyles.RALEWAY_BOLD, fontSize: 20, color: COLORS.WHITE }}>${itemDetails?.price}</Text>
+                                            <Text style={{ ...TextStyles.RALEWAY_BOLD, fontSize: 20, color: COLORS.WHITE }}>${itemDetails?.finalPrice.toFixed(2)}</Text>
                                         </View>
 
                                         <CartQtyButtonV1Section decrement={decrementCart} qty={cartQuantity} setQty={setCartQuantity} increment={incrementCart} />

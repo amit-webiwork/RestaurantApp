@@ -19,38 +19,34 @@ import { fetchItems, itemLoaded } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
 import MenuItemLoaderSection from '../skeleton/MenuItemLoader';
 import { addToCart } from '../../utils/helper/CartHelper';
+import { getItemPriceComponents } from '../../utils/helper/ItemHelper';
 
 interface Props {
     data: any[];
+    dataLoaded: boolean;
     navigation: any;
 }
 
 const { width, height } = Dimensions.get('window');
 
-const PopularMenuItems: React.FunctionComponent<Props> = ({ data, navigation }) => {
+const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation }) => {
     const dispatch: AppDispatch = useDispatch();
 
-    const ItemLoaded = useSelector(itemLoaded);
+    const BoxItems = ({ itemData, index }: { itemData: any, index: number }) => {
+        const item = getItemPriceComponents(itemData);
 
-    useEffect(() => {
-        if (!ItemLoaded) {
-            dispatch(fetchItems());
-        }
-    }, [ItemLoaded])
-
-    const BoxItems = ({ item, index }: { item: any, index: number }) => {
-        
         return (
             <View style={styles.boxContainer}>
                 <View style={styles.boxSubContainer}>
                     <TouchableOpacity
                         onPress={() => navigation.navigate(`ProductScreen`, {
-                            id: 1
+                            id: item?.id,
+                            item: item
                         })}
                         style={{ width: "100%" }}
                     >
                         <ImageBackground
-                            source={item.bg}
+                            source={{ uri: item?.imgUrl }}
                             style={styles.bg}
                             imageStyle={{ borderRadius: FS(16.42), resizeMode: 'cover' }}
                         >
@@ -61,18 +57,24 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, navigation }) 
                         <TouchableOpacity
                             onPress={() => void (0)}
                         >
-                            <Text style={styles.boxTitle}>{item.title}</Text>
-                            <Text style={styles.boxText}>{item.firstText} {item.secondText}</Text>
+                            <Text style={styles.boxTitle}>{item?.name}</Text>
+                            <Text style={styles.boxText}>700mL.  Dairy-free ice crusher.</Text>
                         </TouchableOpacity>
 
                         <View style={styles.priceBox}>
-                            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.discountedPriceText}>${item.price.toFixed(2)}</Text>
-                            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.priceText}>${item.discountedPrice.toFixed(2)}</Text>
-                            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.discountedPercentText}>${item.discountedPercent}% Off</Text>
+                            <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.priceText, item.discountPrice > 0 && styles.discountedPriceText]}>${item.itemPrice.toFixed(2)}</Text>
+
+                            {item.discountPrice > 0 && (
+                                <>
+                                    <Text numberOfLines={1} ellipsizeMode="tail" style={styles.priceText}>${item.discountPrice.toFixed(2)}</Text>
+                                    <Text numberOfLines={1} ellipsizeMode="tail" style={styles.discountedPercentText}>${item.discountPercent.toFixed(2)}% Off</Text>
+                                </>
+                            )}
+
                         </View>
 
                         <TouchableOpacity
-                            onPress={() => addToCart(dispatch)}
+                            onPress={() => addToCart(item, 1, dispatch, `add`)}
                             style={styles.buttonBox}
                         >
                             <Text style={styles.cartText}>add to cart</Text>
@@ -85,11 +87,11 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, navigation }) 
 
     return (
         <View>
-            {(!ItemLoaded || 1) ? (
+            {!dataLoaded ? (
                 <FlatList
                     numColumns={2}
                     data={data}
-                    renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} />}
+                    renderItem={({ item, index }) => <BoxItems itemData={item} index={index} />}
                     contentContainerStyle={{
                         paddingHorizontal: HP(1.5)
                     }}
@@ -162,11 +164,10 @@ const styles = StyleSheet.create({
     },
     discountedPriceText: {
         ...TextStyles.RALEWAY_REGULAR,
-        fontSize: 14,
         color: "#939393",
         textDecorationLine: "line-through",
         textDecorationStyle: "solid",
-        flexShrink: 1,
+        fontSize: 14,
     },
     priceText: {
         ...TextStyles.RALEWAY_MEDIUM,

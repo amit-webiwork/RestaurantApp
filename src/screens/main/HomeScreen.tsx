@@ -19,18 +19,19 @@ import Icon, { Icons } from '../../components/Icons';
 import ItemBoxSection from '../../components/home-sections/ItemBox.tsx';
 import HeadingSection from '../../components/Heading.tsx';
 import { categoryData } from '../../utils/MockData.ts';
-import { fetchPopularItems, papularItemLoaded, papularItems } from '../../redux/features/items.ts';
+import { fetchPopularItems, getFeaturedCategory, papularItemLoaded, papularItems } from '../../redux/features/items.ts';
 import { AppDispatch } from '../../redux/store.ts';
+import Right from '../../assets/svgs/right.svg';
+import { globalStyle } from '../../utils/GlobalStyle.ts';
 
 function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
 
     const PapularItemLoaded = useSelector(papularItemLoaded);
     const PapularItems = useSelector(papularItems);
+    const featuredCategory = useSelector(getFeaturedCategory);
 
     const [searchText, setSearchText] = useState<any>("");
-
-    const [categoryList, setCategoryList] = useState<any[]>(categoryData);
 
     const [selectedCategory, setSelectedCategory] = useState<number>(1);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
@@ -107,17 +108,39 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 <View style={{ flex: 1, marginVertical: VP(48), }}>
 
                                     {/* Search Box */}
-                                    <View style={{ marginHorizontal: HP(20) }}>
+                                    <View style={{ marginHorizontal: HP(20), flexDirection: "row", alignItems: "center", gap: HP(10), justifyContent: "space-between" }}>
                                         <SearchBoxSection setHandler={setSearchTextHandler} navigation={navigation} />
+
+                                        <TouchableOpacity
+                                            onPress={() => navigation.navigate(`FilterScreen`)}
+                                            style={globalStyle.filterIconContainer}
+                                        >
+                                            <Image source={require(`../../assets/icons/filter.png`)} style={[globalStyle.filterIconRight]} />
+                                        </TouchableOpacity>
                                     </View>
 
                                     {/* Category Boxes */}
                                     <View style={{ marginTop: VP(27), marginHorizontal: HP(17) }}>
-                                        <CategoryBoxSection data={categoryList} navigation={navigation} />
+                                        <CategoryBoxSection navigation={navigation} />
                                     </View>
 
                                     {/* Promotional Box */}
                                     <View style={{ marginTop: VP(23), marginHorizontal: HP(21) }}>
+                                        <View style={styles.subContainer}>
+                                            <Text style={styles.heading}>
+                                                De lounge Popular {featuredCategory && featuredCategory?.name ? featuredCategory.name : `items`}
+                                            </Text>
+                                            <TouchableOpacity
+                                                onPress={() => navigation.navigate(`PopularMenuScreen`, {
+                                                    categoryId: featuredCategory && featuredCategory?.id ? featuredCategory.id : 0,
+                                                    name: featuredCategory && featuredCategory?.name ? featuredCategory.name : `Items`
+                                                })}
+                                                style={styles.headingRightContainer}
+                                            >
+                                                <Text style={styles.headingRightTitleStyle}>view all</Text>
+                                                <Right width={FS(12)} height={VP(12)} />
+                                            </TouchableOpacity>
+                                        </View>
                                         <PromotionalBoxSection navigation={navigation} />
                                     </View>
 
@@ -206,6 +229,27 @@ const styles = StyleSheet.create({
         width: "100%",
         flex: 1,
         flexGrow: 1
+    },
+    subContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+    heading: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 18,
+        textTransform: "capitalize"
+    },
+    headingRightContainer: {
+        flexDirection: "row",
+        gap: HP(2),
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    headingRightTitleStyle: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: HP(12),
+        textTransform: "capitalize",
     },
 });
 

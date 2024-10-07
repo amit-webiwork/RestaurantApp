@@ -64,4 +64,37 @@ const getTopicList = async () => {
     }
 };
 
-export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList };
+const getDietaryList = async () => {
+    try {
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.dietaryList}`);
+        return res.data;
+    } catch (error: any) {
+        const { response } = error;
+        const message = response?.data?.message || error?.message || "Unknown error";
+        throw new Error(message);
+    }
+};
+
+const getCuisineList = async () => {
+    try {
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.cuisineList}`);
+        return res.data;
+    } catch (error: any) {
+        const { response } = error;
+        const message = response?.data?.message || error?.message || "Unknown error";
+        throw new Error(message);
+    }
+};
+
+const getPriceRange = async () => {
+    try {
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.priceRange}`);
+        return res.data;
+    } catch (error: any) {
+        const { response } = error;
+        const message = response?.data?.message || error?.message || "Unknown error";
+        throw new Error(message);
+    }
+};
+
+export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange };

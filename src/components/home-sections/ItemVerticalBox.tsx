@@ -51,11 +51,11 @@ const BoxItems = ({ item, index }: { item: any, index: number }) => {
                                 <Text style={styles.priceText}>${item.price.toFixed(2)}</Text>
                             </View>
 
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                                 onPress={() => void (0)}
                             >
                                 <Icon type={Icons.Feather} size={20} name={`heart`} color={COLORS.WHITE} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                     </ImageBackground>
                 </View>

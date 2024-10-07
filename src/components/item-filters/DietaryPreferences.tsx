@@ -19,7 +19,7 @@ function DietaryPreferences({ items, clickHandler, checkboxContainerStyle, check
             {items.map((d, i) => (
                 <TouchableOpacity
                     key={`dietary-preferences-${i}`}
-                    onPress={() => clickHandler(i)}
+                    onPress={() => clickHandler(d.id)}
                     style={[styles.checkboxContainer, checkboxContainerStyle]}
                 >
                     <View style={[styles.checkbox, checkboxStyle]}>

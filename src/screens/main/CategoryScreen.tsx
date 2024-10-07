@@ -72,6 +72,7 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
             <OuterLayout containerStyle={globalStyle.containerStyle}>
                 <InnerBlock>
                     <View style={styles.main}>
+                        {/* Top Navigation */}
                         <View style={styles.top}>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(`HomeScreen`)}
@@ -86,8 +87,15 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
                             </Text>
                         </View>
 
-                        <View style={{ marginTop: HP(24) }}>
-                            <SearchBoxSection setHandler={searchTextHandler} inputContainerStyle={{ flexBasis: "90%" }} navigation={navigation} />
+                        <View style={{ marginTop: HP(24), flexDirection: "row", alignItems: "center", gap: HP(10), justifyContent: "space-between" }}>
+                            <SearchBoxSection setHandler={searchTextHandler} inputContainerStyle={{}} navigation={navigation} />
+
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate(`FilterScreen`)}
+                                style={globalStyle.filterIconContainer}
+                            >
+                                <Image source={require(`../../assets/icons/filter.png`)} style={[globalStyle.filterIconRight]} />
+                            </TouchableOpacity>
                         </View>
 
                         <View>

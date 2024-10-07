@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView, PanGestureHandler, ScrollView } from 'react-native-gesture-handler';
 
@@ -10,17 +10,27 @@ import PopularItemsSection from '../../components/item-filters/PopularItems.tsx'
 import DietaryPreferencesSection from '../../components/item-filters/DietaryPreferences.tsx';
 import CuisineSection from '../../components/item-filters/Cuisine.tsx';
 import PriceRangeSection from '../../components/item-filters/PriceRange.tsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { cuisineList, cuisineLoaded, dietaryList, dietaryLoaded, fetchCuisine, fetchDietaries, getFilters, setFilters } from '../../redux/features/items.ts';
+import { AppDispatch } from '../../redux/store.ts';
 
 const popular_items = ["brown sugar milk tea (fresh milk)", "brownie with ice cream", "nutella waffle", "watermelon juice", "Fudge Walnut Brownie", "pearl milk tea"];
 
-const dietary_preferences = ["vegan", "sugar free", "vegetarian", "nut free", "non-vegetarian", "keto friendly", "gluten free", "low calorie", "soy free", "kosher"];
+function FilterScreen({ route, navigation }: { route: any; navigation: any; }): React.JSX.Element {
 
-const cuisine = ["Italian", "American", "Chinese", " Spanish", "Indian", "Middle Eastern", "Mexican", "Vietnamese", "French"];
+    const dispatch: AppDispatch = useDispatch();
 
-function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
-    const [dietaryList, setDietaryList] = useState(dietary_preferences.map(d => { return { "name": d, "checked": false } }));
+    const DietaryList = useSelector(dietaryList);
+    const DietaryLoaded = useSelector(dietaryLoaded);
 
-    const [cuisineList, setCuisineList] = useState(cuisine.map(d => { return { "name": d, "checked": false } }));
+    const CuisineList = useSelector(cuisineList);
+    const CuisineLoaded = useSelector(cuisineLoaded);
+
+    const filterList = useSelector(getFilters);
+
+    const [dietaryListState, setDietaryList] = useState<any[]>([]);
+
+    const [cuisineListState, setCuisineList] = useState<any[]>([]);
 
     const [itemClicked, setItemClicked] = useState(-1);
 
@@ -37,18 +47,18 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
         }
     };
 
-    const setDietaryChecked = (index: number) => {
-        setDietaryList(prevList =>
+    const setDietaryChecked = (id: number) => {
+        setDietaryList((prevList: any[]) =>
             prevList.map((item, i) =>
-                i === index ? { ...item, checked: !item.checked } : item
+                item.id === id ? { ...item, checked: !item.checked } : item
             )
         );
     };
 
-    const setCuisineChecked = (index: number) => {
+    const setCuisineChecked = (id: number) => {
         setCuisineList(prevList =>
             prevList.map((item, i) =>
-                i === index ? { ...item, checked: !item.checked } : item
+                item.id === id ? { ...item, checked: !item.checked } : item
             )
         );
     };
@@ -57,9 +67,34 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
         setPriceRange(values);
     };
 
-    const itemClickedHandler = (id) => {
+    const itemClickedHandler = (id: React.SetStateAction<number>) => {
         setItemClicked(id);
     }
+
+    const filterApply = () => {
+        dispatch(setFilters({ key: "dietaries", data: dietaryListState.filter((d) => d.checked === true).map(d => d.id) }));
+
+        dispatch(setFilters({ key: "cuisine", data: cuisineListState.filter((d) => d.checked === true).map(d => d.id) }));
+
+        navigation.goBack();
+    }
+
+    useEffect(() => {
+        if (!DietaryLoaded) {
+            dispatch(fetchDietaries());
+        } else {
+            setDietaryList(DietaryList.map((d: any) => { return { ...d, "checked": filterList['dietaries'].includes(d.id) ? true : false } }))
+        }
+    }, [DietaryLoaded])
+
+
+    useEffect(() => {
+        if (!CuisineLoaded) {
+            dispatch(fetchCuisine());
+        } else {
+            setCuisineList(CuisineList.map((d: any) => { return { ...d, "checked": filterList['cuisine'].includes(d.id) ? true : false } }))
+        }
+    }, [CuisineLoaded])
 
     return (
         <GestureHandlerRootView>
@@ -70,6 +105,7 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
                 <View style={styles.modalContainer}>
                     <View style={styles.main}>
                         <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={16}>
+                            {/* Top navigation */}
                             <View style={styles.top}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
@@ -80,7 +116,7 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
 
                                 <Text style={styles.headingText}>filters</Text>
 
-                                <TouchableOpacity onPress={() => navigation.goBack()} style={{}}>
+                                <TouchableOpacity onPress={filterApply} style={{}}>
                                     <Text style={[styles.headingText, { fontSize: 14 }]}>done</Text>
                                 </TouchableOpacity>
                             </View>
@@ -101,7 +137,7 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
                                 <Text style={styles.headingFilterText}>dietary preferences</Text>
 
                                 <View style={{ marginTop: VP(17) }}>
-                                    <DietaryPreferencesSection items={dietaryList} clickHandler={setDietaryChecked} checkboxContainerStyle={styles.checkboxContainer} checkboxStyle={styles.checkbox} labelStyle={styles.dietaryText} checkedBoxStyle={styles.checkedBox} />
+                                    <DietaryPreferencesSection items={dietaryListState} clickHandler={setDietaryChecked} checkboxContainerStyle={styles.checkboxContainer} checkboxStyle={styles.checkbox} labelStyle={styles.dietaryText} checkedBoxStyle={styles.checkedBox} />
                                 </View>
                             </View>
 
@@ -112,7 +148,7 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
                                 <Text style={styles.headingFilterText}>cuisine</Text>
 
                                 <View style={{ marginTop: VP(17) }}>
-                                    <CuisineSection items={cuisineList} clickHandler={setCuisineChecked} checkboxContainerStyle={styles.checkboxContainer} checkboxStyle={styles.checkbox} labelStyle={styles.dietaryText} checkedBoxStyle={styles.checkedBox} />
+                                    <CuisineSection items={cuisineListState} clickHandler={setCuisineChecked} checkboxContainerStyle={styles.checkboxContainer} checkboxStyle={styles.checkbox} labelStyle={styles.dietaryText} checkedBoxStyle={styles.checkedBox} />
                                 </View>
                             </View>
 
@@ -188,6 +224,7 @@ const styles = StyleSheet.create({
         paddingBottom: HP(11),
         flexDirection: 'row',
         alignItems: 'center',
+        flexWrap: "wrap"
     },
     checkbox: {
         width: FS(15.89),

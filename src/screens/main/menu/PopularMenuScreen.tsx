@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 
 import OuterLayout from '../../../components/OuterLayout';
@@ -11,16 +11,37 @@ import { COLORS } from '../../../utils/Constants';
 import { itemData } from '../../../utils/MockData';
 import PopularMenuItemsSection from '../../../components/items/PopularMenuItems';
 import CartLayout from '../../../components/cart/CartLayout';
+import { getItemList } from '../../../utils/ApiCall';
 
 function PopularMenuScreen({ route, navigation }: { route: any; navigation: any }): React.JSX.Element {
     const { params } = route;
-    const { category } = params;
+    const { categoryId, name } = params;
+
+    const [loader, setLoader] = useState(false);
+    const [itemList, setItemList] = useState([]);
+
+    const fetchItem = async () => {
+        try {
+            setLoader(true);
+            const response = await getItemList({ popular: 1 });
+            setItemList(response.data);
+            setLoader(false);
+        } catch (err) {
+            setLoader(false);
+            setItemList([]);
+        }
+    }
+
+    useEffect(() => {
+        fetchItem();
+    }, [categoryId])
 
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
+                        {/* Top navigation */}
                         <View style={{ paddingHorizontal: HP(21) }}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <TouchableOpacity
@@ -29,18 +50,20 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
                                 >
                                     <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
-                                <Text style={styles.topHeading}>popular {category}</Text>
+                                <Text style={styles.topHeading}>popular {name}</Text>
                             </View>
                         </View>
 
+                        {/* Heading */}
                         <View style={{ marginTop: VP(47.85), paddingHorizontal: HP(21) }}>
-                            <Text style={styles.heading}>De lounge Popular {category}</Text>
+                            <Text style={styles.heading}>De lounge Popular {name}</Text>
                         </View>
 
                         <View style={{ marginTop: VP(18.66), paddingHorizontal: HP(15) }}>
-                            <PopularMenuItemsSection data={itemData} navigation={navigation} />
+                            <PopularMenuItemsSection data={itemList} dataLoaded={loader} navigation={navigation} />
                         </View>
 
+                        {/* Bottom text */}
                         <View style={{ marginTop: VP(41) }}>
                             <Text style={styles.highlightedText}>"Indulge your cravings."</Text>
                         </View>

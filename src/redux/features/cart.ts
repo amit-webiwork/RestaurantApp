@@ -67,6 +67,6 @@ export const { setItems, hideCartNotification, recoverCart, removeFromCart, rese
 export const cartItemList = (state: { cart: CartState }) => state.cart.items;
 export const itemAdded = (state: { cart: CartState }) => state.cart.itemAdded;
 
-export const getCartTotal = (state: { cart: CartState }) => state.cart.items.reduce((total: number, item: CartItemDetails) => total + ((+item.price || 0) * item.qty), 0)
+export const getCartTotal = (state: { cart: CartState }) => state.cart.items.reduce((total: number, item: CartItemDetails) => total + ((+item.finalPrice || 0) * item.qty), 0)
 
 export default cartSlice.reducer;

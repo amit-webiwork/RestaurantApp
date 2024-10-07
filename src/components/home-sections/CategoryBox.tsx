@@ -20,13 +20,12 @@ import { AppDispatch } from '../../redux/store';
 import CategoryBoxLoaderSection from '../skeleton/CategoryBoxLoader';
 
 interface Props {
-    data: any[];
     navigation: any;
 }
 
 const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF4C399", "#CFF4C399"], ["#FDD6D699", "#FDD6D699"]];
 
-const CategoryBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
+const CategoryBox: React.FunctionComponent<Props> = ({ navigation }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const flatListRef = useRef<any>();
@@ -73,7 +72,7 @@ const CategoryBox: React.FunctionComponent<Props> = ({ data, navigation }) => {
                     >
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={{ uri: item.imgUrl }}
+                                source={{ uri: item?.imgUrl }}
                                 style={styles.categoryIcon} />
                         </View>
                     </LinearGradient>

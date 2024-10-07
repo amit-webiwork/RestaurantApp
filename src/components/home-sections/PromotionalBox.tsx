@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState } from 'react';
+import React, { memo } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -11,7 +11,6 @@ import {
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import Right from '../../assets/svgs/right.svg';
 
 const data = [
     {
@@ -60,26 +59,11 @@ interface Props {
 
 const PromotionalBox: React.FunctionComponent<Props> = ({ navigation }) => {
     return (
-        <View style={styles.mainContainer}>
-            <View style={styles.subContainer}>
-                <Text style={styles.heading}>
-                    De lounge Popular Tea
-                </Text>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate(`PopularMenuScreen`, {
-                        category: "Tea"
-                    })}
-                    style={styles.headingRightContainer}
-                >
-                    <Text style={styles.headingRightTitleStyle}>view all</Text>
-                    <Right width={FS(12)} height={VP(12)} />
-                </TouchableOpacity>
-            </View>
-
+        <View style={{}}>
             <View>
                 <FlatList
                     data={data}
-                    renderItem={({ item, index, separators }) => <BoxItems item={item} index={index} />}
+                    renderItem={({ item, index }) => <BoxItems item={item} index={index} />}
                     contentContainerStyle={styles.listContainer}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -90,24 +74,6 @@ const PromotionalBox: React.FunctionComponent<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    mainContainer: {
-    },
-    heading: {
-        ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: 18,
-        textTransform: "capitalize"
-    },
-    subContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center"
-    },
-    headingRightContainer: {
-        flexDirection: "row",
-        gap: HP(2),
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     boxText: {
         ...TextStyles.ROBOTO_REGULAR,
         fontSize: HP(12),
@@ -122,11 +88,6 @@ const styles = StyleSheet.create({
         height: FS(96.23),
         justifyContent: "flex-end",
         resizeMode: "contain"
-    },
-    headingRightTitleStyle: {
-        ...TextStyles.RALEWAY_MEDIUM,
-        fontSize: HP(12),
-        textTransform: "capitalize",
     },
     boxInsideFirstText: {
         ...TextStyles.RALEWAY_EXTRA_BOLD,

@@ -6,7 +6,7 @@ import {
     Image,
     TouchableOpacity
 } from 'react-native';
-import { useDispatch } from 'react-redux'; 
+import { useDispatch } from 'react-redux';
 
 
 import { FS, HP, VP } from '../../utils/Responsive';
@@ -51,7 +51,13 @@ const CartItem: React.FunctionComponent<Props> = ({ data }) => {
                 <View style={styles.itemInfoContainer}>
                     <View style={{ flex: 1 }}>
                         <Text style={styles.itemTitle}>{data?.name || ""}</Text>
-                        <Text style={styles.itemPrice}>${(data?.price || 0.00)}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.itemPrice, data.discountPrice > 0 && styles.discountedPriceText]}>${data?.itemPrice?.toFixed(2) || 0.00}</Text>
+
+                        {data.discountPrice > 0 && (
+                            <>
+                                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.itemPrice}>${data.discountPrice.toFixed(2)}</Text>
+                            </>
+                        )}
                     </View>
 
                     <CartQtyButtonV2Section decrement={decrementCart} qty={cartQuantity} increment={incrementCart} />
@@ -100,6 +106,13 @@ const styles = StyleSheet.create({
     itemPrice: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 14,
+    },
+    discountedPriceText: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        color: "#939393",
+        textDecorationLine: "line-through",
+        textDecorationStyle: "solid",
+        fontSize: 14
     },
     iconImg: {
         width: FS(20),
