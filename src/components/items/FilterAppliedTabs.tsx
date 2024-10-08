@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
-import { categoryList, categoryLoaded, fetchCategories, getAppliedFilterArray, getFilters, removeFilter, resetFilter } from '../../redux/features/items';
+import { categoryList, categoryLoaded, fetchCategories, getAppliedFilterArray, getFilters, priceRangeFilter, removeFilter, removeFromRangeFilter, resetFilter } from '../../redux/features/items';
 import CategoryTabsLoaderSection from '../skeleton/CategoryTabsLoader';
 import { AppDispatch } from '../../redux/store';
 import Icon, { Icons } from '../Icons';
@@ -23,6 +23,7 @@ const FilterAppliedTabs: React.FunctionComponent<Props> = () => {
     const dispatch: AppDispatch = useDispatch();
 
     const filterList = useSelector(getAppliedFilterArray);
+    const PriceRangeFilter = useSelector(priceRangeFilter);
 
     const [filterData, setFilterData] = useState<any[]>([]);
 
@@ -34,11 +35,13 @@ const FilterAppliedTabs: React.FunctionComponent<Props> = () => {
         dispatch(resetFilter())
     }
 
+    const resetRangeFilter = () => {
+        dispatch(removeFromRangeFilter())
+    }
+
     useEffect(() => {
         setFilterData(filterList);
     }, [JSON.stringify(filterList)])
-
-    // console.log(filterList, '---getAppliedFilterArray')
 
     const filterItems = ({ item }: { item: any }) => {
         return (
@@ -62,7 +65,7 @@ const FilterAppliedTabs: React.FunctionComponent<Props> = () => {
                             color={COLORS.PLACEHOLDER_COLOR} />
                     </LinearGradient>
                 </TouchableOpacity>
-            </View >
+            </View>
         )
     }
 
@@ -79,6 +82,29 @@ const FilterAppliedTabs: React.FunctionComponent<Props> = () => {
                     }]}>Clear</Text>
                     <Text style={[styles.categoryText, { color: COLORS.PLACEHOLDER_COLOR }]}>|</Text>
                 </TouchableOpacity>
+            )}
+            {PriceRangeFilter['maxValue'] > 0 && (
+                <View style={{}}>
+                    <TouchableOpacity
+                        onPress={resetRangeFilter}
+                        style={{ marginTop: VP(24) }}
+                    >
+                        <LinearGradient
+                            colors={["#D3219B1A", "#D3219B1A"]}
+                            start={{ x: 1, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                            style={[styles.categoryBox]}
+                        >
+                            <Text style={styles.categoryText}>$ {PriceRangeFilter['minValue']} - {PriceRangeFilter['maxValue']}</Text>
+
+                            <Icon
+                                type={Icons.Feather}
+                                size={14}
+                                name={'x'}
+                                color={COLORS.PLACEHOLDER_COLOR} />
+                        </LinearGradient>
+                    </TouchableOpacity>
+                </View>
             )}
             <FlatList
                 data={filterData}

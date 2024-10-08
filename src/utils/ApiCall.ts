@@ -26,17 +26,27 @@ const getCategoryList = async (params: any = {}) => {
     }
 };
 
-const getItemList = async (params = {}, limit = 10, offset = 0) => {
+const getItemList = async (params = {}, limit = 10, offset = 0, signal: AbortSignal) => {
     try {
         const paramData = new URLSearchParams({ limit: String(limit), offset: String(offset), ...params });
-        
-        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.itemList}?${paramData}`);
+
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.itemList}?${paramData}`, {
+            signal
+        });
 
         return res.data;
     } catch (error: any) {
-        const { response } = error;
-        const message = response?.data?.message || error?.message || "Unknown error";
-        throw new Error(message);
+        // const { response } = error;
+        // const message = response?.data?.message || error?.message || "Unknown error";
+        // throw new Error(message);
+
+        if (axios.isCancel(error)) {
+            console.log("Request canceled", error.message);
+        } else {
+            const { response } = error;
+            const message = response?.data?.message || error?.message || "Unknown error";
+            throw new Error(message);
+        }
     }
 };
 

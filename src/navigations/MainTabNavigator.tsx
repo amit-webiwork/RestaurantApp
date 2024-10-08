@@ -13,6 +13,9 @@ import CartMenuScreen from '../screens/main/cart/CartMenuScreen';
 import OrderPlacedScreen from '../screens/main/cart/OrderPlacedScreen';
 import MenuScreen from '../screens/main/menu/MenuScreen';
 import PopularMenuScreen from '../screens/main/menu/PopularMenuScreen';
+import MenuScreenV2 from '../screens/main/menu/MenuScreenV2';
+import HomeScreen from '../screens/main/HomeScreen';
+import SearchScreen from '../screens/main/SearchScreen';
 
 export type MainTabParamList = {
     HomeScreen: undefined;
@@ -28,6 +31,8 @@ export type MainTabParamList = {
     OrderPlacedScreen: undefined;
     MenuScreen: undefined;
     PopularMenuScreen: undefined;
+    MenuScreenV2: undefined;
+    SearchScreen: undefined;
 };
 
 const MainTabNavigator: React.FunctionComponent = () => {
@@ -73,15 +78,30 @@ const MainTabNavigator: React.FunctionComponent = () => {
                 component={MenuScreen}
             />
             <Stack.Screen
+                name={`MenuScreenV2`}
+                component={MenuScreenV2}
+            />
+            <Stack.Screen
                 name={`PopularMenuScreen`}
                 component={PopularMenuScreen}
             />
+            {/* <Stack.Screen
+                name={`SearchScreen`}
+                component={SearchScreen}
+            /> */}
 
             <Stack.Group screenOptions={{
                 presentation: 'transparentModal',
                 animation: 'slide_from_bottom',   // Slide from bottom animation
             }}>
                 <Stack.Screen name="FilterScreen" component={FilterScreen} />
+            </Stack.Group>
+
+            <Stack.Group screenOptions={{
+                presentation: 'transparentModal',
+                animation: 'slide_from_right',   // Slide from right animation
+            }}>
+                <Stack.Screen name={`SearchScreen`} component={SearchScreen} />
             </Stack.Group>
         </Stack.Navigator>
     );

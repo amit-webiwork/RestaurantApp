@@ -168,15 +168,15 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                     </TouchableOpacity> */}
                                 </View>
 
-                                <View style={{ paddingHorizontal: HP(30), paddingVertical: HP(3), }}>
+                                <View style={{ paddingVertical: HP(3), }}>
                                     {/* Description and info text */}
-                                    <View>
+                                    <View style={{ paddingHorizontal: HP(30) }}>
                                         <Text style={styles.descText}>description</Text>
                                         <Text style={styles.infoText}>{itemDetails?.description}</Text>
                                     </View>
 
                                     {/* Cooking request */}
-                                    <View style={{ marginTop: VP(40) }}>
+                                    <View style={{ marginTop: VP(40), paddingHorizontal: HP(30) }}>
                                         <Text style={styles.requestText}>Add a cooking request (optional)</Text>
 
                                         <View style={{ marginTop: VP(14) }}>
@@ -184,46 +184,47 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         </View>
                                     </View>
 
-                                    <View style={{ marginTop: VP(27) }}>
+                                    <View style={{ marginTop: VP(27), paddingHorizontal: HP(30) }}>
                                         <ProductRatingsSection data={productRatings} />
                                     </View>
 
                                     {/* Cart with qty Button */}
-                                    <View style={{ flexDirection: "row", marginTop: VP(44), backgroundColor: COLORS.BUTTON, borderRadius: HP(40), padding: HP(17), justifyContent: "space-between", alignItems: "center" }}>
-                                        <View>
-                                            <Text style={{ ...TextStyles.RALEWAY_BOLD, fontSize: 20, color: COLORS.WHITE }}>${itemDetails?.finalPrice.toFixed(2)}</Text>
+                                    <View style={{ paddingHorizontal: HP(30) }}>
+                                        <View style={{ flexDirection: "row", marginTop: VP(44), backgroundColor: COLORS.BUTTON, borderRadius: HP(40), padding: HP(17), justifyContent: "space-between", alignItems: "center", }}>
+                                            <View>
+                                                <Text style={{ ...TextStyles.RALEWAY_BOLD, fontSize: 20, color: COLORS.WHITE }}>${itemDetails?.finalPrice.toFixed(2)}</Text>
+                                            </View>
+
+                                            <CartQtyButtonV1Section decrement={decrementCart} qty={cartQuantity} setQty={setCartQuantity} increment={incrementCart} />
+
+                                            <TouchableOpacity
+                                                onPress={() => addToCart(itemDetails, cartQuantity, dispatch)}
+                                                style={{ width: FS(31), height: FS(31), borderRadius: FS(15.5), backgroundColor: COLORS.WHITE, alignItems: "center", justifyContent: "center" }}
+                                            >
+                                                <Image
+                                                    source={require('../../assets/icons/cart.png')}
+                                                    style={{ width: FS(21), height: FS(20), }}
+                                                    resizeMode="cover"
+                                                />
+                                            </TouchableOpacity>
                                         </View>
-
-                                        <CartQtyButtonV1Section decrement={decrementCart} qty={cartQuantity} setQty={setCartQuantity} increment={incrementCart} />
-
-                                        <TouchableOpacity
-                                            onPress={() => addToCart(itemDetails, cartQuantity, dispatch)}
-                                            style={{ width: FS(31), height: FS(31), borderRadius: FS(15.5), backgroundColor: COLORS.WHITE, alignItems: "center", justifyContent: "center" }}
-                                        >
-                                            <Image
-                                                source={require('../../assets/icons/cart.png')}
-                                                style={{ width: FS(21), height: FS(20), }}
-                                                resizeMode="cover"
-                                            />
-                                        </TouchableOpacity>
                                     </View>
 
                                     {/* Heading */}
-                                    <View style={{ marginTop: VP(38.34) }}>
+                                    <View style={{ marginTop: VP(38.34), paddingHorizontal: HP(30) }}>
                                         <HeadingSection title={`MENU`} />
                                     </View>
 
                                     {/* Category Tab */}
-                                    <View style={{ marginTop: VP(25.66) }}>
+                                    <View style={{ marginTop: VP(25.66), paddingLeft: HP(30) }}>
                                         <CategortyTabsSection setSelectedCategory={selectCategoryHandler} />
                                     </View>
 
                                     {/* item boxes */}
-                                    <View style={{ marginTop: VP(20) }}>
+                                    <View style={{ marginTop: VP(20), paddingLeft: HP(30) }}>
                                         <ItemBoxSection data={itemListFiltered} dataLoaded={PapularItemLoaded} navigation={navigation} />
                                     </View>
                                 </View>
-
                             </View>
                         </Animated.ScrollView>
                     </View>

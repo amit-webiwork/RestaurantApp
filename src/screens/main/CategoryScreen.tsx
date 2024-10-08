@@ -89,13 +89,6 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
 
                         <View style={{ marginTop: HP(24), flexDirection: "row", alignItems: "center", gap: HP(10), justifyContent: "space-between" }}>
                             <SearchBoxSection setHandler={searchTextHandler} inputContainerStyle={{}} navigation={navigation} />
-
-                            <TouchableOpacity
-                                onPress={() => navigation.navigate(`FilterScreen`)}
-                                style={globalStyle.filterIconContainer}
-                            >
-                                <Image source={require(`../../assets/icons/filter.png`)} style={[globalStyle.filterIconRight]} />
-                            </TouchableOpacity>
                         </View>
 
                         <View>

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, BackHandler } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import OuterLayout from '../../../components/OuterLayout';
@@ -43,7 +43,19 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
         }
     }, [PapularItemLoaded])
 
-    console.log(CartItemList, '---CartItemList')
+
+    useEffect(() => {
+        const backAction = () => {
+            navigation.navigate('HomeScreen');
+            return true; // Prevent default back button behavior
+        };
+
+        // Add event listener for hardware back button
+        const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+
+        // Cleanup the event listener when component unmounts
+        return () => backHandler.remove();
+    }, [navigation]);
 
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
@@ -64,9 +76,9 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         </View>
 
                         {/* Body section */}
-                        <View style={{ marginHorizontal: HP(20) }}>
+                        <View style={{}}>
                             {/* First section including cart, add more item, coocking request */}
-                            <View style={{ marginTop: VP(34), backgroundColor: COLORS.WHITE, borderRadius: HP(21) }}>
+                            <View style={{ marginTop: VP(34), backgroundColor: COLORS.WHITE, borderRadius: HP(21), marginHorizontal: HP(20) }}>
                                 {/* Cart Items Loop */}
                                 {CartItemList.length > 0 ? (
                                     <>
@@ -129,7 +141,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                             {/* Second section Promo Code */}
                             {CartItemList.length > 0 && (
-                                <View style={{ marginTop: VP(28) }}>
+                                <View style={{ marginTop: VP(28), marginHorizontal: HP(20) }}>
                                     <Text style={styles.heading}>Promo Code</Text>
 
                                     <View style={{ marginTop: VP(14), backgroundColor: COLORS.WHITE, borderRadius: HP(14) }}>
@@ -153,7 +165,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                             {/* Third section order summary */}
                             {CartItemList.length > 0 && (
-                                <View style={{ marginTop: VP(28) }}>
+                                <View style={{ marginTop: VP(28), marginHorizontal: HP(20) }}>
                                     <Text style={styles.heading}>order summary</Text>
 
                                     <View style={{ marginTop: VP(14), backgroundColor: COLORS.WHITE, borderRadius: HP(21) }}>
@@ -185,18 +197,18 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             {CartItemList.length > 0 && (
                                 <>
                                     {/* Bottom Heading */}
-                                    <View style={{ marginTop: VP(23.3) }}>
+                                    <View style={{ marginTop: VP(23.3), marginHorizontal: HP(20) }}>
                                         <Text style={styles.heading}>popular with your order</Text>
                                         <Text style={styles.text}>other customers also bought these</Text>
                                     </View>
 
                                     {/* Category Tab */}
-                                    <View style={{ marginTop: VP(18.66) }}>
+                                    <View style={{ marginTop: VP(18.66), marginLeft: HP(20) }}>
                                         <CategortyTabsSection setSelectedCategory={selectCategoryHandler} />
                                     </View>
 
                                     {/* item boxes */}
-                                    <View style={{ marginTop: VP(20) }}>
+                                    <View style={{ marginTop: VP(20), marginLeft: HP(20) }}>
                                         <ItemBoxSection data={itemListFiltered} dataLoaded={PapularItemLoaded} navigation={navigation} />
                                     </View>
                                 </>

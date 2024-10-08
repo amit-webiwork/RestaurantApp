@@ -20,12 +20,17 @@ import { AppDispatch } from '../../redux/store';
 import CategoryBoxLoaderSection from '../skeleton/CategoryBoxLoader';
 
 interface Props {
-    navigation: any;
+    selectHandler: any;
+}
+
+const allCategory = {
+    "id": 0,
+    "name": "All"
 }
 
 const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF4C399", "#CFF4C399"], ["#FDD6D699", "#FDD6D699"]];
 
-const CategoryBox: React.FunctionComponent<Props> = ({ navigation }) => {
+const CategoryBox: React.FunctionComponent<Props> = ({ selectHandler }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const flatListRef = useRef<any>();
@@ -33,23 +38,18 @@ const CategoryBox: React.FunctionComponent<Props> = ({ navigation }) => {
     const CategoryLoaded = useSelector(categoryLoaded);
     const CategoryList = useSelector(categoryList);
 
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [selected, setSelected] = useState(0);
 
-    const scrollLeft = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1);
-            flatListRef.current.scrollToIndex({ index: currentIndex - 1 });
-        }
-    };
-
-    const scrollRight = () => {
-        setCurrentIndex(currentIndex + 1);
-        flatListRef.current.scrollToIndex({ index: currentIndex + 1 });
+    const handleSelect = (item: { id: number; }) => {
+        selectHandler(item.id);
+        setSelected(item.id);
     };
 
     useEffect(() => {
         if (!CategoryLoaded) {
             dispatch(fetchCategories());
+        } else {
+            setSelected(0);
         }
     }, [CategoryLoaded])
 
@@ -57,60 +57,44 @@ const CategoryBox: React.FunctionComponent<Props> = ({ navigation }) => {
         const backgroundColor = colorsBG[index % colorsBG.length];
 
         return (
-            <View style={{ marginRight: HP(15), flexGrow: 1, gap: HP(5) }}>
+            <View style={{ marginRight: HP(15), flexGrow: 1, gap: HP(5), alignItems: "center" }}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate(`MenuScreen`, {
-                        categoryId: item?.id
-                    })}
+                    onPress={() => handleSelect(item)}
                     style={{}}
                 >
                     <LinearGradient
                         colors={backgroundColor}
                         start={{ x: 1, y: 0 }}
                         end={{ x: 1, y: 0 }}
-                        style={styles.categoryBox}
+                        style={[styles.categoryBox]}
                     >
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={{ uri: item?.imgUrl }}
-                                style={styles.categoryIcon} />
+                                source={item.id === 0 ? require('../../assets/images/categories/all.png') : { uri: item?.imgUrl }}
+                                style={styles.categoryIcon}
+                            />
                         </View>
                     </LinearGradient>
                 </TouchableOpacity>
                 <Text style={styles.categoryText}>{item.name}</Text>
+
+                {selected === item.id && (
+                    <Image
+                        source={require('../../assets/images/active.png')}
+                        style={{ width: FS(64), height: VP(4), resizeMode: "contain" }}
+                    />
+                )}
             </View>
         )
     }
 
     return (
-        <View style={styles.mainContainer}>
-            <View style={styles.subContainer}>
-                <Text style={styles.heading}>
-                    categories
-                </Text>
-                {CategoryLoaded && (
-                    <View style={styles.iconMainContainer}>
-                        <TouchableOpacity
-                            onPress={scrollLeft}
-                            style={styles.iconContainer}
-                        >
-                            <LeftWhite width={FS(12)} height={VP(12)} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={scrollRight}
-                            style={styles.iconContainer}
-                        >
-                            <RightWhite width={FS(12)} height={VP(12)} />
-                        </TouchableOpacity>
-                    </View>
-                )}
-            </View>
-
+        <View>
             <View>
                 {CategoryLoaded ? (
                     <FlatList
-                        data={CategoryList}
-                        renderItem={({ item, index }) => <CategoryItem item={item} index={index} />}
+                        data={[allCategory, ...CategoryList]}
+                        renderItem={CategoryItem}
                         contentContainerStyle={styles.listContainer}
                         horizontal={true}
                         ref={flatListRef}
@@ -123,17 +107,10 @@ const CategoryBox: React.FunctionComponent<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    mainContainer: {
-    },
     heading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 18,
         textTransform: "capitalize"
-    },
-    subContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center"
     },
     iconMainContainer: {
         flexDirection: "row",
@@ -163,8 +140,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     categoryIcon: {
-        width: FS(45),
-        height: VP(45),
+        width: FS(50),
+        height: VP(50),
         resizeMode: "contain"
     }
 });

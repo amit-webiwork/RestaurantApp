@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView, BackHandler, Alert } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,9 +23,16 @@ import { fetchPopularItems, getFeaturedCategory, papularItemLoaded, papularItems
 import { AppDispatch } from '../../redux/store.ts';
 import Right from '../../assets/svgs/right.svg';
 import { globalStyle } from '../../utils/GlobalStyle.ts';
+import { proflieDetails } from '../../redux/features/profile.ts';
+import CuisineBox from '../../components/home-sections/CuisineBox.tsx';
+import SearchBoxItemsSection from '../../components/home-sections/SearchBoxItems.tsx';
 
 function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
+
+    const ProflieDetails = useSelector(proflieDetails);
+
+    const { user } = ProflieDetails;
 
     const PapularItemLoaded = useSelector(papularItemLoaded);
     const PapularItems = useSelector(papularItems);
@@ -109,14 +116,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                                     {/* Search Box */}
                                     <View style={{ marginHorizontal: HP(20), flexDirection: "row", alignItems: "center", gap: HP(10), justifyContent: "space-between" }}>
-                                        <SearchBoxSection setHandler={setSearchTextHandler} navigation={navigation} />
-
-                                        <TouchableOpacity
-                                            onPress={() => navigation.navigate(`FilterScreen`)}
-                                            style={globalStyle.filterIconContainer}
-                                        >
-                                            <Image source={require(`../../assets/icons/filter.png`)} style={[globalStyle.filterIconRight]} />
-                                        </TouchableOpacity>
+                                        <SearchBoxItemsSection navigation={navigation} />
                                     </View>
 
                                     {/* Category Boxes */}
@@ -150,12 +150,12 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     </View>
 
                                     {/* Category Tabs */}
-                                    <View style={{ marginTop: VP(24.66), marginHorizontal: HP(21) }}>
+                                    <View style={{ marginTop: VP(24.66), marginLeft: HP(21) }}>
                                         <CategortyTabsSection setSelectedCategory={selectCategoryHandler} />
                                     </View>
 
                                     {/* Item Boxes */}
-                                    <View style={{ marginTop: VP(20), marginHorizontal: HP(21) }}>
+                                    <View style={{ marginTop: VP(20), marginLeft: HP(21) }}>
                                         <ItemBoxSection data={itemListFiltered} dataLoaded={PapularItemLoaded} navigation={navigation} />
                                     </View>
 
@@ -166,12 +166,13 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                                     {/* Heading Section */}
                                     <View style={{ marginTop: VP(32.87), marginHorizontal: HP(21) }}>
-                                        <HeadingSection textStyle={{ textTransform: "uppercase" }} title={`Kylie, what’s on your mind?`} />
+                                        <HeadingSection textStyle={{ textTransform: "uppercase" }} title={`${user?.name}, what’s on your mind?`} />
                                     </View>
 
                                     {/* Feature Category Boxes */}
                                     <View style={{ marginTop: VP(20), marginHorizontal: HP(16) }}>
-                                        <FeatureCategoryBoxSection />
+                                        {/* <FeatureCategoryBoxSection /> */}
+                                        <CuisineBox navigation={navigation} />
                                     </View>
 
                                     {/* Banner Two */}
@@ -186,7 +187,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                                     {/* Item Vertical Boxes */}
                                     <View style={{ marginTop: VP(22), marginHorizontal: HP(11) }}>
-                                        <ItemVerticalBoxSection />
+                                        <ItemVerticalBoxSection data={PapularItems} dataLoaded={!PapularItemLoaded} navigation={navigation} />
                                     </View>
 
                                     {/* Bottom Heading */}

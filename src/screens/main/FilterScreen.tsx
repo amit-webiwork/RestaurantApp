@@ -11,12 +11,12 @@ import DietaryPreferencesSection from '../../components/item-filters/DietaryPref
 import CuisineSection from '../../components/item-filters/Cuisine.tsx';
 import PriceRangeSection from '../../components/item-filters/PriceRange.tsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { cuisineList, cuisineLoaded, dietaryList, dietaryLoaded, fetchCuisine, fetchDietaries, getFilters, setFilters } from '../../redux/features/items.ts';
+import { cuisineList, cuisineLoaded, dietaryList, dietaryLoaded, fetchCuisine, fetchDietaries, fetchPopularItems, getFilters, papularItemLoaded, papularItems, priceRange, priceRangeFilter, priceRangeLoaded, setFilters, setPriceRangeFilter } from '../../redux/features/items.ts';
 import { AppDispatch } from '../../redux/store.ts';
 
 const popular_items = ["brown sugar milk tea (fresh milk)", "brownie with ice cream", "nutella waffle", "watermelon juice", "Fudge Walnut Brownie", "pearl milk tea"];
 
-function FilterScreen({ route, navigation }: { route: any; navigation: any; }): React.JSX.Element {
+function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
 
     const dispatch: AppDispatch = useDispatch();
 
@@ -26,15 +26,20 @@ function FilterScreen({ route, navigation }: { route: any; navigation: any; }): 
     const CuisineList = useSelector(cuisineList);
     const CuisineLoaded = useSelector(cuisineLoaded);
 
+    const PapularItems = useSelector(papularItems);
+    const PapularItemLoaded = useSelector(papularItemLoaded);
+
+    const PriceRangeFilter = useSelector(priceRangeFilter);
+
     const filterList = useSelector(getFilters);
 
     const [dietaryListState, setDietaryList] = useState<any[]>([]);
 
     const [cuisineListState, setCuisineList] = useState<any[]>([]);
 
-    const [itemClicked, setItemClicked] = useState(-1);
+    const [papularItemList, setPapularItemList] = useState<any[]>([]);
 
-    const [priceRange, setPriceRange] = useState([50, 300]);
+    const [priceRangeState, setPriceRange] = useState([0, 0]);
 
     const handleGestureEvent = () => {
         // Handle vertical gesture, track movement
@@ -63,18 +68,26 @@ function FilterScreen({ route, navigation }: { route: any; navigation: any; }): 
         );
     };
 
+    const setPopularItemChecked = (id: number) => {
+        setPapularItemList(prevList =>
+            prevList.map((item, i) =>
+                item.id === id ? { ...item, checked: !item.checked } : item
+            )
+        );
+    };
+
     const onRangeChange = (values: React.SetStateAction<number[]>) => {
         setPriceRange(values);
     };
-
-    const itemClickedHandler = (id: React.SetStateAction<number>) => {
-        setItemClicked(id);
-    }
 
     const filterApply = () => {
         dispatch(setFilters({ key: "dietaries", data: dietaryListState.filter((d) => d.checked === true).map(d => d.id) }));
 
         dispatch(setFilters({ key: "cuisine", data: cuisineListState.filter((d) => d.checked === true).map(d => d.id) }));
+
+        dispatch(setFilters({ key: "popularItems", data: papularItemList.filter((d) => d.checked === true).map(d => d.id) }));
+
+        dispatch(setPriceRangeFilter({ "minValue": priceRangeState[0], "maxValue": priceRangeState[1] }));
 
         navigation.goBack();
     }
@@ -87,7 +100,6 @@ function FilterScreen({ route, navigation }: { route: any; navigation: any; }): 
         }
     }, [DietaryLoaded])
 
-
     useEffect(() => {
         if (!CuisineLoaded) {
             dispatch(fetchCuisine());
@@ -96,37 +108,51 @@ function FilterScreen({ route, navigation }: { route: any; navigation: any; }): 
         }
     }, [CuisineLoaded])
 
+    useEffect(() => {
+        if (!PapularItemLoaded) {
+            dispatch(fetchPopularItems());
+        } else {
+            setPapularItemList(PapularItems.map((d: any) => { return { ...d, "checked": filterList['popularItems'].includes(d.id) ? true : false } }))
+        }
+    }, [PapularItemLoaded])
+
+    useEffect(() => {
+        if (PriceRangeFilter) {
+            setPriceRange([PriceRangeFilter["minValue"] > 0 ? PriceRangeFilter["minValue"] : 0, PriceRangeFilter["maxValue"] > 0 ? PriceRangeFilter["maxValue"] : 0])
+        }
+    }, [JSON.stringify(PriceRangeFilter)])
+
     return (
         <GestureHandlerRootView>
             <PanGestureHandler
-                onGestureEvent={handleGestureEvent} // Add a gesture handler to capture swipes
+                onGestureEvent={handleGestureEvent}
                 onHandlerStateChange={handleStateChange}
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.main}>
+                        {/* Top navigation */}
+                        <View style={styles.top}>
+                            <TouchableOpacity
+                                onPress={() => navigation.goBack()}
+                                style={{}}
+                            >
+                                <Icon type={Icons.Feather} size={18} name="chevron-left" color={COLORS.BLACK} />
+                            </TouchableOpacity>
+
+                            <Text style={styles.headingText}>filters</Text>
+
+                            <TouchableOpacity onPress={filterApply} style={{}}>
+                                <Text style={[styles.headingText, { fontSize: 14 }]}>done</Text>
+                            </TouchableOpacity>
+                        </View>
+
                         <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={16}>
-                            {/* Top navigation */}
-                            <View style={styles.top}>
-                                <TouchableOpacity
-                                    onPress={() => navigation.goBack()}
-                                    style={{}}
-                                >
-                                    <Icon type={Icons.Feather} size={18} name="chevron-left" color={COLORS.BLACK} />
-                                </TouchableOpacity>
-
-                                <Text style={styles.headingText}>filters</Text>
-
-                                <TouchableOpacity onPress={filterApply} style={{}}>
-                                    <Text style={[styles.headingText, { fontSize: 14 }]}>done</Text>
-                                </TouchableOpacity>
-                            </View>
-
                             {/* Popular Items */}
-                            <View style={{ marginTop: VP(1.76), paddingHorizontal: HP(24) }}>
+                            <View style={{ marginTop: VP(10.76), paddingHorizontal: HP(24) }}>
                                 <Text style={styles.headingFilterText}>popular items</Text>
 
                                 <View style={{ marginTop: VP(14) }}>
-                                    <PopularItemsSection items={popular_items} clickHandler={itemClickedHandler} />
+                                    <PopularItemsSection items={papularItemList} clickHandler={setPopularItemChecked} />
                                 </View>
                             </View>
 
@@ -193,7 +219,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        paddingVertical: HP(28),
+        paddingVertical: HP(25),
         paddingHorizontal: HP(18)
     },
     headingText: {

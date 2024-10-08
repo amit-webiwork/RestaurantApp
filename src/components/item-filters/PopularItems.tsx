@@ -11,22 +11,16 @@ interface Props {
 }
 
 function PopularItems({ items, clickHandler }: Props): React.JSX.Element {
-    const [selected, setSelected] = useState(-1);
-
-    const onPresshandler = (id: number) => {
-        setSelected(id);
-        clickHandler(id)
-    }
 
     return (
         <View style={{ flexDirection: "row", gap: HP(10), flexWrap: "wrap" }}>
             {items.map((d, i) => (
                 <TouchableOpacity
                     key={`popular-items-${i}`}
-                    onPress={() => onPresshandler(i)}
-                    style={[styles.categoryButton, { borderColor: selected === i ? "#FF00E2" : "#E0E0E0" }]}
+                    onPress={() => clickHandler(d?.id)}
+                    style={[styles.categoryButton, { borderColor: d.checked ? "#FF00E2" : "#E0E0E0" }]}
                 >
-                    <Text style={[styles.categoryText, { color: selected === i ? COLORS.BLACK : "#747474" }]}>{d}</Text>
+                    <Text style={[styles.categoryText, { color: d.checked ? COLORS.BLACK : "#747474" }]}>{d?.name}</Text>
                 </TouchableOpacity>
             ))}
         </View>

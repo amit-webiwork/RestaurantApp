@@ -78,6 +78,16 @@ export const TextStyles: Record<string, TextStyle> = {
         color: COLORS.BLACK,
         fontSize: 16
     },
+    POPPINS_MEDIUM: {
+        fontFamily: 'PoppinsMedium',
+        color: COLORS.BLACK,
+        fontSize: 16
+    },
+    POPPINS_LIGHT: {
+        fontFamily: 'PoppinsLight',
+        color: COLORS.BLACK,
+        fontSize: 16
+    },
     INTER_MEDIUM: {
         fontFamily: 'InterMedium',
         color: COLORS.BLACK,

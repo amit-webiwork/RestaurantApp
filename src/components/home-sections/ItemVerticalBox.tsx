@@ -12,83 +12,94 @@ import Icon, { Icons } from '../Icons';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
+import { getItemPriceComponents } from '../../utils/helper/ItemHelper';
+import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
+import MenuItemLoaderSection from '../skeleton/MenuItemLoader';
+import MenuVerticalItemLoader from '../skeleton/MenuVerticalItemLoader';
+import { addToCart } from '../../utils/helper/CartHelper';
+import { AppDispatch } from '../../redux/store';
+import { useDispatch } from 'react-redux';
 
-const data = [
-    {
-        "title": "brownie with ice-cream",
-        "firstText": "1 piece",
-        "secondText": "20% OFF up to $4.00",
-        "price": 12.00,
-        "bg": require(`../../assets/images/items/full-1.png`)
-    },
-    {
-        "title": "brownie with ice-cream",
-        "firstText": "1 piece",
-        "secondText": "20% OFF up to $4.00",
-        "price": 12.00,
-        "bg": require(`../../assets/images/items/2.png`)
-    },
-    {
-        "title": "brownie with ice-cream",
-        "firstText": "1 piece",
-        "secondText": "20% OFF up to $4.00",
-        "price": 12.00,
-        "bg": require(`../../assets/images/items/3.png`)
-    }
-]
+interface Props {
+    data: any[];
+    navigation: any;
+    dataLoaded: boolean;
+}
 
-const BoxItems = ({ item, index }: { item: any, index: number }) => {
+const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation }) => {
+    const dispatch: AppDispatch = useDispatch();
 
-    return (
-        <View style={styles.boxContainer}>
-            <View style={styles.boxSubContainer}>
-                <View
-                    style={{ width: "100%" }}
-                >
-                    <ImageBackground source={item.bg} style={styles.bg} imageStyle={{ borderRadius: FS(24.42) }}>
-                        <View style={styles.priceBox}>
-                            <View style={styles.priceSubBox}>
-                                <Text style={styles.priceText}>${item.price.toFixed(2)}</Text>
-                            </View>
+    const BoxItems = ({ itemData, index }: { itemData: any, index: number }) => {
+        const item = getItemPriceComponents(itemData);
 
-                            {/* <TouchableOpacity
-                                onPress={() => void (0)}
-                            >
-                                <Icon type={Icons.Feather} size={20} name={`heart`} color={COLORS.WHITE} />
-                            </TouchableOpacity> */}
-                        </View>
-                    </ImageBackground>
-                </View>
-
-                <View style={styles.contentBox}>
-                    <TouchableOpacity
-                        onPress={() => void (0)}
+        return (
+            <View style={styles.boxContainer}>
+                <View style={styles.boxSubContainer}>
+                    <View
+                        style={{ width: "100%" }}
                     >
-                        <Text style={styles.boxTitle}>{item.title}</Text>
-                        <Text style={styles.boxText}>{item.firstText}</Text>
-                    </TouchableOpacity>
+                        <ImageBackground source={{ 'uri': item?.imgUrl }} style={styles.bg} imageStyle={{ borderRadius: FS(24.42) }}>
+                            <View style={styles.priceBox}>
+                                <View style={styles.priceSubBox}>
+                                    <Text style={styles.priceText}>${item?.finalPrice.toFixed(2)}</Text>
+                                </View>
 
-                    <View style={styles.line}>
+                                {/* <TouchableOpacity
+                                    onPress={() => void (0)}
+                                >
+                                    <Icon type={Icons.Feather} size={20} name={`heart`} color={COLORS.WHITE} />
+                                </TouchableOpacity> */}
+                            </View>
+                        </ImageBackground>
                     </View>
 
-                    <View style={styles.offerBox}>
-                       <Icon type={Icons.MaterialCommunityIcons} size={21.39} name={`sale`} color={COLORS.HOME_ICONS} />
-                        <Text style={styles.offerText}> {item.secondText}</Text>
+                    <View style={styles.contentBox}>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate(`ProductScreen`, {
+                                id: item?.id,
+                                item: item
+                            })}
+                        >
+                            <Text style={styles.boxTitle}>{item?.name}</Text>
+                            <Text style={styles.boxText}>{`1 piece`}</Text>
+                        </TouchableOpacity>
+
+                        <View style={styles.line}>
+                        </View>
+
+                        <View style={styles.offerBox}>
+                            <View style={{ flexDirection: "row", gap: HP(5) }}>
+                                {item.discountPercent > 0 && (
+                                    <>
+                                        <Icon type={Icons.MaterialCommunityIcons} size={21.39} name={`sale`} color={COLORS.HOME_ICONS} />
+                                        <Text style={styles.offerText}>{item.discountPercent.toFixed(2)}% OFF up to ${item.totalDiscounted.toFixed(2)}</Text>
+                                    </>
+                                )}
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => addToCart(item, 1, dispatch, 'add')}
+                                style={styles.iconBox}
+                            >
+                                <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>
-        </View>
-    )
-}
+        )
+    }
 
-const ItemVerticalBox: React.FunctionComponent = () => {
     return (
-        <FlatList
-            data={data}
-            renderItem={({ item, index }) => <BoxItems item={item} index={index} />}
-            contentContainerStyle={{}}
-            scrollEnabled={false}
-        />
+        <>
+            {!dataLoaded ? (
+                <FlatList
+                    data={data}
+                    renderItem={({ item, index }) => <BoxItems itemData={item} index={index} />}
+                    contentContainerStyle={{}}
+                    scrollEnabled={false}
+                />
+            ) : (<MenuVerticalItemLoader />)}
+        </>
     );
 };
 
@@ -164,13 +175,23 @@ const styles = StyleSheet.create({
         marginTop: HP(4.01),
         flexDirection: 'row',
         alignItems: "center",
-        gap: HP(2)
+        gap: HP(2),
+        justifyContent: "space-between"
     },
     offerText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 16,
         color: COLORS.HOME_ICONS,
         top: VP(-2)
+    },
+    iconBox: {
+        width: FS(20),
+        height: FS(20),
+        borderRadius: FS(10),
+        borderColor: "#383838",
+        backgroundColor: "#383838",
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

@@ -16,13 +16,16 @@ interface FiltersState {
     cuisine: any[],
     cuisineLoaded: boolean;
     filters: {
-        "dietaries": number[];
         "cuisine": number[];
+        "dietaries": number[];
+        "popularItems": number[];
     };
     priceRange: {
         "minValue": number;
         "maxValue": number;
-    }
+    };
+    priceRangeLoaded: boolean;
+    priceRangeFilter: { "minValue": number, "maxValue": number };
 }
 
 const initialState: FiltersState = {
@@ -38,8 +41,10 @@ const initialState: FiltersState = {
     dietaryLoaded: false,
     cuisine: [],
     cuisineLoaded: false,
-    filters: { "dietaries": [], "cuisine": [] },
-    priceRange: { "minValue": 0, "maxValue": 0 }
+    filters: { "cuisine": [], "dietaries": [], "popularItems": [] },
+    priceRange: { "minValue": 0, "maxValue": 0 },
+    priceRangeLoaded: false,
+    priceRangeFilter: { "minValue": 0, "maxValue": 0 }
 }
 
 export const itemSlice = createSlice({
@@ -87,14 +92,22 @@ export const itemSlice = createSlice({
             };
         },
         resetFilter: (state) => {
-            state.filters = { "dietaries": [], "cuisine": [] }
+            state.filters = { "dietaries": [], "cuisine": [], "popularItems": [] }
+            state.priceRangeFilter = { "minValue": 0, "maxValue": 0 }
         },
         setPriceRange: (state, action) => {
             state.priceRange = {
                 "minValue": +action?.payload?.minValue || 0,
                 "maxValue": +action?.payload?.maxValue || 0
-            };
+            }
+            state.priceRangeLoaded = true
         },
+        setPriceRangeFilter: (state, action) => {
+            state.priceRangeFilter = { "minValue": action.payload.minValue, "maxValue": action.payload.maxValue };
+        },
+        removeFromRangeFilter: (state) => {
+            state.priceRangeFilter = { "minValue": 0, "maxValue": 0 }
+        }
     },
 })
 
@@ -165,26 +178,27 @@ export const getAppliedFilterArray = createSelector(
     [
         (state: { items: FiltersState }) => state.items.filters,
         (state: { items: FiltersState }) => state.items.cuisine,
-        (state: { items: FiltersState }) => state.items.dietaries
+        (state: { items: FiltersState }) => state.items.dietaries,
+        (state: { items: FiltersState }) => state.items.papularItems
     ],
-    (filters, cuisine, dietaries) => {
+    (filters, cuisine, dietaries, papularItems) => {
 
         const out: any[] = [];
 
         Object.keys(filters).forEach(function (key, index) {
             if (key === 'cuisine') {
                 out.push(filters[key].map((d) => { return { id: d, type: "cuisine", name: cuisine.find((k) => k.id === d)?.name || "" } }))
-            } else {
-                if (key === 'dietaries') {
-                    out.push(filters[key].map((d) => { return { id: d, type: "dietaries", name: dietaries.find((k) => k.id === d)?.name || "" } }))
-                }
+            } else if (key === 'dietaries') {
+                out.push(filters[key].map((d) => { return { id: d, type: "dietaries", name: dietaries.find((k) => k.id === d)?.name || "" } }))
+            } else if (key === 'popularItems') {
+                out.push(filters[key].map((d) => { return { id: d, type: "popularItems", name: papularItems.find((k) => k.id === d)?.name || "" } }))
             }
         })
         return out.flat();
     }
 )
 
-export const { setCategoryList, setItemList, setTopicList, setPapularItemList, setDietaryList, setFilters, setCuisineList, removeFilter, resetFilter, setPriceRange } = itemSlice.actions
+export const { setCategoryList, setItemList, setTopicList, setPapularItemList, setDietaryList, setFilters, setCuisineList, removeFilter, resetFilter, setPriceRange, setPriceRangeFilter, removeFromRangeFilter } = itemSlice.actions
 
 export const categoryList = (state: { items: FiltersState }) => state.items.categories;
 export const categoryLoaded = (state: { items: FiltersState }) => state.items.categoryLoaded;
@@ -209,5 +223,8 @@ export const cuisineLoaded = (state: { items: FiltersState }) => state.items.cui
 export const getFilters = (state: { items: FiltersState }) => state.items.filters;
 
 export const priceRange = (state: { items: FiltersState }) => state.items.priceRange;
+export const priceRangeLoaded = (state: { items: FiltersState }) => state.items.priceRangeLoaded;
+
+export const priceRangeFilter = (state: { items: FiltersState }) => state.items.priceRangeFilter;
 
 export default itemSlice.reducer;

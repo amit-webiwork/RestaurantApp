@@ -53,12 +53,12 @@ const animate2 = { 0: { scale: 1.2, translateY: -24 }, 1: { scale: 1, translateY
 const circle1 = { 0: { scale: 0 }, 0.3: { scale: .9 }, 0.5: { scale: .2 }, 0.8: { scale: .7 }, 1: { scale: 1 } }
 const circle2 = { 0: { scale: 1 }, 1: { scale: 0 } }
 
-const TabButton = (props) => {
+const TabButton = (props: { item: any; onPress: any; accessibilityState: any; }) => {
     const { item, onPress, accessibilityState } = props;
     const focused = accessibilityState.selected;
-    const viewRef = useRef(null);
-    const circleRef = useRef(null);
-    const textRef = useRef(null);
+    const viewRef = useRef<any>(null);
+    const circleRef = useRef<any>(null);
+    const textRef = useRef<any>(null);
     const isDarkMode = useColorScheme() === 'dark';
 
     const color = COLORS.BLACK;
@@ -103,9 +103,7 @@ const TabButton = (props) => {
 
 export default function BottomTabNavigator() {
     const navigation = useNavigation(); // Access navigation prop
-    
     const ItemAdded = useSelector(itemAdded);
-    
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <CartNotificationBarSection isVisible={ItemAdded} navigation={navigation} />

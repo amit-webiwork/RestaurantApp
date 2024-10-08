@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -14,6 +14,7 @@ import { COLORS } from '../../utils/Constants';
 import { categoryList, categoryLoaded, fetchCategories } from '../../redux/features/items';
 import CategoryTabsLoaderSection from '../skeleton/CategoryTabsLoader';
 import { AppDispatch } from '../../redux/store';
+import { useFocusEffect } from '@react-navigation/native';
 
 const colorsBG = [[COLORS.HOME_ICONS, COLORS.HOME_ICONS], [COLORS.BACKGROUND_DEFAULT, COLORS.BACKGROUND_DEFAULT]]
 
@@ -30,6 +31,8 @@ const allCategory = {
 const CategortyTabs: React.FunctionComponent<Props> = ({ setSelectedCategory, selectedCategory }) => {
     const dispatch: AppDispatch = useDispatch();
 
+    const flatListRef = useRef<any>();
+
     const CategoryLoaded = useSelector(categoryLoaded);
     const CategoryList = useSelector(categoryList);
 
@@ -39,6 +42,26 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ setSelectedCategory, se
         setSelectedCategory(item.id);
         setSelected(item.id);
     };
+
+    const getItemLayout = (data: any, index: number) => ({
+        length: 40,
+        offset: 40 * index,
+        index,
+    })
+
+    useFocusEffect(
+        useCallback(() => {
+            const key = CategoryList.findIndex(d => d.id === selectedCategory);
+            scrollToIndex(key > -1 ? key : 0)
+        }, [CategoryList])
+    )
+
+    const scrollToIndex = (index: number) => {
+        flatListRef?.current?.scrollToIndex({
+            animated: true,
+            index: index,
+        });
+    }
 
     useEffect(() => {
         if (!CategoryLoaded) {
@@ -77,6 +100,8 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ setSelectedCategory, se
                     contentContainerStyle={{}}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
+                    ref={flatListRef}
+                    getItemLayout={getItemLayout}
                 />
             ) : (<CategoryTabsLoaderSection />)}
         </View>

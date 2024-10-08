@@ -17,4 +17,5 @@ interface ItemDetails {
     discountPrice: number;
     itemPrice: number;
     discountPercent: number;
+    totalDiscounted: number;
 }

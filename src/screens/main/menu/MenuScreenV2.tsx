@@ -14,17 +14,26 @@ import MenuItemsSection from '../../../components/items/MenuItems';
 import CartLayout from '../../../components/cart/CartLayout';
 import { getItemList } from '../../../utils/ApiCall';
 import FilterBoxSection from '../../../components/items/FilterBoxSection';
-import { useSelector } from 'react-redux';
-import { getFilters, priceRangeFilter } from '../../../redux/features/items';
+import { useDispatch, useSelector } from 'react-redux';
+import { cuisineList, cuisineLoaded, fetchCuisine, getFilters, priceRangeFilter, resetFilter, setCuisineList, setFilters } from '../../../redux/features/items';
 import FilterAppliedTabs from '../../../components/items/FilterAppliedTabs';
+import CategoryBox from '../../../components/item-filters/CategoryBox';
+import { AppDispatch } from '../../../redux/store';
+import FilterAppliedTabsV1 from '../../../components/items/FilterAppliedTabsV1';
+import ItemVerticalBoxSection from '../../../components/home-sections/ItemVerticalBox';
 
-function MenuScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
-    const { categoryId } = route.params;
+function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
+    const { cuisineId } = route.params;
+
+    const dispatch: AppDispatch = useDispatch();
 
     const filterList = useSelector(getFilters);
     const PriceRangeFilter = useSelector(priceRangeFilter);
 
-    const [selectedCategory, setSelectedCategory] = useState(categoryId);
+    const CuisineList = useSelector(cuisineList);
+    const CuisineLoaded = useSelector(cuisineLoaded);
+
+    const [selectedCategory, setSelectedCategory] = useState(0);
     const [itemList, setItemList] = useState([]);
     const [loader, setLoader] = useState(false);
 
@@ -32,7 +41,7 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
         setSelectedCategory(id);
     }
 
-    const fetchItem = async () => {
+    const fetchItem = async (signal: AbortSignal) => {
         try {
             setLoader(true);
 
@@ -45,18 +54,45 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
 
             const params = { ...categoryParams, ...dietaryParams, ...cuisineParams, ...priceParams, ...popularItemParams };
 
-            const response = await getItemList(params);
-            setItemList(response.data);
+            const response = await getItemList(params, 10, 0, signal);
+
+            if (!signal.aborted) {
+                setItemList(response.data);
+            }
+
+            // setItemList(response.data);
             setLoader(false);
         } catch (err) {
             setLoader(false);
-            setItemList([]);
+            // setItemList([]);
+            if (!signal.aborted) {
+                setItemList([]);
+            }
         }
     }
 
     useEffect(() => {
-        console.log('run')
-        fetchItem();
+        if (!CuisineLoaded) {
+            dispatch(fetchCuisine());
+        } else {
+            setCuisineList(CuisineList.map((d: any) => { return { ...d, "checked": filterList['cuisine'].includes(d.id) ? true : false } }))
+        }
+    }, [CuisineLoaded])
+
+    useEffect(() => {
+        if (CuisineLoaded)
+            dispatch(setFilters({ key: "cuisine", data: [cuisineId] }));
+    }, [cuisineId, CuisineLoaded])
+
+    useEffect(() => {
+        console.log('run v1');
+        const controller = new AbortController(); // Create an AbortController
+        fetchItem(controller?.signal); // Pass the signal to the fetch function
+
+        return () => {
+            // Cleanup the previous API call if a new one is made
+            controller.abort();
+        };
     }, [selectedCategory, JSON.stringify(filterList), JSON.stringify(PriceRangeFilter)])
 
     return (
@@ -77,17 +113,19 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
                             </View>
                         </View>
 
-                        {/* Ctegory box tab */}
-                        <View style={{ marginTop: VP(45), paddingLeft: HP(21) }}>
-                            <CategortyTabsSection setSelectedCategory={setSelectedCategoryhandler} selectedCategory={categoryId} />
-                        </View>
-
                         {/* Search and filter Box */}
                         <View style={{ marginTop: HP(24), paddingHorizontal: HP(18), flexDirection: "row", alignItems: "center", gap: HP(10), justifyContent: "space-between" }}>
                             <SearchBoxSection setHandler={() => void (0)} navigation={navigation} />
 
                             <FilterBoxSection navigation={navigation} />
                         </View>
+
+                        {/* Category box tab */}
+                        <View style={{ marginTop: VP(26.29), paddingLeft: HP(21) }}>
+                            <CategoryBox selectHandler={setSelectedCategoryhandler} />
+                        </View>
+
+                        <View style={styles.line}></View>
 
                         {/* Area for applied filters */}
                         <View style={{ paddingHorizontal: HP(18) }}>
@@ -96,7 +134,7 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
 
                         {/* Menu Items */}
                         <View style={{ marginTop: VP(15.59), paddingHorizontal: HP(15) }}>
-                            <MenuItemsSection data={itemList} dataLoaded={loader} navigation={navigation} />
+                            <ItemVerticalBoxSection data={itemList} dataLoaded={loader} navigation={navigation} />
                         </View>
 
                         {/* Bottom Text */}
@@ -120,6 +158,13 @@ const styles = StyleSheet.create({
         textAlign: "center",
         flex: 1
     },
+    line: {
+        height: 2,
+        width: "100%",
+        flex: 1,
+        flexGrow: 1,
+        backgroundColor: "#E6E6E6"
+    },
 });
 
-export default MenuScreen;
+export default MenuScreenV2;

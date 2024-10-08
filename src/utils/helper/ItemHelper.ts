@@ -1,5 +1,5 @@
 export const getItemPriceComponents = (item: ItemDetails) => {
-    const itemData = {...item}
+    const itemData = { ...item }
     const { discount_price, price } = itemData;
 
     const discountPrice = +discount_price || 0;
@@ -10,6 +10,7 @@ export const getItemPriceComponents = (item: ItemDetails) => {
     itemData['discountPrice'] = discountPrice;
     itemData['itemPrice'] = itemPrice;
     itemData['discountPercent'] = discountPercent;
+    itemData['totalDiscounted'] = itemPrice - discountPrice;
 
     return itemData;
 }

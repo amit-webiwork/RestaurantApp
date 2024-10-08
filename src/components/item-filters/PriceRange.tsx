@@ -1,10 +1,13 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, StyleProp, TextStyle } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import { COLORS } from '../../utils/Constants.ts';
 import { TextStyles } from '../../utils/TextStyles.ts';
 import { FS, HP, VP } from '../../utils/Responsive.ts';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPriceRange, priceRange, priceRangeFilter, priceRangeLoaded } from '../../redux/features/items.ts';
+import { AppDispatch } from '../../redux/store.ts';
 
 interface Props {
     headingTextStyle: StyleProp<TextStyle>;
@@ -12,12 +15,27 @@ interface Props {
 }
 
 function PriceRange({ headingTextStyle, onRangeChange }: Props): React.JSX.Element {
-    const [range, setRange] = useState([50, 300]);
+    const dispatch: AppDispatch = useDispatch();
+
+    const PriceRange = useSelector(priceRange);
+    const PriceRangeLoaded = useSelector(priceRangeLoaded);
+
+    const PriceRangeFilter = useSelector(priceRangeFilter);
+
+    const [range, setRange] = useState([0, 0]);
 
     const setRangeHandler = (values: React.SetStateAction<number[]>) => {
         setRange(values);
         onRangeChange(values);
     }
+
+    useEffect(() => {
+        if (!PriceRangeLoaded) {
+            dispatch(fetchPriceRange());
+        } else {
+            setRange([PriceRangeFilter["minValue"] > 0 ? PriceRangeFilter["minValue"] : PriceRange?.minValue, PriceRangeFilter["maxValue"] > 0 ? PriceRangeFilter["maxValue"] : PriceRange?.maxValue])
+        }
+    }, [PriceRangeLoaded])
 
     return (
         <View>
