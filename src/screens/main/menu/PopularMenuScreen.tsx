@@ -22,7 +22,7 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
     const fetchItem = async () => {
         try {
             setLoader(true);
-            const response = await getItemList({ popular: 1 });
+            const response = await getItemList({ popular: 1, categoryIds: categoryId });
             setItemList(response.data);
             setLoader(false);
         } catch (err) {

@@ -37,7 +37,12 @@ const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, nav
         return (
             <View style={styles.boxContainer}>
                 <View style={[styles.boxSubContainer, !isAvailable && globalStyle.outOfStockContainer]}>
-                    <View
+
+                    <TouchableOpacity
+                        onPress={() => isAvailable && navigation.navigate(`ProductScreen`, {
+                            id: item?.id,
+                            item: item
+                        })}
                         style={{ width: "100%" }}
                     >
                         <ImageBackground
@@ -62,7 +67,7 @@ const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, nav
                                 </View>
                             )}
                         </ImageBackground>
-                    </View>
+                    </TouchableOpacity>
 
                     <View style={styles.contentBox}>
                         <TouchableOpacity

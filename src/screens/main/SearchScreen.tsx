@@ -24,6 +24,7 @@ import { AppDispatch } from '../../redux/store';
 import { proflieDetails } from '../../redux/features/profile';
 import CuisineBox from '../../components/home-sections/CuisineBox';
 import { getItemList } from '../../utils/ApiCall';
+import VoiceSearchModalComp from '../../components/dialogs/VoiceSearchModal';
 
 const SearchScreen = ({ navigation }: { navigation: any }) => {
     const dispatch: AppDispatch = useDispatch();
@@ -42,6 +43,7 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
     const [searchResults, setSearchResults] = useState<any[]>([]);
 
     const [loader, setLoader] = useState(false);
+    const [visible, setVisible] = useState(false);
 
     // Use debounce for handling search input changes
     const debouncedSearch = useCallback(
@@ -113,6 +115,7 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
 
     return (
         <View style={styles.container}>
+            <VoiceSearchModalComp visible={visible} onClose={() => setVisible(false)} />
             {/* Search Input */}
             <View style={styles.searchBarContainer}>
                 <TouchableOpacity
@@ -142,6 +145,7 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
                     <TouchableOpacity
                         onPress={() => {
                             Keyboard.dismiss();
+                            setVisible(true)
                         }}
                         style={styles.searchIconContainer}
                     >

@@ -18,7 +18,6 @@ import ItemVerticalBoxSection from '../../components/home-sections/ItemVerticalB
 import Icon, { Icons } from '../../components/Icons';
 import ItemBoxSection from '../../components/home-sections/ItemBox.tsx';
 import HeadingSection from '../../components/Heading.tsx';
-import { categoryData } from '../../utils/MockData.ts';
 import { fetchPopularItems, getFeaturedCategory, papularItemLoaded, papularItems } from '../../redux/features/items.ts';
 import { AppDispatch } from '../../redux/store.ts';
 import Right from '../../assets/svgs/right.svg';
@@ -38,8 +37,6 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const PapularItems = useSelector(papularItems);
     const featuredCategory = useSelector(getFeaturedCategory);
 
-    const [searchText, setSearchText] = useState<any>("");
-
     const [selectedCategory, setSelectedCategory] = useState<number>(1);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
 
@@ -51,10 +48,6 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
         setItemListFiltered(filtered);
     }, [PapularItems]);
-
-    const setSearchTextHandler = (e: any) => {
-        setSearchText(e);
-    }
 
     useEffect(() => {
         if (!PapularItemLoaded) {
