@@ -11,8 +11,9 @@ import DietaryPreferencesSection from '../../components/item-filters/DietaryPref
 import CuisineSection from '../../components/item-filters/Cuisine.tsx';
 import PriceRangeSection from '../../components/item-filters/PriceRange.tsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { cuisineList, cuisineLoaded, dietaryList, dietaryLoaded, fetchCuisine, fetchDietaries, fetchPopularItems, getFilters, papularItemLoaded, papularItems, priceRange, priceRangeFilter, priceRangeLoaded, setFilters, setPriceRangeFilter } from '../../redux/features/items.ts';
+import { cuisineList, cuisineLoaded, dietaryList, dietaryLoaded, fetchCuisine, fetchDietaries, fetchPopularItems, getFilters, papularItemLoaded, papularItems, priceRange, priceRangeFilter, priceRangeLoaded, resetFilter, setFilters, setPriceRangeFilter } from '../../redux/features/items.ts';
 import { AppDispatch } from '../../redux/store.ts';
+import { ButtonSection as Button } from '../../components/Button';
 
 const popular_items = ["brown sugar milk tea (fresh milk)", "brownie with ice cream", "nutella waffle", "watermelon juice", "Fudge Walnut Brownie", "pearl milk tea"];
 
@@ -92,6 +93,11 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
         navigation.goBack();
     }
 
+    const resetAll = () => {
+        dispatch(resetFilter());
+        navigation.goBack();
+    }
+
     useEffect(() => {
         if (!DietaryLoaded) {
             dispatch(fetchDietaries());
@@ -130,25 +136,25 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.main}>
-                        {/* Top navigation */}
-                        <View style={styles.top}>
-                            <TouchableOpacity
-                                onPress={() => navigation.goBack()}
-                                style={{}}
-                            >
-                                <Icon type={Icons.Feather} size={18} name="chevron-left" color={COLORS.BLACK} />
-                            </TouchableOpacity>
-
-                            <Text style={styles.headingText}>filters</Text>
-
-                            <TouchableOpacity onPress={filterApply} style={{}}>
-                                <Text style={[styles.headingText, { fontSize: 14 }]}>done</Text>
-                            </TouchableOpacity>
-                        </View>
-
                         <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={16}>
+                            {/* Top navigation */}
+                            <View style={styles.top}>
+                                <TouchableOpacity
+                                    onPress={() => navigation.goBack()}
+                                    style={{}}
+                                >
+                                    <Icon type={Icons.Feather} size={18} name="chevron-left" color={COLORS.BLACK} />
+                                </TouchableOpacity>
+
+                                <Text style={styles.headingText}>filters</Text>
+
+                                <TouchableOpacity onPress={() => void (0)}>
+                                    {/* <Text style={[styles.headingText, { fontSize: 14 }]}>done</Text> */}
+                                </TouchableOpacity>
+                            </View>
+
                             {/* Popular Items */}
-                            <View style={{ marginTop: VP(10.76), paddingHorizontal: HP(24) }}>
+                            <View style={{ marginTop: VP(1.76), paddingHorizontal: HP(24) }}>
                                 <Text style={styles.headingFilterText}>popular items</Text>
 
                                 <View style={{ marginTop: VP(14) }}>
@@ -186,6 +192,30 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
                             </View>
 
                         </ScrollView>
+                        <View style={styles.bottomButtonContainer}>
+                            <View style={styles.bottomButtonSubContainer}>
+                                <Button
+                                    text={'reset all'}
+                                    onPress={resetAll}
+                                    textStyle={styles.buttonStyle1}
+                                    isLoading={false}
+                                    activeButtonText={{ opacity: .65 }}
+                                    mainContainerStyle={{ flex: 1, borderColor: COLORS.BUTTON, borderWidth: 1, borderRadius: HP(8) }}
+                                    LinearGradienrColor={["#F5F5F5", "#F5F5F5"]}
+                                    contentContainerStyle={{ top: -2 }}
+                                />
+                                <Button
+                                    text={'apply'}
+                                    onPress={filterApply}
+                                    textStyle={styles.buttonStyle2}
+                                    isLoading={false}
+                                    activeButtonText={{ opacity: .65 }}
+                                    mainContainerStyle={{ flex: 1, borderRadius: HP(8) }}
+                                    LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
+                                    contentContainerStyle={{ top: -2 }}
+                                />
+                            </View>
+                        </View>
                     </View>
                 </View>
             </PanGestureHandler>
@@ -266,7 +296,32 @@ const styles = StyleSheet.create({
         width: FS(9.54),
         height: VP(9.54),
         backgroundColor: '#FF00E2'
-    }
+    },
+    bottomButtonContainer: {
+        backgroundColor: COLORS.WHITE,
+        borderTopLeftRadius: HP(20),
+        borderTopRightRadius: HP(20),
+    },
+    bottomButtonSubContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: "100%",
+        gap: HP(7),
+        paddingHorizontal: HP(20),
+        paddingVertical: VP(19)
+    },
+    buttonStyle1: {
+        ...TextStyles.LEXEND_REGULAR,
+        fontSize: 18,
+        color: COLORS.BLACK,
+        textTransform: "capitalize",
+    },
+    buttonStyle2: {
+        ...TextStyles.LEXEND_SEMI_BOLD,
+        fontSize: 20,
+        color: COLORS.WHITE,
+        textTransform: "capitalize",
+    },
 });
 
 export default FilterScreen;

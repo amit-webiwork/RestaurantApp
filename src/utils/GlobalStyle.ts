@@ -28,4 +28,26 @@ export const globalStyle = StyleSheet.create({
         height: VP(15),
         resizeMode: 'contain'
     },
+    outOfStockBg: {
+        opacity: 0.8,
+    },
+    outOfStockContainer: {
+        opacity: 0.5,
+    },
+    outOfStockLabel: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'rgba(255, 0, 0, 1)', // Red label background
+        padding: HP(6),
+        alignItems: 'center',
+        borderBottomLeftRadius: FS(16.42),
+        borderBottomRightRadius: FS(16.42),
+    },
+    outOfStockText: {
+        ...TextStyles.RALEWAY_BOLD,
+        color: COLORS.WHITE,
+        fontSize: 14,
+    },
 });

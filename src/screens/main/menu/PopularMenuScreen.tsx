@@ -8,7 +8,6 @@ import { HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
-import { itemData } from '../../../utils/MockData';
 import PopularMenuItemsSection from '../../../components/items/PopularMenuItems';
 import CartLayout from '../../../components/cart/CartLayout';
 import { getItemList } from '../../../utils/ApiCall';

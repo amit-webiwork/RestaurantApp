@@ -20,6 +20,7 @@ import { AppDispatch } from '../../redux/store';
 import MenuItemLoaderSection from '../skeleton/MenuItemLoader';
 import { addToCart } from '../../utils/helper/CartHelper';
 import { getItemPriceComponents } from '../../utils/helper/ItemHelper';
+import { globalStyle } from '../../utils/GlobalStyle';
 
 interface Props {
     data: any[];
@@ -34,12 +35,13 @@ const MenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, navigatio
 
     const BoxItems = ({ itemData, index }: { itemData: any, index: number }) => {
         const item = getItemPriceComponents(itemData);
+        const isAvailable = item?.is_available === true;
 
         return (
             <View style={styles.boxContainer}>
-                <View style={styles.boxSubContainer}>
+                <View style={[styles.boxSubContainer, !isAvailable && globalStyle.outOfStockContainer]}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate(`ProductScreen`, {
+                        onPress={() => isAvailable && navigation.navigate(`ProductScreen`, {
                             id: item?.id,
                             item: item
                         })}
@@ -47,9 +49,14 @@ const MenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, navigatio
                     >
                         <ImageBackground
                             source={{ uri: `${CDN_URL}${item?.imgUrl}` }}
-                            style={styles.bg}
+                            style={[styles.bg, !isAvailable && globalStyle.outOfStockBg]}
                             imageStyle={{ borderRadius: FS(16.42), resizeMode: 'cover' }}
                         >
+                            {!isAvailable && (
+                                <View style={[globalStyle.outOfStockLabel]}>
+                                    <Text style={[globalStyle.outOfStockText, { fontSize: 14.71 }]}>Out of Stock</Text>
+                                </View>
+                            )}
                         </ImageBackground>
                         <Image source={require(`../../assets/images/label.png`)} style={{ width: FS(80), height: VP(16), top: VP(16), left: HP(-8), position: "absolute" }} />
 
@@ -77,13 +84,14 @@ const MenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, navigatio
                                     <Text numberOfLines={1} ellipsizeMode="tail" style={styles.priceText}>${item.discountPrice.toFixed(2)}</Text>
                                 </>
                             )}
-
-                            <TouchableOpacity
-                                onPress={() => addToCart(item, 1, dispatch, 'add')}
-                                style={styles.iconBox}
-                            >
-                                <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />
-                            </TouchableOpacity>
+                            {isAvailable && (
+                                <TouchableOpacity
+                                    onPress={() => addToCart(item, 1, dispatch, 'add')}
+                                    style={styles.iconBox}
+                                >
+                                    <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />
+                                </TouchableOpacity>
+                            )}
                         </View>
                     </View>
                 </View>

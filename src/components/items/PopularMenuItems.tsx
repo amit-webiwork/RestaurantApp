@@ -20,6 +20,7 @@ import { AppDispatch } from '../../redux/store';
 import MenuItemLoaderSection from '../skeleton/MenuItemLoader';
 import { addToCart } from '../../utils/helper/CartHelper';
 import { getItemPriceComponents } from '../../utils/helper/ItemHelper';
+import { globalStyle } from '../../utils/GlobalStyle';
 
 interface Props {
     data: any[];
@@ -34,12 +35,13 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
 
     const BoxItems = ({ itemData, index }: { itemData: any, index: number }) => {
         const item = getItemPriceComponents(itemData);
+        const isAvailable = item?.is_available === true;
 
         return (
             <View style={styles.boxContainer}>
-                <View style={styles.boxSubContainer}>
+                <View style={[styles.boxSubContainer, !isAvailable && globalStyle.outOfStockContainer]}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate(`ProductScreen`, {
+                        onPress={() => isAvailable && navigation.navigate(`ProductScreen`, {
                             id: item?.id,
                             item: item
                         })}
@@ -47,9 +49,14 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
                     >
                         <ImageBackground
                             source={{ uri: `${CDN_URL}${item?.imgUrl}` }}
-                            style={styles.bg}
+                            style={[styles.bg, !isAvailable && globalStyle.outOfStockBg]}
                             imageStyle={{ borderRadius: FS(16.42), resizeMode: 'cover' }}
                         >
+                            {!isAvailable && (
+                                <View style={[globalStyle.outOfStockLabel]}>
+                                    <Text style={[globalStyle.outOfStockText]}>Out of Stock</Text>
+                                </View>
+                            )}
                         </ImageBackground>
                     </TouchableOpacity>
 
@@ -72,13 +79,14 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
                             )}
 
                         </View>
-
-                        <TouchableOpacity
-                            onPress={() => addToCart(item, 1, dispatch, `add`)}
-                            style={styles.buttonBox}
-                        >
-                            <Text style={styles.cartText}>add to cart</Text>
-                        </TouchableOpacity>
+                        {isAvailable && (
+                            <TouchableOpacity
+                                onPress={() => addToCart(item, 1, dispatch, `add`)}
+                                style={styles.buttonBox}
+                            >
+                                <Text style={styles.cartText}>add to cart</Text>
+                            </TouchableOpacity>
+                        )}
                     </View>
                 </View>
             </View>

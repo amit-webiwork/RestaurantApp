@@ -242,10 +242,11 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
                 {/* No results */}
                 {!loader && searchResults.length === 0 && searchQuery.length > 0 && (
                     <View style={styles.sectionContainer}>
-                        <View style={{}}>
-                            <Text style={[styles.noResultText, { fontSize: HP(18) }]}>Uh-oh!</Text>
+                        <View style={{ alignItems: "center" }}>
+                            <Image source={require(`../../assets/images/Illustration.png`)} style={styles.noSearchImg} />
+                            <Text style={styles.noResultTitle}>We couldn't find any result!</Text>
 
-                            <Text style={[styles.noResultText, { fontSize: HP(14) }]}>No results for {searchQuery} in items. Please try something else.</Text>
+                            <Text style={styles.noResultText}>Please check your search for any typos or spelling errors, or try a different search term.</Text>
                         </View>
                     </View>
                 )}
@@ -359,11 +360,26 @@ const styles = StyleSheet.create({
         borderLeftColor: "#CCCCCC",
         zIndex: 2,
     },
+    noResultTitle: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 20.07,
+        lineHeight: 30.1,
+        color: "#101010",
+        textAlign: "center",
+        marginTop: VP(20)
+    },
     noResultText: {
-        ...TextStyles.POPPINS_BOLD,
-        fontSize: HP(18),
-        color: "#898989",
-        textAlign: "center"
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 17.57,
+        lineHeight: 25.1,
+        color: "#878787",
+        textAlign: "center",
+        marginTop: VP(9.15)
+    },
+    noSearchImg: {
+        resizeMode: "cover",
+        width: FS(186),
+        height: VP(160)
     },
 });
 

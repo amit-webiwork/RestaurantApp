@@ -18,6 +18,7 @@ import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
 import { addToCart } from '../../utils/helper/CartHelper';
 import { useFocusEffect } from '@react-navigation/native';
 import { getItemPriceComponents } from '../../utils/helper/ItemHelper';
+import { globalStyle } from '../../utils/GlobalStyle';
 
 interface Props {
     data: any[];
@@ -47,21 +48,27 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation 
 
     const BoxItems = ({ itemData, index }: { itemData: any, index: number }) => {
         const item = getItemPriceComponents(itemData);
+        const isAvailable = item?.is_available === true;
 
         return (
             <View style={styles.boxContainer}>
-                <View style={styles.boxSubContainer}>
+                <View style={[styles.boxSubContainer, !isAvailable && globalStyle.outOfStockContainer]}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate(`ProductScreen`, {
+                        onPress={() => isAvailable && navigation.navigate(`ProductScreen`, {
                             id: item?.id,
                             item: item
                         })}
                     >
                         <ImageBackground
                             source={{ 'uri': `${CDN_URL}${item?.imgUrl}` }}
-                            style={styles.bg}
+                            style={[styles.bg, !isAvailable && globalStyle.outOfStockBg]}
                             imageStyle={{ borderRadius: FS(16.42) }}
                         >
+                            {!isAvailable && (
+                                <View style={globalStyle.outOfStockLabel}>
+                                    <Text style={globalStyle.outOfStockText}>Out of Stock</Text>
+                                </View>
+                            )}
                         </ImageBackground>
                     </TouchableOpacity>
 
@@ -81,12 +88,14 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation 
                                     <Text numberOfLines={1} ellipsizeMode="tail" style={styles.priceText}>${item.discountPrice.toFixed(2)}</Text>
                                 </>
                             )}
-                            <TouchableOpacity
-                                onPress={() => addToCart(item, 1, dispatch, 'add')}
-                                style={styles.iconBox}
-                            >
-                                <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />
-                            </TouchableOpacity>
+                            {isAvailable && (
+                                <TouchableOpacity
+                                    onPress={() => addToCart(item, 1, dispatch, 'add')}
+                                    style={styles.iconBox}
+                                >
+                                    <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />
+                                </TouchableOpacity>
+                            )}
                         </View>
                     </View>
                 </View>

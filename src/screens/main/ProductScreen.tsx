@@ -112,14 +112,19 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                             <Animated.View style={[styles.imageContainer, { height: imageHeight }]}>
                                 <Image
                                     source={itemDetails?.imgUrl ? { uri: `${CDN_URL}${itemDetails.imgUrl}` } : require('../../assets/images/item-placeholder.jpg')}
-                                    style={styles.image}
+                                    style={[styles.image]}
                                     resizeMode="cover"
                                 />
+                                {!itemDetails?.is_available && (
+                                    <View style={styles.outOfStockContainer}>
+                                        <Text style={styles.outOfStockText}>Out of Stock</Text>
+                                    </View>
+                                )}
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
-                                    style={{ position: 'absolute', left: HP(20), top: VP(41) }}
+                                    style={styles.backButton}
                                 >
-                                    <Icon type={Icons.Feather} size={25.66} name={`chevron-left`} color={COLORS.WHITE} />
+                                    <Icon type={Icons.Feather} size={20} name={`chevron-left`} color={COLORS.WHITE} />
                                 </TouchableOpacity>
                                 <View style={{ position: 'absolute', top: VP(31), right: HP(20), backgroundColor: "#0000006E", padding: HP(10), borderRadius: FS(32), minWidth: FS(100) }}>
                                     <Text style={styles.title}>{itemDetails?.name}</Text>
@@ -150,22 +155,6 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                             <Icon type={Icons.MaterialIcons} size={25.66} name={`star`} color={`#FF785B`} />
                                         </View>
                                     </View>
-
-                                    {/* <TouchableOpacity
-                                        onPress={() => void (0)}
-                                        style={{
-                                            backgroundColor: "#FFFFFF",
-                                            width: FS(38),
-                                            height: FS(38),
-                                            borderRadius: FS(19),
-                                            borderWidth: 2,
-                                            borderColor: COLORS.BUTTON,
-                                            alignItems: "center",
-                                            justifyContent: "center"
-                                        }}
-                                    >
-                                        <Icon type={Icons.Feather} size={FS(24.1)} name={`heart`} color={COLORS.BUTTON} />
-                                    </TouchableOpacity> */}
                                 </View>
 
                                 <View style={{ paddingVertical: HP(3), }}>
@@ -189,26 +178,28 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                     </View>
 
                                     {/* Cart with qty Button */}
-                                    <View style={{ paddingHorizontal: HP(30) }}>
-                                        <View style={{ flexDirection: "row", marginTop: VP(44), backgroundColor: COLORS.BUTTON, borderRadius: HP(40), padding: HP(17), justifyContent: "space-between", alignItems: "center", }}>
-                                            <View>
-                                                <Text style={{ ...TextStyles.RALEWAY_BOLD, fontSize: 20, color: COLORS.WHITE }}>${itemDetails?.finalPrice.toFixed(2)}</Text>
+                                    {itemDetails?.is_available && (
+                                        <View style={{ paddingHorizontal: HP(30) }}>
+                                            <View style={{ flexDirection: "row", marginTop: VP(44), backgroundColor: COLORS.BUTTON, borderRadius: HP(40), padding: HP(17), justifyContent: "space-between", alignItems: "center", }}>
+                                                <View>
+                                                    <Text style={{ ...TextStyles.RALEWAY_BOLD, fontSize: 20, color: COLORS.WHITE }}>${itemDetails?.finalPrice.toFixed(2)}</Text>
+                                                </View>
+
+                                                <CartQtyButtonV1Section decrement={decrementCart} qty={cartQuantity} setQty={setCartQuantity} increment={incrementCart} />
+
+                                                <TouchableOpacity
+                                                    onPress={() => addToCart(itemDetails, cartQuantity, dispatch)}
+                                                    style={{ width: FS(31), height: FS(31), borderRadius: FS(15.5), backgroundColor: COLORS.WHITE, alignItems: "center", justifyContent: "center" }}
+                                                >
+                                                    <Image
+                                                        source={require('../../assets/icons/cart.png')}
+                                                        style={{ width: FS(21), height: FS(20), }}
+                                                        resizeMode="cover"
+                                                    />
+                                                </TouchableOpacity>
                                             </View>
-
-                                            <CartQtyButtonV1Section decrement={decrementCart} qty={cartQuantity} setQty={setCartQuantity} increment={incrementCart} />
-
-                                            <TouchableOpacity
-                                                onPress={() => addToCart(itemDetails, cartQuantity, dispatch)}
-                                                style={{ width: FS(31), height: FS(31), borderRadius: FS(15.5), backgroundColor: COLORS.WHITE, alignItems: "center", justifyContent: "center" }}
-                                            >
-                                                <Image
-                                                    source={require('../../assets/icons/cart.png')}
-                                                    style={{ width: FS(21), height: FS(20), }}
-                                                    resizeMode="cover"
-                                                />
-                                            </TouchableOpacity>
                                         </View>
-                                    </View>
+                                    )}
 
                                     {/* Heading */}
                                     <View style={{ marginTop: VP(38.34), paddingHorizontal: HP(30) }}>
@@ -229,7 +220,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                         </Animated.ScrollView>
                     </View>
                 </InnerBlock>
-            </OuterLayout>
+            </OuterLayout >
             <CartLayout children={undefined} navigation={navigation}></CartLayout>
         </>
     )
@@ -274,6 +265,37 @@ const styles = StyleSheet.create({
     requestText: {
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 15.42
+    },
+    outOfStockContainer: {
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        width: '100%',
+        height: '100%',
+        zIndex: 2
+    },
+    outOfStockText: {
+        ...TextStyles.RALEWAY_BOLD,
+        color: COLORS.WHITE,
+        fontSize: FS(24),
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        backgroundColor: 'rgba(255, 0, 0, 0.7)',
+        padding: HP(10),
+        borderRadius: FS(10),
+    },
+    backButton: {
+        position: 'absolute',
+        left: HP(15),
+        top: VP(41),
+        backgroundColor: "#0000006E",
+        borderRadius: FS(12.5),
+        alignItems: "center",
+        justifyContent: "center",
+        width: FS(25),
+        height: FS(25),
+        zIndex: 10
     }
 });
 

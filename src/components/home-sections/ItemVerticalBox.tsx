@@ -19,6 +19,7 @@ import MenuVerticalItemLoader from '../skeleton/MenuVerticalItemLoader';
 import { addToCart } from '../../utils/helper/CartHelper';
 import { AppDispatch } from '../../redux/store';
 import { useDispatch } from 'react-redux';
+import { globalStyle } from '../../utils/GlobalStyle';
 
 interface Props {
     data: any[];
@@ -31,14 +32,19 @@ const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, nav
 
     const BoxItems = ({ itemData, index }: { itemData: any, index: number }) => {
         const item = getItemPriceComponents(itemData);
+        const isAvailable = item?.is_available === true;
 
         return (
             <View style={styles.boxContainer}>
-                <View style={styles.boxSubContainer}>
+                <View style={[styles.boxSubContainer, !isAvailable && globalStyle.outOfStockContainer]}>
                     <View
                         style={{ width: "100%" }}
                     >
-                        <ImageBackground source={{ 'uri': `${CDN_URL}${item?.imgUrl}` }} style={styles.bg} imageStyle={{ borderRadius: FS(24.42) }}>
+                        <ImageBackground
+                            source={{ 'uri': `${CDN_URL}${item?.imgUrl}` }}
+                            imageStyle={{ borderRadius: FS(24.42) }}
+                            style={[styles.bg, !isAvailable && globalStyle.outOfStockBg]}
+                        >
                             <View style={styles.priceBox}>
                                 <View style={styles.priceSubBox}>
                                     <Text style={styles.priceText}>${item?.finalPrice.toFixed(2)}</Text>
@@ -50,12 +56,17 @@ const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, nav
                                     <Icon type={Icons.Feather} size={20} name={`heart`} color={COLORS.WHITE} />
                                 </TouchableOpacity> */}
                             </View>
+                            {!isAvailable && (
+                                <View style={[globalStyle.outOfStockLabel, { borderBottomLeftRadius: FS(24.42), borderBottomRightRadius: FS(24.42), }]}>
+                                    <Text style={[globalStyle.outOfStockText, { fontSize: 20 }]}>Out of Stock</Text>
+                                </View>
+                            )}
                         </ImageBackground>
                     </View>
 
                     <View style={styles.contentBox}>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate(`ProductScreen`, {
+                            onPress={() => isAvailable && navigation.navigate(`ProductScreen`, {
                                 id: item?.id,
                                 item: item
                             })}
@@ -76,12 +87,14 @@ const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, nav
                                     </>
                                 )}
                             </View>
-                            <TouchableOpacity
-                                onPress={() => addToCart(item, 1, dispatch, 'add')}
-                                style={styles.iconBox}
-                            >
-                                <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />
-                            </TouchableOpacity>
+                            {isAvailable && (
+                                <TouchableOpacity
+                                    onPress={() => addToCart(item, 1, dispatch, 'add')}
+                                    style={styles.iconBox}
+                                >
+                                    <Icon type={Icons.Feather} size={15} name={`plus`} color={COLORS.WHITE} />
+                                </TouchableOpacity>
+                            )}
                         </View>
                     </View>
                 </View>

@@ -67,7 +67,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`HomeScreen`)}
-                                    style={{ alignSelf: "center" }}
+                                    style={{ alignSelf: "center", }}
                                 >
                                     <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
@@ -93,7 +93,6 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                         <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: HP(18), color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Your cart is empty!"</Text>
                                     </View>
                                 )}
-
 
                                 {/* add more items */}
                                 <View style={styles.textBox}>
@@ -173,13 +172,13 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", }}>
                                                 <Text style={[styles.link, { color: "#767676" }]}>order amount</Text>
 
-                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${GetCartTotal}</Text>
+                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${GetCartTotal.toFixed(2)}</Text>
                                             </View>
 
                                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                                                 <Text style={[styles.link, { color: "#767676" }]}>discount</Text>
 
-                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>$5.00</Text>
+                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>$0.00</Text>
                                             </View>
 
                                             <View style={styles.line}></View>
@@ -187,7 +186,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: VP(3.91) }}>
                                                 <Text style={[styles.link, { color: COLORS.BLACK }]}>total</Text>
 
-                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>$25.00</Text>
+                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${GetCartTotal.toFixed(2)}</Text>
                                             </View>
                                         </View>
                                     </View>
