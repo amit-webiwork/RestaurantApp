@@ -14,6 +14,7 @@ import { TextStyles } from '../../utils/TextStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { cuisineList, cuisineLoaded, fetchCuisine, setCuisineList } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
+import { CDN_URL } from '../../utils/Constants';
 
 interface Props {
     navigation: any;
@@ -48,7 +49,7 @@ const CuisineBox: React.FunctionComponent<Props> = ({ navigation }) => {
                     style={{}}
                 >
                     <View style={{ alignItems: "center" }}>
-                        <Image source={{ uri: item?.imgUrl }} style={styles.categoryIcon} />
+                        <Image source={{ uri: `${CDN_URL}${item.imgUrl}` }} style={styles.categoryIcon} />
                     </View>
                 </TouchableOpacity>
                 <Text style={styles.categoryText}>{item?.name}</Text>

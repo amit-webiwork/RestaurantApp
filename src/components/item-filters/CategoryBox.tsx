@@ -11,7 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive';
-import { COLORS } from '../../utils/Constants';
+import { CDN_URL, COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import LeftWhite from '../../assets/svgs/left-white.svg';
 import RightWhite from '../../assets/svgs/right-white.svg';
@@ -70,7 +70,7 @@ const CategoryBox: React.FunctionComponent<Props> = ({ selectHandler }) => {
                     >
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={item.id === 0 ? require('../../assets/images/categories/all.png') : { uri: item?.imgUrl }}
+                                source={item.id === 0 ? require('../../assets/images/categories/all.png') : { uri: `${CDN_URL}${item?.imgUrl}` }}
                                 style={styles.categoryIcon}
                             />
                         </View>

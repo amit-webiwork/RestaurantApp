@@ -41,7 +41,7 @@ function PriceRange({ headingTextStyle, onRangeChange }: Props): React.JSX.Eleme
         <View>
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <Text style={[styles.headingText, headingTextStyle]}>price range</Text>
-                <Text style={styles.priceLabel}>${range[0]} - ${range[1]}</Text>
+                <Text style={styles.priceLabel}>${range[0].toFixed(2)} - ${range[1].toFixed(2)}</Text>
             </View>
 
             <View style={{ marginTop: VP(9) }}>

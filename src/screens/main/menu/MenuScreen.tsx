@@ -17,6 +17,7 @@ import FilterBoxSection from '../../../components/items/FilterBoxSection';
 import { useSelector } from 'react-redux';
 import { getFilters, priceRangeFilter } from '../../../redux/features/items';
 import FilterAppliedTabs from '../../../components/items/FilterAppliedTabs';
+import SearchBoxItemsSection from '../../../components/home-sections/SearchBoxItems';
 
 function MenuScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
     const { categoryId } = route.params;
@@ -84,7 +85,7 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
 
                         {/* Search and filter Box */}
                         <View style={{ marginTop: HP(24), paddingHorizontal: HP(18), flexDirection: "row", alignItems: "center", gap: HP(10), justifyContent: "space-between" }}>
-                            <SearchBoxSection setHandler={() => void (0)} navigation={navigation} />
+                            <SearchBoxItemsSection navigation={navigation} />
 
                             <FilterBoxSection navigation={navigation} />
                         </View>

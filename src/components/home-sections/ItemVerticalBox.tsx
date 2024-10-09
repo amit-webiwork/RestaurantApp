@@ -10,7 +10,7 @@ import {
 
 import Icon, { Icons } from '../Icons';
 import { FS, HP, VP } from '../../utils/Responsive';
-import { COLORS } from '../../utils/Constants';
+import { CDN_URL, COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import { getItemPriceComponents } from '../../utils/helper/ItemHelper';
 import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
@@ -38,7 +38,7 @@ const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, nav
                     <View
                         style={{ width: "100%" }}
                     >
-                        <ImageBackground source={{ 'uri': item?.imgUrl }} style={styles.bg} imageStyle={{ borderRadius: FS(24.42) }}>
+                        <ImageBackground source={{ 'uri': `${CDN_URL}${item?.imgUrl}` }} style={styles.bg} imageStyle={{ borderRadius: FS(24.42) }}>
                             <View style={styles.priceBox}>
                                 <View style={styles.priceSubBox}>
                                     <Text style={styles.priceText}>${item?.finalPrice.toFixed(2)}</Text>

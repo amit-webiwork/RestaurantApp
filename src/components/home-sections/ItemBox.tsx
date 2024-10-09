@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 
 import Icon, { Icons } from '../Icons';
 import { FS, HP, VP } from '../../utils/Responsive';
-import { COLORS } from '../../utils/Constants';
+import { CDN_URL, COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import { AppDispatch } from '../../redux/store';
 import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
@@ -58,7 +58,7 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation 
                         })}
                     >
                         <ImageBackground
-                            source={{ 'uri': item?.imgUrl }}
+                            source={{ 'uri': `${CDN_URL}${item?.imgUrl}` }}
                             style={styles.bg}
                             imageStyle={{ borderRadius: FS(16.42) }}
                         >

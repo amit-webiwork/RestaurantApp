@@ -15,6 +15,7 @@ import CartQtyButtonV2Section from '../product-sections/CartQtyButtonV2';
 import { addToCart } from '../../utils/helper/CartHelper';
 import { AppDispatch } from '../../redux/store';
 import { removeFromCart } from '../../redux/features/cart';
+import { CDN_URL } from '../../utils/Constants';
 
 interface Props {
     data: any;
@@ -46,7 +47,7 @@ const CartItem: React.FunctionComponent<Props> = ({ data }) => {
     return (
         <View style={styles.boxContainer}>
             <View style={styles.boxSubContainer}>
-                <Image source={{ uri: data?.imgUrl }} style={[styles.img]} />
+                <Image source={{ uri: `${CDN_URL}${data?.imgUrl}` }} style={[styles.img]} />
 
                 <View style={styles.itemInfoContainer}>
                     <View style={{ flex: 1 }}>

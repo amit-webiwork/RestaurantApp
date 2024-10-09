@@ -13,7 +13,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive';
-import { COLORS } from '../../utils/Constants';
+import { CDN_URL, COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import { fetchItems, itemLoaded } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
@@ -46,7 +46,7 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
                         style={{ width: "100%" }}
                     >
                         <ImageBackground
-                            source={{ uri: item?.imgUrl }}
+                            source={{ uri: `${CDN_URL}${item?.imgUrl}` }}
                             style={styles.bg}
                             imageStyle={{ borderRadius: FS(16.42), resizeMode: 'cover' }}
                         >

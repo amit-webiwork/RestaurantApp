@@ -3,7 +3,7 @@ import { StyleSheet, Image, View, Text, TouchableOpacity, Dimensions, Animated }
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
-import { COLORS } from '../../utils/Constants.ts';
+import { CDN_URL, COLORS } from '../../utils/Constants.ts';
 import { TextStyles } from '../../utils/TextStyles.ts';
 import CategortyTabsSection from '../../components/home-sections/CategortyTabs.tsx';
 import Icon, { Icons } from '../../components/Icons';
@@ -111,7 +111,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                             {/* Top banner area */}
                             <Animated.View style={[styles.imageContainer, { height: imageHeight }]}>
                                 <Image
-                                    source={itemDetails?.imgUrl ? { uri: itemDetails?.imgUrl } : require('../../assets/images/item-placeholder.jpg')}
+                                    source={itemDetails?.imgUrl ? { uri: `${CDN_URL}${itemDetails.imgUrl}` } : require('../../assets/images/item-placeholder.jpg')}
                                     style={styles.image}
                                     resizeMode="cover"
                                 />

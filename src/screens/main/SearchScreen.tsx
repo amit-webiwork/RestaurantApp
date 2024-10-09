@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     View,
     TextInput,
@@ -8,23 +8,28 @@ import {
     StyleSheet,
     Image,
     Keyboard,
-    ScrollView
+    ScrollView,
+    ActivityIndicator
 } from 'react-native';
+import { debounce } from 'lodash';
+
 import { CDN_URL, COLORS } from '../../utils/Constants';
 import { HP, VP, FS } from '../../utils/Responsive';
 import Icon, { Icons } from '../../components/Icons';
 import { TextStyles } from '../../utils/TextStyles';
 import HeadingSection from '../../components/Heading';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPopularItems, papularItemLoaded, papularItems } from '../../redux/features/items';
+import { fetchPopularItems, getRecentSearchItems, mergeRecentSearchItems, papularItemLoaded, papularItems, removeRecentSearchItems, setRecentSearchItems } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
 import { proflieDetails } from '../../redux/features/profile';
 import CuisineBox from '../../components/home-sections/CuisineBox';
+import { getItemList } from '../../utils/ApiCall';
 
 const SearchScreen = ({ navigation }: { navigation: any }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const ProflieDetails = useSelector(proflieDetails);
+    const recentSearchItems = useSelector(getRecentSearchItems);
 
     const { user } = ProflieDetails;
 
@@ -34,46 +39,55 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
     const [papularItemsList, setPapularItemsList] = useState<any[]>([]);
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [suggestions, setSuggestions] = useState<string[]>([]); // Placeholder for suggestion data
-    const [searchResults, setSearchResults] = useState<string[]>([]); // Placeholder for search result data
-    const [recentSearches, setRecentSearches] = useState<string[]>([]); // Placeholder recent searches
+    const [searchResults, setSearchResults] = useState<any[]>([]);
 
-    useEffect(() => {
-        // Optionally fetch suggestions or popular items here
-        fetchSuggestions();
-    }, []);
+    const [loader, setLoader] = useState(false);
 
-    useEffect(() => {
-        if (!PapularItemLoaded) {
-            dispatch(fetchPopularItems());
-        } else {
-            setPapularItemsList(PapularItems.slice(0, 4));
-        }
-    }, [PapularItemLoaded])
+    // Use debounce for handling search input changes
+    const debouncedSearch = useCallback(
+        debounce(async (query: string) => {
+            try {
+                if (query) {
+                    console.log('-----search run query')
+                    const params = { keyword: query };
+                    const data = await getItemList(params, 5, 0);
+                    setSearchResults(data?.data || []);
+                } else {
+                    setSearchResults([]);
+                }
+            } catch (err) {
+                console.log(err);
+                setSearchResults([]);
+            }
+            setLoader(false);
+        }, 500), // 500ms debounce delay
+        []
+    );
 
-    const fetchSuggestions = () => {
-        // Simulate API call to fetch suggestions/popular searches
-        setSuggestions(['Pizza', 'Burger', 'Pasta', 'Sushi']);
-    };
-
-    const handleSearch = (text: string) => {
+    const handleSearch = async (text: string) => {
+        setLoader(true);
         setSearchQuery(text);
-
-        // Simulate API call to fetch search results based on query
-        if (text) {
-            const results = suggestions.filter(item => item.toLowerCase().includes(text.toLowerCase()));
-            setSearchResults(results);
-        } else {
-            setSearchResults([]);
-        }
+        debouncedSearch(text);
     };
 
-    const handleSuggestionPress = (item: any) => {
-        setSearchQuery(item?.name);
-        navigation.navigate(`ProductScreen`, {
-            id: item?.id,
-            item: item
-        })
+    const handlePopularPress = (item: any) => {
+        setTimeout(() => {
+            navigation.navigate(`ProductScreen`, {
+                id: item?.id,
+                item: item
+            })
+        }, 100)
+    };
+
+    const handlSearchItemPress = (item: any) => {
+        // save into recent search state
+        dispatch(mergeRecentSearchItems(item));
+        setTimeout(() => {
+            navigation.navigate(`ProductScreen`, {
+                id: item?.id,
+                item: item
+            })
+        }, 100)
     };
 
     const handleBackPress = () => {
@@ -84,6 +98,18 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
         setSearchQuery('');
         setSearchResults([]);
     };
+
+    const handleRecentSearchRemove = (item: ItemDetails) => {
+        dispatch(removeRecentSearchItems(item?.id));
+    }
+
+    useEffect(() => {
+        if (!PapularItemLoaded) {
+            dispatch(fetchPopularItems());
+        } else {
+            setPapularItemsList(PapularItems.slice(0, 4));
+        }
+    }, [PapularItemLoaded])
 
     return (
         <View style={styles.container}>
@@ -104,70 +130,84 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
                     autoFocus={true}
                 />
                 {searchQuery.length > 0 && (
-                    <TouchableOpacity onPress={clearSearch} style={[styles.clearIcon, { position: 'absolute', right: HP(55), borderRadius: HP(8), backgroundColor: "#CBCBCB", height: VP(16), width: FS(16), alignItems: "center", justifyContent: "center" }]}>
+                    <TouchableOpacity onPress={clearSearch} style={styles.clearIcon}>
                         <Icon type={Icons.Feather} size={HP(12)} name={`x`} color={COLORS.WHITE} />
                     </TouchableOpacity>
                 )}
-
-                <TouchableOpacity
-                    onPress={() => {
-                        Keyboard.dismiss();
-                    }}
-                    style={{
-                        position: 'absolute',
-                        right: HP(10),
-                        margin: 5,
-                        borderLeftWidth: 1,
-                        borderLeftColor: "#CCCCCC",
-                        zIndex: 2
-                    }}
-                >
-                    <Image source={require(`../../assets/icons/mic.png`)} style={[styles.inputIconRight]} />
-                </TouchableOpacity>
+                {loader ? (
+                    <View style={styles.searchIconContainer}>
+                        <ActivityIndicator style={{ marginLeft: HP(7.5) }} size="small" color={COLORS.BUTTON} />
+                    </View>
+                ) : (
+                    <TouchableOpacity
+                        onPress={() => {
+                            Keyboard.dismiss();
+                        }}
+                        style={styles.searchIconContainer}
+                    >
+                        <Image source={require(`../../assets/icons/mic.png`)} style={[styles.inputIconRight]} />
+                    </TouchableOpacity>
+                )}
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 {/* Recent Searches */}
-                {recentSearches.length > 0 && searchQuery.length === 0 && (
+                {recentSearchItems.length > 0 && searchQuery.length === 0 && (
                     <View style={styles.sectionContainer}>
-                        <HeadingSection title={`your recent searches`} textStyle={{ textTransform: "uppercase", ...TextStyles.POPPINS_REGULAR, fontSize: 18 }} />
+                        <HeadingSection title={`your recent searches`} textStyle={styles.heading} />
                         <FlatList
-                            data={recentSearches}
+                            data={recentSearchItems}
                             renderItem={({ item }) => (
-                                <TouchableOpacity onPress={() => handleSuggestionPress(item)}>
-                                    <Text style={styles.suggestionText}>{item}</Text>
-                                </TouchableOpacity>
+                                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: HP(12) }}>
+                                    <TouchableOpacity
+                                        onPress={() => handlePopularPress(item)}
+                                        style={[styles.itemMainContainer, { marginBottom: 0 }]}
+                                    >
+                                        <View style={styles.itemImgBox}>
+                                            <Image source={{ uri: `${CDN_URL}${item?.imgUrl}` }} style={styles.itemIcon} />
+                                        </View>
+                                        <View>
+                                            <Text style={styles.suggestionText}>{item?.name}</Text>
+                                            <Text style={styles.suggestionSubText}>{item?.category?.name}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => handleRecentSearchRemove(item)}
+                                    >
+                                        <Icon type={Icons.Feather} size={FS(18)} name={`x`} color={COLORS.BLACK} />
+                                    </TouchableOpacity>
+                                </View>
                             )}
                             keyExtractor={(item, index) => index.toString()}
+                            contentContainerStyle={styles.listContainerStyle}
+                            scrollEnabled={false}
                         />
                     </View>
                 )}
 
-                {/* Search Suggestions */}
-                {suggestions.length > 0 && searchQuery.length === 0 && (
+                {/* Popular Search Suggestions */}
+                {recentSearchItems.length === 0 && papularItemsList.length > 0 && searchQuery.length === 0 && (
                     <View style={styles.sectionContainer}>
-                        <HeadingSection title={`Popular Searches`} textStyle={{ textTransform: "uppercase", ...TextStyles.POPPINS_REGULAR, fontSize: 18 }} />
+                        <HeadingSection title={`Popular Searches`} textStyle={styles.heading} />
                         <FlatList
                             data={papularItemsList}
                             renderItem={({ item }) => (
                                 <TouchableOpacity
-                                    onPress={() => handleSuggestionPress(item)}
-                                    style={{ flexDirection: "row", alignItems: "center", gap: HP(14), marginBottom: HP(12) }}
+                                    onPress={() => handlePopularPress(item)}
+                                    style={styles.itemMainContainer}
                                 >
-                                    <View style={{
-                                        borderRadius: HP(11.97), width: FS(50), height: VP(50), borderColor: COLORS.BUTTON, borderWidth: 1, alignItems: "center",
-                                        justifyContent: "center"
-                                    }}>
+                                    <View style={styles.itemImgBox}>
                                         <Image source={{ uri: `${CDN_URL}${item.imgUrl}` }} style={styles.itemIcon} />
                                     </View>
                                     <View style={{}}>
                                         <Text style={styles.suggestionText}>{item?.name}</Text>
-                                        <Text style={styles.suggestionSubText}>{item?.name}</Text>
+                                        <Text style={styles.suggestionSubText}>{item?.category?.name}</Text>
                                     </View>
                                 </TouchableOpacity>
                             )}
                             keyExtractor={(item, index) => index.toString()}
-                            contentContainerStyle={{ marginTop: VP(17.61) }}
+                            contentContainerStyle={styles.listContainerStyle}
+                            scrollEnabled={false}
                         />
                     </View>
                 )}
@@ -175,20 +215,44 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
                 {/* Search Results */}
                 {searchResults.length > 0 && searchQuery.length > 0 && (
                     <View style={styles.sectionContainer}>
-                        <Text style={styles.sectionTitle}>Search Results</Text>
+                        <HeadingSection title={`Search Results`} textStyle={styles.heading} />
                         <FlatList
                             data={searchResults}
                             renderItem={({ item }) => (
-                                <Text style={styles.resultText}>{item}</Text>
+                                <TouchableOpacity
+                                    onPress={() => handlSearchItemPress(item)}
+                                    style={styles.itemMainContainer}
+                                >
+                                    <View style={styles.itemImgBox}>
+                                        <Image source={{ uri: `${CDN_URL}${item?.imgUrl}` }} style={styles.itemIcon} />
+                                    </View>
+                                    <View style={{}}>
+                                        <Text style={styles.suggestionText}>{item?.name}</Text>
+                                        <Text style={styles.suggestionSubText}>{item?.category?.name}</Text>
+                                    </View>
+                                </TouchableOpacity>
                             )}
                             keyExtractor={(item, index) => index.toString()}
+                            contentContainerStyle={styles.listContainerStyle}
+                            scrollEnabled={false}
                         />
+                    </View>
+                )}
+
+                {/* No results */}
+                {!loader && searchResults.length === 0 && searchQuery.length > 0 && (
+                    <View style={styles.sectionContainer}>
+                        <View style={{}}>
+                            <Text style={[styles.noResultText, { fontSize: HP(18) }]}>Uh-oh!</Text>
+
+                            <Text style={[styles.noResultText, { fontSize: HP(14) }]}>No results for {searchQuery} in items. Please try something else.</Text>
+                        </View>
                     </View>
                 )}
 
                 {/* whats on your mind */}
                 {searchQuery.length === 0 && (
-                    <View style={styles.sectionContainer}>
+                    <View style={[styles.sectionContainer, { marginTop: HP(30) }]}>
                         <HeadingSection title={`${user?.name}, what’s on your mind?`} textStyle={{ textTransform: "uppercase", ...TextStyles.POPPINS_REGULAR, fontSize: 18 }} />
 
                         <View style={{ marginTop: VP(17.61) }}>
@@ -233,17 +297,17 @@ const styles = StyleSheet.create({
         height: FS(20)
     },
     clearIcon: {
+        position: 'absolute',
+        right: HP(55),
+        borderRadius: HP(8),
+        backgroundColor: "#CBCBCB",
+        height: VP(16),
         width: FS(16),
-        height: FS(16)
+        alignItems: "center",
+        justifyContent: "center"
     },
     sectionContainer: {
         marginTop: HP(20)
-    },
-    sectionTitle: {
-        fontSize: FS(16),
-        color: COLORS.BLACK,
-        fontWeight: 'bold',
-        marginBottom: HP(10)
     },
     suggestionText: {
         ...TextStyles.POPPINS_MEDIUM
@@ -252,11 +316,6 @@ const styles = StyleSheet.create({
         ...TextStyles.POPPINS_LIGHT,
         fontSize: 12,
         color: "#6C6C70"
-    },
-    resultText: {
-        fontSize: FS(14),
-        color: COLORS.BLACK,
-        marginBottom: HP(10)
     },
     inputIconRight: {
         width: FS(22),
@@ -268,7 +327,44 @@ const styles = StyleSheet.create({
         height: VP(46.75),
         resizeMode: "cover",
         borderRadius: HP(11.97)
-    }
+    },
+    heading: {
+        ...TextStyles.POPPINS_REGULAR,
+        textTransform: "uppercase",
+        fontSize: 18
+    },
+    itemMainContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: HP(14),
+        marginBottom: HP(12)
+    },
+    itemImgBox: {
+        borderRadius: HP(11.97),
+        width: FS(50),
+        height: VP(50),
+        borderColor: COLORS.BUTTON,
+        borderWidth: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    listContainerStyle: {
+        marginTop: VP(17.61)
+    },
+    searchIconContainer: {
+        position: 'absolute',
+        right: HP(10),
+        margin: 5,
+        borderLeftWidth: 1,
+        borderLeftColor: "#CCCCCC",
+        zIndex: 2,
+    },
+    noResultText: {
+        ...TextStyles.POPPINS_BOLD,
+        fontSize: HP(18),
+        color: "#898989",
+        textAlign: "center"
+    },
 });
 
 export default SearchScreen;

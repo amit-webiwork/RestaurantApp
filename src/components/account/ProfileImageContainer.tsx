@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
-import { apiEndpoints, BACKEND_URL, errorMessage } from '../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, CDN_URL, errorMessage } from '../../utils/Constants';
 import { loadStorage, saveStorage } from '../../utils/Storage';
 import { setProflieDetails } from '../../redux/features/profile';
 import { showFadeAlert } from '../../utils/Alert';
@@ -80,7 +80,7 @@ function ProfileImageContainer(props: any) {
     };
 
     useEffect(() => {
-        const profile_img = profile?.profileImg ? { uri: profile.profileImg } : null;
+        const profile_img = profile?.profileImg ? { uri: `${CDN_URL}${profile?.profileImg}` } : null;
         setPhoto(profile_img);
     }, [profile])
 

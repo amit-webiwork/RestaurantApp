@@ -12,7 +12,7 @@ import SearchBoxSection from '../../../components/home-sections/SearchBox';
 import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
 import MenuItemsSection from '../../../components/items/MenuItems';
 import CartLayout from '../../../components/cart/CartLayout';
-import { getItemList } from '../../../utils/ApiCall';
+import { getItemList, getItemListWithSignal } from '../../../utils/ApiCall';
 import FilterBoxSection from '../../../components/items/FilterBoxSection';
 import { useDispatch, useSelector } from 'react-redux';
 import { cuisineList, cuisineLoaded, fetchCuisine, getFilters, priceRangeFilter, resetFilter, setCuisineList, setFilters } from '../../../redux/features/items';
@@ -21,6 +21,7 @@ import CategoryBox from '../../../components/item-filters/CategoryBox';
 import { AppDispatch } from '../../../redux/store';
 import FilterAppliedTabsV1 from '../../../components/items/FilterAppliedTabsV1';
 import ItemVerticalBoxSection from '../../../components/home-sections/ItemVerticalBox';
+import SearchBoxItemsSection from '../../../components/home-sections/SearchBoxItems';
 
 function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
     const { cuisineId } = route.params;
@@ -54,17 +55,15 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
 
             const params = { ...categoryParams, ...dietaryParams, ...cuisineParams, ...priceParams, ...popularItemParams };
 
-            const response = await getItemList(params, 10, 0, signal);
+            const response = await getItemListWithSignal(params, 10, 0, signal);
 
             if (!signal.aborted) {
                 setItemList(response.data);
             }
 
-            // setItemList(response.data);
             setLoader(false);
         } catch (err) {
             setLoader(false);
-            // setItemList([]);
             if (!signal.aborted) {
                 setItemList([]);
             }
@@ -115,7 +114,7 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
 
                         {/* Search and filter Box */}
                         <View style={{ marginTop: HP(24), paddingHorizontal: HP(18), flexDirection: "row", alignItems: "center", gap: HP(10), justifyContent: "space-between" }}>
-                            <SearchBoxSection setHandler={() => void (0)} navigation={navigation} />
+                            <SearchBoxItemsSection navigation={navigation} />
 
                             <FilterBoxSection navigation={navigation} />
                         </View>

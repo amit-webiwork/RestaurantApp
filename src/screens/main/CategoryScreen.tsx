@@ -7,7 +7,7 @@ import { globalStyle } from '../../utils/GlobalStyle';
 import InnerBlock from '../../components/InnerBlock';
 import { FS, HP, VP } from '../../utils/Responsive';
 import Icon, { Icons } from '../../components/Icons';
-import { COLORS } from '../../utils/Constants';
+import { CDN_URL, COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import SearchBoxSection from '../../components/home-sections/SearchBox';
 import LinearGradient from 'react-native-linear-gradient';
@@ -58,7 +58,7 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
                         style={styles.categoryBox}
                     >
                         <View style={{ alignItems: "center" }}>
-                            <Image source={{ uri: item.imgUrl }} style={styles.categoryIcon} />
+                            <Image source={{ uri: `${CDN_URL}${item?.imgUrl}` }} style={styles.categoryIcon} />
                         </View>
                     </LinearGradient>
                 </TouchableOpacity>

@@ -14,7 +14,6 @@ import OrderPlacedScreen from '../screens/main/cart/OrderPlacedScreen';
 import MenuScreen from '../screens/main/menu/MenuScreen';
 import PopularMenuScreen from '../screens/main/menu/PopularMenuScreen';
 import MenuScreenV2 from '../screens/main/menu/MenuScreenV2';
-import HomeScreen from '../screens/main/HomeScreen';
 import SearchScreen from '../screens/main/SearchScreen';
 
 export type MainTabParamList = {
@@ -39,7 +38,11 @@ const MainTabNavigator: React.FunctionComponent = () => {
     const Stack = createNativeStackNavigator<MainTabParamList>();
 
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator screenOptions={{
+            headerShown: false,
+            gestureEnabled: true,
+            animation: 'slide_from_right',
+        }}>
             <Stack.Screen name="BottomTab" component={BottomTabNavigator} />
             <Stack.Screen
                 name={`NotificationScreen`}

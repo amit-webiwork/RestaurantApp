@@ -26,7 +26,21 @@ const getCategoryList = async (params: any = {}) => {
     }
 };
 
-const getItemList = async (params = {}, limit = 10, offset = 0, signal: AbortSignal) => {
+const getItemList = async (params = {}, limit = 10, offset = 0) => {
+    try {
+        const paramData = new URLSearchParams({ limit: String(limit), offset: String(offset), ...params });
+
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.itemList}?${paramData}`);
+
+        return res.data;
+    } catch (error: any) {
+        const { response } = error;
+        const message = response?.data?.message || error?.message || "Unknown error";
+        throw new Error(message);
+    }
+};
+
+const getItemListWithSignal = async (params = {}, limit = 10, offset = 0, signal: AbortSignal) => {
     try {
         const paramData = new URLSearchParams({ limit: String(limit), offset: String(offset), ...params });
 
@@ -36,10 +50,6 @@ const getItemList = async (params = {}, limit = 10, offset = 0, signal: AbortSig
 
         return res.data;
     } catch (error: any) {
-        // const { response } = error;
-        // const message = response?.data?.message || error?.message || "Unknown error";
-        // throw new Error(message);
-
         if (axios.isCancel(error)) {
             console.log("Request canceled", error.message);
         } else {
@@ -107,4 +117,4 @@ const getPriceRange = async () => {
     }
 };
 
-export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange };
+export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal };

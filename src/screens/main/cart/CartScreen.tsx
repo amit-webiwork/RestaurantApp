@@ -44,18 +44,18 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     }, [PapularItemLoaded])
 
 
-    useEffect(() => {
-        const backAction = () => {
-            navigation.navigate('HomeScreen');
-            return true; // Prevent default back button behavior
-        };
+    // useEffect(() => {
+    //     const backAction = () => {
+    //         navigation.navigate('HomeScreen');
+    //         return true; // Prevent default back button behavior
+    //     };
 
-        // Add event listener for hardware back button
-        const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+    //     // Add event listener for hardware back button
+    //     const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
 
-        // Cleanup the event listener when component unmounts
-        return () => backHandler.remove();
-    }, [navigation]);
+    //     // Cleanup the event listener when component unmounts
+    //     return () => backHandler.remove();
+    // }, [navigation]);
 
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>

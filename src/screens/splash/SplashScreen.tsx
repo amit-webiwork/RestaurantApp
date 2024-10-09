@@ -11,6 +11,8 @@ import { submitLogin } from '../../utils/ApiCall.ts';
 import { ButtonSwipe } from '../../components/ButtonSwipe.tsx';
 import { setProflieDetails } from '../../redux/features/profile.ts';
 import { recoverCart } from '../../redux/features/cart.ts';
+import { setInRecentSearchState } from '../../utils/helper/SearchHelper.ts';
+import { setInCartState } from '../../utils/helper/CartHelper.ts';
 
 function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch = useDispatch();
@@ -53,13 +55,11 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                         dispatch(setProflieDetails(responseData));
 
-                        // navigation.navigate(`MainTabNavigator`);
+                        // set cart items from storage to state
+                        setInCartState(dispatch);
 
-                        const cartItems = await loadStorage("cartItems");
-
-                        if (cartItems.length && cartItems.length > 0) {
-                            dispatch(recoverCart(cartItems));
-                        }
+                        // set searched items from storage to state
+                        setInRecentSearchState(dispatch)
 
                         navigation.reset({
                             index: 0,

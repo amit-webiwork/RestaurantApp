@@ -1,6 +1,7 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit'
 import { getCategoryList, getCuisineList, getDietaryList, getItemList, getPriceRange, getTopicList } from '../../utils/ApiCall';
 import { AppDispatch } from '../store';
+import { saveStorage } from '../../utils/Storage';
 
 interface FiltersState {
     categories: any[],
@@ -26,6 +27,7 @@ interface FiltersState {
     };
     priceRangeLoaded: boolean;
     priceRangeFilter: { "minValue": number, "maxValue": number };
+    recentSearchItems: ItemDetails[]
 }
 
 const initialState: FiltersState = {
@@ -44,7 +46,8 @@ const initialState: FiltersState = {
     filters: { "cuisine": [], "dietaries": [], "popularItems": [] },
     priceRange: { "minValue": 0, "maxValue": 0 },
     priceRangeLoaded: false,
-    priceRangeFilter: { "minValue": 0, "maxValue": 0 }
+    priceRangeFilter: { "minValue": 0, "maxValue": 0 },
+    recentSearchItems: []
 }
 
 export const itemSlice = createSlice({
@@ -107,6 +110,28 @@ export const itemSlice = createSlice({
         },
         removeFromRangeFilter: (state) => {
             state.priceRangeFilter = { "minValue": 0, "maxValue": 0 }
+        },
+        setRecentSearchItems: (state, action) => {
+            state.recentSearchItems = (action?.payload || []).splice(0, 5)
+            saveStorage(state.recentSearchItems, "recentSearchItems");
+        },
+        mergeRecentSearchItems: (state, action) => {
+            const existingItemIndex = state.recentSearchItems.findIndex(item => item.id === action.payload.id);
+
+            if (existingItemIndex === -1) {
+                // If the item doesn't exist, add it to the array
+                state.recentSearchItems.push(action.payload);
+
+                // Keep the most recent 5 items
+                state.recentSearchItems = state.recentSearchItems.slice(-5);
+
+                // Save the updated list to storage
+                saveStorage(state.recentSearchItems, "recentSearchItems");
+            }
+        },
+        removeRecentSearchItems: (state, action) => {
+            state.recentSearchItems = state.recentSearchItems.filter(d => d.id !== action.payload)
+            saveStorage(state.recentSearchItems, "recentSearchItems");
         }
     },
 })
@@ -198,7 +223,7 @@ export const getAppliedFilterArray = createSelector(
     }
 )
 
-export const { setCategoryList, setItemList, setTopicList, setPapularItemList, setDietaryList, setFilters, setCuisineList, removeFilter, resetFilter, setPriceRange, setPriceRangeFilter, removeFromRangeFilter } = itemSlice.actions
+export const { setCategoryList, setItemList, setTopicList, setPapularItemList, setDietaryList, setFilters, setCuisineList, removeFilter, resetFilter, setPriceRange, setPriceRangeFilter, removeFromRangeFilter, setRecentSearchItems, mergeRecentSearchItems, removeRecentSearchItems } = itemSlice.actions
 
 export const categoryList = (state: { items: FiltersState }) => state.items.categories;
 export const categoryLoaded = (state: { items: FiltersState }) => state.items.categoryLoaded;
@@ -226,5 +251,7 @@ export const priceRange = (state: { items: FiltersState }) => state.items.priceR
 export const priceRangeLoaded = (state: { items: FiltersState }) => state.items.priceRangeLoaded;
 
 export const priceRangeFilter = (state: { items: FiltersState }) => state.items.priceRangeFilter;
+
+export const getRecentSearchItems = (state: { items: FiltersState }) => state.items.recentSearchItems;
 
 export default itemSlice.reducer;
