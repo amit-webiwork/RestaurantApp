@@ -27,8 +27,10 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
     const [cookingRequestShow, setCookingRequestShow] = useState(false);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<number>(0);
 
     const selectCategoryHandler = useCallback((id: number) => {
+        setSelectedCategory(id);
         // find in items
         const filtered = PapularItems.filter(item => (item?.category_id === id || id === 0));
 
@@ -203,7 +205,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                                     {/* Category Tab */}
                                     <View style={{ marginTop: VP(18.66), marginLeft: HP(20) }}>
-                                        <CategortyTabsSection setSelectedCategory={selectCategoryHandler} />
+                                        <CategortyTabsSection setSelectedCategory={selectCategoryHandler} selectedCategory={selectedCategory} />
                                     </View>
 
                                     {/* item boxes */}

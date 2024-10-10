@@ -56,7 +56,7 @@ function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element 
                         </View>
 
                         <View style={{ marginTop: VP(26), paddingHorizontal: HP(15) }}>
-                            <MenuItemsSection data={itemList} dataLoaded={!PapularItemLoaded} navigation={navigation} />
+                            <MenuItemsSection data={itemList} dataLoaded={!PapularItemLoaded} loadMore={() => void (0)} hasMoreData={true} navigation={navigation} loading={false} HeaderComponent={() => { return (<></>) }} />
                         </View>
 
                         {CartItemList.length > 0 && (

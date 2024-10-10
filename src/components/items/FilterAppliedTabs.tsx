@@ -15,11 +15,13 @@ import { categoryList, categoryLoaded, fetchCategories, getAppliedFilterArray, g
 import CategoryTabsLoaderSection from '../skeleton/CategoryTabsLoader';
 import { AppDispatch } from '../../redux/store';
 import Icon, { Icons } from '../Icons';
+import { boolean } from 'yup';
 
 interface Props {
+    loading?: boolean;
 }
 
-const FilterAppliedTabs: React.FunctionComponent<Props> = () => {
+const FilterAppliedTabs: React.FunctionComponent<Props> = ({ loading = false }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const filterList = useSelector(getAppliedFilterArray);
@@ -49,6 +51,7 @@ const FilterAppliedTabs: React.FunctionComponent<Props> = () => {
                 <TouchableOpacity
                     onPress={() => removeFromFilter(item.type, item.id)}
                     style={{}}
+                    disabled={loading ? true : false}
                 >
                     <LinearGradient
                         colors={["#D3219B1A", "#D3219B1A"]}
@@ -75,6 +78,7 @@ const FilterAppliedTabs: React.FunctionComponent<Props> = () => {
                 <TouchableOpacity
                     onPress={resetAll}
                     style={{ paddingTop: HP(9), flexDirection: "row", gap: HP(10) }}
+                    disabled={loading ? true : false}
                 >
                     <Text style={[styles.categoryText, {
                         textDecorationLine: "underline",
@@ -88,6 +92,7 @@ const FilterAppliedTabs: React.FunctionComponent<Props> = () => {
                     <TouchableOpacity
                         onPress={resetRangeFilter}
                         style={{ marginTop: VP(24) }}
+                        disabled={loading ? true : false}
                     >
                         <LinearGradient
                             colors={["#D3219B1A", "#D3219B1A"]}

@@ -12,12 +12,49 @@ import SearchBoxSection from '../../../components/home-sections/SearchBox';
 import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
 import MenuItemsSection from '../../../components/items/MenuItems';
 import CartLayout from '../../../components/cart/CartLayout';
-import { getItemList } from '../../../utils/ApiCall';
+import { getItemList, getItemListWithSignal } from '../../../utils/ApiCall';
 import FilterBoxSection from '../../../components/items/FilterBoxSection';
 import { useSelector } from 'react-redux';
 import { getFilters, priceRangeFilter } from '../../../redux/features/items';
 import FilterAppliedTabs from '../../../components/items/FilterAppliedTabs';
 import SearchBoxItemsSection from '../../../components/home-sections/SearchBoxItems';
+import LottieLoader from '../../../components/LottieLoader';
+import NormalLoader from '../../../components/NormalLoader';
+
+const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading, navigation }) => {
+    return (
+        <>
+            {/* Top Navigation */}
+            <View style={{ paddingHorizontal: HP(21), paddingVertical: HP(20), }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <TouchableOpacity
+                        onPress={() => navigation.goBack()}
+                        style={{ alignSelf: "center" }}
+                    >
+                        <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                    </TouchableOpacity>
+                    <Text style={styles.topHeading}>Menu</Text>
+                </View>
+            </View>
+            {/* Category box tab */}
+            <View style={{ marginTop: VP(38), paddingLeft: HP(21) }}>
+                <CategortyTabsSection setSelectedCategory={setSelectedCategoryhandler} selectedCategory={selectedCategory} loading={loading} />
+            </View>
+
+            {/* Search and filter Box */}
+            <View style={{ marginTop: HP(24), paddingHorizontal: HP(18), flexDirection: "row", alignItems: "center", gap: HP(10), justifyContent: "space-between" }}>
+                <SearchBoxItemsSection navigation={navigation} />
+
+                <FilterBoxSection navigation={navigation} loading={loading} />
+            </View>
+
+            {/* Area for applied filters */}
+            <View style={{ paddingHorizontal: HP(18) }}>
+                <FilterAppliedTabs loading={loading} />
+            </View>
+        </>
+    )
+}
 
 function MenuScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
     const { categoryId } = route.params;
@@ -26,16 +63,33 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
     const PriceRangeFilter = useSelector(priceRangeFilter);
 
     const [selectedCategory, setSelectedCategory] = useState(categoryId);
-    const [itemList, setItemList] = useState([]);
-    const [loader, setLoader] = useState(false);
+    const [itemList, setItemList] = useState<any[]>([]);
+    const [loader, setLoader] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(1);
+    const [hasMoreData, setHasMoreData] = useState<boolean>(true); // To track if there's more data to load
+
+    const [filterState, setFilterState] = useState<any>({});
+    const [priceRangeFilterState, setPriceRangeFilterState] = useState<any>({});
+    const [loading, setLoading] = useState<boolean>(false);
 
     const setSelectedCategoryhandler = (id: number) => {
+        setLoading(true)
+        setPage(1);
+        setItemList([]); // Clear the current orders
+        setHasMoreData(true); // Reset to allow more data fetching
         setSelectedCategory(id);
     }
 
-    const fetchItem = async () => {
+    useEffect(() => {
+        console.log('run');
+        fetchItem(page);
+    }, [page, selectedCategory, JSON.stringify(filterState), JSON.stringify(priceRangeFilterState)])
+
+    const fetchItem = async (page: number) => {
+        if (loader || !hasMoreData) return;
+
+        setLoader(true);
         try {
-            setLoader(true);
 
             const priceParams = PriceRangeFilter['maxValue'] > 0 ? { maxPrice: PriceRangeFilter['maxValue'], minPrice: PriceRangeFilter['minValue'] } : {};
 
@@ -46,66 +100,59 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
 
             const params = { ...categoryParams, ...dietaryParams, ...cuisineParams, ...priceParams, ...popularItemParams };
 
-            const response = await getItemList(params);
-            setItemList(response.data);
-            setLoader(false);
+            const limit = 10;
+            const offset = (page - 1) * limit;
+
+            const response = await getItemList(params, limit, offset);
+
+            if (response?.data?.length > 0) {
+                setItemList(prev => [...prev, ...response?.data || []]);
+            } else {
+                setHasMoreData(false); // No more data to fetch
+            }
         } catch (err) {
+            setHasMoreData(false); // No more data to fetch
+        } finally {
             setLoader(false);
-            setItemList([]);
+            setLoading(false)
         }
     }
 
     useEffect(() => {
-        console.log('run')
-        fetchItem();
-    }, [selectedCategory, JSON.stringify(filterList), JSON.stringify(PriceRangeFilter)])
+        setLoading(true)
+        setPage(1);
+        setItemList([]); // Clear the current orders
+        setHasMoreData(true); // Reset to allow more data fetching
+        setFilterState(filterList);
+        setPriceRangeFilterState(PriceRangeFilter);
+    }, [JSON.stringify(filterList), JSON.stringify(PriceRangeFilter)])
+
+    const loadMoreOrders = () => {
+        if (!loader && hasMoreData) {
+            setLoading(true);
+            setPage(prevPage => prevPage + 1); // Increment page to fetch more data
+        }
+    };
 
     return (
-        <OuterLayout containerStyle={globalStyle.containerStyle}>
+        <OuterLayout containerStyle={[globalStyle.containerStyle]}>
             <InnerBlock>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
-                        {/* Top Navigation */}
-                        <View style={{ paddingHorizontal: HP(21) }}>
-                            <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <TouchableOpacity
-                                    onPress={() => navigation.goBack()}
-                                    style={{ alignSelf: "center" }}
-                                >
-                                    <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
-                                </TouchableOpacity>
-                                <Text style={styles.topHeading}>Menu</Text>
-                            </View>
-                        </View>
+                {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+                <View style={{ marginBottom: VP(79), flex: 1 }}>
 
-                        {/* Ctegory box tab */}
-                        <View style={{ marginTop: VP(45), paddingLeft: HP(21) }}>
-                            <CategortyTabsSection setSelectedCategory={setSelectedCategoryhandler} selectedCategory={categoryId} />
-                        </View>
+                    {/* Menu Items */}
+                    <View style={{ marginTop: VP(0), flex: 1 }}>
+                        <MenuItemsSection data={itemList} dataLoaded={loader} loadMore={loadMoreOrders} hasMoreData={hasMoreData} loading={loading} scrollEnabled={true} navigation={navigation} HeaderComponent={HeaderComponent} setSelectedCategoryhandler={setSelectedCategoryhandler} selectedCategory={selectedCategory} columnWrapperStyle={{ paddingHorizontal: HP(15) }} />
+                    </View>
 
-                        {/* Search and filter Box */}
-                        <View style={{ marginTop: HP(24), paddingHorizontal: HP(18), flexDirection: "row", alignItems: "center", gap: HP(10), justifyContent: "space-between" }}>
-                            <SearchBoxItemsSection navigation={navigation} />
-
-                            <FilterBoxSection navigation={navigation} />
-                        </View>
-
-                        {/* Area for applied filters */}
-                        <View style={{ paddingHorizontal: HP(18) }}>
-                            <FilterAppliedTabs />
-                        </View>
-
-                        {/* Menu Items */}
-                        <View style={{ marginTop: VP(15.59), paddingHorizontal: HP(15) }}>
-                            <MenuItemsSection data={itemList} dataLoaded={loader} navigation={navigation} />
-                        </View>
-
-                        {/* Bottom Text */}
+                    {/* Bottom Text */}
+                    {/* {!hasMoreData && (
                         <View style={{ marginTop: VP(41) }}>
                             <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: HP(40), color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
                         </View>
-                    </View>
-                </ScrollView>
+                    )} */}
+                </View>
+                {/* </ScrollView> */}
             </InnerBlock>
             <CartLayout children={undefined} navigation={navigation}></CartLayout>
         </OuterLayout>

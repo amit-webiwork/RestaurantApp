@@ -37,7 +37,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const PapularItems = useSelector(papularItems);
     const featuredCategory = useSelector(getFeaturedCategory);
 
-    const [selectedCategory, setSelectedCategory] = useState<number>(1);
+    const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
 
     const selectCategoryHandler = useCallback((id: number) => {
@@ -144,7 +144,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                                     {/* Category Tabs */}
                                     <View style={{ marginTop: VP(24.66), marginLeft: HP(21) }}>
-                                        <CategortyTabsSection setSelectedCategory={selectCategoryHandler} />
+                                        <CategortyTabsSection setSelectedCategory={selectCategoryHandler} selectedCategory={selectedCategory} />
                                     </View>
 
                                     {/* Item Boxes */}

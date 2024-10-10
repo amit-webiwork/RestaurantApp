@@ -46,7 +46,6 @@ const SearchBoxItems: React.FunctionComponent<Props> = ({ inputContainerStyle, n
                         editable={false}
                     />
                 </Pressable>
-
                 <Image source={require(`../../assets/icons/search.png`)} style={[styles.inputIconLeft]} />
 
                 <TouchableOpacity
@@ -64,6 +63,7 @@ const SearchBoxItems: React.FunctionComponent<Props> = ({ inputContainerStyle, n
                 >
                     <Image source={require(`../../assets/icons/mic.png`)} style={[styles.inputIconRight]} />
                 </TouchableOpacity>
+
             </View>
         </View>
     );

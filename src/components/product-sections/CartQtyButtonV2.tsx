@@ -3,7 +3,10 @@ import {
     View,
     TouchableOpacity,
     StyleSheet,
-    Text
+    Text,
+    StyleProp,
+    ViewStyle,
+    TextStyle
 } from 'react-native';
 
 import { FS, HP } from '../../utils/Responsive';
@@ -15,22 +18,25 @@ interface Props {
     decrement: any;
     qty: number;
     increment: any;
+    qtyButtonStyle?: StyleProp<ViewStyle>;
+    qtyTextStyle?:StyleProp<TextStyle>;
+    iconSize?: number;
 }
 
-const CartQtyButtonV2: React.FunctionComponent<Props> = ({ decrement, qty, increment }) => {
+const CartQtyButtonV2: React.FunctionComponent<Props> = ({ decrement, qty, increment, qtyButtonStyle, qtyTextStyle, iconSize = 20 }) => {
     return (
         <View style={styles.qtyContainer}>
             {/* Minus button */}
-            <TouchableOpacity style={styles.qtyButton} onPress={decrement}>
-                <Icon type={Icons.Feather} size={20} name={`minus`} color={COLORS.WHITE} />
+            <TouchableOpacity style={[styles.qtyButton, qtyButtonStyle]} onPress={decrement}>
+                <Icon type={Icons.Feather} size={iconSize} name={`minus`} color={COLORS.WHITE} />
             </TouchableOpacity>
 
             {/* TextInput for displaying quantity */}
-            <Text style={styles.qtyText}>{qty}</Text>
+            <Text style={[styles.qtyText, qtyTextStyle]}>{qty}</Text>
 
             {/* Plus button */}
-            <TouchableOpacity style={styles.qtyButton} onPress={increment}>
-                <Icon type={Icons.Feather} size={20} name={`plus`} color={COLORS.WHITE} />
+            <TouchableOpacity style={[styles.qtyButton, qtyButtonStyle]} onPress={increment}>
+                <Icon type={Icons.Feather} size={iconSize} name={`plus`} color={COLORS.WHITE} />
             </TouchableOpacity>
         </View>
     );

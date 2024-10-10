@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, memo } from 'react';
 import { Modal, View, Text, StyleSheet, Animated, Easing, TouchableOpacity, Image } from 'react-native';
+import LoadingDots from 'react-native-loading-dots';
 
 import Icon, { Icons } from '../Icons';
 import { COLORS } from '../../utils/Constants';
@@ -9,7 +10,6 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const VoiceSearchModal = ({ visible, onClose }: { visible: boolean; onClose: any; }) => {
     const scaleAnim = useRef(new Animated.Value(1)).current;
-
     // Animation for the soundwave effect
     useEffect(() => {
         Animated.loop(
@@ -28,7 +28,7 @@ const VoiceSearchModal = ({ visible, onClose }: { visible: boolean; onClose: any
                 }),
             ]),
         ).start();
-    }, [scaleAnim]);
+    }, [scaleAnim, visible]);
 
     return (
         <Modal
@@ -69,7 +69,9 @@ const VoiceSearchModal = ({ visible, onClose }: { visible: boolean; onClose: any
                     <Animated.View style={[styles.iconContainer, { transform: [{ scale: scaleAnim }] }]}>
                         <Icon type={Icons.FontAwesome5} size={FS(40)} name={`microphone`} color={COLORS.WHITE} />
                     </Animated.View>
-                    <Text style={styles.listeningText}>Listening...</Text>
+                    <Text style={styles.listeningText}>Listening
+                        <LoadingDots size={5} bounceHeight={2} colors={["#36e7f4", "#f43688", "#ff758c", "#cac531"]} dots={4} />
+                    </Text>
                     <Image
                         source={require(`../../assets/images/waves.png`)}
                         style={[styles.img]} />
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
         width: FS(100),
         height: FS(100),
         borderRadius: FS(50),
-        backgroundColor: '#B96DCE',
+        backgroundColor: '#6A29C9',
         marginTop: VP(20)
     },
     listeningText: {

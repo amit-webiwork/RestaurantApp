@@ -11,6 +11,8 @@ import { showFadeAlert } from './src/utils/Alert';
 import { submitLogin } from './src/utils/ApiCall';
 import { LogBox } from 'react-native';
 
+let isRefreshing = false; // To track refresh token attempts
+
 axios.interceptors.request.use(
   async config => {
     const userDetails = await loadStorage("userDetails");
@@ -24,7 +26,7 @@ axios.interceptors.request.use(
     }
     // config.headers['Content-Type'] = 'application/json';
     config.timeout = 10000; // Wait for 10 seconds before timing out
-    // console.log(config, '--------config');
+    console.log(config, '--------config');
     return config;
   },
   error => {
@@ -33,67 +35,75 @@ axios.interceptors.request.use(
 )
 
 axios.interceptors.response.use(
-  response => {
+  (response) => {
     return response;
   },
   async function (error) {
     const originalRequest = error.config;
 
-    // console.log(error?.response, '-----error.response.status')
-
+    // Handle network errors
     if (error?.code === 'ERR_NETWORK') {
-      showFadeAlert('Network error, Try again later!')
+      showFadeAlert('Network error, Try again later!');
     }
 
     if (error?.code === 'ECONNABORTED') {
-      showFadeAlert('Request timed out')
+      showFadeAlert('Request timed out');
     }
 
-    if (error?.response?.status === 401 || error?.response?.status === 403) {
+    // Check if the error is unauthorized (401 or 403)
+    if ((error?.response?.status === 401 || error?.response?.status === 403) && !originalRequest._retry) {
       console.log('------------------unauthorized');
+
+      // If already refreshing, return the promise of the refresh attempt
+      if (isRefreshing) {
+        showFadeAlert('Session expired, please log in again.');
+        return Promise.reject(error); // To avoid multiple requests firing while refreshing
+      }
+
       originalRequest._retry = true;
+      isRefreshing = true;
 
-      const userDetails = await loadStorage("userDetails");
+      try {
+        const userDetails = await loadStorage("userDetails");
 
-      if (userDetails && userDetails.hasOwnProperty("token") && userDetails.hasOwnProperty("user")) {
-        if (userDetails?.user?.email && userDetails?.user?.password) {
-          try {
-            const dataPayload = {
-              "email": userDetails?.user?.email ?? "",
-              "password": userDetails?.user?.password ?? ""
-            };
+        if (userDetails && userDetails.token && userDetails.user) {
+          const { email, password } = userDetails.user;
+
+          if (email && password) {
+            const dataPayload = { email, password };
 
             const response: any = await submitLogin(dataPayload);
-
             const responseData = { ...response.data };
 
             if (responseData.user && responseData.token) {
-              responseData['user']['password'] = dataPayload.password;
-
+              responseData.user.password = password; // Save password for next refresh
               saveStorage(responseData, "userDetails");
 
-              axios.defaults.headers.common['Authorization'] =
-                'Bearer ' + (responseData?.token?.accessToken || "")
+              // Update axios headers with the new token
+              axios.defaults.headers.common['Authorization'] = 'Bearer ' + (responseData?.token?.accessToken || '');
+
+              // Retry the original request with the updated token
+              return axios(originalRequest);
             }
-          } catch (err) {
-            console.log(err, '------refresh token API err')
-            return Promise.reject(error)
           }
-        } else {
-          console.log('------userDetails?.user?.email && userDetails?.user?.password')
-          return Promise.reject(error)
         }
-      } else {
-        console.log('------userDetails')
-        return Promise.reject(error)
+
+        // If userDetails or token is invalid, log out the user
+        console.log('User details invalid, logging out...');
+        showFadeAlert('Session expired, please log in again.');
+      } catch (err) {
+        console.log('Token refresh failed:', err);
+        showFadeAlert('Session expired, please log in again.');
+      } finally {
+        isRefreshing = false; // Reset the refreshing state
       }
 
-      return axios(originalRequest)
+      return Promise.reject(error); // Reject the promise to stop the loop
     }
 
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
-)
+);
 
 function App(): React.JSX.Element {
 

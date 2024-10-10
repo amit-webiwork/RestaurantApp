@@ -9,14 +9,16 @@ import { globalStyle } from '../../utils/GlobalStyle';
 
 interface Props {
     navigation: any;
+    loading?: boolean;
 }
 
-const FilterBoxSection: React.FunctionComponent<Props> = ({ navigation }) => {
+const FilterBoxSection: React.FunctionComponent<Props> = ({ navigation, loading = false }) => {
 
     return (
         <TouchableOpacity
             onPress={() => navigation.navigate(`FilterScreen`)}
             style={globalStyle.filterIconContainer}
+            disabled={loading ? true : false}
         >
             <Image source={require(`../../assets/icons/filter.png`)} style={[globalStyle.filterIconRight]} />
         </TouchableOpacity>

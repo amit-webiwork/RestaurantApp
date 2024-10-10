@@ -8,9 +8,6 @@ import { HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
-import SearchBoxSection from '../../../components/home-sections/SearchBox';
-import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
-import MenuItemsSection from '../../../components/items/MenuItems';
 import CartLayout from '../../../components/cart/CartLayout';
 import { getItemList, getItemListWithSignal } from '../../../utils/ApiCall';
 import FilterBoxSection from '../../../components/items/FilterBoxSection';
@@ -19,7 +16,6 @@ import { cuisineList, cuisineLoaded, fetchCuisine, getFilters, priceRangeFilter,
 import FilterAppliedTabs from '../../../components/items/FilterAppliedTabs';
 import CategoryBox from '../../../components/item-filters/CategoryBox';
 import { AppDispatch } from '../../../redux/store';
-import FilterAppliedTabsV1 from '../../../components/items/FilterAppliedTabsV1';
 import ItemVerticalBoxSection from '../../../components/home-sections/ItemVerticalBox';
 import SearchBoxItemsSection from '../../../components/home-sections/SearchBoxItems';
 

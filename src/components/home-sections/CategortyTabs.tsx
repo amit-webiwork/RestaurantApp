@@ -20,7 +20,8 @@ const colorsBG = [[COLORS.HOME_ICONS, COLORS.HOME_ICONS], [COLORS.BACKGROUND_DEF
 
 interface Props {
     setSelectedCategory: any;
-    selectedCategory?: number;
+    selectedCategory: number;
+    loading?: boolean;
 }
 
 const allCategory = {
@@ -28,7 +29,7 @@ const allCategory = {
     "name": "All"
 }
 
-const CategortyTabs: React.FunctionComponent<Props> = ({ setSelectedCategory, selectedCategory }) => {
+const CategortyTabs: React.FunctionComponent<Props> = ({ setSelectedCategory, selectedCategory, loading = false }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const flatListRef = useRef<any>();
@@ -36,11 +37,11 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ setSelectedCategory, se
     const CategoryLoaded = useSelector(categoryLoaded);
     const CategoryList = useSelector(categoryList);
 
-    const [selected, setSelected] = useState(0);
+    // const [selected, setSelected] = useState(0);
 
     const handleSelect = (item: { id: number; }) => {
         setSelectedCategory(item.id);
-        setSelected(item.id);
+        // setSelected(item.id);
     };
 
     const getItemLayout = (data: any, index: number) => ({
@@ -67,7 +68,7 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ setSelectedCategory, se
         if (!CategoryLoaded) {
             dispatch(fetchCategories());
         } else {
-            setSelected(selectedCategory || 0);
+            setSelectedCategory(selectedCategory || 0);
         }
     }, [CategoryLoaded])
 
@@ -77,14 +78,15 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ setSelectedCategory, se
                 <TouchableOpacity
                     onPress={() => handleSelect(item)}
                     style={{}}
+                    disabled={loading ? true : false}
                 >
                     <LinearGradient
-                        colors={selected === item.id ? colorsBG[0] : colorsBG[1]}
+                        colors={selectedCategory === item.id ? colorsBG[0] : colorsBG[1]}
                         start={{ x: 1, y: 0 }}
                         end={{ x: 1, y: 0 }}
-                        style={[styles.categoryBox, { borderColor: selected === item.id ? COLORS.HOME_ICONS : "#D0D0D0" }]}
+                        style={[styles.categoryBox, { borderColor: selectedCategory === item.id ? COLORS.HOME_ICONS : "#D0D0D0" }]}
                     >
-                        <Text style={{ ...styles.categoryText, color: selected === item.id ? COLORS.WHITE : COLORS.BLACK, fontFamily: selected === item.id ? "RalewaySemiBold" : "RalewayRegular" }}>{item.name}</Text>
+                        <Text style={{ ...styles.categoryText, color: selectedCategory === item.id ? COLORS.WHITE : COLORS.BLACK, fontFamily: selectedCategory === item.id ? "RalewaySemiBold" : "RalewayRegular" }}>{item.name}</Text>
                     </LinearGradient>
                 </TouchableOpacity>
             </View>

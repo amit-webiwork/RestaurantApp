@@ -41,7 +41,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
     const [errorInstruction, setErrorInstruction] = useState({ status: false, text: "" });
     const [textLength, setTextLength] = useState<number>(100);
     const [cartQuantity, setCartQuantity] = useState(1);
-    const [selectedCategory, setSelectedCategory] = useState<number>(1);
+    const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
     const [itemDetails, setItemDetails] = useState<any>({});
 
@@ -208,7 +208,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
                                     {/* Category Tab */}
                                     <View style={{ marginTop: VP(25.66), paddingLeft: HP(30) }}>
-                                        <CategortyTabsSection setSelectedCategory={selectCategoryHandler} />
+                                        <CategortyTabsSection setSelectedCategory={selectCategoryHandler} selectedCategory={selectedCategory} />
                                     </View>
 
                                     {/* item boxes */}
