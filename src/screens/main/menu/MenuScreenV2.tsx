@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
@@ -19,6 +19,43 @@ import { AppDispatch } from '../../../redux/store';
 import ItemVerticalBoxSection from '../../../components/home-sections/ItemVerticalBox';
 import SearchBoxItemsSection from '../../../components/home-sections/SearchBoxItems';
 
+const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading, navigation }) => {
+    return (
+        <>
+            {/* Top Navigation */}
+            <View style={{ paddingHorizontal: HP(21), paddingVertical: HP(20) }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <TouchableOpacity
+                        onPress={() => navigation.goBack()}
+                        style={{ alignSelf: "center" }}
+                    >
+                        <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                    </TouchableOpacity>
+                    <Text style={styles.topHeading}>Menu</Text>
+                </View>
+            </View>
+            {/* Search and filter Box */}
+            <View style={{ marginTop: HP(7), paddingHorizontal: HP(18), flexDirection: "row", alignItems: "center", gap: HP(10), justifyContent: "space-between" }}>
+                <SearchBoxItemsSection navigation={navigation} />
+
+                <FilterBoxSection navigation={navigation} loading={loading} />
+            </View>
+
+            {/* Category box tab */}
+            <View style={{ marginTop: VP(26.29), paddingLeft: HP(21) }}>
+                <CategoryBox selectHandler={setSelectedCategoryhandler} loading={loading} />
+            </View>
+
+            <View style={styles.line}></View>
+
+            {/* Area for applied filters */}
+            <View style={{ paddingHorizontal: HP(18), marginBottom: VP(15.59) }}>
+                <FilterAppliedTabs loading={loading} />
+            </View>
+        </>
+    )
+}
+
 function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
     const { cuisineId } = route.params;
 
@@ -31,17 +68,29 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
     const CuisineLoaded = useSelector(cuisineLoaded);
 
     const [selectedCategory, setSelectedCategory] = useState(0);
-    const [itemList, setItemList] = useState([]);
+    const [itemList, setItemList] = useState<any[]>([]);
     const [loader, setLoader] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(1);
+
+    const [filterState, setFilterState] = useState<any>({});
+    const [priceRangeFilterState, setPriceRangeFilterState] = useState<any>({});
+
+    const [hasMoreData, setHasMoreData] = useState<boolean>(true);
 
     const setSelectedCategoryhandler = (id: number) => {
+        setLoading(true)
+        setPage(1);
+        setItemList([]);
+        setHasMoreData(true);
         setSelectedCategory(id);
     }
 
-    const fetchItem = async (signal: AbortSignal) => {
-        try {
-            setLoader(true);
+    const fetchItem = async (page: number, signal: AbortSignal) => {
+        if (loader || !hasMoreData) return;
+        setLoader(true);
 
+        try {
             const priceParams = PriceRangeFilter['maxValue'] > 0 ? { maxPrice: PriceRangeFilter['maxValue'], minPrice: PriceRangeFilter['minValue'] } : {};
 
             const categoryParams = { categoryIds: selectedCategory > 0 ? selectedCategory : '' }
@@ -51,18 +100,37 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
 
             const params = { ...categoryParams, ...dietaryParams, ...cuisineParams, ...priceParams, ...popularItemParams };
 
-            const response = await getItemListWithSignal(params, 10, 0, signal);
+            const limit = 10;
+            const offset = (page - 1) * limit;
 
-            if (!signal.aborted) {
-                setItemList(response.data);
+            // const response = await getItemListWithSignal(params, limit, offset, signal);
+            const response = await getItemList(params, limit, offset);
+
+            if (response?.data?.length > 0) {
+                setItemList(prev => [...prev, ...response?.data || []]);
+            } else {
+                setHasMoreData(false); // No more data to fetch
             }
 
-            setLoader(false);
+            // if (!signal.aborted) {
+            //     // setItemList(response.data);
+            //     if (response?.data?.length > 0) {
+            //         setItemList(prev => [...prev, ...response?.data || []]);
+            //     } else {
+            //         setHasMoreData(false); // No more data to fetch
+            //     }
+            // }
+
+            // setLoader(false);
         } catch (err) {
+            // setLoader(false);
+            setHasMoreData(false); // No more data to fetch
+            // if (!signal.aborted) {
+            //     setItemList([]);
+            // }
+        } finally {
             setLoader(false);
-            if (!signal.aborted) {
-                setItemList([]);
-            }
+            setLoading(false)
         }
     }
 
@@ -82,62 +150,46 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
     useEffect(() => {
         console.log('run v1');
         const controller = new AbortController(); // Create an AbortController
-        fetchItem(controller?.signal); // Pass the signal to the fetch function
+        fetchItem(page, controller?.signal); // Pass the signal to the fetch function
 
         return () => {
             // Cleanup the previous API call if a new one is made
             controller.abort();
         };
-    }, [selectedCategory, JSON.stringify(filterList), JSON.stringify(PriceRangeFilter)])
+    }, [page, selectedCategory, JSON.stringify(filterState), JSON.stringify(priceRangeFilterState)])
+
+    useEffect(() => {
+        setLoading(true)
+        setPage(1);
+        setItemList([]);
+        setHasMoreData(true);
+        setFilterState(filterList);
+        setPriceRangeFilterState(PriceRangeFilter);
+    }, [JSON.stringify(filterList), JSON.stringify(PriceRangeFilter)])
+
+    const loadMoreItems = () => {
+        if (!loader && hasMoreData) {
+            setLoading(true);
+            setPage(prevPage => prevPage + 1); // Increment page to fetch more data
+        }
+    };
 
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
-                        {/* Top Navigation */}
-                        <View style={{ paddingHorizontal: HP(21) }}>
-                            <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <TouchableOpacity
-                                    onPress={() => navigation.goBack()}
-                                    style={{ alignSelf: "center" }}
-                                >
-                                    <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
-                                </TouchableOpacity>
-                                <Text style={styles.topHeading}>Menu</Text>
-                            </View>
-                        </View>
-
-                        {/* Search and filter Box */}
-                        <View style={{ marginTop: HP(24), paddingHorizontal: HP(18), flexDirection: "row", alignItems: "center", gap: HP(10), justifyContent: "space-between" }}>
-                            <SearchBoxItemsSection navigation={navigation} />
-
-                            <FilterBoxSection navigation={navigation} />
-                        </View>
-
-                        {/* Category box tab */}
-                        <View style={{ marginTop: VP(26.29), paddingLeft: HP(21) }}>
-                            <CategoryBox selectHandler={setSelectedCategoryhandler} />
-                        </View>
-
-                        <View style={styles.line}></View>
-
-                        {/* Area for applied filters */}
-                        <View style={{ paddingHorizontal: HP(18) }}>
-                            <FilterAppliedTabs />
-                        </View>
-
-                        {/* Menu Items */}
-                        <View style={{ marginTop: VP(15.59), paddingHorizontal: HP(15) }}>
-                            <ItemVerticalBoxSection data={itemList} dataLoaded={loader} navigation={navigation} />
-                        </View>
-
-                        {/* Bottom Text */}
-                        <View style={{ marginTop: VP(41) }}>
-                            <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: HP(40), color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
-                        </View>
+                {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+                <View style={{ marginBottom: VP(0) }}>
+                    {/* Menu Items */}
+                    <View style={{}}>
+                        <ItemVerticalBoxSection data={itemList} dataLoaded={loader} navigation={navigation} loadMore={loadMoreItems} hasMoreData={hasMoreData} loading={loading} scrollEnabled={true} HeaderComponent={HeaderComponent} setSelectedCategoryhandler={setSelectedCategoryhandler} selectedCategory={selectedCategory} />
                     </View>
-                </ScrollView>
+
+                    {/* Bottom Text */}
+                    {/* <View style={{ marginTop: VP(41) }}>
+                            <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: HP(40), color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
+                        </View> */}
+                </View>
+                {/* </ScrollView> */}
             </InnerBlock>
             <CartLayout children={undefined} navigation={navigation}></CartLayout>
         </OuterLayout>

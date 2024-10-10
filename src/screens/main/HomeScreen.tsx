@@ -180,7 +180,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                                     {/* Item Vertical Boxes */}
                                     <View style={{ marginTop: VP(22), marginHorizontal: HP(11) }}>
-                                        <ItemVerticalBoxSection data={PapularItems} dataLoaded={!PapularItemLoaded} navigation={navigation} />
+                                        <ItemVerticalBoxSection data={PapularItems} dataLoaded={!PapularItemLoaded} navigation={navigation} hasMoreData={true} loadMore={() => void (0)} HeaderComponent={() => { return (<></>) }} />
                                     </View>
 
                                     {/* Bottom Heading */}

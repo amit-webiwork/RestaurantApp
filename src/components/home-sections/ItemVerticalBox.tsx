@@ -5,7 +5,9 @@ import {
     StyleSheet,
     Text,
     FlatList,
-    ImageBackground
+    ImageBackground,
+    ActivityIndicator,
+    Dimensions
 } from 'react-native';
 
 import Icon, { Icons } from '../Icons';
@@ -21,13 +23,22 @@ import { AppDispatch } from '../../redux/store';
 import { useDispatch } from 'react-redux';
 import { globalStyle } from '../../utils/GlobalStyle';
 
+const { width, height } = Dimensions.get('window');
+
 interface Props {
     data: any[];
     navigation: any;
     dataLoaded: boolean;
+    hasMoreData: boolean;
+    loadMore: any;
+    scrollEnabled?: boolean;
+    HeaderComponent: any;
+    loading?: any;
+    setSelectedCategoryhandler?: any;
+    selectedCategory?: number;
 }
 
-const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation }) => {
+const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation, hasMoreData, loadMore, HeaderComponent, loading, setSelectedCategoryhandler, selectedCategory, scrollEnabled = false }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const BoxItems = ({ itemData, index }: { itemData: any, index: number }) => {
@@ -109,14 +120,29 @@ const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, nav
 
     return (
         <>
-            {!dataLoaded ? (
-                <FlatList
-                    data={data}
-                    renderItem={({ item, index }) => <BoxItems itemData={item} index={index} />}
-                    contentContainerStyle={{}}
-                    scrollEnabled={false}
-                />
-            ) : (<MenuVerticalItemLoader />)}
+            <FlatList
+                data={data}
+                renderItem={({ item, index }) => <BoxItems itemData={item} index={index} />}
+                contentContainerStyle={{}}
+                scrollEnabled={scrollEnabled}
+                onEndReached={() => {
+                    loadMore();
+                }}
+                onEndReachedThreshold={.5}
+                ListHeaderComponent={<HeaderComponent setSelectedCategoryhandler={setSelectedCategoryhandler} selectedCategory={selectedCategory} loading={loading} navigation={navigation} />}
+                ListFooterComponent={() => {
+                    return (
+                        <>
+                            {(loading) ? <View style={{ flex: 1, height: height * .5 }}><ActivityIndicator size="large" color={COLORS.BUTTON} /></View> : null}
+                            {!hasMoreData && (
+                                <View style={{ marginTop: VP(41), marginBottom: VP(41) }}>
+                                    <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: HP(40), color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
+                                </View>
+                            )}
+                        </>
+                    )
+                }}
+            />
         </>
     );
 };
@@ -124,8 +150,8 @@ const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, nav
 const styles = StyleSheet.create({
     boxContainer: {
         paddingBottom: HP(16),
-        paddingLeft: HP(5),
-        paddingRight: HP(5),
+        paddingLeft: HP(16),
+        paddingRight: HP(16),
     },
     boxSubContainer: {
         paddingHorizontal: HP(6.46),

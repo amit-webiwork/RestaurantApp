@@ -18,11 +18,13 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
 
     const [loader, setLoader] = useState(false);
     const [itemList, setItemList] = useState([]);
+    console.log(categoryId, '--categoryId')
 
     const fetchItem = async () => {
         try {
             setLoader(true);
-            const response = await getItemList({ popular: 1, categoryIds: categoryId });
+            const params = { categoryIds: categoryId ? categoryId : '' }
+            const response = await getItemList({ popular: 1, ...params });
             setItemList(response.data);
             setLoader(false);
         } catch (err) {

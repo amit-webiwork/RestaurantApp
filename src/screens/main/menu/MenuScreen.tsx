@@ -49,7 +49,7 @@ const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading
             </View>
 
             {/* Area for applied filters */}
-            <View style={{ paddingHorizontal: HP(18) }}>
+            <View style={{ paddingHorizontal: HP(18), marginBottom: VP(15.59) }}>
                 <FilterAppliedTabs loading={loading} />
             </View>
         </>
@@ -127,7 +127,7 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
         setPriceRangeFilterState(PriceRangeFilter);
     }, [JSON.stringify(filterList), JSON.stringify(PriceRangeFilter)])
 
-    const loadMoreOrders = () => {
+    const loadMoreItems = () => {
         if (!loader && hasMoreData) {
             setLoading(true);
             setPage(prevPage => prevPage + 1); // Increment page to fetch more data
@@ -142,7 +142,7 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
 
                     {/* Menu Items */}
                     <View style={{ marginTop: VP(0), flex: 1 }}>
-                        <MenuItemsSection data={itemList} dataLoaded={loader} loadMore={loadMoreOrders} hasMoreData={hasMoreData} loading={loading} scrollEnabled={true} navigation={navigation} HeaderComponent={HeaderComponent} setSelectedCategoryhandler={setSelectedCategoryhandler} selectedCategory={selectedCategory} columnWrapperStyle={{ paddingHorizontal: HP(15) }} />
+                        <MenuItemsSection data={itemList} dataLoaded={loader} loadMore={loadMoreItems} hasMoreData={hasMoreData} loading={loading} scrollEnabled={true} navigation={navigation} HeaderComponent={HeaderComponent} setSelectedCategoryhandler={setSelectedCategoryhandler} selectedCategory={selectedCategory} columnWrapperStyle={{ paddingHorizontal: HP(15) }} />
                     </View>
 
                     {/* Bottom Text */}

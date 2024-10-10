@@ -130,9 +130,9 @@ const MenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, loadMore,
                 ListFooterComponent={() => {
                     return (
                         <>
-                            {(dataLoaded) ? <ActivityIndicator size="large" color={COLORS.BUTTON} /> : null}
+                            {(loading) ? <View style={{ flex: 1,  height: height * .5 }}><ActivityIndicator size="large" color={COLORS.BUTTON} /></View> : null}
                             {!hasMoreData && (
-                                <View style={{ marginTop: VP(41) }}>
+                                <View style={{ marginTop: VP(41), marginBottom: VP(41) }}>
                                     <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: HP(40), color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
                                 </View>
                             )}

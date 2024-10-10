@@ -21,6 +21,7 @@ import CategoryBoxLoaderSection from '../skeleton/CategoryBoxLoader';
 
 interface Props {
     selectHandler: any;
+    loading: boolean;
 }
 
 const allCategory = {
@@ -30,7 +31,7 @@ const allCategory = {
 
 const colorsBG = [["#FFDBFB99", "#FFDBFB99"], ["#DFE1FB99", "#DFE1FB99"], ["#CFF4C399", "#CFF4C399"], ["#FDD6D699", "#FDD6D699"]];
 
-const CategoryBox: React.FunctionComponent<Props> = ({ selectHandler }) => {
+const CategoryBox: React.FunctionComponent<Props> = ({ selectHandler, loading = false }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const flatListRef = useRef<any>();
@@ -61,6 +62,7 @@ const CategoryBox: React.FunctionComponent<Props> = ({ selectHandler }) => {
                 <TouchableOpacity
                     onPress={() => handleSelect(item)}
                     style={{}}
+                    disabled={loading ? true : false}
                 >
                     <LinearGradient
                         colors={backgroundColor}
