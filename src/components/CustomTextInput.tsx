@@ -71,7 +71,7 @@ const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
 
     return (
         <View style={[styles.inputContainer, styleContainer]}>
-             <Animated.Text style={[styles.placeholder, labelStyle]}>
+            <Animated.Text style={[styles.placeholder, labelStyle]}>
                 {placeholder}
             </Animated.Text>
             <TextInput
@@ -88,12 +88,17 @@ const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
                     {iconClick ? (
                         <TouchableOpacity
                             onPress={iconAction}
-                            style={{ bottom: HP(0), position: 'absolute', right: HP(0) }}
+                            style={{ bottom: HP(30), right: FS(-120) }}
                         >
                             <Image source={iconName} style={[styles.icon, iconStyle]} />
                         </TouchableOpacity>
                     ) : (
-                        <Image source={iconName} style={[styles.icon, iconStyle]} />
+                        <TouchableOpacity
+                            onPress={() => void (0)}
+                            style={{ bottom: HP(30), right: FS(-130) }}
+                        >
+                            <Image source={iconName} style={[styles.icon, iconStyle]} />
+                        </TouchableOpacity>
                     )}
                 </>
             )}
@@ -108,9 +113,9 @@ const styles = StyleSheet.create({
     icon: {
         width: FS(18),
         height: VP(18),
-        position: 'absolute',
-        right: HP(0),
-        bottom: HP(20)
+        // position: 'absolute',
+        // right: HP(0),
+        // bottom: HP(20)
     },
     input: {
         ...TextStyles.RALEWAY_MEDIUM,

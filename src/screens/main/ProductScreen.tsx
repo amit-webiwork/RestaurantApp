@@ -260,7 +260,8 @@ const styles = StyleSheet.create({
     title: {
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 18,
-        color: COLORS.WHITE
+        color: COLORS.WHITE,
+        textAlign: "center"
     },
     requestText: {
         ...TextStyles.RALEWAY_MEDIUM,

@@ -18,7 +18,6 @@ import { useSelector } from 'react-redux';
 import { getFilters, priceRangeFilter } from '../../../redux/features/items';
 import FilterAppliedTabs from '../../../components/items/FilterAppliedTabs';
 import SearchBoxItemsSection from '../../../components/home-sections/SearchBoxItems';
-import LottieLoader from '../../../components/LottieLoader';
 import NormalLoader from '../../../components/NormalLoader';
 
 const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading, navigation }) => {

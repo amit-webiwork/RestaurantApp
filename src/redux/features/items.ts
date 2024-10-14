@@ -163,12 +163,13 @@ export const fetchPopularItems = () => async (dispatch: AppDispatch) => {
     }
 };
 
-export const fetchTopics = () => async (dispatch: AppDispatch) => {
+export const fetchTopics = (setLoader: ((arg0: boolean) => void)) => async (dispatch: AppDispatch) => {
     try {
         const data = await getTopicList();
         dispatch(setTopicList(data));
     } catch (err) {
         console.log(err);
+        setLoader(false);
     }
 };
 

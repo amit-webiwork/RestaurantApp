@@ -84,7 +84,6 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
     return (
         <>
-            {/* <LottieLoader visible={loader} /> */}
             <LinearGradient
                 colors={['#DF12CA', '#8027C9']}
                 start={{ x: 1, y: 0 }}

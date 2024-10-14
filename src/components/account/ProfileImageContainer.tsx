@@ -9,9 +9,9 @@ import { loadStorage, saveStorage } from '../../utils/Storage';
 import { setProflieDetails } from '../../redux/features/profile';
 import { showFadeAlert } from '../../utils/Alert';
 import { setDialogContent } from '../../redux/features/customDialog';
-import LottieLoader from '../LottieLoader';
 import { FS, HP, VP } from '../../utils/Responsive';
 import Warning from '../../assets/svgs/warning.svg';
+import NormalLoader from '../NormalLoader';
 
 const createFormData = (photo: { fileName: any; type: any; uri: string; }, body: any = {}) => {
     const data: any = new FormData();
@@ -86,7 +86,7 @@ function ProfileImageContainer(props: any) {
 
     return (
         <>
-            <LottieLoader visible={loader} />
+            <NormalLoader visible={loader} />
             {photo ? (
                 <>
                     <Image

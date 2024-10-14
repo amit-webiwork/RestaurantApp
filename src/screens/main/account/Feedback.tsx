@@ -15,11 +15,11 @@ import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect
 import { ButtonSection as Button } from '../../../components/Button';
 import { AppDispatch } from '../../../redux/store';
 import { fetchTopics, topicList, topicLoaded } from '../../../redux/features/items';
-import LottieLoader from '../../../components/LottieLoader';
 import { feedbackForm, validateResource } from '../../../utils/ValidateResource';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import CheckmarkWithConfetti from '../../../components/CheckmarkWithConfetti';
+import NormalLoader from '../../../components/NormalLoader';
 
 const { width, height } = Dimensions.get('window');
 
@@ -86,7 +86,7 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
     useEffect(() => {
         setLoader(true);
         if (!TopicLoaded) {
-            dispatch(fetchTopics());
+            dispatch(fetchTopics(setLoader));
         } else {
             setLoader(false);
         }
@@ -94,7 +94,7 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
 
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
-            <LottieLoader visible={loader} />
+            <NormalLoader visible={loader} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingHorizontal: HP(20), paddingVertical: HP(27.79) }}>

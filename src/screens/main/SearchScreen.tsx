@@ -50,7 +50,7 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
         debounce(async (query: string) => {
             try {
                 if (query) {
-                    console.log('-----search run query')
+                    console.log('-----search run query');
                     const params = { keyword: query };
                     const data = await getItemList(params, 5, 0);
                     setSearchResults(data?.data || []);

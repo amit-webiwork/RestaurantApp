@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Modal, ActivityIndicator } from 'react-native';
 
-import LottieView from 'lottie-react-native';
-import { FS, VP } from '../utils/Responsive';
 import { COLORS } from '../utils/Constants';
 
 const NormalLoader = ({ visible }: { visible: boolean }) => {
