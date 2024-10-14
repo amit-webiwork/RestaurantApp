@@ -117,4 +117,28 @@ const getPriceRange = async () => {
     }
 };
 
-export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal };
+const orderSubmit = async (dataPayload: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.post(BACKEND_URL + apiEndpoints.order, dataPayload);
+            resolve(res);
+        } catch (error: any) {
+            console.log('API ERROR (orderSubmit)', (error?.response?.data?.message || error?.message));
+            reject(error);
+        }
+    });
+}
+
+const cartConfirm = async (dataPayload: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.post(BACKEND_URL + apiEndpoints.cartConfirm, dataPayload);
+            resolve(res);
+        } catch (error: any) {
+            console.log('API ERROR (cartConfirm)', (error?.response?.data?.message || error?.message));
+            reject(error);
+        }
+    });
+}
+
+export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm };

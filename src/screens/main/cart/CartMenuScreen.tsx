@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
-import { HP, VP } from '../../../utils/Responsive';
+import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
@@ -45,7 +45,7 @@ function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element 
                                     onPress={() => navigation.goBack()}
                                     style={{ alignSelf: "center" }}
                                 >
-                                    <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                                    <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
                                 <Text style={styles.topHeading}>My Cart</Text>
                             </View>
@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",
-        flex: 1
+        flex: 1,
+        alignSelf: "center"
     },
     heading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

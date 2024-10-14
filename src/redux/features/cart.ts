@@ -4,11 +4,13 @@ import { saveStorage } from '../../utils/Storage';
 interface CartState {
     items: Array<CartItemDetails>;
     itemAdded: boolean;
+    instructionText: string;
 }
 
 const initialState: CartState = {
     items: [],
-    itemAdded: false
+    itemAdded: false,
+    instructionText: ""
 }
 
 export const cartSlice = createSlice({
@@ -16,7 +18,10 @@ export const cartSlice = createSlice({
     initialState: initialState,
     reducers: {
         setItems: (state: any, action) => {
-            state.itemAdded = true
+            const notify = action.payload.notify;
+            if (notify) {
+                state.itemAdded = true
+            }
 
             // state.items.push(action.payload);
             const item = action.payload.data;
@@ -54,6 +59,9 @@ export const cartSlice = createSlice({
         hideCartNotification: (state, action) => {
             state.itemAdded = false
         },
+        setInstructionText: (state: any, action) => {
+            state.instructionText = action.payload
+        },
     },
 })
 
@@ -62,7 +70,7 @@ export const getCartQty = (itemId: number, cartList: CartItemDetails[]) => {
     return getQty?.qty || 1;
 };
 
-export const { setItems, hideCartNotification, recoverCart, removeFromCart, resetCart } = cartSlice.actions
+export const { setItems, hideCartNotification, recoverCart, removeFromCart, resetCart, setInstructionText } = cartSlice.actions
 
 export const cartItemList = (state: { cart: CartState }) => state.cart.items;
 export const itemAdded = (state: { cart: CartState }) => state.cart.itemAdded;

@@ -78,7 +78,7 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
                                 onPress={() => navigation.navigate(`HomeScreen`)}
                                 style={{ position: 'absolute', left: 0 }}
                             >
-                                <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                                <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                             </TouchableOpacity>
 
                             {/* Text centered */}

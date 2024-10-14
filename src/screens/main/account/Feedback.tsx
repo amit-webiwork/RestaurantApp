@@ -104,7 +104,7 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                                 onPress={() => navigation.goBack()}
                                 style={{ alignSelf: "center" }}
                             >
-                                <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                                <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                             </TouchableOpacity>
                             <Text style={styles.topHeading}>feedback</Text>
                         </View>

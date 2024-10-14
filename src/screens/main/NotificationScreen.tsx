@@ -74,7 +74,7 @@ const data = [
     },
 ]
 
-function NotificationScreen({ navigation }: { navigation: any }): React.JSX.Element {
+function NotificationScreen({ navigation, route }: { navigation: any; route: any; }): React.JSX.Element {
     const groupedData = groupNotificationData(data);
 
     return (
@@ -83,19 +83,20 @@ function NotificationScreen({ navigation }: { navigation: any }): React.JSX.Elem
                 <InnerBlock>
                     <View style={styles.main}>
                         <View style={styles.top}>
+                            {/* Top Navigation */}
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(`HomeScreen`)}
                                 style={{ position: 'absolute', left: 0, alignSelf: "center" }}
                             >
-                                <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                                <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                             </TouchableOpacity>
 
                             <Text style={styles.headingText}>
                                 Notification
                             </Text>
                         </View>
-
                         <ScrollView showsVerticalScrollIndicator={false}>
+
                             <View style={{ marginTop: VP(25.21) }}>
                                 {groupedData.map((d: any, i: number) => (
                                     <View key={`notification-group-${i}`} >
@@ -138,7 +139,8 @@ const styles = StyleSheet.create({
     top: {
         flexDirection: "row",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        marginBottom: VP(20)
     },
     headingText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

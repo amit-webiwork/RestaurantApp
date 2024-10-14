@@ -39,7 +39,6 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
     const [instructionText, setInstructionText] = useState<string>("");
     const [errorInstruction, setErrorInstruction] = useState({ status: false, text: "" });
-    const [textLength, setTextLength] = useState<number>(100);
     const [cartQuantity, setCartQuantity] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
@@ -47,7 +46,6 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
     const setInstructionTextHandler = (e: string) => {
         setInstructionText(e);
-        setTextLength(100 - e.length);
     }
 
     const selectCategoryHandler = useCallback((id: number) => {
@@ -124,7 +122,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                     onPress={() => navigation.goBack()}
                                     style={styles.backButton}
                                 >
-                                    <Icon type={Icons.Feather} size={20} name={`chevron-left`} color={COLORS.WHITE} />
+                                    <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.WHITE} />
                                 </TouchableOpacity>
                                 <View style={{ position: 'absolute', top: VP(31), right: HP(20), backgroundColor: "#0000006E", padding: HP(10), borderRadius: FS(32), minWidth: FS(100) }}>
                                     <Text style={styles.title}>{itemDetails?.name}</Text>
@@ -164,14 +162,16 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         <Text style={styles.infoText}>{itemDetails?.description}</Text>
                                     </View>
 
+                                    <View style={styles.line}></View>
+
                                     {/* Cooking request */}
-                                    <View style={{ marginTop: VP(40), paddingHorizontal: HP(30) }}>
+                                    {/* <View style={{ marginTop: VP(40), paddingHorizontal: HP(30) }}>
                                         <Text style={styles.requestText}>Add a cooking request (optional)</Text>
 
                                         <View style={{ marginTop: VP(14) }}>
-                                            <CookingRequestSection />
+                                            <CookingRequestSection setHandler={setInstructionTextHandler} />
                                         </View>
-                                    </View>
+                                    </View> */}
 
                                     <View style={{ marginTop: VP(27), paddingHorizontal: HP(30) }}>
                                         <ProductRatingsSection data={productRatings} />
@@ -297,7 +297,16 @@ const styles = StyleSheet.create({
         width: FS(25),
         height: FS(25),
         zIndex: 10
-    }
+    },
+    line: {
+        height: 2,
+        width: "100%",
+        flex: 1,
+        flexGrow: 1,
+        backgroundColor: "#eee",
+        marginTop: VP(27)
+
+    },
 });
 
 export default ProductScreen;

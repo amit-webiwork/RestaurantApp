@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux'
 import axios from 'axios';
+import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
+import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 
 import store from './src/redux/store';
 import MainStackNavigator from './src/navigations/MainStackNavigator';
@@ -105,11 +107,86 @@ axios.interceptors.response.use(
   }
 );
 
+const navigationRef = createNavigationContainerRef();
+
+function customNavigate(name: string, params: any) {
+  if (navigationRef.isReady()) {
+    navigationRef.navigate(name, params);
+  }
+}
+
+async function createNotificationChannel() {
+  try {
+    await notifee.createChannel({
+      id: 'orders',
+      name: 'Order Notifications',
+      importance: AndroidImportance.HIGH,
+    });
+  } catch (error) {
+    console.error('Failed to create notification channel', error);
+  }
+}
+
+async function onMessageReceived(message: FirebaseMessagingTypes.RemoteMessage) {
+  try {
+    const { notification, data } = message;
+
+    await notifee.displayNotification({
+      title: notification?.title,
+      body: notification?.body,
+      android: {
+        channelId: 'orders',
+      },
+      data: message.data, // Pass data for future access
+    });
+  } catch (error) {
+    console.error('Failed to display notification', error);
+  }
+}
+
+// Background event handler
+notifee.onBackgroundEvent(async ({ type, detail }) => {
+  const { data } = detail.notification
+
+  if (type === EventType.PRESS) {
+    if (data && data?.screen) {
+      customNavigate(data?.screen, { orderId: data?.orderId });
+    }
+  }
+});
+
+// Handle foreground event (when the app is in the foreground)
+notifee.onForegroundEvent(async ({ type, detail }) => {
+  const { data } = detail.notification;
+
+  if (type === EventType.PRESS) {
+    if (data && data.screen) {
+      customNavigate(data.screen, { orderId: data.orderId });
+    }
+  }
+});
+
 function App(): React.JSX.Element {
+  useEffect(() => {
+    createNotificationChannel();
+
+    const handleNotification = messaging().onMessage(onMessageReceived);
+
+    // Do not set the background handler here if Firebase is automatically handling notifications in the background.
+    messaging().setBackgroundMessageHandler(async (message) => {
+      // Optional: You may handle background notifications here if needed
+      console.log("Handling background message", message);
+    });
+
+    return () => {
+      // Properly clean up the listeners
+      handleNotification();
+    };
+  }, []);
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <MainStackNavigator />
       </NavigationContainer>
     </Provider>

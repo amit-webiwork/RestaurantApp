@@ -72,12 +72,13 @@ const ForgotScreen: React.FunctionComponent<NavigationProp> = ({
                 <View style={styles.main}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={{ flex: 5 }}>
+                            {/* Top Navigation */}
                             <View style={{ flexDirection: "row" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
                                     style={{ alignSelf: "center", top: VP(2) }}
                                 >
-                                    <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                                    <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textAlign: "center", flex: 1 }}>Forgot Password</Text>
                             </View>

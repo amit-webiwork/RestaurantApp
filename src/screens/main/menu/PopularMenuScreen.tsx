@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-nati
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
-import { HP, VP } from '../../../utils/Responsive';
+import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
@@ -49,7 +49,7 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
                                     onPress={() => navigation.goBack()}
                                     style={{ alignSelf: "center" }}
                                 >
-                                    <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                                    <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
                                 <Text style={styles.topHeading}>popular {name}</Text>
                             </View>

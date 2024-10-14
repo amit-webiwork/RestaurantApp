@@ -1,21 +1,31 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, BackHandler } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
-import { COLORS } from '../../../utils/Constants';
+import { COLORS, errorMessage } from '../../../utils/Constants';
 import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
 import CartItemSection from '../../../components/cart/CartItem';
 import ItemBoxSection from '../../../components/home-sections/ItemBox';
 import CookingRequestSection from '../../../components/product-sections/CookingRequest';
 import { ButtonSection as Button } from '../../../components/Button';
-import { cartItemList, getCartTotal } from '../../../redux/features/cart';
+import { cartItemList, getCartTotal, removeFromCart, resetCart, setInstructionText } from '../../../redux/features/cart';
 import { fetchPopularItems, papularItemLoaded, papularItems } from '../../../redux/features/items';
 import { AppDispatch } from '../../../redux/store';
+import { cartConfirm } from '../../../utils/ApiCall';
+import NormalLoader from '../../../components/NormalLoader';
+import { getItemPriceComponents } from '../../../utils/helper/ItemHelper';
+import { addToCart } from '../../../utils/helper/CartHelper';
+import { loadStorage } from '../../../utils/Storage';
+import { setDialogContent } from '../../../redux/features/customDialog';
+import Warning from '../../../assets/svgs/warning.svg';
+import ProductScreenLoader from '../../../components/skeleton/ProductScreenLoader';
+import CartScreenLoader from '../../../components/skeleton/CartScreenLoader';
 
 function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
@@ -28,6 +38,12 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [cookingRequestShow, setCookingRequestShow] = useState(false);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
+    const [instructionText, setInstructionTextState] = useState<string>("");
+    const [loading, setLoading] = useState(false);
+
+    const setInstructionTextHandler = (e: string) => {
+        setInstructionTextState(e);
+    }
 
     const selectCategoryHandler = useCallback((id: number) => {
         setSelectedCategory(id);
@@ -36,6 +52,73 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
         setItemListFiltered(filtered);
     }, [PapularItems]);
+
+    const cartOperation = async (item: ItemDetails) => {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                if (item?.isAvailable) {
+                    const itemDetails = getItemPriceComponents(item);
+                    itemDetails.id = itemDetails.itemId || 0;
+                    const qty = item.qty || 1;
+                    addToCart(itemDetails, qty, dispatch, undefined, false);
+                }
+                resolve(1);
+            }, 100);
+        });
+    }
+
+    const cartComparison = (arr1: CartItemDetails[], arr2: ItemDetails[]) => {
+        if (arr1.length !== arr2.length) {
+            return false; // Arrays have different lengths, so they are not equal
+        }
+
+        // Sort both arrays based on a unique key (itemId in this case)
+        const sortedArr1 = arr1.sort((a, b) => (a?.itemId || 0) - (b?.itemId || 0));
+        const sortedArr2 = arr2.sort((a, b) => (a?.itemId || 0) - (b?.itemId || 0));
+
+        const areArraysEqual = _.isEqual(sortedArr1, sortedArr2);
+
+        return areArraysEqual;
+    }
+
+    const handleClick = async (type: string) => {
+        setLoading(true);
+        try {
+            const dataPayload = [...CartItemList]
+
+            const response: any = await cartConfirm(dataPayload);
+
+            dispatch(resetCart());
+
+            const promises = _.map(response.data, async (item) => {
+                return await cartOperation(item);
+            });
+
+            // Wait for all promises to resolve
+            await Promise.all(promises);
+
+            const savedCartItems = await loadStorage('cartItems');
+
+            const areArraysEqual = cartComparison(dataPayload, savedCartItems);
+
+            if (!areArraysEqual) {
+                dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.cartUpdate }));
+            } else {
+                if (type === `CartMenuScreen`) {
+                    dispatch(setInstructionText(instructionText));
+                    navigation.navigate(type)
+                } else {
+                    dispatch(setInstructionText(instructionText));
+                    navigation.navigate(type)
+                }
+            }
+
+            setLoading(false);
+        } catch (err: any) {
+            setLoading(false);
+            console.log(err?.message, '---err');
+        }
+    }
 
     useEffect(() => {
         if (!PapularItemLoaded) {
@@ -59,8 +142,18 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     //     return () => backHandler.remove();
     // }, [navigation]);
 
+    if (loading) {
+        return (
+            <>
+                <NormalLoader visible={loading} />
+                <CartScreenLoader />
+            </>
+        )
+    }
+
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
+            <NormalLoader visible={loading} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20) }}>
@@ -71,7 +164,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     onPress={() => navigation.navigate(`HomeScreen`)}
                                     style={{ alignSelf: "center", }}
                                 >
-                                    <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                                    <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
                                 <Text style={styles.topHeading}>Cart</Text>
                             </View>
@@ -133,7 +226,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                         </View>
                                         {cookingRequestShow ? (
                                             <View style={{ marginTop: VP(20), paddingHorizontal: HP(8), paddingVertical: HP(8) }}>
-                                                <CookingRequestSection />
+                                                <CookingRequestSection setHandler={setInstructionTextHandler} />
                                             </View>
                                         ) : (<View style={{ paddingBottom: HP(26), }}></View>)}
                                     </>
@@ -223,9 +316,9 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", gap: HP(7), paddingHorizontal: HP(20), paddingVertical: VP(19) }}>
                             <Button
                                 text={'continue'}
-                                onPress={() => navigation.navigate(`CartMenuScreen`)}
+                                onPress={() => handleClick(`CartMenuScreen`)}
                                 textStyle={styles.buttonStyle1}
-                                isLoading={false}
+                                isLoading={loading}
                                 activeButtonText={{ opacity: .65 }}
                                 mainContainerStyle={{ flex: 1, borderColor: COLORS.BUTTON, borderWidth: 1, borderRadius: HP(8) }}
                                 LinearGradienrColor={["#F5F5F5", "#F5F5F5"]}
@@ -234,9 +327,9 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                             <Button
                                 text={'place order'}
-                                onPress={() => navigation.navigate(`OrderPlacedScreen`)}
+                                onPress={() => handleClick(`OrderPlacedScreen`)}
                                 textStyle={styles.buttonStyle2}
-                                isLoading={false}
+                                isLoading={loading}
                                 activeButtonText={{ opacity: .65 }}
                                 mainContainerStyle={{ flex: 1, borderRadius: HP(8) }}
                                 LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}

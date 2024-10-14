@@ -122,7 +122,7 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
                     onPress={handleBackPress}
                     style={styles.backIcon}
                 >
-                    <Icon type={Icons.Feather} size={20} name={`chevron-left`} color={COLORS.BUTTON} />
+                    <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BUTTON} />
                 </TouchableOpacity>
                 <TextInput
                     value={searchQuery}
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
     },
     inputIconRight: {
         width: FS(22),
-        height: VP(22),
+        height: FS(22),
         marginLeft: HP(7.5)
     },
     itemIcon: {

@@ -27,12 +27,12 @@ const CartItem: React.FunctionComponent<Props> = ({ data }) => {
     const [cartQuantity, setCartQuantity] = useState(1);
 
     const incrementCart = () => {
-        addToCart({ ...data, id: data.itemId }, 1, dispatch, 'add');
+        addToCart({ ...data, id: data.itemId }, 1, dispatch, 'add', false);
     }
 
     const decrementCart = () => {
         if (cartQuantity > 1) {
-            addToCart({ ...data, id: data.itemId }, -1, dispatch, 'add');
+            addToCart({ ...data, id: data.itemId }, -1, dispatch, 'add', false);
         }
     }
 
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     },
     iconImg: {
         width: FS(20),
-        height: VP(20)
+        height: FS(20)
     }
 });
 

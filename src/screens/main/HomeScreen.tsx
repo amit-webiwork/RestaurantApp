@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
-import { COLORS } from '../../utils/Constants.ts';
+import { COLORS, errorMessage } from '../../utils/Constants.ts';
 import { TextStyles } from '../../utils/TextStyles.ts';
 import { ButtonSection as Button } from '../../components/Button.tsx';
 import SearchBoxSection from '../../components/home-sections/SearchBox.tsx';
@@ -25,6 +25,12 @@ import { globalStyle } from '../../utils/GlobalStyle.ts';
 import { proflieDetails } from '../../redux/features/profile.ts';
 import CuisineBox from '../../components/home-sections/CuisineBox.tsx';
 import SearchBoxItemsSection from '../../components/home-sections/SearchBoxItems.tsx';
+import { askInitialPermission } from '../../utils/Permissions.ts';
+import { showFadeAlert } from '../../utils/Alert.ts';
+import { setDialogContent } from '../../redux/features/customDialog.ts';
+import Warning from '../../assets/svgs/warning.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { loadStorage } from '../../utils/Storage.ts';
 
 function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
@@ -56,6 +62,23 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
             setItemListFiltered(PapularItems);
         }
     }, [PapularItemLoaded])
+
+    // location update on initial load
+    useEffect(() => {
+        (async () => {
+            const token = await loadStorage(`fcmToken`);
+            const granted = await askInitialPermission();
+
+            if (!granted) {
+                dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.notificationAccessError }));
+            }
+        })();
+    }, []);
+
+    // checkPermissions
+  useEffect(() => {
+    // checkPermissions();
+  }, [])
 
     return (
         <>

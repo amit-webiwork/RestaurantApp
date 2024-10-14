@@ -82,6 +82,7 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingHorizontal: HP(21), paddingVertical: HP(27.79) }}>
+                        {/* Top Navigation */}
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <TouchableOpacity
                                 onPress={() => navigation.goBack()}

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
-import { HP, VP } from '../../../utils/Responsive';
+import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
@@ -27,12 +27,13 @@ function OrderPlacedScreen({ navigation }: { navigation: any }): React.JSX.Eleme
                     <View style={{ paddingVertical: HP(20), marginBottom: VP(87) }}>
                         {/* Navigation section */}
                         <View style={{ paddingHorizontal: HP(21) }}>
+                            {/* Top Navigation */}
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`HomeScreen`)}
                                     style={{ alignSelf: "center" }}
                                 >
-                                    <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                                    <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
                                 <Text style={styles.topHeading}>order tracking</Text>
                             </View>

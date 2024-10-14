@@ -91,12 +91,13 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                 <View style={styles.main}>
                     <View style={{ flex: 9 }}>
                         <ScrollView showsVerticalScrollIndicator={false}>
+                            {/* Top Navigation */}
                             <View style={{ flexDirection: "row" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
                                     style={{ alignSelf: "center", top: VP(2) }}
                                 >
-                                    <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                                    <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textAlign: "center", flex: 1 }}>Create New Password</Text>
                             </View>

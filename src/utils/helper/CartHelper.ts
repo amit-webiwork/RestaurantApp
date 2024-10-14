@@ -2,10 +2,10 @@ import { recoverCart, setItems } from "../../redux/features/cart"
 import { AppDispatch } from "../../redux/store"
 import { loadStorage } from "../Storage";
 
-export const addToCart = (item: ItemDetails, qty: number, dispatch: AppDispatch, actionType = 'update') => {
+export const addToCart = (item: ItemDetails, qty: number, dispatch: AppDispatch, actionType = 'update', notify = true) => {
     const { name, imgUrl, id, price, finalPrice, discountPrice, itemPrice, discountPercent } = item;
 
-    const itemDetails = { data: { name, imgUrl, itemId: id, price, qty, finalPrice, discountPrice, itemPrice, discountPercent }, actionType: actionType };
+    const itemDetails = { data: { name, imgUrl, itemId: id, price, qty, finalPrice, discountPrice, itemPrice, discountPercent }, actionType: actionType, notify };
 
     if (itemDetails.data?.itemId) {
         dispatch(setItems(itemDetails));

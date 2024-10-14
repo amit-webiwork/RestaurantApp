@@ -11,9 +11,10 @@ import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 
 interface Props {
+    setHandler: any;
 }
 
-const CookingRequest: React.FunctionComponent<Props> = ({ }) => {
+const CookingRequest: React.FunctionComponent<Props> = ({ setHandler }) => {
     const [instructionText, setInstructionText] = useState<string>("");
     const [textLength, setTextLength] = useState<number>(100);
     const [errorInstruction, setErrorInstruction] = useState({ status: false, text: "" });
@@ -21,6 +22,7 @@ const CookingRequest: React.FunctionComponent<Props> = ({ }) => {
     const setInstructionTextHandler = (e: string) => {
         setInstructionText(e);
         setTextLength(100 - e.length);
+        setHandler(e);
     }
 
     return (

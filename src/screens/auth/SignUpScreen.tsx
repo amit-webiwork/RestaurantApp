@@ -85,6 +85,7 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
         removeStorage("forgotPasswordOTP");
         removeStorage("cartItems");
         removeStorage("recentSearchItems");
+        removeStorage("fcmToken");
     }
 
     useEffect(() => {

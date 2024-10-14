@@ -5,6 +5,7 @@ interface CartItemDetails {
     price: string;
     qty: number;
     finalPrice: number;
+    isAvailable?: boolean;
 }
 
 interface ItemDetails {
@@ -21,5 +22,8 @@ interface ItemDetails {
     is_available: boolean;
     category: {
         name: string;
-    }
+    };
+    isAvailable?: boolean;
+    qty?: number;
+    itemId?: number;
 }

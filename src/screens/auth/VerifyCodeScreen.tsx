@@ -114,12 +114,13 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
                 <View style={styles.main}>
+                    {/* Top Navigation */}
                     <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}
                             style={{ alignSelf: "center" }}
                         >
-                            <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                            <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                         </TouchableOpacity>
                         <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textTransform: "capitalize", textAlign: "center", flex: 1 }}>verify your email</Text>
                     </View>
