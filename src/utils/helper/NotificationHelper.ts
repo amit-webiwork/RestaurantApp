@@ -19,18 +19,7 @@ const iconArr: any = {
 // Function to group data
 export const groupNotificationData = (data: any[]) => {
     const groupedData = data.reduce((acc, item) => {
-        const itemDate = moment(item.date).format('YYYY-MM-DD');
-
-        let groupKey;
-        // if (itemDate === today) {
-        //     groupKey = 'Today';
-        // } else if (itemDate === yesterday) {
-        //     groupKey = 'Yesterday';
-        // } else {
-        //     groupKey = `${moment(itemDate).format('DD MMM YYYY')}`; // Use the specific date
-        // }
-
-        // groupKey = `${moment(itemDate).format('DD MMM YYYY')}`; // Use the specific date
+        const itemDate = moment(item?.dateTime).format('YYYY-MM-DD');
 
         if (!acc[itemDate]) {
             acc[itemDate] = [];

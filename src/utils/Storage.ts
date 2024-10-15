@@ -36,3 +36,13 @@ export const removeStorage = async (key = 'signupMobile') => {
     key: key
   });
 }
+
+export const saveNotification = async (data: any) => {
+  const list: any = await loadStorage('notificationList');
+
+    if (Array.isArray(list)) {
+      saveStorage([data, ...list], 'notificationList');
+    } else {
+      saveStorage([data], 'notificationList');
+    }
+}

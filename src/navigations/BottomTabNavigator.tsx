@@ -18,10 +18,16 @@ import CategoryScreen from '../screens/main/CategoryScreen';
 import MenuScreen from '../screens/main/menu/MenuScreen';
 import CartNotificationBarSection from '../components/cart/CartNotificationBar';
 import { itemAdded } from '../redux/features/cart';
+import OrderDetailsScreen from '../screens/main/OrderDetailsScreen';
 
 export type MenuStackParamList = {
     CategoryScreen: undefined;
     MenuScreen: undefined;
+};
+
+export type OrderStackParamList = {
+    OrderScreen: undefined;
+    OrderDetailsScreen: undefined;
 };
 
 function MenuStack() {
@@ -37,9 +43,22 @@ function MenuStack() {
     );
 }
 
+function OrderStack() {
+    const Stack = createNativeStackNavigator<OrderStackParamList>();
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false
+            }}>
+            <Stack.Screen name="OrderScreen" component={OrderScreen} />
+            <Stack.Screen name="OrderDetailsScreen" component={OrderDetailsScreen} />
+        </Stack.Navigator>
+    );
+}
+
 const TabArr = [
     { route: 'CartScreen', label: 'Cart', type: Icons.Ionicons, icon: 'bag-handle', component: CartScreen },
-    { route: 'OrderScreen', label: 'Orders', type: Icons.MaterialIcons, icon: 'receipt', component: OrderScreen },
+    { route: 'Order', label: 'Orders', type: Icons.MaterialIcons, icon: 'receipt', component: OrderStack },
     { route: 'HomeScreen', label: 'Home', type: Icons.FontAwesome5, icon: 'home', component: HomeScreen },
     { route: 'Category', label: 'Category', type: Icons.FontAwesome5, icon: 'concierge-bell', component: MenuStack },
     { route: 'AccountScreen', label: 'Account', type: Icons.FontAwesome5, icon: 'user-alt', component: AccountScreen },

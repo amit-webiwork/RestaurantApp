@@ -66,8 +66,11 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     // location update on initial load
     useEffect(() => {
         (async () => {
-            const token = await loadStorage(`fcmToken`);
+            // const token = await loadStorage(`fcmToken`);
+            // console.log(token, '----token');
+
             const granted = await askInitialPermission();
+
 
             if (!granted) {
                 dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.notificationAccessError }));
@@ -76,9 +79,9 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     }, []);
 
     // checkPermissions
-  useEffect(() => {
-    // checkPermissions();
-  }, [])
+    useEffect(() => {
+        // checkPermissions();
+    }, [])
 
     return (
         <>

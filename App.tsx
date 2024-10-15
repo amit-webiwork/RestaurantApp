@@ -8,7 +8,7 @@ import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messag
 
 import store from './src/redux/store';
 import MainStackNavigator from './src/navigations/MainStackNavigator';
-import { loadStorage, saveStorage } from './src/utils/Storage';
+import { loadStorage, saveNotification, saveStorage } from './src/utils/Storage';
 import { showFadeAlert } from './src/utils/Alert';
 import { submitLogin } from './src/utils/ApiCall';
 import { LogBox } from 'react-native';
@@ -127,9 +127,12 @@ async function createNotificationChannel() {
   }
 }
 
+// handleForegroundNotification
 async function onMessageReceived(message: FirebaseMessagingTypes.RemoteMessage) {
   try {
     const { notification, data } = message;
+
+    saveNotification(data);
 
     await notifee.displayNotification({
       title: notification?.title,
@@ -172,10 +175,12 @@ function App(): React.JSX.Element {
 
     const handleNotification = messaging().onMessage(onMessageReceived);
 
+    // handleBackgroundNotification
     // Do not set the background handler here if Firebase is automatically handling notifications in the background.
     messaging().setBackgroundMessageHandler(async (message) => {
       // Optional: You may handle background notifications here if needed
       console.log("Handling background message", message);
+      saveNotification(message?.data);
     });
 
     return () => {

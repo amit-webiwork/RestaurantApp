@@ -1,23 +1,25 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { saveStorage } from '../../utils/Storage';
 
 interface CartState {
     items: Array<CartItemDetails>;
     itemAdded: boolean;
     instructionText: string;
+    loading: boolean;
 }
 
 const initialState: CartState = {
     items: [],
     itemAdded: false,
-    instructionText: ""
+    instructionText: "",
+    loading: false
 }
 
 export const cartSlice = createSlice({
     name: 'cart',
     initialState: initialState,
     reducers: {
-        setItems: (state: any, action) => {
+        setItems: (state: any, action: PayloadAction<{ data: CartItemDetails; actionType: string; notify: boolean }>) => {
             const notify = action.payload.notify;
             if (notify) {
                 state.itemAdded = true
@@ -45,11 +47,14 @@ export const cartSlice = createSlice({
                 saveStorage(state.items, "cartItems");
             }
         },
-        removeFromCart: (state, action) => {
+        removeFromCart: (state, action: PayloadAction<number>) => {
+            state.loading = true;
             state.items = state.items.filter((d) => d.itemId !== action.payload)
             saveStorage(state.items, "cartItems");
+
+            state.loading = false;
         },
-        recoverCart: (state, action) => {
+        recoverCart: (state, action: PayloadAction<Array<CartItemDetails>>) => {
             state.items = action.payload;
         },
         resetCart: (state) => {
@@ -59,8 +64,11 @@ export const cartSlice = createSlice({
         hideCartNotification: (state, action) => {
             state.itemAdded = false
         },
-        setInstructionText: (state: any, action) => {
+        setInstructionText: (state: any, action: PayloadAction<string>) => {
             state.instructionText = action.payload
+        },
+        setCartLoading(state, action: PayloadAction<boolean>) {
+            state.loading = action.payload;
         },
     },
 })
@@ -70,10 +78,12 @@ export const getCartQty = (itemId: number, cartList: CartItemDetails[]) => {
     return getQty?.qty || 1;
 };
 
-export const { setItems, hideCartNotification, recoverCart, removeFromCart, resetCart, setInstructionText } = cartSlice.actions
+export const { setItems, hideCartNotification, recoverCart, removeFromCart, resetCart, setInstructionText, setCartLoading } = cartSlice.actions
 
 export const cartItemList = (state: { cart: CartState }) => state.cart.items;
 export const itemAdded = (state: { cart: CartState }) => state.cart.itemAdded;
+export const instructionText = (state: { cart: CartState }) => state.cart.instructionText;
+export const cartLoading = (state: { cart: CartState }) => state.cart.loading;
 
 export const getCartTotal = (state: { cart: CartState }) => state.cart.items.reduce((total: number, item: CartItemDetails) => total + ((+item.finalPrice || 0) * item.qty), 0)
 

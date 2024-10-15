@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
-import { HP, VP } from '../../../utils/Responsive';
+import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
@@ -19,7 +19,14 @@ import { AppDispatch } from '../../../redux/store';
 import ItemVerticalBoxSection from '../../../components/home-sections/ItemVerticalBox';
 import SearchBoxItemsSection from '../../../components/home-sections/SearchBoxItems';
 
-const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading, navigation }) => {
+interface HeaderProps {
+    setSelectedCategoryhandler: any;
+    selectedCategory: any;
+    loading: boolean;
+    navigation: any;
+}
+
+const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading, navigation }: HeaderProps) => {
     return (
         <>
             {/* Top Navigation */}
@@ -29,7 +36,7 @@ const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading
                         onPress={() => navigation.goBack()}
                         style={{ alignSelf: "center" }}
                     >
-                        <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                        <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                     </TouchableOpacity>
                     <Text style={styles.topHeading}>Menu</Text>
                 </View>
@@ -173,6 +180,8 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
             setPage(prevPage => prevPage + 1); // Increment page to fetch more data
         }
     };
+
+    console.log(`---MenuScreenV2 loading`)
 
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>

@@ -35,6 +35,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
     const PapularItems = useSelector(papularItems);
     const CartItemList = useSelector(cartItemList);
 
+    const scrollViewRef = useRef<any>(null);
     const scrollY = useRef(new Animated.Value(0)).current;
 
     const [instructionText, setInstructionText] = useState<string>("");
@@ -72,6 +73,13 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
         }
     }, [id])
 
+    // Ensure that when the route parameter changes, it scrolls to the top
+    useEffect(() => {
+        if (scrollViewRef?.current) {
+            scrollViewRef.current.scrollTo({ y: 0, animated: true });
+        }
+    }, [id]);
+
     const incrementCart = () => setCartQuantity(prevQty => prevQty + 1);
     const decrementCart = () => setCartQuantity(prevQty => (prevQty > 1 ? prevQty - 1 : 1));
 
@@ -99,6 +107,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                 <InnerBlock>
                     <View style={{ flex: 1, backgroundColor: "#FDF6F5" }}>
                         <Animated.ScrollView
+                            ref={scrollViewRef}
                             showsVerticalScrollIndicator={false}
                             scrollEventThrottle={16}
                             onScroll={Animated.event(
@@ -173,9 +182,9 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         </View>
                                     </View> */}
 
-                                    <View style={{ marginTop: VP(27), paddingHorizontal: HP(30) }}>
+                                    {/* <View style={{ marginTop: VP(27), paddingHorizontal: HP(30) }}>
                                         <ProductRatingsSection data={productRatings} />
-                                    </View>
+                                    </View> */}
 
                                     {/* Cart with qty Button */}
                                     {itemDetails?.is_available && (

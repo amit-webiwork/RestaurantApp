@@ -141,4 +141,18 @@ const cartConfirm = async (dataPayload: any) => {
     });
 }
 
-export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm };
+const getOrderList = async (params = {}, limit = 10, offset = 0) => {
+    try {
+        const paramData = new URLSearchParams({ limit: String(limit), offset: String(offset), ...params });
+
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.orderList}?${paramData}`);
+
+        return res.data;
+    } catch (error: any) {
+        const { response } = error;
+        const message = response?.data?.message || error?.message || "Unknown error";
+        throw new Error(message);
+    }
+};
+
+export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList };

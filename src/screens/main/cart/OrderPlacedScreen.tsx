@@ -13,12 +13,16 @@ import CheckmarkWithConfetti from '../../../components/CheckmarkWithConfetti';
 import { AppDispatch } from '../../../redux/store';
 import { resetCart } from '../../../redux/features/cart';
 
-function OrderPlacedScreen({ navigation }: { navigation: any }): React.JSX.Element {
+function OrderPlacedScreen({ route, navigation }: { route: any; navigation: any }): React.JSX.Element {
+    const { orderId, message, estimatedTime } = route.params;
+
     const dispatch: AppDispatch = useDispatch();
 
     useEffect(() => {
         dispatch(resetCart());
     }, [])
+
+    console.log(`---OrderPlacedScreen loading`)
 
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
@@ -37,7 +41,7 @@ function OrderPlacedScreen({ navigation }: { navigation: any }): React.JSX.Eleme
                                 </TouchableOpacity>
                                 <Text style={styles.topHeading}>order tracking</Text>
                             </View>
-                            <Text style={styles.orderNo}>#8565565646</Text>
+                            <Text style={styles.orderNo}>#{orderId}</Text>
 
                             <View style={{ justifyContent: "center", alignItems: "center" }}>
                                 <View style={styles.popUpImg}>
@@ -45,8 +49,8 @@ function OrderPlacedScreen({ navigation }: { navigation: any }): React.JSX.Eleme
                                 </View>
 
                                 <Text style={styles.heading}>order placed</Text>
-                                <Text style={styles.text1}>your order is placed sucessfully</Text>
-                                <Text style={[styles.text1, { marginTop: VP(50) }]}>estimated time: 1/2 hour</Text>
+                                <Text style={styles.text1}>{message}</Text>
+                                {/* <Text style={[styles.text1, { marginTop: VP(50) }]}>estimated time: {estimatedTime}</Text> */}
                             </View>
                         </View>
                     </View>

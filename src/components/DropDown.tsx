@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     },
     dropdown: {
         padding: 10,
-        borderWidth: 1,
+        // borderWidth: 1,
         borderColor: '#C0C0C0',
         borderRadius: 7,
         backgroundColor: '#fff',

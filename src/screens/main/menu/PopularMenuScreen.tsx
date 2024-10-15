@@ -37,6 +37,8 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
         fetchItem();
     }, [categoryId])
 
+    console.log(`---PopularMenuScreen loading`)
+
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>

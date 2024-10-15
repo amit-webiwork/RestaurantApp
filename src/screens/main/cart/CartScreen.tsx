@@ -14,10 +14,10 @@ import CartItemSection from '../../../components/cart/CartItem';
 import ItemBoxSection from '../../../components/home-sections/ItemBox';
 import CookingRequestSection from '../../../components/product-sections/CookingRequest';
 import { ButtonSection as Button } from '../../../components/Button';
-import { cartItemList, getCartTotal, removeFromCart, resetCart, setInstructionText } from '../../../redux/features/cart';
+import { cartItemList, cartLoading, getCartTotal, removeFromCart, resetCart, setInstructionText } from '../../../redux/features/cart';
 import { fetchPopularItems, papularItemLoaded, papularItems } from '../../../redux/features/items';
 import { AppDispatch } from '../../../redux/store';
-import { cartConfirm } from '../../../utils/ApiCall';
+import { cartConfirm, orderSubmit } from '../../../utils/ApiCall';
 import NormalLoader from '../../../components/NormalLoader';
 import { getItemPriceComponents } from '../../../utils/helper/ItemHelper';
 import { addToCart } from '../../../utils/helper/CartHelper';
@@ -34,6 +34,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const PapularItemLoaded = useSelector(papularItemLoaded);
     const PapularItems = useSelector(papularItems);
     const GetCartTotal = useSelector(getCartTotal);
+    const CartLoading = useSelector(cartLoading);
 
     const [cookingRequestShow, setCookingRequestShow] = useState(false);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
@@ -84,6 +85,8 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const handleClick = async (type: string) => {
         setLoading(true);
         try {
+            dispatch(setInstructionText(instructionText));
+
             const dataPayload = [...CartItemList]
 
             const response: any = await cartConfirm(dataPayload);
@@ -99,17 +102,27 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
             const savedCartItems = await loadStorage('cartItems');
 
+            // console.log(dataPayload, savedCartItems, '-----savedCartItems')
+
             const areArraysEqual = cartComparison(dataPayload, savedCartItems);
 
             if (!areArraysEqual) {
                 dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.cartUpdate }));
             } else {
                 if (type === `CartMenuScreen`) {
-                    dispatch(setInstructionText(instructionText));
-                    navigation.navigate(type)
+                    navigation.navigate(type);
                 } else {
-                    dispatch(setInstructionText(instructionText));
-                    navigation.navigate(type)
+                    // now call order API
+                    const dataPayload = {
+                        extraNote: instructionText,
+                        items: savedCartItems.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } })
+                    };
+
+                    const response: any = await orderSubmit(dataPayload);
+
+                    navigation.navigate(`OrderPlacedScreen`, {
+                        ...response.data
+                    })
                 }
             }
 
@@ -117,6 +130,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
         } catch (err: any) {
             setLoading(false);
             console.log(err?.message, '---err');
+            dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || err?.message || errorMessage?.commonMessage }));
         }
     }
 
@@ -151,9 +165,11 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
         )
     }
 
+    console.log(`---cartScreen loading`)
+
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
-            <NormalLoader visible={loading} />
+            <NormalLoader visible={loading || CartLoading} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20) }}>

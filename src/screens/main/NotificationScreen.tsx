@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import moment from 'moment';
 
 import OuterLayout from '../../components/OuterLayout';
@@ -10,80 +10,44 @@ import Icon, { Icons } from '../../components/Icons';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import { getNotificationIcon, getNotificationTitle, groupNotificationData } from '../../utils/helper/NotificationHelper';
-
-const data = [
-    {
-        "date": moment().format('YYYY-MM-DD HH:mm:ss'),
-        "title": "30% Special Discount!",
-        "type": "discount",
-        "text": "Special promotion only valid today"
-    },
-    {
-        "date": moment().format('YYYY-MM-DD HH:mm:ss'),
-        "title": "your order is ready please collect from counter",
-        "type": "order_success",
-        "text": "Recently"
-    },
-    {
-        "date": moment().format('YYYY-MM-DD HH:mm:ss'),
-        "title": "Your Order Has Been Canceled",
-        "type": "order_failed",
-        "text": "19 Jun 2025"
-    },
-    {
-        "date": moment().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
-        "title": "35% Special Discount!",
-        "type": "message",
-        "text": "Special promotion only valid today"
-    },
-    {
-        "date": moment().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
-        "title": "Account Setup Successfull!",
-        "type": "account",
-        "text": "Special promotion only valid today"
-    },
-    {
-        "date": moment().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
-        "title": "Special Offer! 60% Off",
-        "type": "discount",
-        "text": "Special offer for new account, valid until 20 Nov 2024"
-    },
-    {
-        "date": moment().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
-        "title": "Credit Card Connected",
-        "type": "payment",
-        "text": "Special promotion only valid today"
-    },
-    {
-        "date": "2024-09-23T13:14:55.118Z",
-        "title": "Credit Card Connected",
-        "type": "payment",
-        "text": "Special promotion only valid today"
-    },
-    {
-        "date": "2024-09-20T13:14:55.118Z",
-        "title": "Credit Card Connected",
-        "type": "payment",
-        "text": "Special promotion only valid today"
-    },
-    {
-        "date": "2024-09-24T13:14:55.118Z",
-        "title": "Credit Card Connected",
-        "type": "payment",
-        "text": "Special promotion only valid today"
-    },
-]
+import { loadStorage, removeStorage } from '../../utils/Storage';
+import NotificationScreenLoader from '../../components/skeleton/NotificationScreenLoader';
+import { useIsFocused } from '@react-navigation/native';
 
 function NotificationScreen({ navigation, route }: { navigation: any; route: any; }): React.JSX.Element {
-    const groupedData = groupNotificationData(data);
+    const isFocused = useIsFocused();
+
+    const [loading, setLoading] = useState(true);
+    const [list, setList] = useState<any[]>([]);
+
+    const onRefresh = async () => {
+        setLoading(true);
+
+        const notificationList = await loadStorage("notificationList");
+        const groupedData = notificationList.length ? groupNotificationData(notificationList) : [];
+
+        setList(groupedData);
+
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        if (isFocused) {
+            onRefresh();
+        }
+    }, [isFocused])
+
+    if (loading) {
+        return <NotificationScreenLoader />
+    }
 
     return (
         <>
             <OuterLayout containerStyle={globalStyle.containerStyle}>
                 <InnerBlock>
                     <View style={styles.main}>
+                        {/* Top Navigation */}
                         <View style={styles.top}>
-                            {/* Top Navigation */}
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(`HomeScreen`)}
                                 style={{ position: 'absolute', left: 0, alignSelf: "center" }}
@@ -95,10 +59,18 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                                 Notification
                             </Text>
                         </View>
-                        <ScrollView showsVerticalScrollIndicator={false}>
-
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={loading} // Bind refreshing state
+                                    onRefresh={onRefresh} // Trigger refresh on pull
+                                    tintColor={COLORS.BLACK} // Customize indicator color
+                                />
+                            }
+                        >
                             <View style={{ marginTop: VP(25.21) }}>
-                                {groupedData.map((d: any, i: number) => (
+                                {list.map((d: any, i: number) => (
                                     <View key={`notification-group-${i}`} >
                                         <View style={{}}>
                                             <View>
@@ -108,12 +80,16 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                                                 {d[1].map((item: any, j: number) => (
                                                     <View style={styles.itemRow} key={`notification-item-${i}-${j}`}>
                                                         <View style={styles.iconBtn}>
-                                                            <Icon type={getNotificationIcon(item?.type || 'message')['iconType']} size={FS(24)} name={getNotificationIcon(item?.type || 'message')['icon']} color={getNotificationIcon(item?.type || 'message')['color']} />
+                                                            <Icon
+                                                                type={getNotificationIcon(item?.type || 'message')['iconType']}
+                                                                size={FS(24)}
+                                                                name={getNotificationIcon(item?.type || 'message')['icon']}
+                                                                color={getNotificationIcon(item?.type || 'message')['color']} />
                                                         </View>
                                                         <View style={{ flexBasis: "80%", flexShrink: 1 }}>
                                                             <Text style={styles.itemTitle}>{item.title}</Text>
 
-                                                            <Text style={styles.itemText}>{item.text}</Text>
+                                                            <Text style={styles.itemText}>{item.body}</Text>
                                                         </View>
                                                     </View>
                                                 ))}
@@ -152,7 +128,7 @@ const styles = StyleSheet.create({
     title: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 17.09,
-        lineHeight: 24.04,
+        lineHeight: HP(24.04),
         color: "#878787"
     },
     itemRow: {
@@ -162,14 +138,14 @@ const styles = StyleSheet.create({
     },
     itemTitle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: 19.53,
-        lineHeight: 29.3,
+        fontSize: 16.53,
+        lineHeight: HP(26.3),
         textTransform: "capitalize"
     },
     iconBtn: {
         width: FS(58),
         height: FS(58),
-        borderRadius: FS(29),
+        borderRadius: FS(58 / 2),
         backgroundColor: "#E50ACE1A",
         alignItems: "center",
         justifyContent: "center",
@@ -177,8 +153,8 @@ const styles = StyleSheet.create({
     },
     itemText: {
         ...TextStyles.RALEWAY_REGULAR,
-        fontSize: 17.09,
-        lineHeight: 24.4,
+        fontSize: 14.53,
+        lineHeight: HP(21.4),
         marginTop: HP(4.88)
     },
     line: {

@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-nati
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
-import { HP, VP } from '../../../utils/Responsive';
+import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
@@ -20,7 +20,14 @@ import FilterAppliedTabs from '../../../components/items/FilterAppliedTabs';
 import SearchBoxItemsSection from '../../../components/home-sections/SearchBoxItems';
 import NormalLoader from '../../../components/NormalLoader';
 
-const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading, navigation }) => {
+interface HeaderProps {
+    setSelectedCategoryhandler: any;
+    selectedCategory: any;
+    loading: boolean;
+    navigation: any;
+}
+
+const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading, navigation }: HeaderProps) => {
     return (
         <>
             {/* Top Navigation */}
@@ -30,13 +37,13 @@ const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading
                         onPress={() => navigation.goBack()}
                         style={{ alignSelf: "center" }}
                     >
-                        <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.BLACK} />
+                        <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                     </TouchableOpacity>
                     <Text style={styles.topHeading}>Menu</Text>
                 </View>
             </View>
             {/* Category box tab */}
-            <View style={{ marginTop: VP(38), paddingLeft: HP(21) }}>
+            <View style={{ marginTop: VP(7), paddingLeft: HP(21) }}>
                 <CategortyTabsSection setSelectedCategory={setSelectedCategoryhandler} selectedCategory={selectedCategory} loading={loading} />
             </View>
 
@@ -133,11 +140,13 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
         }
     };
 
+    console.log(`---MenuScreen loading`)
+
     return (
         <OuterLayout containerStyle={[globalStyle.containerStyle]}>
             <InnerBlock>
                 {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-                <View style={{ marginBottom: VP(79), flex: 1 }}>
+                <View style={{ marginBottom: VP(0), flex: 1 }}>
 
                     {/* Menu Items */}
                     <View style={{ marginTop: VP(0), flex: 1 }}>

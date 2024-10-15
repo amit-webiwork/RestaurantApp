@@ -75,6 +75,8 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
         }
     }
 
+    console.log(`---AccountScreen loading`)
+
     return (
         <>
             <NormalLoader visible={loader} />

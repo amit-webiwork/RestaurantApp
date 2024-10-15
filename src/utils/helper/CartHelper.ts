@@ -1,4 +1,4 @@
-import { recoverCart, setItems } from "../../redux/features/cart"
+import { recoverCart, setCartLoading, setItems } from "../../redux/features/cart"
 import { AppDispatch } from "../../redux/store"
 import { loadStorage } from "../Storage";
 
@@ -7,9 +7,15 @@ export const addToCart = (item: ItemDetails, qty: number, dispatch: AppDispatch,
 
     const itemDetails = { data: { name, imgUrl, itemId: id, price, qty, finalPrice, discountPrice, itemPrice, discountPercent }, actionType: actionType, notify };
 
+    dispatch(setCartLoading(true));
+
     if (itemDetails.data?.itemId) {
         dispatch(setItems(itemDetails));
     }
+
+    setTimeout(() => {
+        dispatch(setCartLoading(false));
+    }, 1000);
 }
 
 export const setInCartState = async (dispatch: AppDispatch) => {

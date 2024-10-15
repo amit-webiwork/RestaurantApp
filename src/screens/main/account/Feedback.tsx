@@ -142,6 +142,7 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                             </TouchableOpacity>
                         </View>
 
+                        {/* Topic List */}
                         <View style={{ marginTop: VP(31.63) }}>
                             <DropDown label="Select Topic" data={TopicList} onSelect={handleSelection} />
                             {error.topicId.status && (
@@ -149,6 +150,7 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                             )}
                         </View>
 
+                        {/* Message Input Box */}
                         <View style={{ marginTop: VP(26) }}>
                             <CustomTextInputNoEffect
                                 formProps={{ text: feedback, setText: setFeedbackHandler, error: error.feedback }}
