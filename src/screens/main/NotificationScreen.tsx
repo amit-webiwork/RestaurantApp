@@ -65,7 +65,7 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                                 <RefreshControl
                                     refreshing={loading} // Bind refreshing state
                                     onRefresh={onRefresh} // Trigger refresh on pull
-                                    tintColor={COLORS.BLACK} // Customize indicator color
+                                    tintColor={COLORS.BUTTON} // Customize indicator color
                                 />
                             }
                         >

@@ -174,7 +174,6 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
                     <View style={styles.successPopUpMain}>
                         <View style={styles.successPopUp}>
                             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}>
-                                {/* <Image source={require(`../../../assets/images/success.png`)} style={[styles.img]} /> */}
                                 <View style={{}}>
                                     <CheckmarkWithConfetti />
                                 </View>
@@ -182,7 +181,7 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
                                 <Text style={styles.popUpHeading}>Password Changed</Text>
                                 <Text style={styles.popUpText}>Password changed successfully, you can login again with a new password</Text>
 
-                                <View style={{ marginTop: VP(38.46) }}>
+                                <View style={{ marginTop: VP(38.46), marginBottom: VP(10) }}>
                                     <Button
                                         text={'Back'}
                                         onPress={() => navigation.goBack()}
@@ -274,17 +273,17 @@ const styles = StyleSheet.create({
     },
     successPopUpMain: {
         position: "absolute",
-        width: width * 1,
-        height: height * 1,
-        flex: 1,
+        width,
+        height,
         backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        bottom: 0
     },
     successPopUp: {
         position: "absolute",
         bottom: 0,
         backgroundColor: COLORS.WHITE,
-        width: width * 1,
-        height: height * .7,
+        width,
+        // height: height * .7,
         shadowColor: "#171717",
         shadowOffset: {
             width: -2,

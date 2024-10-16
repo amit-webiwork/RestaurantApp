@@ -22,8 +22,6 @@ function OrderPlacedScreen({ route, navigation }: { route: any; navigation: any 
         dispatch(resetCart());
     }, [])
 
-    console.log(`---OrderPlacedScreen loading`)
-
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
@@ -57,7 +55,7 @@ function OrderPlacedScreen({ route, navigation }: { route: any; navigation: any 
                 </ScrollView>
 
                 <TouchableOpacity
-                    onPress={() => navigation.navigate(`HomeScreen`)}
+                    onPress={() => navigation.navigate(`OrderScreen`)}
                     style={{ alignSelf: "center", padding: HP(10) }}
                 >
                     <Text style={[styles.heading, { fontSize: 20 }]}>order details</Text>

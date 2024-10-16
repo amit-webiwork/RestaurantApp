@@ -165,8 +165,6 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
         )
     }
 
-    console.log(`---cartScreen loading`)
-
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
             <NormalLoader visible={loading || CartLoading} />

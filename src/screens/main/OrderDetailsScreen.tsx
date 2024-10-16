@@ -309,7 +309,7 @@ function OrderDetailsScreen({ navigation }: { navigation: any }): React.JSX.Elem
                     </View>
                 </ScrollView>
 
-                {!showPopUp && (
+                {showPopUp && (
                     <View style={styles.successPopUpMain}>
                         <View style={styles.successPopUp}>
                             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
@@ -317,7 +317,7 @@ function OrderDetailsScreen({ navigation }: { navigation: any }): React.JSX.Elem
                                 <Text style={styles.popUpHeading}>thank you!</Text>
                                 <Text style={styles.popUpText}>thankyou for sharing your thoughts we appreciate your feedback!</Text>
 
-                                <View style={{ marginTop: VP(38.46) }}>
+                                <View style={{ marginTop: VP(38.46), marginBottom: VP(79) }}>
                                     <Button
                                         text={'Back'}
                                         onPress={() => navigation.goBack()}
@@ -480,18 +480,18 @@ const styles = StyleSheet.create({
         borderColor: "#FF00E280"
     },
     successPopUpMain: {
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        position: 'absolute',
+        height,
+        width,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        bottom: 0
     },
     successPopUp: {
         position: "absolute",
         bottom: 0,
         backgroundColor: COLORS.WHITE,
-        width: width * 1,
-        height: height * .7,
+        width: width,
+        // minHeight: height * .7,
         shadowColor: "#171717",
         shadowOffset: {
             width: -2,
@@ -504,8 +504,9 @@ const styles = StyleSheet.create({
         borderTopRightRadius: HP(25)
     },
     scrollContainer: {
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: HP(10)
     },
     popUpHeading: {
         ...TextStyles.RALEWAY_BOLD,

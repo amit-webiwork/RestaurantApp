@@ -62,7 +62,10 @@ const PastOrderItem: React.FunctionComponent<Props> = ({ data, navigation }) => 
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                onPress={() => { navigation.navigate(`OrderDetailsScreen`) }}
+                                onPress={() => {
+                                    toggleMenu();
+                                    navigation.navigate(`OrderDetailsScreen`);
+                                }}
                                 style={{ flexDirection: "row", alignItems: "center", gap: HP(6.25) }}
                             >
                                 <Icon type={Icons.FontAwesome5} size={FS(11)} name={`eye`} color={`#404040`} />

@@ -7,17 +7,20 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+import moment from 'moment';
 
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
 import { CDN_URL, COLORS } from '../../utils/Constants';
 import Icon, { Icons } from '../Icons';
+import { getOrderComponents, getOrderStatus } from '../../utils/helper/OrderHelper';
 
 interface Props {
     data: any;
 }
 
 const ActiveOrderItem: React.FunctionComponent<Props> = ({ data }) => {
+    const orderData = getOrderComponents(data);
 
     return (
         <View style={styles.boxContainer}>
@@ -28,11 +31,16 @@ const ActiveOrderItem: React.FunctionComponent<Props> = ({ data }) => {
                 />
 
                 <View style={{ justifyContent: "center", flex: 1 }}>
-                    <Text style={styles.itemTitle}>
-                        dishes
-                    </Text>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                        <Text style={styles.itemTitle}>
+                            dishes
+                        </Text>
+                        <Text style={styles.itemTitle}>
+                            #{orderData?.id}
+                        </Text>
+                    </View>
                     <Text style={styles.orderText}>
-                        ordered on : 12 sep at 5:45 PM
+                        ordered on : {moment(orderData?.createdAt).format('DD MMM YYYY HH:mm A')}
                     </Text>
                 </View>
             </View>
@@ -41,20 +49,27 @@ const ActiveOrderItem: React.FunctionComponent<Props> = ({ data }) => {
 
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <View style={{ gap: HP(8) }}>
-                    <Text style={styles.itemText}>•  1 x nutella waffle </Text>
-                    <Text style={styles.itemText}>•  1 x pancake </Text>
-                    <Text style={styles.itemText}>•  1 x mango boba tea </Text>
-                    <Text style={styles.itemText}>•  1 x chocolate cupcake </Text>
+                    {(orderData?.orderItems && Array.isArray(orderData?.orderItems) && orderData?.orderItems.length > 0) ? (
+                        orderData?.orderItems.map((d: any, i: number) => (
+                            <Text key={`active-order-item-${i}`} style={styles.itemText}>
+                                • {d?.qty} x {d?.itemName}
+                            </Text>
+                        ))
+                    ) : (
+                        <Text style={styles.itemText}>No items ordered</Text>
+                    )}
                 </View>
-                <Text style={styles.qtyText}>qty 4</Text>
+                {orderData?.orderItems?.length > 1 && (
+                    <Text style={styles.qtyText}>qty {orderData?.totalQty}</Text>
+                )}
             </View>
 
             <View style={styles.line}></View>
 
             <View style={{ gap: HP(8), flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                 <View>
-                    <Text style={styles.priceText}> $20.00 </Text>
-                    <Text style={styles.statusText}> preparing order </Text>
+                    <Text style={styles.priceText}> ${orderData?.finalAmount} </Text>
+                    <Text style={styles.statusText}> {orderData?.orderStatus} </Text>
                 </View>
                 <Text style={styles.subText}> estimated time: 1/2 hour </Text>
             </View>

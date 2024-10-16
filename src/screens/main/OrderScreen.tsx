@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, Platform, UIManager, LayoutAnimation, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, Platform, UIManager, LayoutAnimation, Dimensions, RefreshControl } from 'react-native';
 
 import { globalStyle } from '../../utils/GlobalStyle';
 import OuterLayout from '../../components/OuterLayout';
@@ -13,6 +13,7 @@ import PastOrderItemSection from '../../components/order/PastOrderItem';
 import { ButtonSection as Button } from '../../components/Button';
 import NormalLoader from '../../components/NormalLoader';
 import { getOrderList } from '../../utils/ApiCall';
+import { useIsFocused } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -22,14 +23,17 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 function OrderScreen({ navigation }: { navigation: any }): React.JSX.Element {
+    const isFocused = useIsFocused();
+
     const [activeTab, setActiveTab] = useState(1);
     const [hasOrder, setHasOrder] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [activeOrders, setActiveOrders] = useState<any[]>([]);
+    const [offset, setOffset] = useState(0);
+    const [isFetchingMore, setIsFetchingMore] = useState(false);
 
     // Function to handle tab switch with animation
     const switchTab = (tab: number) => {
-        // Layout Animation for smoother transitions
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setActiveTab(tab);
     };
@@ -37,30 +41,51 @@ function OrderScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const fetchActiveOrders = async () => {
         setLoading(true);
         try {
-            const params = {};
+            const params = { type: 'Active' };
             const limit = 10;
             const offset = 0;
 
             const response = await getOrderList(params, limit, offset);
 
-            if (response?.data?.length > 0) {
-                setActiveOrders(prev => [...prev, ...response?.data || []]);
-            }
+            setActiveOrders(response?.data || []);
         } catch (err) {
         } finally {
-            setLoading(true);
+            setLoading(false);
         }
     }
 
+    const onRefresh = async () => {
+        if (activeTab === 1) {
+            fetchActiveOrders()
+        }
+    };
+
     useEffect(() => {
-        setHasOrder(true);
-    }, [])
+        if (isFocused) {
+            fetchActiveOrders()
+        }
+    }, [isFocused])
+
+    useEffect(() => {
+        if (activeOrders.length > 0) {
+            setHasOrder(true);
+        }
+    }, [activeOrders.length])
 
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <NormalLoader visible={loading} />
             <InnerBlock>
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={loading}
+                            onRefresh={onRefresh}
+                            tintColor={COLORS.BUTTON}
+                        />
+                    }
+                >
                     <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
                         {/* Navigation section */}
                         <View style={{ paddingHorizontal: HP(20) }}>
@@ -108,12 +133,13 @@ function OrderScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 {/* Orders section */}
                                 <View style={{ marginTop: VP(27), paddingHorizontal: HP(19) }}>
                                     {activeTab === 1 && (
-                                        <View style={{ gap: HP(18) }}>
-                                            <ActiveOrderItemSection data={[]} />
-                                            <ActiveOrderItemSection data={[]} />
-                                            <ActiveOrderItemSection data={[]} />
-                                            <ActiveOrderItemSection data={[]} />
-                                        </View>
+                                        <>
+                                            <View style={{ gap: HP(18) }}>
+                                                {activeOrders.map((d, i) => (
+                                                    <ActiveOrderItemSection key={`active-orders-${i}`} data={d} />
+                                                ))}
+                                            </View>
+                                        </>
                                     )}
 
                                     {activeTab === 2 && (

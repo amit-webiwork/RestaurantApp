@@ -187,7 +187,7 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
                                 <Text style={styles.popUpHeading}>thank you!</Text>
                                 <Text style={styles.popUpText}>thankyou for sharing your thoughts we appreciate your feedback!</Text>
 
-                                <View style={{ marginTop: VP(38.46) }}>
+                                <View style={{ marginTop: VP(38.46), marginBottom: VP(10) }}>
                                     <Button
                                         text={'Back'}
                                         onPress={() => navigation.goBack()}
@@ -261,17 +261,17 @@ const styles = StyleSheet.create({
     },
     successPopUpMain: {
         position: "absolute",
-        width: "100%",
-        height: "100%",
-        flex: 1,
+        width,
+        height,
         backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        bottom: 0
     },
     successPopUp: {
         position: "absolute",
         bottom: 0,
         backgroundColor: COLORS.WHITE,
-        width: width * 1,
-        height: height * .7,
+        width,
+        // height: height * .7,
         shadowColor: "#171717",
         shadowOffset: {
             width: -2,

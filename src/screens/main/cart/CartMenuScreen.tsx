@@ -63,8 +63,6 @@ function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element 
         }
     }
 
-    console.log(`---CartMenuScreen loading`)
-
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <NormalLoader visible={loading || CartLoading} />
