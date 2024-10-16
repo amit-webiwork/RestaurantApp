@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 import {
     View,
     StyleSheet,
@@ -6,111 +6,161 @@ import {
     Image,
     TouchableOpacity
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import moment from 'moment';
 
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
-import CartQtyButtonV2Section from '../product-sections/CartQtyButtonV2';
-import { CDN_URL, COLORS } from '../../utils/Constants';
+import { COLORS } from '../../utils/Constants';
 import Icon, { Icons } from '../Icons';
 import { ButtonSection as Button } from '../Button';
+import { getOrderComponents } from '../../utils/helper/OrderHelper';
+import CustomActionDialogComp from '../dialogs/CustomActionDialog';
+import { globalStyle } from '../../utils/GlobalStyle';
+
+const titleDelete = `Confirm Delete`;
+const messageDelete = `Are you sure you want to delete this order?`;
 
 interface Props {
-    data: any;
+    item: any;
+    index: number;
     navigation: any;
+    deleteHandler: any;
 }
 
-const PastOrderItem: React.FunctionComponent<Props> = ({ data, navigation }) => {
+const PastOrderItem = ({ item, index, navigation, deleteHandler }: Props) => {
+    console.log(index, '--index')
+    const orderData = getOrderComponents(item);
+
     const [menuVisible, setMenuVisible] = useState(false);
+    const [orderDeleteDialogVisible, setOrderDeleteDialogVisible] = useState(false);
 
     const toggleMenu = () => {
         setMenuVisible(!menuVisible);
     };
 
+    const orderDeleteHandler = () => {
+        deleteHandler(orderData?.id);
+        setOrderDeleteDialogVisible(false);
+    }
+
     return (
-        <View style={styles.boxContainer}>
-            <View style={{ flexDirection: "row", gap: HP(19) }}>
-                <Image
-                    source={require('../../assets/images/order.png')}
-                    style={[styles.boxImg]}
-                />
-
-                <View style={{ justifyContent: "center", flex: 1 }}>
-                    <Text style={styles.itemTitle}>
-                        dishes
-                    </Text>
-                    <Text style={styles.orderText}>
-                        ordered on : 12 sep at 5:45 PM
-                    </Text>
-                </View>
-
-                <View style={{}}>
-                    <TouchableOpacity
-                        onPress={toggleMenu}
-                    >
-                        <Icon type={Icons.Feather} size={FS(15)} name={`more-vertical`} color={`#686868`} />
-                    </TouchableOpacity>
-
-                    {menuVisible && (
-                        <View style={styles.menu}>
-                            <TouchableOpacity
-                                onPress={() => { console.log('View Details'); }}
-                                style={{ flexDirection: "row", alignItems: "center", gap: HP(7.25) }}
-                            >
-                                <Icon type={Icons.Feather} size={FS(12)} name={`trash-2`} color={`#FF3434`} />
-                                <Text style={styles.menuItem}>delete</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                onPress={() => {
-                                    toggleMenu();
-                                    navigation.navigate(`OrderDetailsScreen`);
-                                }}
-                                style={{ flexDirection: "row", alignItems: "center", gap: HP(6.25) }}
-                            >
-                                <Icon type={Icons.FontAwesome5} size={FS(11)} name={`eye`} color={`#404040`} />
-                                <Text style={styles.menuItem}>view details</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                </View>
-            </View>
-
-            <View style={styles.line}></View>
-
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <View style={{ gap: HP(8) }}>
-                    <Text style={styles.itemText}>•  1 x nutella waffle </Text>
-                    <Text style={styles.itemText}>•  1 x pancake </Text>
-                    <Text style={styles.itemText}>•  1 x mango boba tea </Text>
-                    <Text style={styles.itemText}>•  1 x chocolate cupcake </Text>
-                </View>
-                <Text style={styles.qtyText}>qty 4</Text>
-            </View>
-
-            <View style={styles.line}></View>
-
-            <View style={{ gap: HP(8), flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                <View>
-                    <Text style={styles.priceText}> $20.00 </Text>
-                    <Text style={styles.statusText}> preparing order </Text>
-                </View>
-
-                <View style={{ width: "50%", alignItems: "flex-end", alignSelf: "flex-end" }}>
-                    <Button
-                        text={`reorder`}
-                        onPress={() => void (0)}
-                        textStyle={styles.buttonStyle}
-                        isLoading={false}
-                        activeButtonText={{ opacity: .65 }}
-                        mainContainerStyle={{ borderRadius: HP(4.14) }}
-                        LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
-                        contentContainerStyle={{ top: -2 }}
-                        style={{ width: FS(109), height: VP(26.22) }}
+        <>
+            <CustomActionDialogComp
+                visible={orderDeleteDialogVisible}
+                title={titleDelete}
+                message={messageDelete}
+                onClose={() => setOrderDeleteDialogVisible(false)}
+                onAction={orderDeleteHandler}
+                dialogTitleStyle={globalStyle.dialogTitleStyle}
+                dialogMessageStyle={globalStyle.dialogMessageStyle}
+                buttonAction={true}
+                buttonText1={`No, I won’t`}
+                buttonText2='Yes, Of course'
+            />
+            <View style={styles.boxContainer}>
+                {/* Top section for showing order date, order image, order number, menu icon */}
+                <View style={{ flexDirection: "row", gap: HP(19) }}>
+                    <Image
+                        source={require('../../assets/images/order.png')}
+                        style={[styles.boxImg]}
                     />
+
+                    <View style={{ justifyContent: "center", flex: 1 }}>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            <Text style={styles.itemTitle}>
+                                dishes
+                            </Text>
+                            <Text style={styles.itemTitle}>
+                                #{orderData?.id}
+                            </Text>
+                        </View>
+                        <Text style={styles.orderText}>
+                            ordered on : {moment(orderData?.createdAt).format('DD MMM YYYY HH:mm A')}
+                        </Text>
+                    </View>
+
+                    {/* Popup menu for view orders and delete orders */}
+                    <View>
+                        <TouchableOpacity
+                            onPress={toggleMenu}
+                        >
+                            <Icon type={Icons.Feather} size={FS(15)} name={`more-vertical`} color={`#686868`} />
+                        </TouchableOpacity>
+
+                        {menuVisible && (
+                            <View style={styles.menu}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        toggleMenu();
+                                        setOrderDeleteDialogVisible(true);
+                                    }}
+                                    style={{ flexDirection: "row", alignItems: "center", gap: HP(7.25) }}
+                                >
+                                    <Icon type={Icons.Feather} size={FS(12)} name={`trash-2`} color={`#FF3434`} />
+                                    <Text style={styles.menuItem}>delete</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        toggleMenu();
+                                        navigation.navigate(`OrderDetailsScreen`, {
+                                            orderId: orderData?.id,
+                                            orderDetails: orderData
+                                        })
+                                    }}
+                                    style={{ flexDirection: "row", alignItems: "center", gap: HP(6.25) }}
+                                >
+                                    <Icon type={Icons.FontAwesome5} size={FS(11)} name={`eye`} color={`#404040`} />
+                                    <Text style={styles.menuItem}>view details</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                    </View>
+                </View>
+
+                <View style={styles.line}></View>
+
+                {/* Order item list */}
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <View style={{ gap: HP(8) }}>
+                        {(orderData?.orderItems && Array.isArray(orderData?.orderItems) && orderData?.orderItems.length > 0) ? (
+                            orderData?.orderItems.map((d: any, i: number) => (
+                                <Text key={`past-order-item-${i}`} style={styles.itemText}>
+                                    • {d?.qty} x {d?.itemName}
+                                </Text>
+                            ))
+                        ) : (
+                            <Text style={styles.itemText}>No items ordered</Text>
+                        )}
+                    </View>
+                    {orderData?.orderItems?.length > 1 && (<Text style={styles.qtyText}>qty {orderData?.totalQty}</Text>)}
+                </View>
+
+                <View style={styles.line}></View>
+
+                {/* Total amount and reorder button section */}
+                <View style={{ gap: HP(8), flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                    <View>
+                        <Text style={styles.priceText}> ${orderData?.finalAmount} </Text>
+                        <Text style={styles.statusText}> {orderData?.orderStatus} </Text>
+                    </View>
+
+                    <View style={{ width: "50%", alignItems: "flex-end", alignSelf: "flex-end" }}>
+                        <Button
+                            text={`reorder`}
+                            onPress={() => void (0)}
+                            textStyle={styles.buttonStyle}
+                            isLoading={false}
+                            activeButtonText={{ opacity: .65 }}
+                            mainContainerStyle={{ borderRadius: HP(4.14) }}
+                            LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
+                            contentContainerStyle={{ top: -2 }}
+                            style={{ width: FS(109), height: VP(26.22) }}
+                        />
+                    </View>
                 </View>
             </View>
-        </View>
+        </>
     );
 };
 

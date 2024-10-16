@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, Platform, UIManager, LayoutAnimation, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
+import moment from 'moment';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { globalStyle } from '../../utils/GlobalStyle';
 import OuterLayout from '../../components/OuterLayout';
@@ -8,32 +11,35 @@ import { FS, HP, VP } from '../../utils/Responsive';
 import Icon, { Icons } from '../../components/Icons';
 import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import ActiveOrderItemSection from '../../components/order/ActiveOrderItem';
-import PastOrderItemSection from '../../components/order/PastOrderItem';
 import { ButtonSection as Button } from '../../components/Button';
 import NormalLoader from '../../components/NormalLoader';
-import { getOrderList } from '../../utils/ApiCall';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchTopics, topicList, topicLoaded } from '../../redux/features/items';
 import DropDown from '../../components/DropDown';
 import { AppDispatch } from '../../redux/store';
 import CustomTextInputNoEffect from '../../components/CustomTextInputNoEffect';
 import { feedbackForm, validateResource } from '../../utils/ValidateResource';
-import axios from 'axios';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 import CheckmarkWithConfetti from '../../components/CheckmarkWithConfetti';
+import CustomActionDialogComp from '../../components/dialogs/CustomActionDialog';
+import { deleteOrder } from '../../utils/ApiCall';
+
+const titleDelete = `Confirm Delete`;
+const messageDelete = `Are you sure you want to delete this order?`;
 
 const { width, height } = Dimensions.get('window');
 
 const errorObj = { topicId: { status: false, text: "" }, feedback: { status: false, text: "" } }
 
-function OrderDetailsScreen({ navigation }: { navigation: any }): React.JSX.Element {
+function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
+    const { orderId, orderDetails } = route.params;
+
     const dispatch: AppDispatch = useDispatch();
 
     const TopicLoaded = useSelector(topicLoaded);
     const TopicList = useSelector(topicList);
 
+    const [orderData, setOrderData] = useState<any>({});
     const [loading, setLoading] = useState<boolean>(false);
     const [buttonLoading, setButtonLoading] = useState<boolean>(false);
     const [rating, setRating] = useState(5);
@@ -43,6 +49,7 @@ function OrderDetailsScreen({ navigation }: { navigation: any }): React.JSX.Elem
     const [feedback, setFeedback] = useState("");
     const [textLength, setTextLength] = useState(200);
     const [showPopUp, setShowPopUp] = useState(false);
+    const [orderDeleteDialogVisible, setOrderDeleteDialogVisible] = useState(false);
 
     const toggleMenu = () => {
         setMenuVisible(!menuVisible);
@@ -66,12 +73,13 @@ function OrderDetailsScreen({ navigation }: { navigation: any }): React.JSX.Elem
             const dataPayload = await validateResource(feedbackForm, setError)(resource);
 
             dataPayload['description'] = dataPayload['feedback'];
+            dataPayload['orderId'] = orderData?.id;
 
             delete dataPayload['feedback'];
 
             setButtonLoading(true);
 
-            axios.post(BACKEND_URL + apiEndpoints.feedback, dataPayload)
+            axios.post(BACKEND_URL + apiEndpoints.orderFeedback, dataPayload)
                 .then(async (response: any) => {
                     setButtonLoading(false);
 
@@ -89,6 +97,25 @@ function OrderDetailsScreen({ navigation }: { navigation: any }): React.JSX.Elem
         }
     }
 
+    const orderDeleteHandler = async () => {
+        setLoading(true);
+        setOrderDeleteDialogVisible(false);
+
+        try {
+            if (orderId) {
+                const response = await deleteOrder(orderId);
+
+                navigation.navigate(`OrderScreen`, {
+                    routeActiveTab: 1
+                });
+            }
+        } catch (error: any) {
+            dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         setLoading(true);
         if (!TopicLoaded) {
@@ -98,243 +125,271 @@ function OrderDetailsScreen({ navigation }: { navigation: any }): React.JSX.Elem
         }
     }, [TopicLoaded])
 
+    useEffect(() => {
+        setLoading(true);
+        setOrderData(orderDetails);
+        setLoading(false);
+    }, [orderId])
+
     return (
-        <OuterLayout containerStyle={globalStyle.containerStyle}>
+        <>
             <NormalLoader visible={loading} />
-            <InnerBlock>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
-                        {/* Navigation section */}
-                        <View style={{ paddingHorizontal: HP(20) }}>
-                            <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <TouchableOpacity
-                                    onPress={() => navigation.goBack()}
-                                    style={{ alignSelf: "center", }}
-                                >
-                                    <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BLACK} />
-                                </TouchableOpacity>
-                                <Text style={styles.topHeading}>order detail</Text>
+            <CustomActionDialogComp
+                visible={orderDeleteDialogVisible}
+                title={titleDelete}
+                message={messageDelete}
+                onClose={() => setOrderDeleteDialogVisible(false)}
+                onAction={orderDeleteHandler}
+                dialogTitleStyle={globalStyle.dialogTitleStyle}
+                dialogMessageStyle={globalStyle.dialogMessageStyle}
+                buttonAction={true}
+                buttonText1={`No, I won’t`}
+                buttonText2='Yes, Of course'
+            />
+            <OuterLayout containerStyle={globalStyle.containerStyle}>
+                <InnerBlock>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
+                            {/* Navigation section */}
+                            <View style={{ paddingHorizontal: HP(20) }}>
+                                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                    <TouchableOpacity
+                                        onPress={() => navigation.goBack()}
+                                        style={{ alignSelf: "center", }}
+                                    >
+                                        <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BLACK} />
+                                    </TouchableOpacity>
+                                    <Text style={styles.topHeading}>order detail</Text>
+                                </View>
                             </View>
-                        </View>
 
-                        <View style={{ marginTop: VP(32), marginHorizontal: (width * .05) }}>
-                            <View style={styles.orderBox}>
-                                {/* Order Top Box where image and order date and menu will show */}
-                                <View style={{ flexDirection: "row", gap: HP(19) }}>
-                                    <Image
-                                        source={require('../../assets/images/order.png')}
-                                        style={[styles.boxImg]}
-                                    />
+                            <View style={{ marginTop: VP(32), marginHorizontal: (width * .05) }}>
+                                <View style={styles.orderBox}>
+                                    {/* Order Top Box where image and order date and menu will show */}
+                                    <View style={{ flexDirection: "row", gap: HP(19) }}>
+                                        <Image
+                                            source={require('../../assets/images/order.png')}
+                                            style={[styles.boxImg]}
+                                        />
 
-                                    <View style={{ justifyContent: "center", flex: 1 }}>
-                                        <Text style={styles.itemTitle}>
-                                            dishes
-                                        </Text>
-                                        <Text style={styles.orderText}>
-                                            ordered on : 12 sep at 5:45 PM
-                                        </Text>
+                                        <View style={{ justifyContent: "center", flex: 1 }}>
+                                            <Text style={styles.itemTitle}>
+                                                dishes
+                                            </Text>
+                                            <Text style={styles.orderText}>
+                                                ordered on : {moment(orderData?.createdAt).format('DD MMM YYYY HH:mm A')}
+                                            </Text>
+                                        </View>
+
+                                        <View>
+                                            <TouchableOpacity
+                                                onPress={toggleMenu}
+                                            >
+                                                <Icon type={Icons.Feather} size={FS(15)} name={`more-vertical`} color={`#686868`} />
+                                            </TouchableOpacity>
+
+                                            {menuVisible && (
+                                                <View style={styles.menu}>
+                                                    <TouchableOpacity
+                                                        onPress={() => {
+                                                            toggleMenu();
+                                                            setOrderDeleteDialogVisible(true)
+                                                        }}
+                                                        style={{ flexDirection: "row", alignItems: "center", gap: HP(7.25) }}
+                                                    >
+                                                        <Icon type={Icons.Feather} size={FS(12)} name={`trash-2`} color={`#FF3434`} />
+                                                        <Text style={styles.menuItem}>delete</Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            )}
+                                        </View>
                                     </View>
 
-                                    <View style={{}}>
+                                    <View style={styles.line}></View>
+                                    {/* Order Item List */}
+                                    <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: HP(10) }}>
+                                        <View style={{ gap: HP(8) }}>
+                                            {(orderData?.orderItems && Array.isArray(orderData?.orderItems) && orderData?.orderItems.length > 0) ? (
+                                                orderData?.orderItems.map((d: any, i: number) => (
+                                                    <Text key={`past-order-item-${i}`} style={styles.itemText}>
+                                                        • {d?.qty} x {d?.itemName}
+                                                    </Text>
+                                                ))
+                                            ) : (
+                                                <Text style={styles.itemText}>No items ordered</Text>
+                                            )}
+                                        </View>
+                                        {orderData?.orderItems?.length > 1 && (<Text style={styles.qtyText}>qty {orderData?.totalQty}</Text>)}
+                                    </View>
+
+                                    <View style={styles.line}></View>
+
+                                    {/* Order amount component */}
+                                    <View style={{ paddingHorizontal: HP(10), gap: HP(8) }}>
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderEntityText}>item:</Text>
+                                            <Text style={styles.orderEntityPrice}>${orderData?.finalAmount}</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderEntityText}>postage & packing:</Text>
+                                            <Text style={styles.orderEntityPrice}>$00.00</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderEntityText}>total before tax:</Text>
+                                            <Text style={styles.orderEntityPrice}>${orderData?.finalAmount}</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderEntityText}>tax:</Text>
+                                            <Text style={styles.orderEntityPrice}>$0.00</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderEntityText}>total:</Text>
+                                            <Text style={styles.orderEntityPrice}>${orderData?.finalAmount}</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderEntityText}>order total:</Text>
+                                            <Text style={styles.orderTotalPrice}>${orderData?.finalAmount}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+
+                                {/* Order Extra Details */}
+                                <View style={{}}>
+                                    <View style={{ paddingHorizontal: HP(20), gap: HP(10), marginVertical: HP(24) }}>
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderDetailRightText}>order number</Text>
+                                            <Text style={styles.orderDetailLeftText}>#{orderData?.id}</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderDetailRightText}>payment</Text>
+                                            <Text style={styles.orderDetailLeftText}>paid using upi</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderDetailRightText}>date</Text>
+                                            <Text style={styles.orderDetailLeftText}>{moment(orderData?.createdAt).format('DD MMM')}</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderDetailRightText}>phone number</Text>
+                                            <Text style={styles.orderDetailLeftText}>{orderData?.user?.phoneNo}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+
+                                {/* Reorder button */}
+                                <Button
+                                    text={'Reorder'}
+                                    onPress={() => void (0)}
+                                    textStyle={styles.buttonStyle}
+                                    isLoading={false}
+                                    activeButtonText={{ opacity: .65 }}
+                                    mainContainerStyle={{ marginTop: VP(30), borderRadius: HP(8.02) }}
+                                    LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
+                                    contentContainerStyle={{ top: -2 }}
+                                    style={{ width: "100%" }}
+                                />
+
+                                {/* Feedback section */}
+                                <View style={{ marginTop: VP(50) }}>
+                                    <Text style={styles.feedbackTitle}>share your feedback</Text>
+
+                                    <Text style={styles.feedbackText}>please select a topic below and let us know about your concern</Text>
+
+                                    {/* Rating Section */}
+                                    <View style={{ flexDirection: "row", marginTop: VP(26), justifyContent: "center", gap: HP(24.64) }}>
                                         <TouchableOpacity
-                                            onPress={toggleMenu}
+                                            onPress={() => setRating(1)}
                                         >
-                                            <Icon type={Icons.Feather} size={FS(15)} name={`more-vertical`} color={`#686868`} />
+                                            <Image source={rating === 1 ? require(`../../assets/icons/smiley-neutral-active.png`) : require(`../../assets/icons/smiley-neutral.png`)} style={styles.icon} />
                                         </TouchableOpacity>
 
-                                        {menuVisible && (
-                                            <View style={styles.menu}>
-                                                <TouchableOpacity
-                                                    onPress={() => { console.log('View Details'); }}
-                                                    style={{ flexDirection: "row", alignItems: "center", gap: HP(7.25) }}
-                                                >
-                                                    <Icon type={Icons.Feather} size={FS(12)} name={`trash-2`} color={`#FF3434`} />
-                                                    <Text style={styles.menuItem}>delete</Text>
-                                                </TouchableOpacity>
-                                            </View>
+                                        <TouchableOpacity
+                                            onPress={() => setRating(3)}
+                                        >
+                                            <Image source={rating === 3 ? require(`../../assets/icons/smiley-sad-active.png`) : require(`../../assets/icons/smiley-sad.png`)} style={styles.icon} />
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity
+                                            onPress={() => setRating(5)}
+                                        >
+                                            <Image source={rating === 5 ? require(`../../assets/icons/smiley-active.png`) : require(`../../assets/icons/smiley.png`)} style={styles.icon} />
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    {/* Topic List */}
+                                    <View style={{ marginTop: VP(31.63) }}>
+                                        <DropDown label="Select Topic" data={TopicList} onSelect={handleSelection} />
+                                        {error.topicId.status && (
+                                            <Text style={globalStyle.error}>{error.topicId.text}</Text>
                                         )}
                                     </View>
-                                </View>
 
-                                <View style={styles.line}></View>
-                                {/* Order Item List */}
-                                <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: HP(10) }}>
-                                    <View style={{ gap: HP(8) }}>
-                                        <Text style={styles.itemText}>•  1 x nutella waffle </Text>
-                                        <Text style={styles.itemText}>•  1 x pancake </Text>
-                                        <Text style={styles.itemText}>•  1 x mango boba tea </Text>
-                                        <Text style={styles.itemText}>•  1 x chocolate cupcake </Text>
-                                    </View>
-                                    <Text style={styles.qtyText}>qty 4</Text>
-                                </View>
-
-                                <View style={styles.line}></View>
-
-                                {/* Order amount component */}
-                                <View style={{ paddingHorizontal: HP(10), gap: HP(8) }}>
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <Text style={styles.orderEntityText}>item:</Text>
-                                        <Text style={styles.orderEntityPrice}>$20.00</Text>
+                                    {/* Message Input Box */}
+                                    <View style={{ marginTop: VP(26) }}>
+                                        <CustomTextInputNoEffect
+                                            formProps={{ text: feedback, setText: setFeedbackHandler, error: error.feedback }}
+                                            placeholder="I Really Like Their Desserts And Boba Tea |"
+                                            maxLength={200}
+                                            styleInput={styles.styleInput}
+                                            multiline={true}
+                                            numberOfLines={8}
+                                            placeholderTextColor={`#595959`}
+                                        />
+                                        <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 11.56, color: "#A7A7A7", position: "absolute", bottom: HP(15), right: HP(10) }}>{textLength}</Text>
                                     </View>
 
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <Text style={styles.orderEntityText}>postage & packing:</Text>
-                                        <Text style={styles.orderEntityPrice}>$00.00</Text>
+                                    {/* Feedback send button */}
+                                    <View style={{ marginTop: VP(30) }}>
+                                        <Button
+                                            text={'send'}
+                                            onPress={submitHandler}
+                                            textStyle={styles.buttonStyle}
+                                            isLoading={buttonLoading}
+                                            activeButtonText={{ opacity: .65 }}
+                                            mainContainerStyle={{ flex: 1, borderRadius: HP(3.16) }}
+                                            LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
+                                            contentContainerStyle={{ top: -2 }}
+                                        />
                                     </View>
-
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <Text style={styles.orderEntityText}>total before tax:</Text>
-                                        <Text style={styles.orderEntityPrice}>$19.00</Text>
-                                    </View>
-
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <Text style={styles.orderEntityText}>tax:</Text>
-                                        <Text style={styles.orderEntityPrice}>$1.00</Text>
-                                    </View>
-
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <Text style={styles.orderEntityText}>total:</Text>
-                                        <Text style={styles.orderEntityPrice}>$20.00</Text>
-                                    </View>
-
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <Text style={styles.orderEntityText}>order total:</Text>
-                                        <Text style={styles.orderTotalPrice}>$40.00</Text>
-                                    </View>
-                                </View>
-                            </View>
-
-                            {/* Order Extra Details */}
-                            <View style={{}}>
-                                <View style={{ paddingHorizontal: HP(20), gap: HP(10), marginVertical: HP(24) }}>
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <Text style={styles.orderDetailRightText}>order number</Text>
-                                        <Text style={styles.orderDetailLeftText}>#8565565646</Text>
-                                    </View>
-
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <Text style={styles.orderDetailRightText}>payment</Text>
-                                        <Text style={styles.orderDetailLeftText}>paid using upi</Text>
-                                    </View>
-
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <Text style={styles.orderDetailRightText}>date</Text>
-                                        <Text style={styles.orderDetailLeftText}>12 sep</Text>
-                                    </View>
-
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <Text style={styles.orderDetailRightText}>phone number</Text>
-                                        <Text style={styles.orderDetailLeftText}>6655544xxx</Text>
-                                    </View>
-                                </View>
-                            </View>
-
-                            {/* Reorder button */}
-                            <Button
-                                text={'Reorder'}
-                                onPress={() => void (0)}
-                                textStyle={styles.buttonStyle}
-                                isLoading={false}
-                                activeButtonText={{ opacity: .65 }}
-                                mainContainerStyle={{ marginTop: VP(30), borderRadius: HP(8.02) }}
-                                LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
-                                contentContainerStyle={{ top: -2 }}
-                                style={{ width: "100%" }}
-                            />
-
-                            {/* Feedback section */}
-                            <View style={{ marginTop: VP(50) }}>
-                                <Text style={styles.feedbackTitle}>share your feedback</Text>
-
-                                <Text style={styles.feedbackText}>please select a topic below and let us know about your concern</Text>
-
-                                {/* Rating Section */}
-                                <View style={{ flexDirection: "row", marginTop: VP(26), justifyContent: "center", gap: HP(24.64) }}>
-                                    <TouchableOpacity
-                                        onPress={() => setRating(1)}
-                                    >
-                                        <Image source={rating === 1 ? require(`../../assets/icons/smiley-neutral-active.png`) : require(`../../assets/icons/smiley-neutral.png`)} style={styles.icon} />
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity
-                                        onPress={() => setRating(3)}
-                                    >
-                                        <Image source={rating === 3 ? require(`../../assets/icons/smiley-sad-active.png`) : require(`../../assets/icons/smiley-sad.png`)} style={styles.icon} />
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity
-                                        onPress={() => setRating(5)}
-                                    >
-                                        <Image source={rating === 5 ? require(`../../assets/icons/smiley-active.png`) : require(`../../assets/icons/smiley.png`)} style={styles.icon} />
-                                    </TouchableOpacity>
-                                </View>
-
-                                {/* Topic List */}
-                                <View style={{ marginTop: VP(31.63) }}>
-                                    <DropDown label="Select Topic" data={TopicList} onSelect={handleSelection} />
-                                    {error.topicId.status && (
-                                        <Text style={globalStyle.error}>{error.topicId.text}</Text>
-                                    )}
-                                </View>
-
-                                {/* Message Input Box */}
-                                <View style={{ marginTop: VP(26) }}>
-                                    <CustomTextInputNoEffect
-                                        formProps={{ text: feedback, setText: setFeedbackHandler, error: error.feedback }}
-                                        placeholder="I Really Like Their Desserts And Boba Tea |"
-                                        maxLength={200}
-                                        styleInput={styles.styleInput}
-                                        multiline={true}
-                                        numberOfLines={8}
-                                        placeholderTextColor={`#595959`}
-                                    />
-                                    <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 11.56, color: "#A7A7A7", position: "absolute", bottom: HP(15), right: HP(10) }}>{textLength}</Text>
-                                </View>
-
-                                {/* Feedback send button */}
-                                <View style={{ marginTop: VP(30) }}>
-                                    <Button
-                                        text={'send'}
-                                        onPress={submitHandler}
-                                        textStyle={styles.buttonStyle}
-                                        isLoading={buttonLoading}
-                                        activeButtonText={{ opacity: .65 }}
-                                        mainContainerStyle={{ flex: 1, borderRadius: HP(3.16) }}
-                                        LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
-                                        contentContainerStyle={{ top: -2 }}
-                                    />
                                 </View>
                             </View>
                         </View>
-                    </View>
-                </ScrollView>
+                    </ScrollView>
 
-                {showPopUp && (
-                    <View style={styles.successPopUpMain}>
-                        <View style={styles.successPopUp}>
-                            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
-                                <CheckmarkWithConfetti />
-                                <Text style={styles.popUpHeading}>thank you!</Text>
-                                <Text style={styles.popUpText}>thankyou for sharing your thoughts we appreciate your feedback!</Text>
+                    {showPopUp && (
+                        <View style={styles.successPopUpMain}>
+                            <View style={styles.successPopUp}>
+                                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
+                                    <CheckmarkWithConfetti />
+                                    <Text style={styles.popUpHeading}>thank you!</Text>
+                                    <Text style={styles.popUpText}>thankyou for sharing your thoughts we appreciate your feedback!</Text>
 
-                                <View style={{ marginTop: VP(38.46), marginBottom: VP(79) }}>
-                                    <Button
-                                        text={'Back'}
-                                        onPress={() => navigation.goBack()}
-                                        textStyle={styles.buttonStyle}
-                                        isLoading={false}
-                                        activeButtonText={{ opacity: .65 }}
-                                        mainContainerStyle={{ borderRadius: HP(8) }}
-                                        LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
-                                        contentContainerStyle={{ top: -2 }}
-                                    />
-                                </View>
-                            </ScrollView>
+                                    <View style={{ marginTop: VP(38.46), marginBottom: VP(89) }}>
+                                        <Button
+                                            text={'Back'}
+                                            onPress={() => navigation.goBack()}
+                                            textStyle={styles.buttonStyle}
+                                            isLoading={false}
+                                            activeButtonText={{ opacity: .65 }}
+                                            mainContainerStyle={{ borderRadius: HP(8) }}
+                                            LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
+                                            contentContainerStyle={{ top: -2 }}
+                                        />
+                                    </View>
+                                </ScrollView>
+                            </View>
                         </View>
-                    </View>
-                )}
-            </InnerBlock>
-        </OuterLayout >
+                    )}
+                </InnerBlock>
+            </OuterLayout >
+        </>
     )
 }
 

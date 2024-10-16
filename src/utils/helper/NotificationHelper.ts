@@ -32,7 +32,8 @@ export const groupNotificationData = (data: any[]) => {
     const groupedArray = Object.entries(groupedData);
 
     // Sort the array by date in descending order
-    groupedArray.sort((a, b) => new Date(b[0]) - new Date(a[0]));
+    // groupedArray.sort((a, b) => new Date(b[0]) - new Date(a[0]));
+    groupedArray.sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime());
 
     return groupedArray;
 };

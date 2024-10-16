@@ -50,4 +50,16 @@ export const globalStyle = StyleSheet.create({
         color: COLORS.WHITE,
         fontSize: 14,
     },
+    dialogTitleStyle: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 22.94,
+        lineHeight: 38.6,
+        color: "#101010"
+    },
+    dialogMessageStyle: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 16.88,
+        lineHeight: 24.1,
+        color: "#878787"
+    }
 });

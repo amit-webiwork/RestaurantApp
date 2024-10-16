@@ -11,6 +11,12 @@ export const getOrderStatus = (orderStatus: string) => {
         case "OrderReady":
             status = "ready for pickup";
             break;
+        case "OrderPicked":
+            status = "Order picked up";
+            break;
+        case "Rejected":
+            status = "Order has been rejected";
+            break;
         default:
             status = orderStatus
     }

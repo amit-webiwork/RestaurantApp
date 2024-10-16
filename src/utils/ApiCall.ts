@@ -155,4 +155,16 @@ const getOrderList = async (params = {}, limit = 10, offset = 0) => {
     }
 };
 
-export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList };
+const deleteOrder = async (orderId: number) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.delete(BACKEND_URL + apiEndpoints.deleteOrder + '/' + orderId);
+            resolve(res);
+        } catch (error: any) {
+            console.log('API ERROR (deleteOrder)', (error?.response?.data?.message || error?.message));
+            reject(error);
+        }
+    });
+}
+
+export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder };

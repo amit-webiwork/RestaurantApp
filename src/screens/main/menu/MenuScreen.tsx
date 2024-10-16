@@ -140,27 +140,28 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
         }
     };
 
-    console.log(`---MenuScreen loading`)
-
     return (
         <OuterLayout containerStyle={[globalStyle.containerStyle]}>
             <InnerBlock>
-                {/* <ScrollView showsVerticalScrollIndicator={false}> */}
                 <View style={{ marginBottom: VP(0), flex: 1 }}>
 
                     {/* Menu Items */}
                     <View style={{ marginTop: VP(0), flex: 1 }}>
-                        <MenuItemsSection data={itemList} dataLoaded={loader} loadMore={loadMoreItems} hasMoreData={hasMoreData} loading={loading} scrollEnabled={true} navigation={navigation} HeaderComponent={HeaderComponent} setSelectedCategoryhandler={setSelectedCategoryhandler} selectedCategory={selectedCategory} columnWrapperStyle={{ paddingHorizontal: HP(15) }} />
+                        <MenuItemsSection
+                            data={itemList}
+                            dataLoaded={loader}
+                            loadMore={loadMoreItems}
+                            hasMoreData={hasMoreData}
+                            loading={loading}
+                            scrollEnabled={true}
+                            navigation={navigation}
+                            HeaderComponent={HeaderComponent}
+                            setSelectedCategoryhandler={setSelectedCategoryhandler}
+                            selectedCategory={selectedCategory}
+                            columnWrapperStyle={{ paddingHorizontal: HP(15) }}
+                        />
                     </View>
-
-                    {/* Bottom Text */}
-                    {/* {!hasMoreData && (
-                        <View style={{ marginTop: VP(41) }}>
-                            <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: HP(40), color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
-                        </View>
-                    )} */}
                 </View>
-                {/* </ScrollView> */}
             </InnerBlock>
             <CartLayout children={undefined} navigation={navigation}></CartLayout>
         </OuterLayout>

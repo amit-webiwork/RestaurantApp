@@ -12,6 +12,7 @@ import { setDialogContent } from '../../redux/features/customDialog';
 import { FS, HP, VP } from '../../utils/Responsive';
 import Warning from '../../assets/svgs/warning.svg';
 import NormalLoader from '../NormalLoader';
+import { AppDispatch } from '../../redux/store';
 
 const createFormData = (photo: { fileName: any; type: any; uri: string; }, body: any = {}) => {
     const data: any = new FormData();
@@ -30,7 +31,7 @@ const createFormData = (photo: { fileName: any; type: any; uri: string; }, body:
 };
 
 function ProfileImageContainer(props: any) {
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
 
     const { profile } = props;
 

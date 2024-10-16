@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, Platform, UIManager, LayoutAnimation, Dimensions, RefreshControl } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Platform, UIManager, LayoutAnimation, Dimensions } from 'react-native';
 
 import { globalStyle } from '../../utils/GlobalStyle';
 import OuterLayout from '../../components/OuterLayout';
@@ -8,29 +8,56 @@ import { FS, HP, VP } from '../../utils/Responsive';
 import Icon, { Icons } from '../../components/Icons';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import ActiveOrderItemSection from '../../components/order/ActiveOrderItem';
-import PastOrderItemSection from '../../components/order/PastOrderItem';
-import { ButtonSection as Button } from '../../components/Button';
-import NormalLoader from '../../components/NormalLoader';
-import { getOrderList } from '../../utils/ApiCall';
-import { useIsFocused } from '@react-navigation/native';
-
-const { width, height } = Dimensions.get('window');
+import ActiveOrderTabSection from '../../components/order/ActiveOrderTab';
+import PastOrderTabSection from '../../components/order/PastOrderTab';
 
 // Enable Layout Animation for Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-function OrderScreen({ navigation }: { navigation: any }): React.JSX.Element {
-    const isFocused = useIsFocused();
+interface TabProps {
+    switchTab: any;
+    activeTab: number;
+}
+
+const OrderTabs = ({ switchTab, activeTab }: TabProps) => {
+    return (
+        <>
+            <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: VP(32) }}>
+                <TouchableOpacity
+                    onPress={() => switchTab(1)}
+                >
+                    <Text style={styles.menuText}>active orders</Text>
+                    {activeTab === 1 && (
+                        <Image
+                            source={require('../../assets/images/active.png')}
+                            style={{ width: FS(121), height: VP(4), resizeMode: "cover" }}
+                        />
+                    )}
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => switchTab(2)}
+                >
+                    <Text style={styles.menuText}>past orders</Text>
+                    {activeTab === 2 && (
+                        <Image
+                            source={require('../../assets/images/active.png')}
+                            style={{ width: FS(121), height: VP(4), resizeMode: "cover" }}
+                        />
+                    )}
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.line}></View>
+        </>
+    )
+}
+
+function OrderScreen({ route, navigation }: { route: any; navigation: any }): React.JSX.Element {
+    const routeActiveTab = route?.params?.routeActiveTab || 0;
 
     const [activeTab, setActiveTab] = useState(1);
-    const [hasOrder, setHasOrder] = useState(false);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [activeOrders, setActiveOrders] = useState<any[]>([]);
-    const [offset, setOffset] = useState(0);
-    const [isFetchingMore, setIsFetchingMore] = useState(false);
 
     // Function to handle tab switch with animation
     const switchTab = (tab: number) => {
@@ -38,143 +65,42 @@ function OrderScreen({ navigation }: { navigation: any }): React.JSX.Element {
         setActiveTab(tab);
     };
 
-    const fetchActiveOrders = async () => {
-        setLoading(true);
-        try {
-            const params = { type: 'Active' };
-            const limit = 10;
-            const offset = 0;
-
-            const response = await getOrderList(params, limit, offset);
-
-            setActiveOrders(response?.data || []);
-        } catch (err) {
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    const onRefresh = async () => {
-        if (activeTab === 1) {
-            fetchActiveOrders()
-        }
-    };
-
     useEffect(() => {
-        if (isFocused) {
-            fetchActiveOrders()
+        if (routeActiveTab > 0) {
+            setActiveTab(routeActiveTab);
         }
-    }, [isFocused])
-
-    useEffect(() => {
-        if (activeOrders.length > 0) {
-            setHasOrder(true);
-        }
-    }, [activeOrders.length])
+    }, [routeActiveTab])
 
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
-            <NormalLoader visible={loading} />
             <InnerBlock>
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={loading}
-                            onRefresh={onRefresh}
-                            tintColor={COLORS.BUTTON}
-                        />
-                    }
-                >
-                    <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
-                        {/* Navigation section */}
-                        <View style={{ paddingHorizontal: HP(20) }}>
-                            <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <TouchableOpacity
-                                    onPress={() => navigation.navigate(`HomeScreen`)}
-                                    style={{ alignSelf: "center", }}
-                                >
-                                    <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BLACK} />
-                                </TouchableOpacity>
-                                <Text style={styles.topHeading}>order history</Text>
-                            </View>
+                <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
+                    {/* Navigation section */}
+                    <View style={{ paddingHorizontal: HP(20) }}>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate(`HomeScreen`)}
+                                style={{ alignSelf: "center", }}
+                            >
+                                <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BLACK} />
+                            </TouchableOpacity>
+                            <Text style={styles.topHeading}>order history</Text>
                         </View>
-
-                        {hasOrder ? (
-                            <View>
-                                {/* Tabs */}
-                                <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: VP(64) }}>
-                                    <TouchableOpacity
-                                        onPress={() => switchTab(1)}
-                                    >
-                                        <Text style={styles.menuText}>active orders</Text>
-                                        {activeTab === 1 && (
-                                            <Image
-                                                source={require('../../assets/images/active.png')}
-                                                style={{ width: FS(121), height: VP(4), resizeMode: "cover" }}
-                                            />
-                                        )}
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => switchTab(2)}
-                                    >
-                                        <Text style={styles.menuText}>past orders</Text>
-                                        {activeTab === 2 && (
-                                            <Image
-                                                source={require('../../assets/images/active.png')}
-                                                style={{ width: FS(121), height: VP(4), resizeMode: "cover" }}
-                                            />
-                                        )}
-                                    </TouchableOpacity>
-                                </View>
-
-                                <View style={styles.line}></View>
-
-                                {/* Orders section */}
-                                <View style={{ marginTop: VP(27), paddingHorizontal: HP(19) }}>
-                                    {activeTab === 1 && (
-                                        <>
-                                            <View style={{ gap: HP(18) }}>
-                                                {activeOrders.map((d, i) => (
-                                                    <ActiveOrderItemSection key={`active-orders-${i}`} data={d} />
-                                                ))}
-                                            </View>
-                                        </>
-                                    )}
-
-                                    {activeTab === 2 && (
-                                        <View style={{ gap: HP(18) }}>
-                                            <PastOrderItemSection data={[]} navigation={navigation} />
-                                            <PastOrderItemSection data={[]} navigation={navigation} />
-                                            <PastOrderItemSection data={[]} navigation={navigation} />
-                                            <PastOrderItemSection data={[]} navigation={navigation} />
-                                        </View>
-                                    )}
-                                </View>
-                            </View>
-                        ) : (
-                            <View style={{ marginTop: VP(32), marginHorizontal: (width * .05), marginBottom: VP(32) }}>
-                                <View style={styles.noOrderBox}>
-                                    <Image source={require(`../../assets/images/no-order.png`)} style={styles.img} />
-
-                                    <Text style={styles.noOrderText}>NO ORDER FOUND</Text>
-                                    <Text style={styles.noOrderSubText}>Looks like you haven’t made
-                                        your order yet</Text>
-                                </View>
-                                <Button
-                                    text={'start your order'}
-                                    onPress={() => void (0)}
-                                    textStyle={styles.buttonStyle}
-                                    isLoading={false}
-                                    activeButtonText={{ opacity: .65 }}
-                                    mainContainerStyle={{ marginTop: VP(47), borderRadius: HP(8) }}
-                                    LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
-                                    contentContainerStyle={{ top: -2 }}
-                                />
-                            </View>
-                        )}
                     </View>
-                </ScrollView>
+
+                    <View>
+                        {/* Orders section */}
+                        <View style={{ marginTop: VP(27), paddingHorizontal: HP(19), marginBottom: VP(27) }}>
+                            {activeTab === 1 && (
+                                <ActiveOrderTabSection HeaderComponent={OrderTabs} switchTab={switchTab} activeTab={activeTab} />
+                            )}
+
+                            {activeTab === 2 && (
+                                <PastOrderTabSection HeaderComponent={OrderTabs} switchTab={switchTab} activeTab={activeTab} navigation={navigation} />
+                            )}
+                        </View>
+                    </View>
+                </View>
             </InnerBlock>
         </OuterLayout >
     )
@@ -203,75 +129,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexGrow: 1,
         backgroundColor: "#E6E6E6"
-    },
-    boxImg: {
-        width: "100%",
-        height: VP(138),
-        resizeMode: "cover",
-        borderTopLeftRadius: HP(10),
-        borderBottomLeftRadius: HP(10)
-    },
-    itemTitle: {
-        ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: HP(12),
-        textTransform: "capitalize",
-        color: COLORS.BUTTON
-    },
-    orderText: {
-        ...TextStyles.RALEWAY_REGULAR,
-        fontSize: HP(10),
-        textTransform: "capitalize",
-        color: "#636363",
-        marginTop: VP(1)
-    },
-    priceText: {
-        ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: HP(14),
-    },
-    qtyText: {
-        ...TextStyles.RALEWAY_REGULAR,
-        fontSize: HP(10),
-    },
-    helpText: {
-        ...TextStyles.RALEWAY_REGULAR,
-        fontSize: HP(12),
-        textTransform: "capitalize",
-    },
-    img: {
-        width: "100%",
-        height: height * .3,
-        resizeMode: "contain"
-    },
-    noOrderBox: {
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        shadowColor: "#171717",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 5,
-        backgroundColor: "#fff",
-        borderRadius: HP(22.96),
-        height: height * .6,
-        marginHorizontal: HP(18)
-    },
-    noOrderText: {
-        ...TextStyles.RALEWAY_BOLD,
-        fontSize: 22.96,
-        textAlign: "center"
-    },
-    noOrderSubText: {
-        ...TextStyles.RALEWAY_MEDIUM,
-        fontSize: 13.78,
-        textAlign: "center",
-        width: "70%"
-    },
-    buttonStyle: {
-        ...TextStyles.LEXEND_SEMI_BOLD,
-        fontSize: 20,
-        color: COLORS.WHITE,
-        textTransform: "uppercase",
-    },
+    }
 });
 
 export default OrderScreen;

@@ -3,24 +3,22 @@ import {
     View,
     StyleSheet,
     Text,
-    Image,
-    TouchableOpacity
+    Image
 } from 'react-native';
-import { useDispatch } from 'react-redux';
 import moment from 'moment';
 
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
-import { CDN_URL, COLORS } from '../../utils/Constants';
-import Icon, { Icons } from '../Icons';
-import { getOrderComponents, getOrderStatus } from '../../utils/helper/OrderHelper';
+import { COLORS } from '../../utils/Constants';
+import { getOrderComponents } from '../../utils/helper/OrderHelper';
 
 interface Props {
-    data: any;
+    item: any;
+    index: number;
 }
 
-const ActiveOrderItem: React.FunctionComponent<Props> = ({ data }) => {
-    const orderData = getOrderComponents(data);
+const ActiveOrderItem = ({ item, index }: Props) => {
+    const orderData = getOrderComponents(item);
 
     return (
         <View style={styles.boxContainer}>

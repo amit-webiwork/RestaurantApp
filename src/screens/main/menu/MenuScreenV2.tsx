@@ -181,8 +181,6 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
         }
     };
 
-    console.log(`---MenuScreenV2 loading`)
-
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
