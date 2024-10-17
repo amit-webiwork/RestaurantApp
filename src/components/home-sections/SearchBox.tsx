@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -24,10 +24,10 @@ const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, setHan
     const [text, setText] = useState<any>("");
     const [error, setError] = useState({ status: false, text: "" });
 
-    const setTextHandler = (e: any) => {
+    const setTextHandler = useCallback((e: any) => {
         setText(e);
         setHandler(e);
-    }
+    }, [setText, setHandler]);
 
     return (
         <View style={styles.mainContainer}>

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, BackHandler } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 
@@ -14,7 +14,7 @@ import CartItemSection from '../../../components/cart/CartItem';
 import ItemBoxSection from '../../../components/home-sections/ItemBox';
 import CookingRequestSection from '../../../components/product-sections/CookingRequest';
 import { ButtonSection as Button } from '../../../components/Button';
-import { cartItemList, cartLoading, getCartTotal, removeFromCart, resetCart, setInstructionText } from '../../../redux/features/cart';
+import { cartItemList, cartLoading, getCartTotal, resetCart, setInstructionText } from '../../../redux/features/cart';
 import { fetchPopularItems, papularItemLoaded, papularItems } from '../../../redux/features/items';
 import { AppDispatch } from '../../../redux/store';
 import { cartConfirm, orderSubmit } from '../../../utils/ApiCall';
@@ -24,7 +24,6 @@ import { addToCart } from '../../../utils/helper/CartHelper';
 import { loadStorage } from '../../../utils/Storage';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
-import ProductScreenLoader from '../../../components/skeleton/ProductScreenLoader';
 import CartScreenLoader from '../../../components/skeleton/CartScreenLoader';
 
 function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
@@ -42,9 +41,9 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [instructionText, setInstructionTextState] = useState<string>("");
     const [loading, setLoading] = useState(false);
 
-    const setInstructionTextHandler = (e: string) => {
+    const setInstructionTextHandler = useCallback((e: string) => {
         setInstructionTextState(e);
-    }
+    }, [setInstructionTextState]);
 
     const selectCategoryHandler = useCallback((id: number) => {
         setSelectedCategory(id);

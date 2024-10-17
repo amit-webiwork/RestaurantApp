@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import OuterLayout from '../../../components/OuterLayout';
@@ -9,7 +9,7 @@ import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
 import CartLayout from '../../../components/cart/CartLayout';
-import { getItemList, getItemListWithSignal } from '../../../utils/ApiCall';
+import { getItemList } from '../../../utils/ApiCall';
 import FilterBoxSection from '../../../components/items/FilterBoxSection';
 import { useDispatch, useSelector } from 'react-redux';
 import { cuisineList, cuisineLoaded, fetchCuisine, getFilters, priceRangeFilter, resetFilter, setCuisineList, setFilters } from '../../../redux/features/items';
@@ -85,13 +85,13 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
 
     const [hasMoreData, setHasMoreData] = useState<boolean>(true);
 
-    const setSelectedCategoryhandler = (id: number) => {
-        setLoading(true)
+    const setSelectedCategoryHandler = useCallback((id: number) => {
+        setLoading(true);
         setPage(1);
-        setItemList([]);
-        setHasMoreData(true);
+        setItemList([]); // Clear the current items
+        setHasMoreData(true); // Reset to allow more data fetching
         setSelectedCategory(id);
-    }
+    }, [setLoading, setPage, setItemList, setHasMoreData, setSelectedCategory]);
 
     const fetchItem = async (page: number, signal: AbortSignal) => {
         if (loader || !hasMoreData) return;
@@ -174,29 +174,33 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
         setPriceRangeFilterState(PriceRangeFilter);
     }, [JSON.stringify(filterList), JSON.stringify(PriceRangeFilter)])
 
-    const loadMoreItems = () => {
+    const loadMoreItems = useCallback(() => {
         if (!loader && hasMoreData) {
             setLoading(true);
-            setPage(prevPage => prevPage + 1); // Increment page to fetch more data
+            setPage(prevPage => prevPage + 1);
         }
-    };
+    }, [loader, hasMoreData, setLoading, setPage]);
 
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
-                {/* <ScrollView showsVerticalScrollIndicator={false}> */}
                 <View style={{ marginBottom: VP(0) }}>
                     {/* Menu Items */}
                     <View style={{}}>
-                        <ItemVerticalBoxSection data={itemList} dataLoaded={loader} navigation={navigation} loadMore={loadMoreItems} hasMoreData={hasMoreData} loading={loading} scrollEnabled={true} HeaderComponent={HeaderComponent} setSelectedCategoryhandler={setSelectedCategoryhandler} selectedCategory={selectedCategory} />
+                        <ItemVerticalBoxSection 
+                        data={itemList} 
+                        dataLoaded={loader} 
+                        navigation={navigation} 
+                        loadMore={loadMoreItems} 
+                        hasMoreData={hasMoreData} 
+                        loading={loading} 
+                        scrollEnabled={true} 
+                        HeaderComponent={HeaderComponent} 
+                        setSelectedCategoryhandler={setSelectedCategoryHandler} 
+                        selectedCategory={selectedCategory} 
+                        />
                     </View>
-
-                    {/* Bottom Text */}
-                    {/* <View style={{ marginTop: VP(41) }}>
-                            <Text style={{ ...TextStyles.POPPINS_BOLD, fontSize: HP(40), color: "#898989", lineHeight: HP(47), textAlign: "center" }}>"Indulge your cravings."</Text>
-                        </View> */}
                 </View>
-                {/* </ScrollView> */}
             </InnerBlock>
             <CartLayout children={undefined} navigation={navigation}></CartLayout>
         </OuterLayout>

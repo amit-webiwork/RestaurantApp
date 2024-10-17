@@ -10,7 +10,6 @@ import { TextStyles } from '../../utils/TextStyles.ts';
 import { submitLogin } from '../../utils/ApiCall.ts';
 import { ButtonSwipe } from '../../components/ButtonSwipe.tsx';
 import { setProflieDetails } from '../../redux/features/profile.ts';
-import { recoverCart } from '../../redux/features/cart.ts';
 import { setInRecentSearchState } from '../../utils/helper/SearchHelper.ts';
 import { setInCartState } from '../../utils/helper/CartHelper.ts';
 

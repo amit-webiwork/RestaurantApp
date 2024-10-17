@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
@@ -8,17 +8,15 @@ import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
-import SearchBoxSection from '../../../components/home-sections/SearchBox';
 import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
 import MenuItemsSection from '../../../components/items/MenuItems';
 import CartLayout from '../../../components/cart/CartLayout';
-import { getItemList, getItemListWithSignal } from '../../../utils/ApiCall';
+import { getItemList } from '../../../utils/ApiCall';
 import FilterBoxSection from '../../../components/items/FilterBoxSection';
 import { useSelector } from 'react-redux';
 import { getFilters, priceRangeFilter } from '../../../redux/features/items';
 import FilterAppliedTabs from '../../../components/items/FilterAppliedTabs';
 import SearchBoxItemsSection from '../../../components/home-sections/SearchBoxItems';
-import NormalLoader from '../../../components/NormalLoader';
 
 interface HeaderProps {
     setSelectedCategoryhandler: any;
@@ -78,13 +76,13 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
     const [priceRangeFilterState, setPriceRangeFilterState] = useState<any>({});
     const [loading, setLoading] = useState<boolean>(false);
 
-    const setSelectedCategoryhandler = (id: number) => {
-        setLoading(true)
+    const setSelectedCategoryHandler = useCallback((id: number) => {
+        setLoading(true);
         setPage(1);
-        setItemList([]); // Clear the current orders
-        setHasMoreData(true); // Reset to allow more data fetching
+        setItemList([]);
+        setHasMoreData(true);
         setSelectedCategory(id);
-    }
+    }, [setLoading, setPage, setItemList, setHasMoreData, setSelectedCategory]);
 
     useEffect(() => {
         console.log('run');
@@ -133,12 +131,12 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
         setPriceRangeFilterState(PriceRangeFilter);
     }, [JSON.stringify(filterList), JSON.stringify(PriceRangeFilter)])
 
-    const loadMoreItems = () => {
+    const loadMoreItems = useCallback(() => {
         if (!loader && hasMoreData) {
             setLoading(true);
             setPage(prevPage => prevPage + 1); // Increment page to fetch more data
         }
-    };
+    }, [loader, hasMoreData, setLoading, setPage]);
 
     return (
         <OuterLayout containerStyle={[globalStyle.containerStyle]}>
@@ -156,7 +154,7 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
                             scrollEnabled={true}
                             navigation={navigation}
                             HeaderComponent={HeaderComponent}
-                            setSelectedCategoryhandler={setSelectedCategoryhandler}
+                            setSelectedCategoryhandler={setSelectedCategoryHandler}
                             selectedCategory={selectedCategory}
                             columnWrapperStyle={{ paddingHorizontal: HP(15) }}
                         />

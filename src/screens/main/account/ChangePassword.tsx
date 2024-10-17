@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Keyboard, ScrollView } from 'react-native';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -37,10 +37,10 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
 
     const [showPopUp, setShowPopUp] = useState(false);
 
-    const handlePasswordHide = (key: string) => {
+    const handlePasswordHide = useCallback((key: string) => {
         Keyboard.dismiss();
-        setPasswordHide((pre: any) => ({ ...pre, [key]: !pre[key] }))
-    }
+        setPasswordHide((prev: any) => ({ ...prev, [key]: !prev[key] }));
+    }, [setPasswordHide]);
 
     const handleOnPress = async () => {
         try {

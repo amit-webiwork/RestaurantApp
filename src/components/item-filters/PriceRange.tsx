@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, StyleProp, TextStyle } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
@@ -24,10 +24,10 @@ function PriceRange({ headingTextStyle, onRangeChange }: Props): React.JSX.Eleme
 
     const [range, setRange] = useState([0, 0]);
 
-    const setRangeHandler = (values: React.SetStateAction<number[]>) => {
+    const setRangeHandler = useCallback((values: React.SetStateAction<number[]>) => {
         setRange(values);
         onRangeChange(values);
-    }
+    }, [setRange, onRangeChange]);
 
     useEffect(() => {
         if (!PriceRangeLoaded) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
 import moment from 'moment';
 import axios from 'axios';
@@ -55,14 +55,14 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
         setMenuVisible(!menuVisible);
     };
 
-    const handleSelection = (item: { id: number }) => {
-        setTopicId(item.id)
-    };
+    const handleSelection = useCallback((item: { id: number }) => {
+        setTopicId(item.id);
+    }, [setTopicId]);
 
-    const setFeedbackHandler = (e: string) => {
+    const setFeedbackHandler = useCallback((e: string) => {
         setFeedback(e);
         setTextLength(200 - e.length);
-    }
+    }, [setFeedback, setTextLength]);
 
     const submitHandler = async () => {
         try {
@@ -325,7 +325,11 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
 
                                     {/* Topic List */}
                                     <View style={{ marginTop: VP(31.63) }}>
-                                        <DropDown label="Select Topic" data={TopicList} onSelect={handleSelection} />
+                                        <DropDown
+                                            label="Select Topic"
+                                            data={TopicList}
+                                            onSelect={handleSelection}
+                                        />
                                         {error.topicId.status && (
                                             <Text style={globalStyle.error}>{error.topicId.text}</Text>
                                         )}

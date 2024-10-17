@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, Platform, UIManager, LayoutAnimation, Dimensions } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Platform, UIManager, LayoutAnimation } from 'react-native';
 
 import { globalStyle } from '../../utils/GlobalStyle';
 import OuterLayout from '../../components/OuterLayout';
@@ -60,10 +60,10 @@ function OrderScreen({ route, navigation }: { route: any; navigation: any }): Re
     const [activeTab, setActiveTab] = useState(1);
 
     // Function to handle tab switch with animation
-    const switchTab = (tab: number) => {
+    const switchTab = useCallback((tab: number) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setActiveTab(tab);
-    };
+    }, [setActiveTab]);
 
     useEffect(() => {
         if (routeActiveTab > 0) {
@@ -92,11 +92,20 @@ function OrderScreen({ route, navigation }: { route: any; navigation: any }): Re
                         {/* Orders section */}
                         <View style={{ marginTop: VP(27), paddingHorizontal: HP(19), marginBottom: VP(27) }}>
                             {activeTab === 1 && (
-                                <ActiveOrderTabSection HeaderComponent={OrderTabs} switchTab={switchTab} activeTab={activeTab} />
+                                <ActiveOrderTabSection
+                                    HeaderComponent={OrderTabs}
+                                    switchTab={switchTab}
+                                    activeTab={activeTab}
+                                />
                             )}
 
                             {activeTab === 2 && (
-                                <PastOrderTabSection HeaderComponent={OrderTabs} switchTab={switchTab} activeTab={activeTab} navigation={navigation} />
+                                <PastOrderTabSection
+                                    HeaderComponent={OrderTabs}
+                                    switchTab={switchTab}
+                                    activeTab={activeTab}
+                                    navigation={navigation}
+                                />
                             )}
                         </View>
                     </View>

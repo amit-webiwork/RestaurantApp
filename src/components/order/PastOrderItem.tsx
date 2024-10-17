@@ -28,7 +28,6 @@ interface Props {
 }
 
 const PastOrderItem = ({ item, index, navigation, deleteHandler }: Props) => {
-    console.log(index, '--index')
     const orderData = getOrderComponents(item);
 
     const [menuVisible, setMenuVisible] = useState(false);
@@ -41,6 +40,10 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler }: Props) => {
     const orderDeleteHandler = () => {
         deleteHandler(orderData?.id);
         setOrderDeleteDialogVisible(false);
+    }
+
+    const reorderHandler = () => {
+
     }
 
     return (
@@ -148,7 +151,7 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler }: Props) => {
                     <View style={{ width: "50%", alignItems: "flex-end", alignSelf: "flex-end" }}>
                         <Button
                             text={`reorder`}
-                            onPress={() => void (0)}
+                            onPress={reorderHandler}
                             textStyle={styles.buttonStyle}
                             isLoading={false}
                             activeButtonText={{ opacity: .65 }}

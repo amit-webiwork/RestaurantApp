@@ -18,7 +18,6 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
 
     const [loader, setLoader] = useState(false);
     const [itemList, setItemList] = useState([]);
-    console.log(categoryId, '--categoryId')
 
     const fetchItem = async () => {
         try {

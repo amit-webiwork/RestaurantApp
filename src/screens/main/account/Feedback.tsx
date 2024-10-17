@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions, ScrollView } from 'react-native';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,14 +42,14 @@ function Feedback({ navigation }: { navigation: any }): React.JSX.Element {
     const [loader, setLoader] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const handleSelection = (item: { id: number }) => {
-        setTopicId(item.id)
-    };
+    const handleSelection = useCallback((item: { id: number }) => {
+        setTopicId(item.id);
+    }, [setTopicId]);
 
-    const setFeedbackHandler = (e: string) => {
+    const setFeedbackHandler = useCallback((e: string) => {
         setFeedback(e);
         setTextLength(200 - e.length);
-    }
+    }, [setFeedback, setTextLength]);
 
     const submitHandler = async () => {
         try {

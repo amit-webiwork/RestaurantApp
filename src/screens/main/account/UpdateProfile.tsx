@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import axios  from 'axios';
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../../utils/Constants';
@@ -39,9 +39,9 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
         setEmail(user?.email || "")
     }, [user])
 
-    const handleOnCancel = () => {
+    const handleOnCancel = useCallback(() => {
         navigation.goBack();
-    }
+    }, [navigation]);
 
     const handleOnPress = async () => {
         try {

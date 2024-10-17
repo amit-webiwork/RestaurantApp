@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView, PanGestureHandler, ScrollView } from 'react-native-gesture-handler';
 
@@ -11,11 +11,9 @@ import DietaryPreferencesSection from '../../components/item-filters/DietaryPref
 import CuisineSection from '../../components/item-filters/Cuisine.tsx';
 import PriceRangeSection from '../../components/item-filters/PriceRange.tsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { cuisineList, cuisineLoaded, dietaryList, dietaryLoaded, fetchCuisine, fetchDietaries, fetchPopularItems, getFilters, papularItemLoaded, papularItems, priceRange, priceRangeFilter, priceRangeLoaded, resetFilter, setFilters, setPriceRangeFilter } from '../../redux/features/items.ts';
+import { cuisineList, cuisineLoaded, dietaryList, dietaryLoaded, fetchCuisine, fetchDietaries, fetchPopularItems, getFilters, papularItemLoaded, papularItems, priceRangeFilter, resetFilter, setFilters, setPriceRangeFilter } from '../../redux/features/items.ts';
 import { AppDispatch } from '../../redux/store.ts';
 import { ButtonSection as Button } from '../../components/Button';
-
-const popular_items = ["brown sugar milk tea (fresh milk)", "brownie with ice cream", "nutella waffle", "watermelon juice", "Fudge Walnut Brownie", "pearl milk tea"];
 
 function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
 
@@ -38,7 +36,7 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
 
     const [cuisineListState, setCuisineList] = useState<any[]>([]);
 
-    const [papularItemList, setPapularItemList] = useState<any[]>([]);
+    const [popularItemList, setPopularItemList] = useState<any[]>([]);
 
     const [priceRangeState, setPriceRange] = useState([0, 0]);
 
@@ -53,40 +51,40 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
         }
     };
 
-    const setDietaryChecked = (id: number) => {
-        setDietaryList((prevList: any[]) =>
-            prevList.map((item, i) =>
+    const setDietaryChecked = useCallback((id: number) => {
+        setDietaryList(prevList =>
+            prevList.map(item =>
                 item.id === id ? { ...item, checked: !item.checked } : item
             )
         );
-    };
+    }, [setDietaryList]);
 
-    const setCuisineChecked = (id: number) => {
+    const setCuisineChecked = useCallback((id: number) => {
         setCuisineList(prevList =>
-            prevList.map((item, i) =>
+            prevList.map(item =>
                 item.id === id ? { ...item, checked: !item.checked } : item
             )
         );
-    };
+    }, [setCuisineList]);
 
-    const setPopularItemChecked = (id: number) => {
-        setPapularItemList(prevList =>
-            prevList.map((item, i) =>
+    const setPopularItemChecked = useCallback((id: number) => {
+        setPopularItemList(prevList =>
+            prevList.map(item =>
                 item.id === id ? { ...item, checked: !item.checked } : item
             )
         );
-    };
+    }, [setPopularItemList]);
 
-    const onRangeChange = (values: React.SetStateAction<number[]>) => {
+    const onRangeChange = useCallback((values: React.SetStateAction<number[]>) => {
         setPriceRange(values);
-    };
+    }, [setPriceRange]);
 
     const filterApply = () => {
         dispatch(setFilters({ key: "dietaries", data: dietaryListState.filter((d) => d.checked === true).map(d => d.id) }));
 
         dispatch(setFilters({ key: "cuisine", data: cuisineListState.filter((d) => d.checked === true).map(d => d.id) }));
 
-        dispatch(setFilters({ key: "popularItems", data: papularItemList.filter((d) => d.checked === true).map(d => d.id) }));
+        dispatch(setFilters({ key: "popularItems", data: popularItemList.filter((d) => d.checked === true).map(d => d.id) }));
 
         dispatch(setPriceRangeFilter({ "minValue": priceRangeState[0], "maxValue": priceRangeState[1] }));
 
@@ -118,7 +116,7 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
         if (!PapularItemLoaded) {
             dispatch(fetchPopularItems());
         } else {
-            setPapularItemList(PapularItems.map((d: any) => { return { ...d, "checked": filterList['popularItems'].includes(d.id) ? true : false } }))
+            setPopularItemList(PapularItems.map((d: any) => { return { ...d, "checked": filterList['popularItems'].includes(d.id) ? true : false } }))
         }
     }, [PapularItemLoaded])
 
@@ -158,7 +156,10 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
                                 <Text style={styles.headingFilterText}>popular items</Text>
 
                                 <View style={{ marginTop: VP(14) }}>
-                                    <PopularItemsSection items={papularItemList} clickHandler={setPopularItemChecked} />
+                                    <PopularItemsSection
+                                        items={popularItemList}
+                                        clickHandler={setPopularItemChecked}
+                                    />
                                 </View>
                             </View>
 
@@ -169,7 +170,14 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
                                 <Text style={styles.headingFilterText}>dietary preferences</Text>
 
                                 <View style={{ marginTop: VP(17) }}>
-                                    <DietaryPreferencesSection items={dietaryListState} clickHandler={setDietaryChecked} checkboxContainerStyle={styles.checkboxContainer} checkboxStyle={styles.checkbox} labelStyle={styles.dietaryText} checkedBoxStyle={styles.checkedBox} />
+                                    <DietaryPreferencesSection
+                                        items={dietaryListState}
+                                        clickHandler={setDietaryChecked}
+                                        checkboxContainerStyle={styles.checkboxContainer}
+                                        checkboxStyle={styles.checkbox}
+                                        labelStyle={styles.dietaryText}
+                                        checkedBoxStyle={styles.checkedBox}
+                                    />
                                 </View>
                             </View>
 
@@ -180,7 +188,14 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
                                 <Text style={styles.headingFilterText}>cuisine</Text>
 
                                 <View style={{ marginTop: VP(17) }}>
-                                    <CuisineSection items={cuisineListState} clickHandler={setCuisineChecked} checkboxContainerStyle={styles.checkboxContainer} checkboxStyle={styles.checkbox} labelStyle={styles.dietaryText} checkedBoxStyle={styles.checkedBox} />
+                                    <CuisineSection
+                                        items={cuisineListState}
+                                        clickHandler={setCuisineChecked}
+                                        checkboxContainerStyle={styles.checkboxContainer}
+                                        checkboxStyle={styles.checkbox}
+                                        labelStyle={styles.dietaryText}
+                                        checkedBoxStyle={styles.checkedBox}
+                                    />
                                 </View>
                             </View>
 
@@ -188,7 +203,10 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
 
                             {/* price range */}
                             <View style={{ paddingHorizontal: HP(24) }}>
-                                <PriceRangeSection headingTextStyle={styles.headingFilterText} onRangeChange={onRangeChange} />
+                                <PriceRangeSection
+                                    headingTextStyle={styles.headingFilterText}
+                                    onRangeChange={onRangeChange}
+                                />
                             </View>
 
                         </ScrollView>

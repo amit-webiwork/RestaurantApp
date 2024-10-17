@@ -37,12 +37,9 @@ const CategortyTabs: React.FunctionComponent<Props> = ({ setSelectedCategory, se
     const CategoryLoaded = useSelector(categoryLoaded);
     const CategoryList = useSelector(categoryList);
 
-    // const [selected, setSelected] = useState(0);
-
-    const handleSelect = (item: { id: number; }) => {
+    const handleSelect = useCallback((item: { id: number }) => {
         setSelectedCategory(item.id);
-        // setSelected(item.id);
-    };
+    }, [setSelectedCategory]);
 
     const getItemLayout = (data: any, index: number) => ({
         length: 40,

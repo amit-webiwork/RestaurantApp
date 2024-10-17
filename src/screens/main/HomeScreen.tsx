@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView, BackHandler, Alert } from 'react-native';
+import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,12 +7,10 @@ import { FS, HP, VP } from '../../utils/Responsive.ts';
 import { COLORS, errorMessage } from '../../utils/Constants.ts';
 import { TextStyles } from '../../utils/TextStyles.ts';
 import { ButtonSection as Button } from '../../components/Button.tsx';
-import SearchBoxSection from '../../components/home-sections/SearchBox.tsx';
 import CategoryBoxSection from '../../components/home-sections/CategoryBox.tsx';
 import PromotionalBoxSection from '../../components/home-sections/PromotionalBox.tsx';
 import CategortyTabsSection from '../../components/home-sections/CategortyTabs.tsx';
 import BannerOneSection from '../../components/home-sections/BannerOne.tsx';
-import FeatureCategoryBoxSection from '../../components/home-sections/FeatureCategoryBox.tsx';
 import BannerTwoSection from '../../components/home-sections/BannerTwo.tsx';
 import ItemVerticalBoxSection from '../../components/home-sections/ItemVerticalBox.tsx';
 import Icon, { Icons } from '../../components/Icons';
@@ -21,16 +19,12 @@ import HeadingSection from '../../components/Heading.tsx';
 import { fetchPopularItems, getFeaturedCategory, papularItemLoaded, papularItems } from '../../redux/features/items.ts';
 import { AppDispatch } from '../../redux/store.ts';
 import Right from '../../assets/svgs/right.svg';
-import { globalStyle } from '../../utils/GlobalStyle.ts';
 import { proflieDetails } from '../../redux/features/profile.ts';
 import CuisineBox from '../../components/home-sections/CuisineBox.tsx';
 import SearchBoxItemsSection from '../../components/home-sections/SearchBoxItems.tsx';
 import { askInitialPermission } from '../../utils/Permissions.ts';
-import { showFadeAlert } from '../../utils/Alert.ts';
 import { setDialogContent } from '../../redux/features/customDialog.ts';
 import Warning from '../../assets/svgs/warning.svg';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { loadStorage } from '../../utils/Storage.ts';
 
 function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();

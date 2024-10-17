@@ -22,8 +22,7 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
 
     const CategoryLoaded = useSelector(categoryLoaded);
     const CategoryList = useSelector(categoryList);
-
-    const [searchText, setSearchText] = useState<any>("");
+    
     const [categoryListFiltered, setCategoryListFiltered] = useState<any[]>();
 
     useEffect(() => {

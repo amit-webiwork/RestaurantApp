@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -24,9 +24,9 @@ const SearchBoxItems: React.FunctionComponent<Props> = ({ inputContainerStyle, n
     const [text, setText] = useState<any>("");
     const [error, setError] = useState({ status: false, text: "" });
 
-    const setTextHandler = (e: any) => {
+    const setTextHandler = useCallback((e: any) => {
         setText(e);
-    }
+    }, [setText]);
 
     const openSearchScreen = () => {
         Keyboard.dismiss()

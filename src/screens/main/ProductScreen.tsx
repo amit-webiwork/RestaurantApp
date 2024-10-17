@@ -45,9 +45,9 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
     const [itemDetails, setItemDetails] = useState<any>({});
 
-    const setInstructionTextHandler = (e: string) => {
+    const setInstructionTextHandler = useCallback((e: string) => {
         setInstructionText(e);
-    }
+    }, [setInstructionText]);
 
     const selectCategoryHandler = useCallback((id: number) => {
         setSelectedCategory(id);
@@ -80,8 +80,13 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
         }
     }, [id]);
 
-    const incrementCart = () => setCartQuantity(prevQty => prevQty + 1);
-    const decrementCart = () => setCartQuantity(prevQty => (prevQty > 1 ? prevQty - 1 : 1));
+    const incrementCart = useCallback(() => {
+        setCartQuantity(prevQty => prevQty + 1);
+    }, [setCartQuantity]);
+
+    const decrementCart = useCallback(() => {
+        setCartQuantity(prevQty => (prevQty > 1 ? prevQty - 1 : 1));
+    }, [setCartQuantity]);
 
     const imageHeight = scrollY.interpolate({
         inputRange: [0, 300], // Adjust the second value to control how quickly the image scales
@@ -178,7 +183,9 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         <Text style={styles.requestText}>Add a cooking request (optional)</Text>
 
                                         <View style={{ marginTop: VP(14) }}>
-                                            <CookingRequestSection setHandler={setInstructionTextHandler} />
+                                            <CookingRequestSection 
+                                              setHandler={setInstructionTextHandler}
+                                            />
                                         </View>
                                     </View> */}
 
@@ -194,7 +201,12 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                                     <Text style={{ ...TextStyles.RALEWAY_BOLD, fontSize: 20, color: COLORS.WHITE }}>${itemDetails?.finalPrice.toFixed(2)}</Text>
                                                 </View>
 
-                                                <CartQtyButtonV1Section decrement={decrementCart} qty={cartQuantity} setQty={setCartQuantity} increment={incrementCart} />
+                                                <CartQtyButtonV1Section
+                                                    decrement={decrementCart}
+                                                    qty={cartQuantity}
+                                                    setQty={setCartQuantity}
+                                                    increment={incrementCart}
+                                                />
 
                                                 <TouchableOpacity
                                                     onPress={() => addToCart(itemDetails, cartQuantity, dispatch)}

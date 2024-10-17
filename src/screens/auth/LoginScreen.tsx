@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ScrollView, TouchableOpacity, View, Text, StyleSheet, Keyboard } from 'react-native';
 import axios from 'axios';
@@ -35,10 +35,10 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
     const [error, setError] = useState(errorObj);
     const [loading, setLoading] = useState(false);
 
-    const handlePasswordHide = () => {
+    const handlePasswordHide = useCallback(() => {
         Keyboard.dismiss();
-        setPasswordHide((pre) => !pre)
-    }
+        setPasswordHide((prev) => !prev);
+    }, [setPasswordHide]);
 
     const handleOnPress = async () => {
         try {
