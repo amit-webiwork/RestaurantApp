@@ -23,6 +23,8 @@ import Warning from '../../assets/svgs/warning.svg';
 import CheckmarkWithConfetti from '../../components/CheckmarkWithConfetti';
 import CustomActionDialogComp from '../../components/dialogs/CustomActionDialog';
 import { deleteOrder } from '../../utils/ApiCall';
+import { getReorderItems } from '../../utils/helper/OrderHelper';
+import { recoverCart } from '../../redux/features/cart';
 
 const titleDelete = `Confirm Delete`;
 const messageDelete = `Are you sure you want to delete this order?`;
@@ -112,6 +114,24 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
         } catch (error: any) {
             dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
         } finally {
+            setLoading(false);
+        }
+    }
+
+    const reOrderHandler = async () => {
+        // here we will fetch item details from item api
+        setLoading(true);
+        try {
+            const cartItems = await getReorderItems(orderData);
+
+            if (cartItems.length && cartItems.length > 0) {
+                dispatch(recoverCart(cartItems));
+
+                setTimeout(() => {
+                    navigation.navigate(`CartScreen`);
+                }, 100)
+            }
+        } catch (err) {
             setLoading(false);
         }
     }
@@ -286,7 +306,7 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                 {/* Reorder button */}
                                 <Button
                                     text={'Reorder'}
-                                    onPress={() => void (0)}
+                                    onPress={reOrderHandler}
                                     textStyle={styles.buttonStyle}
                                     isLoading={false}
                                     activeButtonText={{ opacity: .65 }}

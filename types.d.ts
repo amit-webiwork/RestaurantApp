@@ -6,6 +6,9 @@ interface CartItemDetails {
     qty: number;
     finalPrice: number;
     isAvailable?: boolean;
+    discountPrice: number;
+    itemPrice: number;
+    discountPercent: number;
 }
 
 interface ItemDetails {

@@ -13,9 +13,12 @@ import { TextStyles } from '../../utils/TextStyles';
 import { COLORS } from '../../utils/Constants';
 import Icon, { Icons } from '../Icons';
 import { ButtonSection as Button } from '../Button';
-import { getOrderComponents } from '../../utils/helper/OrderHelper';
+import { getOrderComponents, getReorderItems } from '../../utils/helper/OrderHelper';
 import CustomActionDialogComp from '../dialogs/CustomActionDialog';
 import { globalStyle } from '../../utils/GlobalStyle';
+import { AppDispatch } from '../../redux/store';
+import { useDispatch } from 'react-redux';
+import { recoverCart } from '../../redux/features/cart';
 
 const titleDelete = `Confirm Delete`;
 const messageDelete = `Are you sure you want to delete this order?`;
@@ -25,9 +28,12 @@ interface Props {
     index: number;
     navigation: any;
     deleteHandler: any;
+    setLoader: any;
 }
 
-const PastOrderItem = ({ item, index, navigation, deleteHandler }: Props) => {
+const PastOrderItem = ({ item, index, navigation, deleteHandler, setLoader }: Props) => {
+    const dispatch: AppDispatch = useDispatch();
+
     const orderData = getOrderComponents(item);
 
     const [menuVisible, setMenuVisible] = useState(false);
@@ -42,8 +48,22 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler }: Props) => {
         setOrderDeleteDialogVisible(false);
     }
 
-    const reorderHandler = () => {
+    const reOrderHandler = async () => {
+        // here we will fetch item details from item api
+        setLoader(true);
+        try {
+            const cartItems = await getReorderItems(orderData);
 
+            if (cartItems.length && cartItems.length > 0) {
+                dispatch(recoverCart(cartItems));
+
+                setTimeout(() => {
+                    navigation.navigate(`CartScreen`);
+                }, 100)
+            }
+        } catch (err) {
+            setLoader(false);
+        }
     }
 
     return (
@@ -147,20 +167,21 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler }: Props) => {
                         <Text style={styles.priceText}> ${orderData?.finalAmount} </Text>
                         <Text style={styles.statusText}> {orderData?.orderStatus} </Text>
                     </View>
-
-                    <View style={{ width: "50%", alignItems: "flex-end", alignSelf: "flex-end" }}>
-                        <Button
-                            text={`reorder`}
-                            onPress={reorderHandler}
-                            textStyle={styles.buttonStyle}
-                            isLoading={false}
-                            activeButtonText={{ opacity: .65 }}
-                            mainContainerStyle={{ borderRadius: HP(4.14) }}
-                            LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
-                            contentContainerStyle={{ top: -2 }}
-                            style={{ width: FS(109), height: VP(26.22) }}
-                        />
-                    </View>
+                    {orderData?.orderItems && Array.isArray(orderData?.orderItems) && orderData?.orderItems.length > 0 && (
+                        <View style={{ width: "50%", alignItems: "flex-end", alignSelf: "flex-end" }}>
+                            <Button
+                                text={`reorder`}
+                                onPress={reOrderHandler}
+                                textStyle={styles.buttonStyle}
+                                isLoading={false}
+                                activeButtonText={{ opacity: .65 }}
+                                mainContainerStyle={{ borderRadius: HP(4.14) }}
+                                LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
+                                contentContainerStyle={{ top: -2 }}
+                                style={{ width: FS(109), height: VP(26.22) }}
+                            />
+                        </View>
+                    )}
                 </View>
             </View>
         </>

@@ -101,7 +101,8 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
             const savedCartItems = await loadStorage('cartItems');
 
-            // console.log(dataPayload, savedCartItems, '-----savedCartItems')
+            // console.log(JSON.stringify(dataPayload), '-----dataPayload');
+            // console.log(JSON.stringify(savedCartItems), '-----savedCartItems')
 
             const areArraysEqual = cartComparison(dataPayload, savedCartItems);
 

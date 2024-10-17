@@ -4,12 +4,12 @@ export const getItemPriceComponents = (item: ItemDetails) => {
 
     const discountPrice = +discount_price || 0;
     const itemPrice = +price || 0;
-    const discountPercent = (itemPrice > 0 && discountPrice > 0) ? (((itemPrice - discountPrice) / itemPrice) * 100) : 0;
+    const discountPercent = ((itemPrice > 0 && discountPrice > 0) ? (((itemPrice - discountPrice) / itemPrice) * 100) : 0).toFixed(2);
 
     itemData['finalPrice'] = discountPrice > 0 ? discountPrice : itemPrice;
     itemData['discountPrice'] = discountPrice;
     itemData['itemPrice'] = itemPrice;
-    itemData['discountPercent'] = discountPercent;
+    itemData['discountPercent'] = +discountPercent || 0;
     itemData['totalDiscounted'] = itemPrice - discountPrice;
 
     return itemData;
