@@ -15,6 +15,7 @@ import MenuScreen from '../screens/main/menu/MenuScreen';
 import PopularMenuScreen from '../screens/main/menu/PopularMenuScreen';
 import MenuScreenV2 from '../screens/main/menu/MenuScreenV2';
 import SearchScreen from '../screens/main/SearchScreen';
+import CouponScreen from '../screens/main/CouponScreen';
 
 export type MainTabParamList = {
     HomeScreen: undefined;
@@ -32,6 +33,7 @@ export type MainTabParamList = {
     PopularMenuScreen: undefined;
     MenuScreenV2: undefined;
     SearchScreen: undefined;
+    CouponScreen: undefined;
 };
 
 const MainTabNavigator: React.FunctionComponent = () => {
@@ -88,10 +90,10 @@ const MainTabNavigator: React.FunctionComponent = () => {
                 name={`PopularMenuScreen`}
                 component={PopularMenuScreen}
             />
-            {/* <Stack.Screen
-                name={`SearchScreen`}
-                component={SearchScreen}
-            /> */}
+            <Stack.Screen
+                name={`CouponScreen`}
+                component={CouponScreen}
+            />
 
             <Stack.Group screenOptions={{
                 presentation: 'transparentModal',

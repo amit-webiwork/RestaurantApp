@@ -262,7 +262,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                             </TouchableOpacity>
 
                                             <TouchableOpacity
-                                                onPress={() => void (0)}
+                                                onPress={() => navigation.navigate(`CouponScreen`)}
                                             >
                                                 <Text style={styles.link}>apply</Text>
                                             </TouchableOpacity>
