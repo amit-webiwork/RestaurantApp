@@ -12,7 +12,7 @@ import CartLayout from '../../../components/cart/CartLayout';
 import { getItemList } from '../../../utils/ApiCall';
 import FilterBoxSection from '../../../components/items/FilterBoxSection';
 import { useDispatch, useSelector } from 'react-redux';
-import { cuisineList, cuisineLoaded, fetchCuisine, getFilters, priceRangeFilter, resetFilter, setCuisineList, setFilters } from '../../../redux/features/items';
+import { cuisineList, cuisineLoaded, fetchCuisine, getFilters, priceRangeFilter, setCuisineList, setFilters } from '../../../redux/features/items';
 import FilterAppliedTabs from '../../../components/items/FilterAppliedTabs';
 import CategoryBox from '../../../components/item-filters/CategoryBox';
 import { AppDispatch } from '../../../redux/store';

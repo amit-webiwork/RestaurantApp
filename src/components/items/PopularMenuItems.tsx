@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -6,18 +6,15 @@ import {
     Text,
     FlatList,
     ImageBackground,
-    ScrollView,
     Dimensions,
-    Image
+    ActivityIndicator
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive';
 import { CDN_URL, COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-import { fetchItems, itemLoaded } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
-import MenuItemLoaderSection from '../skeleton/MenuItemLoader';
 import { addToCart } from '../../utils/helper/CartHelper';
 import { getItemPriceComponents } from '../../utils/helper/ItemHelper';
 import { globalStyle } from '../../utils/GlobalStyle';
@@ -26,11 +23,29 @@ interface Props {
     data: any[];
     dataLoaded: boolean;
     navigation: any;
+    loadMore: any;
+    hasMoreData: boolean;
+    HeaderComponent: any;
+    name: string;
 }
 
 const { width, height } = Dimensions.get('window');
 
-const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation }) => {
+const FooterComponent = ({ dataLoaded, hasMoreData }: { dataLoaded: boolean, hasMoreData: boolean }) => {
+    return (
+        <>
+            {(dataLoaded) ? <View style={{ flex: 1, height: height * .5,  justifyContent: "center" }}>
+                <ActivityIndicator size="large" color={COLORS.BUTTON} /></View> : null}
+            {!hasMoreData && (
+                <View style={{ marginTop: VP(41), marginBottom: VP(151) }}>
+                    <Text style={styles.highlightedText}>"Indulge your cravings."</Text>
+                </View>
+            )}
+        </>
+    )
+}
+
+const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation, loadMore, hasMoreData, HeaderComponent, name }) => {
     const dispatch: AppDispatch = useDispatch();
 
     const BoxItems = ({ itemData, index }: { itemData: any, index: number }) => {
@@ -95,31 +110,37 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
 
     return (
         <View>
-            {!dataLoaded ? (
-                <FlatList
-                    numColumns={2}
-                    data={data}
-                    renderItem={({ item, index }) => <BoxItems itemData={item} index={index} />}
-                    contentContainerStyle={{
-                        paddingHorizontal: HP(1.5)
-                    }}
-                    columnWrapperStyle={{
-                        justifyContent: 'space-between'
-                    }}
-                    scrollEnabled={false}
-                />
-            ) : (
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <MenuItemLoaderSection />
-                </ScrollView>
-            )}
+            <FlatList
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
+                data={data}
+                renderItem={({ item, index }) => <BoxItems itemData={item} index={index} />}
+                contentContainerStyle={{
+                    paddingHorizontal: HP(1.5),
+                    marginTop: VP(27),
+                }}
+                columnWrapperStyle={{
+                    justifyContent: 'space-between',
+                    marginTop: VP(18.66),
+                    paddingHorizontal: HP(15)
+                }}
+                scrollEnabled={true}
+                onEndReached={loadMore}
+                onEndReachedThreshold={.5}
+                ListHeaderComponent={
+                    <HeaderComponent
+                        name={name}
+                    />
+                }
+                ListFooterComponent={<FooterComponent dataLoaded={dataLoaded} hasMoreData={hasMoreData} />}
+            />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     boxContainer: {
-        marginBottom: HP(20),
+        marginBottom: HP(10),
         paddingHorizontal: HP(0.75),
         width: (width / 2) - HP(23.25),
         marginHorizontal: HP(3), // Space between items horizontally
@@ -201,6 +222,13 @@ const styles = StyleSheet.create({
         color: COLORS.BUTTON,
         textTransform: "capitalize"
     },
+    highlightedText: {
+        ...TextStyles.POPPINS_BOLD,
+        fontSize: HP(40),
+        color: "#898989",
+        lineHeight: HP(47),
+        textAlign: "center"
+    }
 });
 
 const PopularMenuItemsSection = memo(PopularMenuItems);

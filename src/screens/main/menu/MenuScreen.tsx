@@ -25,6 +25,8 @@ interface HeaderProps {
     navigation: any;
 }
 
+const limit = 10;
+
 const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading, navigation }: HeaderProps) => {
     return (
         <>
@@ -70,7 +72,7 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
     const [itemList, setItemList] = useState<any[]>([]);
     const [loader, setLoader] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
-    const [hasMoreData, setHasMoreData] = useState<boolean>(true); // To track if there's more data to load
+    const [hasMoreData, setHasMoreData] = useState<boolean>(true);
 
     const [filterState, setFilterState] = useState<any>({});
     const [priceRangeFilterState, setPriceRangeFilterState] = useState<any>({});
@@ -103,8 +105,7 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
             const popularItemParams = { itemIds: filterList['popularItems'].length > 0 ? filterList['popularItems'] : '' }
 
             const params = { ...categoryParams, ...dietaryParams, ...cuisineParams, ...priceParams, ...popularItemParams };
-
-            const limit = 10;
+            
             const offset = (page - 1) * limit;
 
             const response = await getItemList(params, limit, offset);
