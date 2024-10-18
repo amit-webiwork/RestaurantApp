@@ -90,7 +90,7 @@ function OrderScreen({ route, navigation }: { route: any; navigation: any }): Re
 
                     <View>
                         {/* Orders section */}
-                        <View style={{ marginTop: VP(27), paddingHorizontal: HP(19), marginBottom: VP(27) }}>
+                        <View style={{ marginTop: VP(27), paddingHorizontal: HP(19), marginBottom: VP(0) }}>
                             {activeTab === 1 && (
                                 <ActiveOrderTabSection
                                     HeaderComponent={OrderTabs}

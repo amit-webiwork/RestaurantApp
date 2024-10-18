@@ -15,7 +15,9 @@ import MenuScreen from '../screens/main/menu/MenuScreen';
 import PopularMenuScreen from '../screens/main/menu/PopularMenuScreen';
 import MenuScreenV2 from '../screens/main/menu/MenuScreenV2';
 import SearchScreen from '../screens/main/SearchScreen';
-import CouponScreen from '../screens/main/CouponScreen';
+import CouponScreen from '../screens/main/cart/CouponScreen';
+import PaymentScreen from '../screens/main/cart/PaymentScreen';
+import OrderScreen from '../screens/main/OrderScreen';
 
 export type MainTabParamList = {
     HomeScreen: undefined;
@@ -34,6 +36,8 @@ export type MainTabParamList = {
     MenuScreenV2: undefined;
     SearchScreen: undefined;
     CouponScreen: undefined;
+    PaymentScreen: undefined;
+    OrderScreen: undefined;
 };
 
 const MainTabNavigator: React.FunctionComponent = () => {
@@ -94,7 +98,14 @@ const MainTabNavigator: React.FunctionComponent = () => {
                 name={`CouponScreen`}
                 component={CouponScreen}
             />
-
+            <Stack.Screen
+                name={`PaymentScreen`}
+                component={PaymentScreen}
+            />
+            <Stack.Screen
+                name={`OrderScreen`}
+                component={OrderScreen}
+            />
             <Stack.Group screenOptions={{
                 presentation: 'transparentModal',
                 animation: 'slide_from_bottom',   // Slide from bottom animation

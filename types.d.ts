@@ -30,3 +30,19 @@ interface ItemDetails {
     qty?: number;
     itemId?: number;
 }
+
+interface CouponDetails {
+    id: number;
+    couponCode: string;
+    description: string;
+    discountType: 'fixed' | 'percent';
+    discountValue: string;
+    startDate: string;
+    endDate: string;
+    minOrderAmount: number;
+    maxAppliedAmount: number;
+    couponBottomInfo?: string;
+    couponTopInfo?: string;
+    moreRequireForApply?: number;
+    calculateApplyDiscount?: number;
+}

@@ -167,4 +167,18 @@ const deleteOrder = async (orderId: number) => {
     });
 }
 
-export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder };
+const getCouponList = async (params = {}) => {
+    try {
+        const paramData = new URLSearchParams({ ...params });
+
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.couponList}?${paramData}`);
+
+        return res.data;
+    } catch (error: any) {
+        const { response } = error;
+        const message = response?.data?.message || error?.message || "Unknown error";
+        throw new Error(message);
+    }
+};
+
+export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder, getCouponList };

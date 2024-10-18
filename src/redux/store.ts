@@ -4,6 +4,7 @@ import profileSlice from './features/profile';
 import dialogSlice from './features/customDialog'
 import itemSlice from './features/items'
 import cartSlice from './features/cart'
+import couponSlice from './features/coupon'
 
 const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
         customDialog: dialogSlice,
         items: itemSlice,
         cart: cartSlice,
+        coupon: couponSlice
     }
 })
 

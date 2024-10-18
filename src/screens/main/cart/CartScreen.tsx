@@ -25,6 +25,8 @@ import { loadStorage } from '../../../utils/Storage';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import CartScreenLoader from '../../../components/skeleton/CartScreenLoader';
+import { appliedCouponId, couponDiscount, couponList, couponLoaded, fetchCoupons } from '../../../redux/features/coupon';
+import { couponCalculationHandler } from '../../../utils/helper/CouponHelper';
 
 function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
@@ -34,12 +36,17 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const PapularItems = useSelector(papularItems);
     const GetCartTotal = useSelector(getCartTotal);
     const CartLoading = useSelector(cartLoading);
+    const CouponList = useSelector(couponList);
+    const CouponLoaded = useSelector(couponLoaded);
+    const AppliedCouponId = useSelector(appliedCouponId);
+    const CouponDiscount = useSelector(couponDiscount);
 
     const [cookingRequestShow, setCookingRequestShow] = useState(false);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [instructionText, setInstructionTextState] = useState<string>("");
     const [loading, setLoading] = useState(false);
+    const [couponChangesLoading, setCouponChangesLoading] = useState(false);
 
     const setInstructionTextHandler = useCallback((e: string) => {
         setInstructionTextState(e);
@@ -115,7 +122,8 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                     // now call order API
                     const dataPayload = {
                         extraNote: instructionText,
-                        items: savedCartItems.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } })
+                        items: savedCartItems.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } }),
+                        couponId: AppliedCouponId
                     };
 
                     const response: any = await orderSubmit(dataPayload);
@@ -142,6 +150,15 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
         }
     }, [PapularItemLoaded])
 
+    useEffect(() => {
+        if (!CouponLoaded) {
+            dispatch(fetchCoupons());
+        }
+    }, [CouponLoaded])
+
+    useEffect(() => {
+        couponCalculationHandler(GetCartTotal, setCouponChangesLoading, dispatch);
+    }, [GetCartTotal, dispatch, setCouponChangesLoading])
 
     // useEffect(() => {
     //     const backAction = () => {
@@ -167,7 +184,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
-            <NormalLoader visible={loading || CartLoading} />
+            <NormalLoader visible={loading || CartLoading || couponChangesLoading} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20) }}>
@@ -248,7 +265,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             </View>
 
                             {/* Second section Promo Code */}
-                            {CartItemList.length > 0 && (
+                            {(CartItemList.length > 0 && CouponList.length > 0) && (
                                 <View style={{ marginTop: VP(28), marginHorizontal: HP(20) }}>
                                     <Text style={styles.heading}>Promo Code</Text>
 
@@ -258,14 +275,25 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                                 onPress={() => void (0)}
                                                 style={{}}
                                             >
-                                                <Text style={[styles.linkText, { color: COLORS.BLACK }]}>view all coupons</Text>
+                                                {AppliedCouponId > 0 ? (<Text style={styles.couponText}>{(CouponList.find(d => d.id === AppliedCouponId)?.couponCode)}</Text>) : (
+                                                    <Text style={[styles.linkText, { color: COLORS.BLACK }]}>view all coupons</Text>
+                                                )}
                                             </TouchableOpacity>
 
-                                            <TouchableOpacity
-                                                onPress={() => navigation.navigate(`CouponScreen`)}
-                                            >
-                                                <Text style={styles.link}>apply</Text>
-                                            </TouchableOpacity>
+                                            {AppliedCouponId > 0 ? (
+                                                <TouchableOpacity
+                                                    onPress={() => navigation.navigate(`CouponScreen`)}
+                                                >
+                                                    <Text style={styles.link}>Change</Text>
+                                                </TouchableOpacity>
+                                            ) : (
+                                                <TouchableOpacity
+                                                    onPress={() => navigation.navigate(`CouponScreen`)}
+                                                >
+                                                    <Text style={styles.link}>apply</Text>
+                                                </TouchableOpacity>
+                                            )}
+
                                         </View>
                                     </View>
                                 </View>
@@ -287,7 +315,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                                                 <Text style={[styles.link, { color: "#767676" }]}>discount</Text>
 
-                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>$0.00</Text>
+                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${CouponDiscount.toFixed(2)}</Text>
                                             </View>
 
                                             <View style={styles.line}></View>
@@ -295,7 +323,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: VP(3.91) }}>
                                                 <Text style={[styles.link, { color: COLORS.BLACK }]}>total</Text>
 
-                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${GetCartTotal.toFixed(2)}</Text>
+                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${(GetCartTotal - CouponDiscount).toFixed(2)}</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -365,6 +393,10 @@ const styles = StyleSheet.create({
         textTransform: "capitalize",
         textAlign: "center",
         flex: 1
+    },
+    couponText: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 14
     },
     linkText: {
         ...TextStyles.RALEWAY_MEDIUM,

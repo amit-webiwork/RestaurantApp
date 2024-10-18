@@ -11,12 +11,20 @@ import {
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
 import { COLORS } from '../../utils/Constants';
+import { getCouponComponents } from '../../utils/helper/CouponHelper';
 
 interface Props {
-    data: any;
+    data: CouponDetails;
+    total: number;
+    applyHandler: (arg: CouponDetails) => void;
 }
 
-const CouponItem: React.FunctionComponent<Props> = ({ data }) => {
+const CouponItem: React.FunctionComponent<Props> = ({ data, total, applyHandler }) => {
+    const couponData = getCouponComponents(data, total);
+
+    const couponApply = () => {
+        applyHandler(couponData);
+    }
 
     return (
         <View style={styles.boxContainer}>
@@ -28,22 +36,23 @@ const CouponItem: React.FunctionComponent<Props> = ({ data }) => {
             </View>
             <View style={styles.boxSubContainer}>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <Text style={styles.title}>AXIS120</Text>
-                    <TouchableOpacity
-                        onPress={() => void (0)}
-                        style={{}}
-                    >
-                        <Text style={styles.link}>apply</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.title}>{couponData?.couponCode}</Text>
+                    {(couponData?.moreRequireForApply ?? 0) === 0 && (
+                        <TouchableOpacity
+                            onPress={couponApply}
+                        >
+                            <Text style={styles.link}>apply</Text>
+                        </TouchableOpacity>
+                    )}
                 </View>
                 <View>
-                    <Text style={styles.subTitle}>add $260 more to avail this offer</Text>
+                    <Text style={styles.subTitle}>{couponData?.couponTopInfo}</Text>
 
-                    <Text style={styles.info}>get flat &120 discount using axis bank MY ZONE credit cards</Text>
+                    <Text style={styles.info}>{data.description}</Text>
 
                     <Image source={require(`../../assets/images/line.png`)} style={{ height: VP(1), width: "100%", marginTop: VP(14) }} />
 
-                    <Text style={styles.bottomInfo}>flat $120 discount on orders above $700</Text>
+                    <Text style={styles.bottomInfo}>{couponData?.couponBottomInfo}</Text>
                 </View>
             </View>
         </View>
@@ -92,14 +101,12 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_SEMI_BOLD,
         color: "#7E7E7E",
         fontSize: 16,
-        textTransform: "capitalize",
         marginTop: VP(6)
     },
     info: {
         ...TextStyles.RALEWAY_MEDIUM,
         color: "#8E8F91",
         fontSize: 14,
-        textTransform: "capitalize",
         marginTop: VP(20)
     },
     bottomInfo: {
