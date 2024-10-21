@@ -41,26 +41,27 @@ function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element 
     }, [PapularItemLoaded])
 
     const handleClick = async () => {
-        setLoading(true);
-        try {
-            // now call order API
-            const dataPayload = {
-                extraNote: InstructionText,
-                items: CartItemList.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } })
-            };
+        navigation.navigate(`CartScreen`);
+        // setLoading(true);
+        // try {
+        //     // now call order API
+        //     const dataPayload = {
+        //         extraNote: InstructionText,
+        //         items: CartItemList.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } })
+        //     };
 
-            const response: any = await orderSubmit(dataPayload);
+        //     const response: any = await orderSubmit(dataPayload);
 
-            navigation.navigate(`OrderPlacedScreen`, {
-                ...response.data
-            })
+        //     navigation.navigate(`OrderPlacedScreen`, {
+        //         ...response.data
+        //     })
 
-            setLoading(false);
-        } catch (err: any) {
-            setLoading(false);
-            console.log(err?.message, '---err');
-            dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || err?.message || errorMessage?.commonMessage }));
-        }
+        //     setLoading(false);
+        // } catch (err: any) {
+        //     setLoading(false);
+        //     console.log(err?.message, '---err');
+        //     dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || err?.message || errorMessage?.commonMessage }));
+        // }
     }
 
     return (

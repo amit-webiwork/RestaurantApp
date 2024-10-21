@@ -47,6 +47,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [instructionText, setInstructionTextState] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [couponChangesLoading, setCouponChangesLoading] = useState(false);
+    const [couponCalculationRun, setCouponCalculationRun] = useState(0);
 
     const setInstructionTextHandler = useCallback((e: string) => {
         setInstructionTextState(e);
@@ -113,24 +114,29 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
             const areArraysEqual = cartComparison(dataPayload, savedCartItems);
 
+            setCouponCalculationRun(pre => ++pre);
+
             if (!areArraysEqual) {
                 dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.cartUpdate }));
             } else {
                 if (type === `CartMenuScreen`) {
-                    navigation.navigate(type);
+                    // navigation.navigate(type);
+                    navigation.navigate(`OrderSummaryScreen`);
                 } else {
                     // now call order API
-                    const dataPayload = {
-                        extraNote: instructionText,
-                        items: savedCartItems.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } }),
-                        couponId: AppliedCouponId
-                    };
+                    // const dataPayload = {
+                    //     extraNote: instructionText,
+                    //     items: savedCartItems.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } }),
+                    //     couponId: AppliedCouponId
+                    // };
 
-                    const response: any = await orderSubmit(dataPayload);
+                    // const response: any = await orderSubmit(dataPayload);
 
-                    navigation.navigate(`OrderPlacedScreen`, {
-                        ...response.data
-                    })
+                    // navigation.navigate(`OrderPlacedScreen`, {
+                    //     ...response.data
+                    // })
+
+                    navigation.navigate(`OrderSummaryScreen`);
                 }
             }
 
@@ -157,21 +163,9 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     }, [CouponLoaded])
 
     useEffect(() => {
-        couponCalculationHandler(GetCartTotal, setCouponChangesLoading, dispatch);
-    }, [GetCartTotal, dispatch, setCouponChangesLoading])
-
-    // useEffect(() => {
-    //     const backAction = () => {
-    //         navigation.navigate('HomeScreen');
-    //         return true; // Prevent default back button behavior
-    //     };
-
-    //     // Add event listener for hardware back button
-    //     const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
-
-    //     // Cleanup the event listener when component unmounts
-    //     return () => backHandler.remove();
-    // }, [navigation]);
+        if (!loading)
+            couponCalculationHandler(GetCartTotal, setCouponChangesLoading, dispatch);
+    }, [GetCartTotal, dispatch, setCouponChangesLoading, loading, couponCalculationRun])
 
     if (loading) {
         return (
@@ -223,7 +217,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 {/* add more items */}
                                 <View style={styles.textBox}>
                                     <TouchableOpacity
-                                        onPress={() => navigation.navigate(`PaymentScreen`)}
+                                        onPress={() => navigation.navigate(`CartMenuScreen`)}
                                         style={{}}
                                     >
                                         <Text style={styles.linkText}>add more items</Text>
@@ -271,14 +265,9 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                                     <View style={{ marginTop: VP(14), backgroundColor: COLORS.WHITE, borderRadius: HP(14) }}>
                                         <View style={styles.textBox}>
-                                            <TouchableOpacity
-                                                onPress={() => void (0)}
-                                                style={{}}
-                                            >
-                                                {AppliedCouponId > 0 ? (<Text style={styles.couponText}>{(CouponList.find(d => d.id === AppliedCouponId)?.couponCode)}</Text>) : (
-                                                    <Text style={[styles.linkText, { color: COLORS.BLACK }]}>view all coupons</Text>
-                                                )}
-                                            </TouchableOpacity>
+                                            {AppliedCouponId > 0 ? (<Text style={styles.couponText}>{(CouponList.find(d => d.id === AppliedCouponId)?.couponCode)}</Text>) : (
+                                                <Text style={[styles.linkText, { color: COLORS.BLACK }]}>view all coupons</Text>
+                                            )}
 
                                             {AppliedCouponId > 0 ? (
                                                 <TouchableOpacity
@@ -359,15 +348,16 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             <Button
                                 text={'continue'}
                                 onPress={() => handleClick(`CartMenuScreen`)}
-                                textStyle={styles.buttonStyle1}
+                                textStyle={[styles.buttonStyle2]}
                                 isLoading={loading}
                                 activeButtonText={{ opacity: .65 }}
                                 mainContainerStyle={{ flex: 1, borderColor: COLORS.BUTTON, borderWidth: 1, borderRadius: HP(8) }}
-                                LinearGradienrColor={["#F5F5F5", "#F5F5F5"]}
+                                // LinearGradienrColor={["#F5F5F5", "#F5F5F5"]}
+                                LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
                                 contentContainerStyle={{ top: -2 }}
                             />
 
-                            <Button
+                            {/* <Button
                                 text={'place order'}
                                 onPress={() => handleClick(`OrderPlacedScreen`)}
                                 textStyle={styles.buttonStyle2}
@@ -376,7 +366,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 mainContainerStyle={{ flex: 1, borderRadius: HP(8) }}
                                 LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
                                 contentContainerStyle={{ top: -2 }}
-                            />
+                            /> */}
                         </View>
                     </View>
                 )}

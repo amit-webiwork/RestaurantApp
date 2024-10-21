@@ -18,6 +18,7 @@ import SearchScreen from '../screens/main/SearchScreen';
 import CouponScreen from '../screens/main/cart/CouponScreen';
 import PaymentScreen from '../screens/main/cart/PaymentScreen';
 import OrderScreen from '../screens/main/OrderScreen';
+import OrderSummaryScreen from '../screens/main/cart/OrderSummaryScreen';
 
 export type MainTabParamList = {
     HomeScreen: undefined;
@@ -38,6 +39,7 @@ export type MainTabParamList = {
     CouponScreen: undefined;
     PaymentScreen: undefined;
     OrderScreen: undefined;
+    OrderSummaryScreen: undefined;
 };
 
 const MainTabNavigator: React.FunctionComponent = () => {
@@ -105,6 +107,10 @@ const MainTabNavigator: React.FunctionComponent = () => {
             <Stack.Screen
                 name={`OrderScreen`}
                 component={OrderScreen}
+            />
+            <Stack.Screen
+                name={`OrderSummaryScreen`}
+                component={OrderSummaryScreen}
             />
             <Stack.Group screenOptions={{
                 presentation: 'transparentModal',

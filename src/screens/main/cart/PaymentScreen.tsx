@@ -6,17 +6,29 @@ import InnerBlock from '../../../components/InnerBlock';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
-import { COLORS } from '../../../utils/Constants';
+import { COLORS, errorMessage } from '../../../utils/Constants';
 import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { proflieDetails } from '../../../redux/features/profile';
 import { ButtonSection as Button } from '../../../components/Button';
+import { cartItemList, instructionText } from '../../../redux/features/cart';
+import { appliedCouponId } from '../../../redux/features/coupon';
+import { orderSubmit } from '../../../utils/ApiCall';
+import { AppDispatch } from '../../../redux/store';
+import { setDialogContent } from '../../../redux/features/customDialog';
+import Warning from '../../../assets/svgs/warning.svg';
+import NormalLoader from '../../../components/NormalLoader';
 
 const { width, height } = Dimensions.get('window');
 
 const errorObj = { cardholderName: { status: false, text: "" }, cardNumber: { status: false, text: "" }, cardExpiry: { status: false, text: "" }, cardCVV: { status: false, text: "" } }
 
 function PaymentScreen({ navigation }: { navigation: any }): React.JSX.Element {
+    const dispatch: AppDispatch = useDispatch();
+
+    const CartItemList = useSelector(cartItemList);
+    const InstructionText = useSelector(instructionText);
+    const AppliedCouponId = useSelector(appliedCouponId);
     const ProflieDetails = useSelector(proflieDetails);
 
     const scrollViewRef = useRef<any>(null);
@@ -28,8 +40,8 @@ function PaymentScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [cardNumber, setCardNumber] = useState("");
     const [cardExpiry, setCardExpiry] = useState("");
     const [cardCVV, setCardCVV] = useState("");
-
     const [addCard, setAddCard] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleExpiryDateChange = (text: string) => {
         // Remove any non-numeric characters
@@ -49,15 +61,40 @@ function PaymentScreen({ navigation }: { navigation: any }): React.JSX.Element {
         if (!addCard) {
             setTimeout(() => {
                 scrollViewRef.current?.scrollTo({
-                    y: 600, // adjust this value based on where you want to scroll
+                    y: 600,
                     animated: true
                 });
-            }, 300); // delay to allow state change to render
+            }, 300);
         }
     };
 
+    const handleClick = async () => {
+        setLoading(true);
+        try {
+            // now call order API
+            const dataPayload = {
+                extraNote: InstructionText,
+                items: CartItemList.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } }),
+                couponId: AppliedCouponId
+            };
+
+            const response: any = await orderSubmit(dataPayload);
+
+            navigation.navigate(`OrderPlacedScreen`, {
+                ...response.data
+            })
+
+            setLoading(false);
+        } catch (err: any) {
+            setLoading(false);
+            console.log(err?.message, '---err');
+            dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || err?.message || errorMessage?.commonMessage }));
+        }
+    }
+
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#FFF9F9" }}>
+            <NormalLoader visible={loading} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
                     <View style={{ paddingVertical: HP(20) }}>
@@ -219,7 +256,7 @@ function PaymentScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                         <View style={{ marginTop: VP(26) }}>
                                             <Button
                                                 text={'pay now'}
-                                                onPress={() => setAddCard(pre => !pre)}
+                                                onPress={handleClick}
                                                 textStyle={styles.buttonStyle}
                                                 isLoading={false}
                                                 activeButtonText={{ opacity: .65 }}

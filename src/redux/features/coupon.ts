@@ -28,6 +28,10 @@ export const couponSlice = createSlice({
             state.appliedCoupon = action.payload.couponId
             state.couponDiscount = action.payload.couponDiscount
         },
+        resetCoupon: (state) => {
+            state.appliedCoupon = 0
+            state.couponDiscount = 0
+        },
     },
 })
 
@@ -40,7 +44,7 @@ export const fetchCoupons = () => async (dispatch: AppDispatch) => {
     }
 };
 
-export const { setCouponList, applyCoupon } = couponSlice.actions
+export const { setCouponList, applyCoupon, resetCoupon } = couponSlice.actions
 
 export const couponList = (state: { coupon: CouponState }) => state.coupon.list;
 export const couponLoaded = (state: { coupon: CouponState }) => state.coupon.loaded;

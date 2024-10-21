@@ -12,6 +12,7 @@ import { COLORS } from '../../../utils/Constants';
 import CheckmarkWithConfetti from '../../../components/CheckmarkWithConfetti';
 import { AppDispatch } from '../../../redux/store';
 import { resetCart } from '../../../redux/features/cart';
+import { resetCoupon } from '../../../redux/features/coupon';
 
 function OrderPlacedScreen({ route, navigation }: { route: any; navigation: any }): React.JSX.Element {
     const { orderId, message, estimatedTime } = route.params;
@@ -20,6 +21,7 @@ function OrderPlacedScreen({ route, navigation }: { route: any; navigation: any 
 
     useEffect(() => {
         dispatch(resetCart());
+        dispatch(resetCoupon());
     }, [])
 
     return (

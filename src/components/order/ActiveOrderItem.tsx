@@ -10,7 +10,7 @@ import moment from 'moment';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
 import { COLORS } from '../../utils/Constants';
-import { getOrderComponents } from '../../utils/helper/OrderHelper';
+import { formatEstimatedTime, getOrderComponents } from '../../utils/helper/OrderHelper';
 
 interface Props {
     item: any;
@@ -69,7 +69,7 @@ const ActiveOrderItem = ({ item, index }: Props) => {
                     <Text style={styles.priceText}> ${orderData?.finalAmount} </Text>
                     <Text style={styles.statusText}> {orderData?.orderStatus} </Text>
                 </View>
-                <Text style={styles.subText}> estimated time: 1/2 hour </Text>
+                <Text style={styles.subText}> {formatEstimatedTime(orderData?.estimatedTime)} </Text>
             </View>
         </View>
     );
