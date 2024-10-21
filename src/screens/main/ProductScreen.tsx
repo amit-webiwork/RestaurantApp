@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { StyleSheet, Image, View, Text, TouchableOpacity, Dimensions, Animated, Platform, UIManager, LayoutAnimation, LayoutChangeEvent } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
@@ -26,6 +26,13 @@ import { getItemPriceComponents } from '../../utils/helper/ItemHelper.ts';
 
 const { width, height } = Dimensions.get('window');
 
+const tabs = [{ title: "toppings", options: [{ title: "herbal jelly", price: 1.20, image: require(`../../assets/images/jelly.png`) }, { title: "pudding", price: 1.20, image: require(`../../assets/images/pudding.png`) }, { title: "brown sugar pearls", price: 1.20, image: require(`../../assets/images/sugar.png`) }, { title: "coffee jelly", price: 1.20, image: require(`../../assets/images/coffee.png`) }, { title: "lychee pearls", price: 1.20 }] }, { title: "size", options: [{ title: "small", price: 12 }, { title: "medium", price: 14 }, { title: "large", price: 16 }] }, { title: "ice", options: [{ title: "normal ice" }, { title: "half ice" }, { title: "no ice" }] }, { title: "sweetness", options: [{ title: "extra sugar" }, { title: "standard sugar" }, { title: "half sugar" }, { title: "less sugar" }, { title: "no sugar" }] }, { title: "milk", options: [{ title: "fresh milk instead", image: require(`../../assets/images/milk-fresh.png`) }, { title: "soya milk instead", price: 1.20, image: require(`../../assets/images/milk-fresh.png`) }] }]
+
+// Enable Layout Animation for Android
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
 function ProductScreen({ route, navigation }: { navigation: any, route: any }): React.JSX.Element {
     const { id, item } = route.params;
 
@@ -44,6 +51,10 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
     const [itemDetails, setItemDetails] = useState<any>({});
+
+    const [textWidths, setTextWidths] = useState<any>({});
+    const [activeTab, setActiveTab] = useState(1);
+    const [customizeTabs, setCustomizeTabs] = useState<any>(tabs);
 
     const setInstructionTextHandler = useCallback((e: string) => {
         setInstructionText(e);
@@ -75,9 +86,9 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
     // Ensure that when the route parameter changes, it scrolls to the top
     useEffect(() => {
-        if (scrollViewRef?.current) {
-            scrollViewRef.current.scrollTo({ y: 0, animated: true });
-        }
+        // if (scrollViewRef?.current) {
+        //     scrollViewRef.current.scrollTo({ y: 0, animated: true });
+        // }
     }, [id]);
 
     const incrementCart = useCallback(() => {
@@ -88,9 +99,44 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
         setCartQuantity(prevQty => (prevQty > 1 ? prevQty - 1 : 1));
     }, [setCartQuantity]);
 
+    const switchTab = useCallback((tab: number) => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setActiveTab(tab);
+    }, [setActiveTab]);
+
+    const handleTextLayout = useCallback(
+        (event: LayoutChangeEvent, index: number) => {
+            const { width } = event.nativeEvent.layout;
+            setTextWidths((prevWidths: any) => ({
+                ...prevWidths,
+                [index]: width,
+            }));
+        },
+        [setTextWidths] // Dependency array
+    );
+
+    const clickOptionHandler = (optionIndex: number) => {
+        const updatedTabs = customizeTabs.map((tab: { options: any[]; }, i: number) => {
+            if (i === (activeTab - 1)) {
+                const updatedOptions = tab.options.map((option, index) => {
+                    // Toggle the "checked" key for the selected option
+                    if (index === optionIndex) {
+                        return { ...option, checked: !option.checked };
+                    }
+                    return option;
+                });
+                return { ...tab, options: updatedOptions };
+            }
+            return tab;
+        });
+
+        // Update the state with the updated tabs
+        setCustomizeTabs(updatedTabs);
+    }
+
     const imageHeight = scrollY.interpolate({
-        inputRange: [0, 300], // Adjust the second value to control how quickly the image scales
-        outputRange: [height * 0.5, height * 0.3], // Adjust the values to control the min and max image height
+        inputRange: [0, 300],
+        outputRange: [height * 0.5, height * 0.3],
         extrapolate: 'clamp',
     });
 
@@ -176,7 +222,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         <Text style={styles.infoText}>{itemDetails?.description}</Text>
                                     </View>
 
-                                    <View style={styles.line}></View>
+                                    {/* <View style={styles.line}></View> */}
 
                                     {/* Cooking request */}
                                     {/* <View style={{ marginTop: VP(40), paddingHorizontal: HP(30) }}>
@@ -192,6 +238,77 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                     {/* <View style={{ marginTop: VP(27), paddingHorizontal: HP(30) }}>
                                         <ProductRatingsSection data={productRatings} />
                                     </View> */}
+
+                                    {/* Customize item section */}
+                                    <View style={{ marginTop: VP(22), paddingHorizontal: HP(30) }}>
+                                        <Text style={styles.customizeHeading}>customize items</Text>
+
+                                        {/* Tabs section */}
+                                        <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: VP(14.48) }}>
+
+                                            {customizeTabs.map((d: any, i: number) => (
+                                                <TouchableOpacity
+                                                    onPress={() => switchTab((i + 1))}
+                                                    key={`tab-${i}`}
+                                                >
+                                                    <Text
+                                                        style={styles.menuText}
+                                                        onLayout={(event) => handleTextLayout(event, i)}
+                                                    >
+                                                        {d.title}
+                                                    </Text>
+                                                    {activeTab === (i + 1) && (
+                                                        <Image
+                                                            source={require('../../assets/images/active.png')}
+                                                            style={{ width: (textWidths[i] || 0), height: VP(4), resizeMode: "stretch", marginTop: VP(8.9) }}
+                                                        />
+                                                    )}
+                                                </TouchableOpacity>
+                                            ))}
+                                        </View>
+
+                                        <View style={styles.lineTab}></View>
+
+                                        {/* Tab options section */}
+                                        {customizeTabs[(activeTab - 1)]?.options && (
+                                            <View style={{ marginTop: VP(6) }}>
+                                                {customizeTabs[(activeTab - 1)].options.map((d: any, i: number) => (
+                                                    <View key={`tab-options-${i}`} style={{ gap: HP(8), marginTop: VP(6) }}>
+                                                        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+
+                                                            <View style={{ flexDirection: "row", alignItems: "center", gap: HP(10.37), padding: HP(8) }}>
+                                                                {/* {d?.image ? (
+                                                                    <Image source={d?.image} style={styles.optionImg} />
+                                                                ) : <></>} */}
+
+                                                                <Text style={styles.customizeOptionText}>{d.title}</Text>
+                                                            </View>
+
+
+                                                            <View style={{ flexDirection: "row", alignItems: "center", gap: HP(10.02) }}>
+                                                                <Text style={styles.optionPrice}>{(d.price && d.price > 0) ? `$${d.price.toFixed(2)}` : ""}</Text>
+
+                                                                <TouchableOpacity
+                                                                    onPress={() => clickOptionHandler(i)}
+                                                                >
+                                                                    <View style={styles.checkbox}>
+                                                                        {(d?.checked && d.checked === true) && (
+                                                                            <View style={styles.checkedBox}>
+                                                                                <Icon type={Icons.Feather} size={FS(12)} name={`check`} color={COLORS.WHITE} />
+                                                                            </View>
+                                                                        )}
+                                                                    </View>
+                                                                </TouchableOpacity>
+                                                            </View>
+                                                        </View>
+
+
+                                                        <View style={styles.lineTab}></View>
+                                                    </View>
+                                                ))}
+                                            </View>
+                                        )}
+                                    </View>
 
                                     {/* Cart with qty Button */}
                                     {itemDetails?.is_available && (
@@ -328,6 +445,55 @@ const styles = StyleSheet.create({
         marginTop: VP(27)
 
     },
+    customizeHeading: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 20.8,
+        textTransform: 'capitalize'
+    },
+    menuText: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 14.56,
+        textTransform: "capitalize",
+        padding: HP(8)
+    },
+    lineTab: {
+        height: 2,
+        flex: 1,
+        flexGrow: 1,
+        backgroundColor: "#E6E6E6"
+    },
+    customizeOptionText: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 14.56,
+        textTransform: "capitalize"
+    },
+    checkbox: {
+        width: FS(15.11),
+        height: FS(15.11),
+        borderWidth: 1,
+        borderColor: '#FFAFF6',  // Border color for the checkbox
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: HP(6.11),
+        borderRadius: HP(2.96)
+    },
+    checkedBox: {
+        width: FS(15.11),
+        height: FS(15.11),
+        backgroundColor: COLORS.BUTTON,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    optionPrice: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 12,
+        color: "#383838"
+    },
+    optionImg: {
+        resizeMode: "contain",
+        width: FS(19),
+        height: VP(19)
+    }
 });
 
 export default ProductScreen;

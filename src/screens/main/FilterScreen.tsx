@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
     checkedBox: {
         width: FS(9.54),
         height: VP(9.54),
-        backgroundColor: '#FF00E2'
+        backgroundColor: COLORS.BUTTON
     },
     bottomButtonContainer: {
         backgroundColor: COLORS.WHITE,
