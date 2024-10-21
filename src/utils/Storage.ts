@@ -40,9 +40,9 @@ export const removeStorage = async (key = 'signupMobile') => {
 export const saveNotification = async (data: any) => {
   const list: any = await loadStorage('notificationList');
 
-    if (Array.isArray(list)) {
-      saveStorage([data, ...list], 'notificationList');
-    } else {
-      saveStorage([data], 'notificationList');
-    }
+  if (Array.isArray(list)) {
+    saveStorage([data, ...list.slice(0, 49)], 'notificationList');
+  } else {
+    saveStorage([data], 'notificationList');
+  }
 }

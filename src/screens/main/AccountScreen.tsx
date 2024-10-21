@@ -125,11 +125,21 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                         {/* order history */}
                         <View style={{ flexDirection: "row", gap: HP(15), alignItems: "center" }}>
-                            <View style={[styles.iconContainer, { backgroundColor: "#FFDBFB" }]}>
-                                <Image source={require(`../../assets/icons/order.png`)} style={{ width: FS(21.14), height: FS(24.03) }} />
-                            </View>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate(`OrderScreen`)}
+                                style={[styles.iconContainer, { backgroundColor: "#FFDBFB" }]}
+                            >
+                                <Image
+                                    source={require(`../../assets/icons/order.png`)}
+                                    style={{ width: FS(21.14), height: FS(24.03) }}
+                                />
+                            </TouchableOpacity>
 
-                            <Text style={styles.accountLabel}>order history</Text>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate(`OrderScreen`)}
+                            >
+                                <Text style={styles.accountLabel}>order history</Text>
+                            </TouchableOpacity>
                         </View>
 
                         <View style={styles.line}></View>

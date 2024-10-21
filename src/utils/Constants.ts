@@ -14,8 +14,8 @@ export const COLORS = {
     FAILED: "#D93A3A",
 };
 
-// export const BACKEND_URL = "http://54.66.64.243/api/v1";
-export const BACKEND_URL = "http://192.168.0.108:3000/api/v1";
+export const BACKEND_URL = "http://54.66.64.243/api/v1";
+// export const BACKEND_URL = "http://192.168.0.106:3000/api/v1";
 // export const BACKEND_URL = "https://stable-gobbler-select.ngrok-free.app/api/v1";
 export const CDN_URL = "https://d1wn3ec1bju3mm.cloudfront.net/";
 

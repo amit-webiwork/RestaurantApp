@@ -98,6 +98,11 @@ export const TextStyles: Record<string, TextStyle> = {
         color: COLORS.BLACK,
         fontSize: 14,
     },
+    INTER_REGULAR: {
+        fontFamily: 'InterRegular',
+        color: COLORS.BLACK,
+        fontSize: 14,
+    },
     LATO_REGULAR: {
         fontFamily: 'LatoRegular',
         color: COLORS.BLACK,

@@ -223,7 +223,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 {/* add more items */}
                                 <View style={styles.textBox}>
                                     <TouchableOpacity
-                                        onPress={() => navigation.navigate(`CartMenuScreen`)}
+                                        onPress={() => navigation.navigate(`PaymentScreen`)}
                                         style={{}}
                                     >
                                         <Text style={styles.linkText}>add more items</Text>
