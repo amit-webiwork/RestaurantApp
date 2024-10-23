@@ -86,11 +86,11 @@ export const formatEstimatedTime = (estimatedTime: string): string => {
     const [hours, minutes] = estimatedTime.split(":").map(Number);
 
     if (hours && minutes) {
-        return `estimated time ${hours} hr${hours > 1 ? 's' : ''} and ${minutes} min${minutes > 1 ? 's' : ''}`;
+        return `Estimated time ${hours} hr${hours > 1 ? 's' : ''} and ${minutes} min${minutes > 1 ? 's' : ''}`;
     } else if (hours) {
-        return `estimated time ${hours} hr${hours > 1 ? 's' : ''}`;
+        return `Estimated time ${hours} hr${hours > 1 ? 's' : ''}`;
     } else if (minutes) {
-        return `estimated time ${minutes} min${minutes > 1 ? 's' : ''}`;
+        return `Estimated time ${minutes} min${minutes > 1 ? 's' : ''}`;
     } else {
         return "";
     }

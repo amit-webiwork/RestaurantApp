@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 12,
         color: "#606060",
-        textTransform: "capitalize"
+        flexShrink: 1
     },
     itemText: {
         ...TextStyles.RALEWAY_REGULAR,

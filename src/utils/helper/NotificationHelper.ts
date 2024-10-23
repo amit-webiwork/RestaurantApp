@@ -7,6 +7,27 @@ import { COLORS } from '../Constants';
 const today = moment().format('YYYY-MM-DD');
 const yesterday = moment().subtract(1, 'day').format('YYYY-MM-DD');
 
+moment.updateLocale('en', {
+    relativeTime : {
+        future: "in %s",
+        past:   "%s ago",
+        s  : '1 seconds',
+        ss : '%d seconds',
+        m:  "1 minute",
+        mm: "%d minutes",
+        h:  "1 hour",
+        hh: "%d hours",
+        d:  "1 day",
+        dd: "%d days",
+        w:  "1 week",
+        ww: "%d weeks",
+        M:  "1 month",
+        MM: "%d months",
+        y:  "1 year",
+        yy: "%d years"
+    }
+});
+
 const iconArr: any = {
     "discount": { iconType: Icons.MaterialCommunityIcons, icon: "sale", color: COLORS.HOME_ICONS },
     "order_success": { iconType: Icons.FontAwesome5, icon: "check-circle", color: COLORS.SUCCESS },
@@ -24,7 +45,13 @@ export const groupNotificationData = (data: any[]) => {
         if (!acc[itemDate]) {
             acc[itemDate] = [];
         }
-        acc[itemDate].push(item);
+
+        // Add the timeAgo key
+        let timeAgo = moment(item?.dateTime).fromNow(true);
+        timeAgo = timeAgo.split(' ')[0] + timeAgo.split(' ')[1].slice(0, 1);
+        const updatedItem = { ...item, timeAgo };
+
+        acc[itemDate].push(updatedItem);
 
         return acc;
     }, {});
@@ -32,7 +59,6 @@ export const groupNotificationData = (data: any[]) => {
     const groupedArray = Object.entries(groupedData);
 
     // Sort the array by date in descending order
-    // groupedArray.sort((a, b) => new Date(b[0]) - new Date(a[0]));
     groupedArray.sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime());
 
     return groupedArray;
