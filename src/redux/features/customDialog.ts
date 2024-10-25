@@ -3,7 +3,10 @@ import { createSlice } from '@reduxjs/toolkit'
 const defaultState = {
     visible: false,
     title: "",
-    message: ""
+    message: "",
+    buttonAction: false,
+    buttonText2: "",
+    onAction: ""
 }
 
 export const dialogSlice = createSlice({
@@ -14,11 +17,17 @@ export const dialogSlice = createSlice({
             state.visible = false
             state.title = ""
             state.message = ""
+            state.buttonAction = false
+            state.buttonText2 = ""
+            state.onAction = ""
         },
         setDialogContent: (state, action) => {
             state.visible = true
             state.title = action?.payload?.title
             state.message = action?.payload?.message
+            state.buttonAction = action?.payload?.buttonAction || false
+            state.buttonText2 = action?.payload?.buttonText2 || ""
+            state.onAction = action?.payload?.onAction || ""
         }
     },
 })

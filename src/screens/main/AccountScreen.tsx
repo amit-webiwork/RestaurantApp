@@ -184,7 +184,7 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     </TouchableOpacity>
 
                                     <TouchableOpacity
-                                        onPress={() => console.log("Refund Status clicked")}
+                                        onPress={() => navigation.navigate(`PaymentModeScreen`)}
                                         style={{ flexDirection: "row", gap: HP(16), alignItems: "center" }}
                                     >
                                         <Image source={require(`../../assets/icons/payment.png`)} style={{ width: FS(24), height: VP(24) }} />

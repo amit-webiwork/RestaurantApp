@@ -141,6 +141,18 @@ const cartConfirm = async (dataPayload: any) => {
     });
 }
 
+const cartConfirmV1 = async (dataPayload: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.post(BACKEND_URL + apiEndpoints.cartConfirmV1, dataPayload);
+            resolve(res);
+        } catch (error: any) {
+            console.log('API ERROR (cartConfirm)', (error?.response?.data?.message || error?.message));
+            reject(error);
+        }
+    });
+}
+
 const getOrderList = async (params = {}, limit = 10, offset = 0) => {
     try {
         const paramData = new URLSearchParams({ limit: String(limit), offset: String(offset), ...params });
@@ -181,4 +193,4 @@ const getCouponList = async (params = {}) => {
     }
 };
 
-export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder, getCouponList };
+export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder, getCouponList, cartConfirmV1 };

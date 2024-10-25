@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, Dimensions
 import moment from 'moment';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 
 import { globalStyle } from '../../../utils/GlobalStyle';
 import OuterLayout from '../../../components/OuterLayout';
@@ -22,10 +23,13 @@ import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import CheckmarkWithConfetti from '../../../components/CheckmarkWithConfetti';
 import CustomActionDialogComp from '../../../components/dialogs/CustomActionDialog';
-import { deleteOrder, orderSubmit } from '../../../utils/ApiCall';
+import { cartConfirm, cartConfirmV1, deleteOrder, orderSubmit } from '../../../utils/ApiCall';
 import { getReorderItems } from '../../../utils/helper/OrderHelper';
-import { cartItemList, getCartTotal, instructionText, recoverCart } from '../../../redux/features/cart';
+import { cartItemList, getCartTotal, instructionText, recoverCart, resetCart } from '../../../redux/features/cart';
 import { appliedCouponId, couponDiscount } from '../../../redux/features/coupon';
+import { getItemPriceComponents } from '../../../utils/helper/ItemHelper';
+import { addToCart } from '../../../utils/helper/CartHelper';
+import { loadStorage } from '../../../utils/Storage';
 
 const titleDelete = `Confirm Delete`;
 const messageDelete = `Are you sure you want to delete this order?`;
@@ -47,28 +51,77 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
 
     const handleClick = async () => {
         navigation.navigate(`PaymentScreen`);
-        // setLoading(true);
-        // try {
-        //     // now call order API
-        //     const dataPayload = {
-        //         extraNote: InstructionText,
-        //         items: CartItemList.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } }),
-        //         couponId: AppliedCouponId
-        //     };
-
-        //     const response: any = await orderSubmit(dataPayload);
-
-        //     navigation.navigate(`OrderPlacedScreen`, {
-        //         ...response.data
-        //     })
-
-        //     setLoading(false);
-        // } catch (err: any) {
-        //     setLoading(false);
-        //     console.log(err?.message, '---err');
-        //     dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || err?.message || errorMessage?.commonMessage }));
-        // }
     }
+
+    const cartOperation = async (item: ItemDetails) => {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                if (item?.isAvailable) {
+                    const itemDetails = getItemPriceComponents(item);
+                    itemDetails.id = itemDetails.itemId || 0;
+                    const qty = item.qty || 1;
+                    addToCart(itemDetails, qty, dispatch, undefined, false);
+                }
+                resolve(1);
+            }, 100);
+        });
+    }
+
+    const cartComparison = (arr1: CartItemDetails[], arr2: ItemDetails[]) => {
+        if (arr1.length !== arr2.length) {
+            return false; // Arrays have different lengths, so they are not equal
+        }
+
+        // Sort both arrays based on a unique key (itemId in this case)
+        const sortedArr1 = arr1.sort((a, b) => (a?.itemId || 0) - (b?.itemId || 0));
+        const sortedArr2 = arr2.sort((a, b) => (a?.itemId || 0) - (b?.itemId || 0));
+
+        const areArraysEqual = _.isEqual(sortedArr1, sortedArr2);
+
+        return areArraysEqual;
+    }
+
+    const confirmCartData = async () => {
+        setLoading(true);
+
+        try {
+            const dataPayload = [...CartItemList]
+
+            const response: any = await cartConfirmV1({ items: dataPayload, couponId: AppliedCouponId });
+
+            dispatch(resetCart());
+
+            const items = response?.data?.items || [];
+
+            const promises = _.map(items, async (item) => {
+                return await cartOperation(item);
+            });
+
+            // Wait for all promises to resolve
+            await Promise.all(promises);
+
+            const savedCartItems = await loadStorage('cartItems');
+
+            // console.log(JSON.stringify(dataPayload), '-----dataPayload');
+            // console.log(JSON.stringify(savedCartItems), '-----savedCartItems')
+
+            const areArraysEqual = cartComparison(dataPayload, savedCartItems);
+
+            if (!areArraysEqual) {
+                dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.cartUpdate, buttonAction: true, buttonText2: "Back to cart", onAction: 'Cart' }));
+            }
+
+            setLoading(false);
+        } catch (err: any) {
+            setLoading(false);
+            console.log(err?.message, '---err');
+            dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || err?.message || errorMessage?.commonMessage }));
+        }
+    }
+
+    useEffect(() => {
+        confirmCartData();
+    }, [])
 
     return (
         <>

@@ -23,7 +23,7 @@ const OuterLayout: React.FC<OuterLayoutProps> = ({
     containerStyle,
 }) => {
     const dispatch = useDispatch();
-    const { message, title, visible } = useSelector(dialogData);
+    const { message, title, visible, buttonAction, buttonText2, onAction } = useSelector(dialogData);
 
     return (
         <>
@@ -32,6 +32,9 @@ const OuterLayout: React.FC<OuterLayoutProps> = ({
                 title={title}
                 message={message}
                 onClose={() => dispatch(hideDialog())}
+                buttonAction={buttonAction}
+                buttonText2={buttonText2}
+                onAction={onAction}
             />
             <View style={[styles.container, containerStyle]}>
                 <StatusBar barStyle={'default'} />

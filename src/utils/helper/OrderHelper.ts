@@ -83,7 +83,7 @@ export const getReorderItems = async (orderData: OrderData): Promise<any[]> => {
 }
 
 export const formatEstimatedTime = (estimatedTime: string): string => {
-    const [hours, minutes] = estimatedTime.split(":").map(Number);
+    const [hours, minutes] = estimatedTime ? estimatedTime.split(":").map(Number) : [0, 0];
 
     if (hours && minutes) {
         return `Estimated time ${hours} hr${hours > 1 ? 's' : ''} and ${minutes} min${minutes > 1 ? 's' : ''}`;

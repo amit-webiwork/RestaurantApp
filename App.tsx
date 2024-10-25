@@ -5,13 +5,15 @@ import { Provider } from 'react-redux'
 import axios from 'axios';
 import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
 import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
+import { StripeProvider } from '@stripe/stripe-react-native';
+import { LogBox } from 'react-native';
 
 import store from './src/redux/store';
 import MainStackNavigator from './src/navigations/MainStackNavigator';
 import { loadStorage, saveNotification, saveStorage } from './src/utils/Storage';
 import { showFadeAlert } from './src/utils/Alert';
 import { submitLogin } from './src/utils/ApiCall';
-import { LogBox } from 'react-native';
+import { STRIPE_PUBLIC_KEY } from './src/utils/Constants';
 
 let isRefreshing = false; // To track refresh token attempts
 
@@ -21,7 +23,7 @@ axios.interceptors.request.use(
 
     const token = userDetails?.token?.accessToken || "";
 
-    // console.log(userDetails, token, '----userDetails')
+    // console.log(token, '----userDetails')
 
     if (token) {
       config.headers['Authorization'] = 'Bearer ' + token
@@ -191,9 +193,11 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      <NavigationContainer ref={navigationRef}>
-        <MainStackNavigator />
-      </NavigationContainer>
+      <StripeProvider publishableKey={STRIPE_PUBLIC_KEY}>
+        <NavigationContainer ref={navigationRef}>
+          <MainStackNavigator />
+        </NavigationContainer>
+      </StripeProvider>
     </Provider>
   );
 }

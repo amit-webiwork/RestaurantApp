@@ -47,7 +47,6 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [instructionText, setInstructionTextState] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [couponChangesLoading, setCouponChangesLoading] = useState(false);
-    const [couponCalculationRun, setCouponCalculationRun] = useState(0);
 
     const setInstructionTextHandler = useCallback((e: string) => {
         setInstructionTextState(e);
@@ -61,91 +60,9 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
         setItemListFiltered(filtered);
     }, [PapularItems]);
 
-    const cartOperation = async (item: ItemDetails) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                if (item?.isAvailable) {
-                    const itemDetails = getItemPriceComponents(item);
-                    itemDetails.id = itemDetails.itemId || 0;
-                    const qty = item.qty || 1;
-                    addToCart(itemDetails, qty, dispatch, undefined, false);
-                }
-                resolve(1);
-            }, 100);
-        });
-    }
-
-    const cartComparison = (arr1: CartItemDetails[], arr2: ItemDetails[]) => {
-        if (arr1.length !== arr2.length) {
-            return false; // Arrays have different lengths, so they are not equal
-        }
-
-        // Sort both arrays based on a unique key (itemId in this case)
-        const sortedArr1 = arr1.sort((a, b) => (a?.itemId || 0) - (b?.itemId || 0));
-        const sortedArr2 = arr2.sort((a, b) => (a?.itemId || 0) - (b?.itemId || 0));
-
-        const areArraysEqual = _.isEqual(sortedArr1, sortedArr2);
-
-        return areArraysEqual;
-    }
-
     const handleClick = async (type: string) => {
-        setLoading(true);
-        try {
-            dispatch(setInstructionText(instructionText));
-
-            const dataPayload = [...CartItemList]
-
-            const response: any = await cartConfirm(dataPayload);
-
-            dispatch(resetCart());
-
-            const promises = _.map(response.data, async (item) => {
-                return await cartOperation(item);
-            });
-
-            // Wait for all promises to resolve
-            await Promise.all(promises);
-
-            const savedCartItems = await loadStorage('cartItems');
-
-            // console.log(JSON.stringify(dataPayload), '-----dataPayload');
-            // console.log(JSON.stringify(savedCartItems), '-----savedCartItems')
-
-            const areArraysEqual = cartComparison(dataPayload, savedCartItems);
-
-            setCouponCalculationRun(pre => ++pre);
-
-            if (!areArraysEqual) {
-                dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.cartUpdate }));
-            } else {
-                if (type === `CartMenuScreen`) {
-                    // navigation.navigate(type);
-                    navigation.navigate(`OrderSummaryScreen`);
-                } else {
-                    // now call order API
-                    // const dataPayload = {
-                    //     extraNote: instructionText,
-                    //     items: savedCartItems.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } }),
-                    //     couponId: AppliedCouponId
-                    // };
-
-                    // const response: any = await orderSubmit(dataPayload);
-
-                    // navigation.navigate(`OrderPlacedScreen`, {
-                    //     ...response.data
-                    // })
-
-                    navigation.navigate(`OrderSummaryScreen`);
-                }
-            }
-
-            setLoading(false);
-        } catch (err: any) {
-            setLoading(false);
-            console.log(err?.message, '---err');
-            dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || err?.message || errorMessage?.commonMessage }));
-        }
+        dispatch(setInstructionText(instructionText));
+        navigation.navigate(`OrderSummaryScreen`);
     }
 
     useEffect(() => {
@@ -165,7 +82,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     useEffect(() => {
         if (!loading)
             couponCalculationHandler(GetCartTotal, setCouponChangesLoading, dispatch);
-    }, [GetCartTotal, dispatch, setCouponChangesLoading, loading, couponCalculationRun])
+    }, [GetCartTotal, dispatch, setCouponChangesLoading, loading])
 
     if (loading) {
         return (

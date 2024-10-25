@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, StyleProp, TextStyle, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { TextStyles } from '../../utils/TextStyles';
 import { FS, HP, VP } from '../../utils/Responsive';
@@ -23,6 +24,15 @@ interface Props {
 const { width, height } = Dimensions.get('window');
 
 const CustomActionDialog = ({ visible, title, message, onClose, dialogTitleStyle, dialogMessageStyle, onAction, buttonAction = false, buttonText1 = 'Close', buttonText2 = "" }: Props) => {
+
+    const navigation: any = useNavigation(); // Access navigation prop
+
+    const functionObjects: any = {
+        Cart: () => { onClose(); navigation.navigate(`CartScreen`); }
+    };
+
+    const customFunction = functionObjects[onAction] || onAction;
+
     return (
         <Modal
             transparent={true}
@@ -72,7 +82,7 @@ const CustomActionDialog = ({ visible, title, message, onClose, dialogTitleStyle
                         {buttonAction && (
                             <Button
                                 text={buttonText2}
-                                onPress={onAction}
+                                onPress={customFunction}
                                 textStyle={styles.buttonStyle2}
                                 isLoading={false}
                                 activeButtonText={{ opacity: .65 }}
