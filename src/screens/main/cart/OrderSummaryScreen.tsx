@@ -30,24 +30,38 @@ import { appliedCouponId, couponDiscount } from '../../../redux/features/coupon'
 import { getItemPriceComponents } from '../../../utils/helper/ItemHelper';
 import { addToCart } from '../../../utils/helper/CartHelper';
 import { loadStorage } from '../../../utils/Storage';
-
-const titleDelete = `Confirm Delete`;
-const messageDelete = `Are you sure you want to delete this order?`;
+import OrderSummaryScreenLoaderSection from '../../../components/skeleton/OrderSummaryScreenLoader';
 
 const { width, height } = Dimensions.get('window');
 
-const errorObj = { topicId: { status: false, text: "" }, feedback: { status: false, text: "" } }
+interface confirmOrderDataType {
+    couponDiscount: number,
+    finalAmount: number,
+    itemTotal: number,
+    packagingCost: number,
+    taxAmount: number,
+    totalWithOutTax: number
+}
+
+const confirmOrderDataInitial = {
+    couponDiscount: 0,
+    finalAmount: 0,
+    itemTotal: 0,
+    packagingCost: 0,
+    taxAmount: 0,
+    totalWithOutTax: 0
+}
 
 function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
 
     const CartItemList = useSelector(cartItemList);
     const GetCartTotal = useSelector(getCartTotal);
-    const CouponDiscount = useSelector(couponDiscount);
     const InstructionText = useSelector(instructionText);
     const AppliedCouponId = useSelector(appliedCouponId);
 
     const [loading, setLoading] = useState<boolean>(false);
+    const [confirmOrderData, setConfirmOrderData] = useState<confirmOrderDataType>(confirmOrderDataInitial);
 
     const handleClick = async () => {
         navigation.navigate(`PaymentScreen`);
@@ -103,13 +117,15 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
             const savedCartItems = await loadStorage('cartItems');
 
             // console.log(JSON.stringify(dataPayload), '-----dataPayload');
-            // console.log(JSON.stringify(savedCartItems), '-----savedCartItems')
+            // console.log(JSON.stringify(savedCartItems), '-----savedCartItems');
 
             const areArraysEqual = cartComparison(dataPayload, savedCartItems);
 
             if (!areArraysEqual) {
                 dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.cartUpdate, buttonAction: true, buttonText2: "Back to cart", onAction: 'Cart' }));
             }
+
+            setConfirmOrderData({ couponDiscount: response?.data?.couponDiscount || 0, finalAmount: response?.data?.finalAmount || 0, itemTotal: response?.data?.itemTotal || 0, packagingCost: response?.data?.packagingCost || 0, taxAmount: response?.data?.taxAmount || 0, totalWithOutTax: response?.data?.totalWithOutTax || 0 });
 
             setLoading(false);
         } catch (err: any) {
@@ -123,9 +139,12 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
         confirmCartData();
     }, [])
 
+    if (loading) {
+        return <OrderSummaryScreenLoaderSection />
+    }
+
     return (
         <>
-            <NormalLoader visible={loading} />
             <OuterLayout containerStyle={globalStyle.containerStyle}>
                 <InnerBlock>
                     <ScrollView showsVerticalScrollIndicator={false}>
@@ -145,7 +164,7 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
 
                             <View style={{ marginTop: VP(32), marginHorizontal: (width * .05) }}>
                                 <View style={styles.orderBox}>
-                                    {/* Order Top Box where image and order date and menu will show */}
+                                    {/* Order Top Box where image will show */}
                                     <View style={{ flexDirection: "row", gap: HP(19) }}>
                                         <Image
                                             source={require('../../../assets/images/order.png')}
@@ -182,37 +201,37 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                                     <View style={{ paddingHorizontal: HP(10), gap: HP(8) }}>
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>item:</Text>
-                                            <Text style={styles.orderEntityPrice}>${GetCartTotal.toFixed(2)}</Text>
+                                            <Text style={styles.orderEntityPrice}>${confirmOrderData.itemTotal.toFixed(2)}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>Coupon discount:</Text>
-                                            <Text style={styles.orderEntityPrice}>${CouponDiscount.toFixed(2)}</Text>
+                                            <Text style={styles.orderEntityPrice}>${confirmOrderData.couponDiscount.toFixed(2)}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>postage & packing:</Text>
-                                            <Text style={styles.orderEntityPrice}>$00.00</Text>
+                                            <Text style={styles.orderEntityPrice}>${confirmOrderData.packagingCost.toFixed(2)}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>total before tax:</Text>
-                                            <Text style={styles.orderEntityPrice}>${(GetCartTotal - CouponDiscount).toFixed(2)}</Text>
+                                            <Text style={styles.orderEntityPrice}>${confirmOrderData.totalWithOutTax.toFixed(2)}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>tax:</Text>
-                                            <Text style={styles.orderEntityPrice}>$0.00</Text>
+                                            <Text style={styles.orderEntityPrice}>${confirmOrderData.taxAmount.toFixed(2)}</Text>
                                         </View>
 
-                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                        {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>total:</Text>
-                                            <Text style={styles.orderEntityPrice}>${(GetCartTotal - CouponDiscount).toFixed(2)}</Text>
-                                        </View>
+                                            <Text style={styles.orderEntityPrice}>${confirmOrderData.finalAmount.toFixed(2)}</Text>
+                                        </View> */}
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>order total:</Text>
-                                            <Text style={styles.orderTotalPrice}>${(GetCartTotal - CouponDiscount).toFixed(2)}</Text>
+                                            <Text style={styles.orderTotalPrice}>${confirmOrderData.finalAmount.toFixed(2)}</Text>
                                         </View>
                                     </View>
                                 </View>

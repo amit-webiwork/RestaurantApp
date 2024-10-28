@@ -45,7 +45,6 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [instructionText, setInstructionTextState] = useState<string>("");
-    const [loading, setLoading] = useState(false);
     const [couponChangesLoading, setCouponChangesLoading] = useState(false);
 
     const setInstructionTextHandler = useCallback((e: string) => {
@@ -80,22 +79,12 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     }, [CouponLoaded])
 
     useEffect(() => {
-        if (!loading)
-            couponCalculationHandler(GetCartTotal, setCouponChangesLoading, dispatch);
-    }, [GetCartTotal, dispatch, setCouponChangesLoading, loading])
-
-    if (loading) {
-        return (
-            <>
-                <NormalLoader visible={loading} />
-                <CartScreenLoader />
-            </>
-        )
-    }
+        couponCalculationHandler(GetCartTotal, setCouponChangesLoading, dispatch);
+    }, [GetCartTotal, dispatch, setCouponChangesLoading])
 
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
-            <NormalLoader visible={loading || CartLoading || couponChangesLoading} />
+            <NormalLoader visible={CartLoading || couponChangesLoading} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20) }}>
@@ -266,7 +255,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 text={'continue'}
                                 onPress={() => handleClick(`CartMenuScreen`)}
                                 textStyle={[styles.buttonStyle2]}
-                                isLoading={loading}
+                                isLoading={false}
                                 activeButtonText={{ opacity: .65 }}
                                 mainContainerStyle={{ flex: 1, borderColor: COLORS.BUTTON, borderWidth: 1, borderRadius: HP(8) }}
                                 // LinearGradienrColor={["#F5F5F5", "#F5F5F5"]}
@@ -278,7 +267,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 text={'place order'}
                                 onPress={() => handleClick(`OrderPlacedScreen`)}
                                 textStyle={styles.buttonStyle2}
-                                isLoading={loading}
+                                isLoading={false}
                                 activeButtonText={{ opacity: .65 }}
                                 mainContainerStyle={{ flex: 1, borderRadius: HP(8) }}
                                 LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}

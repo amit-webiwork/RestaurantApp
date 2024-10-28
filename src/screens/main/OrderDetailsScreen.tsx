@@ -226,6 +226,7 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                     </View>
 
                                     <View style={styles.line}></View>
+
                                     {/* Order Item List */}
                                     <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: HP(10) }}>
                                         <View style={{ gap: HP(8) }}>
@@ -248,28 +249,30 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                     <View style={{ paddingHorizontal: HP(10), gap: HP(8) }}>
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>item:</Text>
-                                            <Text style={styles.orderEntityPrice}>${orderData?.finalAmount}</Text>
+                                            <Text style={styles.orderEntityPrice}>${orderData?.itemTotal}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>postage & packing:</Text>
-                                            <Text style={styles.orderEntityPrice}>$00.00</Text>
+                                            <Text style={styles.orderEntityPrice}>${orderData?.packagingCost}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>total before tax:</Text>
-                                            <Text style={styles.orderEntityPrice}>${orderData?.finalAmount}</Text>
+                                            <Text style={styles.orderEntityPrice}>${orderData?.totalWithOutTax}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>tax:</Text>
-                                            <Text style={styles.orderEntityPrice}>$0.00</Text>
+                                            <Text style={styles.orderEntityPrice}>${orderData?.taxAmount}</Text>
                                         </View>
 
-                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                        {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>total:</Text>
                                             <Text style={styles.orderEntityPrice}>${orderData?.finalAmount}</Text>
-                                        </View>
+                                        </View> */}
+
+                                        <View style={styles.line}></View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>order total:</Text>
