@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Image, View, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -25,6 +25,8 @@ import SearchBoxItemsSection from '../../components/home-sections/SearchBoxItems
 import { askInitialPermission } from '../../utils/Permissions.ts';
 import { setDialogContent } from '../../redux/features/customDialog.ts';
 import Warning from '../../assets/svgs/warning.svg';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
@@ -89,7 +91,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                     <View style={{ flex: 1 }}>
                         <ScrollView showsVerticalScrollIndicator={false}>
                             {/* Top banner area */}
-                            <View style={{ flexDirection: "row", flex: 1, }}>
+                            <View style={styles.bannerContainer}>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`NotificationScreen`)}
                                     style={{ position: "absolute", marginVertical: HP(20), right: HP(20) }}
@@ -265,6 +267,10 @@ const styles = StyleSheet.create({
         fontSize: HP(12),
         textTransform: "capitalize",
     },
+    bannerContainer: {
+        flexDirection: "row",
+        flex: 1
+    }
 });
 
 export default HomeScreen;

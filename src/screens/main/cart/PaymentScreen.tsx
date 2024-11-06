@@ -43,6 +43,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
     const [error, setError] = useState("");
     const [cardList, setCardList] = useState<any[]>([]);
     const [selectedCard, setSelectedCard] = useState<number>(0);
+    const [savePaymentMethod, setSavePaymentMethod] = useState<boolean>(false);
 
     // Scroll to the bottom of the ScrollView when add card is pressed
     const handleAddCardPress = () => {
@@ -78,7 +79,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                 extraNote: InstructionText,
                 items: CartItemList.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } }),
                 couponId: AppliedCouponId,
-                savePaymentMethod: true
+                savePaymentMethod
             };
 
             const response: any = await createPaymentIntent(dataPayload);
@@ -114,7 +115,6 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                 setError(error?.message || errorMessage?.commonMessage);
                 setLoader(false);
             } else if (paymentIntent) {
-                console.log('Success from promise', paymentIntent);
                 setError("");
                 navigation.navigate(`OrderPlacedScreen`, {
                     orderId: paymentIntent.id,
@@ -251,6 +251,20 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                                 // console.log('focusField', focusedField);
                                             }}
                                         />
+
+                                        <TouchableOpacity
+                                            onPress={() => setSavePaymentMethod(pre => !pre)}
+                                            style={[styles.checkboxContainer]}
+                                        >
+                                            <View style={[styles.checkbox]}>
+                                                {savePaymentMethod && (
+                                                    <View style={styles.checkedBox}>
+                                                        <Icon type={Icons.Feather} size={FS(12)} name={`check`} color={COLORS.WHITE} />
+                                                    </View>
+                                                )}
+                                            </View>
+                                            <Text style={[styles.labelStyle, { color: savePaymentMethod ? COLORS.BLACK : "#747474" }]}>Save payment information to my account for future payments.</Text>
+                                        </TouchableOpacity>
 
                                         <View style={{ marginTop: VP(10), flexDirection: "row", gap: HP(7) }}>
                                             <Button
@@ -423,7 +437,35 @@ const styles = StyleSheet.create({
         textTransform: "capitalize",
         color: COLORS.RED,
         marginTop: VP(10)
-    }
+    },
+    checkboxContainer: {
+        flexBasis: "50%",
+        paddingBottom: HP(11),
+        flexDirection: 'row',
+        alignItems: 'center',
+        // flexWrap: "wrap"
+    },
+    checkbox: {
+        width: FS(15.11),
+        height: FS(15.11),
+        borderWidth: 1,
+        borderColor: '#FFAFF6',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: HP(6.11),
+        borderRadius: HP(2.96)
+    },
+    checkedBox: {
+        width: FS(15.11),
+        height: FS(15.11),
+        backgroundColor: COLORS.BUTTON,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    labelStyle: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 10.17
+    },
 });
 
 export default PaymentScreen;
