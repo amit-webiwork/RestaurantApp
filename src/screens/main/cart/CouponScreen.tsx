@@ -52,7 +52,7 @@ function CouponScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
     useEffect(() => {
         if (!CouponLoaded) {
-            dispatch(fetchCoupons());
+            dispatch(fetchCoupons(() => void (0)));
         } else {
             setCoupons(CouponList);
         }

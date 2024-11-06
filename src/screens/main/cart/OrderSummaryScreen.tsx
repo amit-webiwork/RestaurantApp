@@ -1,7 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
-import moment from 'moment';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 
@@ -10,23 +8,15 @@ import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
-import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../../utils/Constants';
+import { COLORS, errorMessage } from '../../../utils/Constants';
 import { TextStyles } from '../../../utils/TextStyles';
 import { ButtonSection as Button } from '../../../components/Button';
-import NormalLoader from '../../../components/NormalLoader';
-import { fetchTopics, topicList, topicLoaded } from '../../../redux/features/items';
-import DropDown from '../../../components/DropDown';
 import { AppDispatch } from '../../../redux/store';
-import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect';
-import { feedbackForm, validateResource } from '../../../utils/ValidateResource';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
-import CheckmarkWithConfetti from '../../../components/CheckmarkWithConfetti';
-import CustomActionDialogComp from '../../../components/dialogs/CustomActionDialog';
-import { cartConfirm, cartConfirmV1, deleteOrder, orderSubmit } from '../../../utils/ApiCall';
-import { getReorderItems } from '../../../utils/helper/OrderHelper';
-import { cartItemList, getCartTotal, instructionText, recoverCart, resetCart } from '../../../redux/features/cart';
-import { appliedCouponId, couponDiscount } from '../../../redux/features/coupon';
+import { cartConfirmV1 } from '../../../utils/ApiCall';
+import { cartItemList, getCartTotal, instructionText, resetCart } from '../../../redux/features/cart';
+import { appliedCouponId } from '../../../redux/features/coupon';
 import { getItemPriceComponents } from '../../../utils/helper/ItemHelper';
 import { addToCart } from '../../../utils/helper/CartHelper';
 import { loadStorage } from '../../../utils/Storage';
@@ -60,11 +50,15 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
     const InstructionText = useSelector(instructionText);
     const AppliedCouponId = useSelector(appliedCouponId);
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [confirmOrderData, setConfirmOrderData] = useState<confirmOrderDataType>(confirmOrderDataInitial);
 
+    const [proceed, setProceed] = useState<boolean>(false);
+
     const handleClick = async () => {
-        navigation.navigate(`PaymentScreen`);
+        navigation.navigate(`PaymentScreen`, {
+            total: confirmOrderData?.finalAmount || 0
+        });
     }
 
     const cartOperation = async (item: ItemDetails) => {
@@ -128,6 +122,7 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
             setConfirmOrderData({ couponDiscount: response?.data?.couponDiscount || 0, finalAmount: response?.data?.finalAmount || 0, itemTotal: response?.data?.itemTotal || 0, packagingCost: response?.data?.packagingCost || 0, taxAmount: response?.data?.taxAmount || 0, totalWithOutTax: response?.data?.totalWithOutTax || 0 });
 
             setLoading(false);
+            setProceed(true);
         } catch (err: any) {
             setLoading(false);
             console.log(err?.message, '---err');
@@ -237,17 +232,19 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                                 </View>
 
                                 {/* Reorder button */}
-                                <Button
-                                    text={'Place order'}
-                                    onPress={handleClick}
-                                    textStyle={styles.buttonStyle}
-                                    isLoading={false}
-                                    activeButtonText={{ opacity: .65 }}
-                                    mainContainerStyle={{ marginTop: VP(30), borderRadius: HP(8.02) }}
-                                    LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
-                                    contentContainerStyle={{ top: -2 }}
-                                    style={{ width: "100%" }}
-                                />
+                                {proceed && (
+                                    <Button
+                                        text={'Place order'}
+                                        onPress={handleClick}
+                                        textStyle={styles.buttonStyle}
+                                        isLoading={false}
+                                        activeButtonText={{ opacity: .65 }}
+                                        mainContainerStyle={{ marginTop: VP(30), borderRadius: HP(8.02) }}
+                                        LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
+                                        contentContainerStyle={{ top: -2 }}
+                                        style={{ width: "100%" }}
+                                    />
+                                )}
                             </View>
                         </View>
                     </ScrollView>

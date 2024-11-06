@@ -193,4 +193,40 @@ const getCouponList = async (params = {}) => {
     }
 };
 
-export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder, getCouponList, cartConfirmV1 };
+const createPaymentIntent = async (dataPayload: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.post(BACKEND_URL + apiEndpoints.createPaymentIntent, dataPayload);
+            resolve(res);
+        } catch (error: any) {
+            console.log('API ERROR (createPaymentIntent)', (error?.response?.data?.message || error?.message));
+            reject(error);
+        }
+    });
+}
+
+const fetchCardList = async () => {
+    try {
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.cardList}`);
+
+        return res.data;
+    } catch (error: any) {
+        const { response } = error;
+        const message = response?.data?.message || error?.message || "Unknown error";
+        throw new Error(message);
+    }
+};
+
+const deleteCard = async (dataPayload: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.post(BACKEND_URL + apiEndpoints.deleteCard, dataPayload);
+            resolve(res);
+        } catch (error: any) {
+            console.log('API ERROR (deleteCard)', (error?.response?.data?.message || error?.message));
+            reject(error);
+        }
+    });
+}
+
+export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder, getCouponList, cartConfirmV1, createPaymentIntent, fetchCardList, deleteCard };

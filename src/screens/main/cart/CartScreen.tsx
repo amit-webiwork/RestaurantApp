@@ -8,7 +8,7 @@ import InnerBlock from '../../../components/InnerBlock';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
-import { COLORS, errorMessage } from '../../../utils/Constants';
+import { COLORS } from '../../../utils/Constants';
 import CategortyTabsSection from '../../../components/home-sections/CategortyTabs';
 import CartItemSection from '../../../components/cart/CartItem';
 import ItemBoxSection from '../../../components/home-sections/ItemBox';
@@ -17,14 +17,7 @@ import { ButtonSection as Button } from '../../../components/Button';
 import { cartItemList, cartLoading, getCartTotal, resetCart, setInstructionText } from '../../../redux/features/cart';
 import { fetchPopularItems, papularItemLoaded, papularItems } from '../../../redux/features/items';
 import { AppDispatch } from '../../../redux/store';
-import { cartConfirm, orderSubmit } from '../../../utils/ApiCall';
 import NormalLoader from '../../../components/NormalLoader';
-import { getItemPriceComponents } from '../../../utils/helper/ItemHelper';
-import { addToCart } from '../../../utils/helper/CartHelper';
-import { loadStorage } from '../../../utils/Storage';
-import { setDialogContent } from '../../../redux/features/customDialog';
-import Warning from '../../../assets/svgs/warning.svg';
-import CartScreenLoader from '../../../components/skeleton/CartScreenLoader';
 import { appliedCouponId, couponDiscount, couponList, couponLoaded, fetchCoupons } from '../../../redux/features/coupon';
 import { couponCalculationHandler } from '../../../utils/helper/CouponHelper';
 
@@ -46,6 +39,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [instructionText, setInstructionTextState] = useState<string>("");
     const [couponChangesLoading, setCouponChangesLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const setInstructionTextHandler = useCallback((e: string) => {
         setInstructionTextState(e);
@@ -74,7 +68,9 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
     useEffect(() => {
         if (!CouponLoaded) {
-            dispatch(fetchCoupons());
+            dispatch(fetchCoupons(setLoading));
+        } else {
+            setLoading(false)
         }
     }, [CouponLoaded])
 
@@ -84,7 +80,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
-            <NormalLoader visible={CartLoading || couponChangesLoading} />
+            <NormalLoader visible={CartLoading || couponChangesLoading || loading} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20) }}>

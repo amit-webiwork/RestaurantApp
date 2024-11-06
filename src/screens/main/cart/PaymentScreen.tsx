@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image } from 'react-native';
 
 import OuterLayout from '../../../components/OuterLayout';
@@ -7,23 +7,25 @@ import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS, errorMessage } from '../../../utils/Constants';
-import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect';
 import { useDispatch, useSelector } from 'react-redux';
 import { proflieDetails } from '../../../redux/features/profile';
 import { ButtonSection as Button } from '../../../components/Button';
 import { cartItemList, instructionText } from '../../../redux/features/cart';
 import { appliedCouponId } from '../../../redux/features/coupon';
-import { orderSubmit } from '../../../utils/ApiCall';
+import { createPaymentIntent, fetchCardList } from '../../../utils/ApiCall';
 import { AppDispatch } from '../../../redux/store';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import NormalLoader from '../../../components/NormalLoader';
+import { CardField, useConfirmPayment } from '@stripe/stripe-react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const errorObj = { cardholderName: { status: false, text: "" }, cardNumber: { status: false, text: "" }, cardExpiry: { status: false, text: "" }, cardCVV: { status: false, text: "" } }
+function PaymentScreen({ route, navigation }: { route: any; navigation: any }): React.JSX.Element {
+    const { total } = route.params;
 
-function PaymentScreen({ navigation }: { navigation: any }): React.JSX.Element {
+    const { confirmPayment, loading } = useConfirmPayment();
+
     const dispatch: AppDispatch = useDispatch();
 
     const CartItemList = useSelector(cartItemList);
@@ -35,25 +37,12 @@ function PaymentScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
     const { user } = ProflieDetails;
 
-    const [error, setError] = useState(errorObj);
-    const [cardholderName, setCardholderName] = useState(user?.name);
-    const [cardNumber, setCardNumber] = useState("");
-    const [cardExpiry, setCardExpiry] = useState("");
-    const [cardCVV, setCardCVV] = useState("");
     const [addCard, setAddCard] = useState(false);
-    const [loading, setLoading] = useState<boolean>(false);
-
-    const handleExpiryDateChange = (text: string) => {
-        // Remove any non-numeric characters
-        const cleanedText = text.replace(/[^0-9]/g, '');
-
-        // Format as MM/YY
-        if (cleanedText.length <= 2) {
-            setCardExpiry(cleanedText);
-        } else if (cleanedText.length <= 6) {
-            setCardExpiry(`${cleanedText.slice(0, 2)}/${cleanedText.slice(2)}`);
-        }
-    }
+    const [loader, setLoader] = useState(false);
+    const [cardLoading, setCardLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [cardList, setCardList] = useState<any[]>([]);
+    const [selectedCard, setSelectedCard] = useState<number>(0);
 
     // Scroll to the bottom of the ScrollView when add card is pressed
     const handleAddCardPress = () => {
@@ -68,35 +57,85 @@ function PaymentScreen({ navigation }: { navigation: any }): React.JSX.Element {
         }
     };
 
-    const handleClick = async () => {
-        setLoading(true);
+    const getCardList = async () => {
+        setCardLoading(true);
         try {
-            // now call order API
+            const response = await fetchCardList();
+
+            setCardList(response?.map((d: { card: any; id: string }) => { return { ...d?.card, ...{ methodId: d?.id || "" } } }));
+            setSelectedCard(0);
+            setCardLoading(false);
+        } catch (err: any) {
+            setCardLoading(false);
+            console.log(err?.message, '---err');
+        }
+    }
+
+    const handleClick = async () => {
+        setLoader(true);
+        try {
             const dataPayload = {
                 extraNote: InstructionText,
                 items: CartItemList.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } }),
-                couponId: AppliedCouponId
+                couponId: AppliedCouponId,
+                savePaymentMethod: true
             };
 
-            console.log(dataPayload, '====dataPayload')
+            const response: any = await createPaymentIntent(dataPayload);
 
-            const response: any = await orderSubmit(dataPayload);
+            const { client_secret } = response.data.paymentIntent;
 
-            navigation.navigate(`OrderPlacedScreen`, {
-                ...response.data
-            })
+            const billingDetails = {
+                email: user?.email,
+                name: user?.name,
+            };
 
-            setLoading(false);
+            let paymentMethodData: any = {
+                billingDetails,
+            };
+
+            // Check if using saved card or adding a new card
+            if (!addCard && cardList[selectedCard]) {
+                // Use selected saved card
+                paymentMethodData = {
+                    ...paymentMethodData,
+                    paymentMethodId: cardList[selectedCard].methodId, // Stripe's saved card ID
+                };
+            }
+
+            // Confirm the payment with the card details
+            const { paymentIntent, error } = await confirmPayment(client_secret, {
+                paymentMethodType: 'Card',
+                paymentMethodData
+            });
+
+            if (error) {
+                console.log('Payment confirmation error', error);
+                setError(error?.message || errorMessage?.commonMessage);
+                setLoader(false);
+            } else if (paymentIntent) {
+                console.log('Success from promise', paymentIntent);
+                setError("");
+                navigation.navigate(`OrderPlacedScreen`, {
+                    orderId: paymentIntent.id,
+                    message: "your order is placed sucessfully"
+                })
+                setLoader(false);
+            }
         } catch (err: any) {
-            setLoading(false);
+            setLoader(false);
             console.log(err?.message, '---err');
             dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || err?.message || errorMessage?.commonMessage }));
         }
     }
 
+    useEffect(() => {
+        getCardList()
+    }, [])
+
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#FFF9F9" }}>
-            <NormalLoader visible={loading} />
+            <NormalLoader visible={loading || cardLoading} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
                     <View style={{ paddingVertical: HP(20) }}>
@@ -110,7 +149,7 @@ function PaymentScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 </TouchableOpacity>
                                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", gap: HP(5) }}>
                                     <Text style={styles.topHeading1}>bill total:</Text>
-                                    <Text style={styles.topHeading2}>$25.00</Text>
+                                    <Text style={styles.topHeading2}>${total.toFixed(2)}</Text>
                                 </View>
                             </View>
                         </View>
@@ -118,75 +157,58 @@ function PaymentScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         {/* Body section */}
                         <View style={{ marginTop: VP(26), paddingHorizontal: HP(26) }}>
                             {/* Card Image */}
-                            <View style={{ borderRadius: HP(17.97), width: width }}>
-                                <ImageBackground source={require(`../../../assets/images/card.png`)} style={[styles.cardBG]} resizeMode='contain'>
+                            {cardList.length > 0 && (
+                                <View style={{ borderRadius: HP(17.97), width: width }}>
+                                    <ImageBackground source={require(`../../../assets/images/card.png`)} style={[styles.cardBG]} resizeMode='contain'>
 
-                                    <View style={{ flex: 1 }}>
-                                        <Text style={styles.cardBGTitle}>SoCard</Text>
+                                        <View style={{ flex: 1 }}>
+                                            <Text style={styles.cardBGTitle}>{cardList[selectedCard]?.display_brand || ""}</Text>
 
-                                        <Text style={styles.cardBGNo}>••••  ••••  ••••  8374</Text>
-                                    </View>
-
-                                    <View style={{ flexDirection: "row", marginTop: VP(36.27), gap: HP(26.96), flex: 1 }}>
-                                        <View style={{}}>
-                                            <Text style={styles.cardBGname}>Card holder name</Text>
-                                            <Text style={styles.cardBGValue}>•••  •••</Text>
+                                            <Text style={styles.cardBGNo}>••••  ••••  ••••  {cardList[selectedCard]?.last4 || "****"}</Text>
                                         </View>
 
-                                        <View style={{}}>
-                                            <Text style={styles.cardBGname}>Expiry date</Text>
-                                            <Text style={styles.cardBGValue}>••• / •••</Text>
-                                        </View>
-                                    </View>
+                                        <View style={{ flexDirection: "row", marginTop: VP(36.27), gap: HP(26.96), flex: 1 }}>
+                                            <View style={{}}>
+                                                <Text style={styles.cardBGname}>Card holder name</Text>
+                                                <Text style={styles.cardBGValue}>•••  •••</Text>
+                                            </View>
 
-                                </ImageBackground>
-                            </View>
+                                            <View style={{}}>
+                                                <Text style={styles.cardBGname}>Expiry date</Text>
+                                                <Text style={styles.cardBGValue}>••• / •••</Text>
+                                            </View>
+                                        </View>
+
+                                    </ImageBackground>
+                                </View>
+                            )}
 
                             {/* credit card section */}
                             <View style={{ marginTop: VP(20.96) }}>
                                 <Text style={styles.cardHeading}>Credit card</Text>
 
-                                <View style={styles.cardSection}>
+                                {cardList.length > 0 && (
+                                    <>
+                                        {cardList?.map((d, i) => (
+                                            <TouchableOpacity
+                                                onPress={() => setSelectedCard(i)}
+                                                style={[styles.cardSection, { borderColor: selectedCard === i ? COLORS.BUTTON : "#EDEDED" }]}
+                                                key={`card-${i}`}
+                                            >
+                                                <View style={{ flexDirection: "row", alignItems: "center", gap: HP(21.34) }}>
+                                                    <Icon type={Icons.Feather} size={FS(18)} name={`credit-card`} color={`#101010`} />
 
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: HP(21.34) }}>
-                                        <Icon type={Icons.Feather} size={FS(18)} name={`credit-card`} color={`#101010`} />
+                                                    <View>
+                                                        <Text style={styles.cardText}>{d?.display_brand || ""}Card</Text>
+                                                        <Text style={styles.cardNumber}>**** **** **** {d?.last4 || ""}</Text>
+                                                    </View>
+                                                </View>
 
-                                        <View>
-                                            <Text style={styles.cardText}>MasterCard</Text>
-                                            <Text style={styles.cardNumber}>**** **** 0783 7873</Text>
-                                        </View>
-                                    </View>
-
-                                    <Image source={require(`../../../assets/images/card-icon.png`)} style={[styles.iconImg]} />
-                                </View>
-
-                                <View style={[styles.cardSection, { borderColor: "#EDEDED" }]}>
-
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: HP(21.34) }}>
-                                        <Icon type={Icons.Feather} size={FS(18)} name={`credit-card`} color={`#101010`} />
-
-                                        <View>
-                                            <Text style={styles.cardText}>Paypal</Text>
-                                            <Text style={styles.cardNumber}>**** **** 0582 4672</Text>
-                                        </View>
-                                    </View>
-
-                                    <Image source={require(`../../../assets/images/paypal.png`)} style={[styles.iconImg]} />
-                                </View>
-
-                                <View style={[styles.cardSection, { borderColor: "#EDEDED" }]}>
-
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: HP(21.34) }}>
-                                        <Icon type={Icons.Feather} size={FS(18)} name={`credit-card`} color={`#101010`} />
-
-                                        <View>
-                                            <Text style={styles.cardText}>Apple Pay</Text>
-                                            <Text style={styles.cardNumber}>**** **** 0582 4672</Text>
-                                        </View>
-                                    </View>
-
-                                    <Image source={require(`../../../assets/images/apple-pay.png`)} style={[styles.iconImg]} />
-                                </View>
+                                                <Image source={require(`../../../assets/images/card-icon-1.png`)} style={[styles.iconImg]} />
+                                            </TouchableOpacity>
+                                        ))}
+                                    </>
+                                )}
                             </View>
 
                             {/* Add new card section */}
@@ -207,69 +229,69 @@ function PaymentScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                                 {addCard && (
                                     <View style={{ marginTop: VP(17.93), gap: HP(16) }}>
-                                        <Text style={styles.label}>cardholder name</Text>
 
-                                        <CustomTextInputNoEffect
-                                            formProps={{ text: cardholderName, setText: setCardholderName, error: error.cardholderName }}
-                                            placeholder={``}
-                                            maxLength={200}
-                                            styleInput={styles.styleInput}
-                                            placeholderTextColor={`#595959`}
+                                        <CardField
+                                            postalCodeEnabled={true}
+                                            placeholders={{
+                                                number: '4242 4242 4242 4242',
+                                            }}
+                                            cardStyle={{
+                                                backgroundColor: '#FFFFFF',
+                                                textColor: '#000000',
+                                            }}
+                                            style={{
+                                                width: '100%',
+                                                height: 50,
+                                                marginVertical: 0,
+                                            }}
+                                            onCardChange={(cardDetails: any) => {
+                                                // console.log('cardDetails', cardDetails);
+                                            }}
+                                            onFocus={(focusedField: any) => {
+                                                // console.log('focusField', focusedField);
+                                            }}
                                         />
 
-                                        <Text style={styles.label}>card number</Text>
+                                        <View style={{ marginTop: VP(10), flexDirection: "row", gap: HP(7) }}>
+                                            <Button
+                                                text={'Close'}
+                                                onPress={handleAddCardPress}
+                                                textStyle={styles.closeButtonStyle}
+                                                disabled={loading || loader}
+                                                activeButtonText={{ opacity: .65 }}
+                                                mainContainerStyle={{ flex: 1, borderColor: COLORS.BUTTON, borderWidth: 1, borderRadius: HP(8) }}
+                                                LinearGradienrColor={["#F5F5F5", "#F5F5F5"]}
+                                                contentContainerStyle={{ top: -2 }}
+                                            />
 
-                                        <CustomTextInputNoEffect
-                                            formProps={{ text: cardNumber, setText: setCardNumber, error: error.cardNumber }}
-                                            placeholder={`**** **** **** **66 `}
-                                            maxLength={50}
-                                            styleInput={styles.styleInput}
-                                            placeholderTextColor={`#595959`}
-                                            keyboardType='numeric'
-                                        />
-
-                                        <Text style={styles.label}>expiry date</Text>
-
-                                        <View style={{ flexDirection: "row", justifyContent: "space-between", width: '100%' }}>
-                                            <View style={{ flex: 1, marginRight: 10 }}>
-                                                <CustomTextInputNoEffect
-                                                    formProps={{ text: cardExpiry, setText: handleExpiryDateChange, error: error.cardExpiry }}
-                                                    placeholder="MM/YY"
-                                                    styleInput={styles.styleInput}
-                                                    placeholderTextColor={`#595959`}
-                                                    maxLength={7}
-                                                    keyboardType="numeric"
-                                                />
-                                            </View>
-
-                                            <View style={{ flex: 1 }}>
-                                                <CustomTextInputNoEffect
-                                                    formProps={{ text: cardCVV, setText: setCardCVV, error: error.cardCVV }}
-                                                    placeholder={`***`}
-                                                    maxLength={3}
-                                                    styleInput={[styles.styleInput, { textAlign: 'center' }]}
-                                                    placeholderTextColor={`#595959`}
-                                                    keyboardType='numeric'
-                                                    secureTextEntry={true}
-                                                />
-                                            </View>
-                                        </View>
-
-                                        <View style={{ marginTop: VP(26) }}>
                                             <Button
                                                 text={'pay now'}
                                                 onPress={handleClick}
                                                 textStyle={styles.buttonStyle}
-                                                isLoading={false}
+                                                isLoading={loading || loader}
                                                 activeButtonText={{ opacity: .65 }}
-                                                mainContainerStyle={{ borderRadius: HP(8) }}
+                                                mainContainerStyle={{ borderRadius: HP(8), flex: 1 }}
                                                 LinearGradienrColor={["#FF00E2", "#FF00E2"]}
                                                 contentContainerStyle={{ top: -2 }}
                                             />
                                         </View>
                                     </View>
                                 )}
-
+                                <Text style={styles.errorMessage}>{error}</Text>
+                                {(!addCard && cardList.length > 0) && (
+                                    <View style={{ marginTop: VP(10) }}>
+                                        <Button
+                                            text={'pay now'}
+                                            onPress={handleClick}
+                                            textStyle={styles.buttonStyle}
+                                            isLoading={loading || loader}
+                                            activeButtonText={{ opacity: .65 }}
+                                            mainContainerStyle={{ borderRadius: HP(8), flex: 1 }}
+                                            LinearGradienrColor={["#FF00E2", "#FF00E2"]}
+                                            contentContainerStyle={{ top: -2 }}
+                                        />
+                                    </View>
+                                )}
                             </View>
                         </View>
                     </View>
@@ -312,7 +334,8 @@ const styles = StyleSheet.create({
         ...TextStyles.INTER_SEMI_BOLD,
         fontSize: 20.22,
         lineHeight: HP(29.2),
-        color: COLORS.WHITE
+        color: COLORS.WHITE,
+        textTransform: "uppercase"
     },
     cardBGNo: {
         ...TextStyles.INTER_MEDIUM,
@@ -344,7 +367,8 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 15.72,
         lineHeight: HP(22.5),
-        color: "#101010"
+        color: "#101010",
+        textTransform: "capitalize"
     },
     cardNumber: {
         ...TextStyles.RALEWAY_MEDIUM,
@@ -383,9 +407,22 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         ...TextStyles.LEXEND_SEMI_BOLD,
-        fontSize: 20,
+        fontSize: 18,
         color: COLORS.WHITE,
         textTransform: "uppercase"
+    },
+    closeButtonStyle: {
+        ...TextStyles.LEXEND_REGULAR,
+        fontSize: 18,
+        color: COLORS.BLACK,
+        textTransform: "uppercase"
+    },
+    errorMessage: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 14,
+        textTransform: "capitalize",
+        color: COLORS.RED,
+        marginTop: VP(10)
     }
 });
 

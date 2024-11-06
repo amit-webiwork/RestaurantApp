@@ -15,7 +15,7 @@ import { resetCart } from '../../../redux/features/cart';
 import { resetCoupon } from '../../../redux/features/coupon';
 
 function OrderPlacedScreen({ route, navigation }: { route: any; navigation: any }): React.JSX.Element {
-    const { orderId, message, estimatedTime } = route.params;
+    const { orderId, message } = route.params;
 
     const dispatch: AppDispatch = useDispatch();
 

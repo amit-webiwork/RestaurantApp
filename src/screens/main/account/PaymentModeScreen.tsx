@@ -1,7 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image } from 'react-native';
-import { useStripe, CardField, createToken } from '@stripe/stripe-react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
@@ -9,12 +8,7 @@ import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS, errorMessage } from '../../../utils/Constants';
-import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect';
-import { proflieDetails } from '../../../redux/features/profile';
-import { ButtonSection as Button } from '../../../components/Button';
-import { cartItemList, instructionText } from '../../../redux/features/cart';
-import { appliedCouponId } from '../../../redux/features/coupon';
-import { orderSubmit } from '../../../utils/ApiCall';
+import { deleteCard, fetchCardList } from '../../../utils/ApiCall';
 import { AppDispatch } from '../../../redux/store';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
@@ -22,19 +16,64 @@ import NormalLoader from '../../../components/NormalLoader';
 
 const { width, height } = Dimensions.get('window');
 
-const errorObj = { cardholderName: { status: false, text: "" }, cardNumber: { status: false, text: "" }, cardExpiry: { status: false, text: "" }, cardCVV: { status: false, text: "" } }
-
 function PaymentModeScreen({ navigation }: { navigation: any }): React.JSX.Element {
-    const scrollViewRef = useRef<any>(null);
+    const dispatch: AppDispatch = useDispatch();
 
     const [loading, setLoading] = useState<boolean>(false);
+    const [cardList, setCardList] = useState<any[]>([]);
+    const [selectedCard, setSelectedCard] = useState<number>(0);
 
+    const getCardList = async () => {
+        setLoading(true);
+        try {
+            const response = await fetchCardList();
+
+            setCardList(response?.map((d: { card: any; id: string }) => { return { ...d?.card, ...{ methodId: d?.id || "" } } }));
+            setSelectedCard(0);
+            setLoading(false);
+        } catch (err: any) {
+            setLoading(false);
+            console.log(err?.message, '---err');
+            dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || err?.message || errorMessage?.commonMessage }));
+        }
+    }
+
+    const cardDeleteActionHandler = async () => {
+        setLoading(true);
+        try {
+            // get selected card details
+            const cardDetails = cardList.find((d, i) => i === selectedCard);
+            const methodId = cardDetails?.methodId || "";
+
+            const dataPayload = {
+                paymentMethodId: methodId
+            }
+
+            const response: any = await deleteCard(dataPayload);
+
+            if (response?.data?.success === true) {
+                getCardList();
+            } else {
+                dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: response?.data?.message || errorMessage?.commonMessage }));
+            }
+
+            setLoading(false);
+        } catch (err: any) {
+            setLoading(false);
+            console.log(err?.message, '---err');
+            dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || err?.message || errorMessage?.commonMessage }));
+        }
+    }
+
+    useEffect(() => {
+        getCardList()
+    }, [])
 
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#FFF9F9" }}>
             <NormalLoader visible={loading} />
             <InnerBlock>
-                <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20) }}>
                         {/* Navigation section */}
                         <View style={{ paddingHorizontal: HP(16) }}>
@@ -53,75 +92,69 @@ function PaymentModeScreen({ navigation }: { navigation: any }): React.JSX.Eleme
                         {/* Body section */}
                         <View style={{ marginTop: VP(26), paddingHorizontal: HP(26) }}>
                             {/* Card Image */}
-                            <View style={{ borderRadius: HP(17.97), width: width }}>
-                                <ImageBackground source={require(`../../../assets/images/card.png`)} style={[styles.cardBG]} resizeMode='contain'>
+                            {cardList.length > 0 && (
+                                <View style={{ borderRadius: HP(17.97), width: width }}>
+                                    <ImageBackground source={require(`../../../assets/images/card.png`)} style={[styles.cardBG]} resizeMode='contain'>
 
-                                    <View style={{ flex: 1 }}>
-                                        <Text style={styles.cardBGTitle}>SoCard</Text>
+                                        <View style={{ flex: 1 }}>
+                                            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                                                <Text style={styles.cardBGTitle}>{cardList[selectedCard]?.display_brand || ""}</Text>
 
-                                        <Text style={styles.cardBGNo}>••••  ••••  ••••  8374</Text>
-                                    </View>
+                                                <TouchableOpacity
+                                                    onPress={cardDeleteActionHandler}
+                                                    style={{ right: HP(40) }}
+                                                >
+                                                    <Icon type={Icons.Feather} size={FS(20)} name={`trash-2`} color={COLORS.WHITE} />
+                                                </TouchableOpacity>
+                                            </View>
 
-                                    <View style={{ flexDirection: "row", marginTop: VP(36.27), gap: HP(26.96), flex: 1 }}>
-                                        <View style={{}}>
-                                            <Text style={styles.cardBGname}>Card holder name</Text>
-                                            <Text style={styles.cardBGValue}>•••  •••</Text>
+                                            <Text style={styles.cardBGNo}>••••  ••••  ••••  {cardList[selectedCard]?.last4 || "****"}</Text>
                                         </View>
 
-                                        <View style={{}}>
-                                            <Text style={styles.cardBGname}>Expiry date</Text>
-                                            <Text style={styles.cardBGValue}>••• / •••</Text>
-                                        </View>
-                                    </View>
+                                        <View style={{ flexDirection: "row", marginTop: VP(36.27), gap: HP(26.96), flex: 1 }}>
+                                            <View style={{}}>
+                                                <Text style={styles.cardBGname}>Card holder name</Text>
+                                                <Text style={styles.cardBGValue}>•••  •••</Text>
+                                            </View>
 
-                                </ImageBackground>
-                            </View>
+                                            <View style={{}}>
+                                                <Text style={styles.cardBGname}>Expiry date</Text>
+                                                <Text style={styles.cardBGValue}>••• / •••</Text>
+                                            </View>
+                                        </View>
+
+                                    </ImageBackground>
+                                </View>
+                            )}
 
                             {/* credit card section */}
                             <View style={{ marginTop: VP(20.96) }}>
                                 <Text style={styles.cardHeading}>Credit card</Text>
 
-                                <View style={styles.cardSection}>
+                                {cardList.length > 0 ? (
+                                    <>
+                                        {cardList?.map((d, i) => (
+                                            <TouchableOpacity
+                                                onPress={() => setSelectedCard(i)}
+                                                style={[styles.cardSection, { borderColor: selectedCard === i ? COLORS.BUTTON : "#EDEDED" }]}
+                                                key={`card-${i}`}
+                                            >
+                                                <View style={{ flexDirection: "row", alignItems: "center", gap: HP(21.34) }}>
+                                                    <Icon type={Icons.Feather} size={FS(18)} name={`credit-card`} color={`#101010`} />
 
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: HP(21.34) }}>
-                                        <Icon type={Icons.Feather} size={FS(18)} name={`credit-card`} color={`#101010`} />
+                                                    <View>
+                                                        <Text style={styles.cardText}>{d?.display_brand || ""}Card</Text>
+                                                        <Text style={styles.cardNumber}>**** **** **** {d?.last4 || ""}</Text>
+                                                    </View>
+                                                </View>
 
-                                        <View>
-                                            <Text style={styles.cardText}>MasterCard</Text>
-                                            <Text style={styles.cardNumber}>**** **** 0783 7873</Text>
-                                        </View>
-                                    </View>
-
-                                    <Image source={require(`../../../assets/images/card-icon.png`)} style={[styles.iconImg]} />
-                                </View>
-
-                                <View style={[styles.cardSection, { borderColor: "#EDEDED" }]}>
-
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: HP(21.34) }}>
-                                        <Icon type={Icons.Feather} size={FS(18)} name={`credit-card`} color={`#101010`} />
-
-                                        <View>
-                                            <Text style={styles.cardText}>Paypal</Text>
-                                            <Text style={styles.cardNumber}>**** **** 0582 4672</Text>
-                                        </View>
-                                    </View>
-
-                                    <Image source={require(`../../../assets/images/paypal.png`)} style={[styles.iconImg]} />
-                                </View>
-
-                                <View style={[styles.cardSection, { borderColor: "#EDEDED" }]}>
-
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: HP(21.34) }}>
-                                        <Icon type={Icons.Feather} size={FS(18)} name={`credit-card`} color={`#101010`} />
-
-                                        <View>
-                                            <Text style={styles.cardText}>Apple Pay</Text>
-                                            <Text style={styles.cardNumber}>**** **** 0582 4672</Text>
-                                        </View>
-                                    </View>
-
-                                    <Image source={require(`../../../assets/images/apple-pay.png`)} style={[styles.iconImg]} />
-                                </View>
+                                                <Image source={require(`../../../assets/images/card-icon-1.png`)} style={[styles.iconImg]} />
+                                            </TouchableOpacity>
+                                        ))}
+                                    </>
+                                ) : (
+                                    <Text style={styles.noCardText}>No payment modes found</Text>
+                                )}
                             </View>
                         </View>
                     </View>
@@ -158,7 +191,8 @@ const styles = StyleSheet.create({
         ...TextStyles.INTER_SEMI_BOLD,
         fontSize: 20.22,
         lineHeight: HP(29.2),
-        color: COLORS.WHITE
+        color: COLORS.WHITE,
+        textTransform: "uppercase"
     },
     cardBGNo: {
         ...TextStyles.INTER_MEDIUM,
@@ -190,7 +224,8 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 15.72,
         lineHeight: HP(22.5),
-        color: "#101010"
+        color: "#101010",
+        textTransform: "capitalize"
     },
     cardNumber: {
         ...TextStyles.RALEWAY_MEDIUM,
@@ -199,8 +234,8 @@ const styles = StyleSheet.create({
         color: "#878787"
     },
     iconImg: {
-        width: FS(35.94),
-        height: VP(35.94),
+        width: FS(36),
+        height: VP(27),
         resizeMode: "contain",
     },
     cardSection: {
@@ -237,6 +272,13 @@ const styles = StyleSheet.create({
         height: 50,
         marginVertical: 30,
     },
+    noCardText: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 16,
+        textTransform: "capitalize",
+        textAlign: "center",
+        marginTop: VP(20)
+    }
 });
 
 export default PaymentModeScreen;

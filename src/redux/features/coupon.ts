@@ -35,12 +35,13 @@ export const couponSlice = createSlice({
     },
 })
 
-export const fetchCoupons = () => async (dispatch: AppDispatch) => {
+export const fetchCoupons = (setLoader: ((arg0: boolean) => void)) => async (dispatch: AppDispatch) => {
     try {
         const data = await getCouponList();
         dispatch(setCouponList(data));
     } catch (err) {
         console.log(err);
+        setLoader(false);
     }
 };
 

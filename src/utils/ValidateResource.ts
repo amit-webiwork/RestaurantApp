@@ -108,4 +108,14 @@ const feedbackForm = Yup.object({
         .required("Feedback is required")
 });
 
-export { validateResource, signup, login, forgotPassword, resetPassword, updateProfile, changePassword, feedbackForm };
+const validateCard = Yup.object({
+    cardholderName: Yup.string()
+        .required("Name is required"),
+    cardNumber: Yup.number()
+        .typeError("Card number is required")
+        .required("Card number is required"),
+    cardExpiry: Yup.number()
+        .required("Name is required"),
+});
+
+export { validateResource, signup, login, forgotPassword, resetPassword, updateProfile, changePassword, feedbackForm, validateCard };

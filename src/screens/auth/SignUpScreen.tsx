@@ -40,6 +40,18 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
         setPasswordHide((prev) => !prev);
     }, [setPasswordHide]);
 
+    const handleMobileChange = (text: string) => {
+        setMobile(text.replace(/\s/g, '')); // Remove spaces
+    };
+
+    const handlePasswordChange = (text: string) => {
+        setPassword(text.replace(/\s/g, '')); // Remove spaces
+    };
+
+    const handleEmailChange = (text: string) => {
+        setEmail(text.replace(/\s/g, '')); // Remove spaces
+    };
+
     const handleOnPress = async () => {
         try {
             setError(errorObj);
@@ -110,14 +122,14 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
 
                                 <CustomTextInput
                                     placeholder='Email'
-                                    formProps={{ text: email, setText: setEmail, error: error.email }}
+                                    formProps={{ text: email, setText: handleEmailChange, error: error.email }}
                                     maxLength={100}
                                     styleInput={{ height: "auto", marginTop: VP(13) }}
                                 />
 
                                 <CustomTextInput
                                     placeholder='Mobile Number'
-                                    formProps={{ text: mobile, setText: setMobile, error: error.mobile }}
+                                    formProps={{ text: mobile, setText: handleMobileChange, error: error.mobile }}
                                     keyboardType='numeric'
                                     maxLength={20}
                                     styleInput={{
@@ -128,7 +140,7 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
 
                                 <CustomTextInput
                                     placeholder='Password'
-                                    formProps={{ text: password, setText: setPassword, error: error.password }}
+                                    formProps={{ text: password, setText: handlePasswordChange, error: error.password }}
                                     maxLength={100}
                                     secureTextEntry={passwordHide}
                                     iconName={passwordHide ? require(`../../assets/icons/eyeclosed.png`) : require(`../../assets/icons/eyeopen.png`)}
@@ -162,13 +174,13 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
                                 />
                             </View>
 
-                            <View style={{ flexDirection: "row", marginTop: VP(11), justifyContent: "center", alignItems: "center", gap: HP(7) }}>
+                            {/* <View style={{ flexDirection: "row", marginTop: VP(11), justifyContent: "center", alignItems: "center", gap: HP(7) }}>
                                 <View style={styles.line}></View>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12 }}>Or</Text>
                                 <View style={styles.line}></View>
-                            </View>
+                            </View> */}
 
-                            <View style={{ flexDirection: "row", marginTop: VP(24.5), justifyContent: "center", gap: HP(14) }}>
+                            {/* <View style={{ flexDirection: "row", marginTop: VP(24.5), justifyContent: "center", gap: HP(14) }}>
                                 <TouchableOpacity
                                     onPress={() => void (0)}
                                     style={{}}
@@ -182,7 +194,7 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
                                 >
                                     <Image source={require('../../assets/icons/google.png')} style={styles.icon} />
                                 </TouchableOpacity>
-                            </View>
+                            </View> */}
 
                             <View style={{ marginTop: VP(42), flexDirection: "row", justifyContent: "center", gap: HP(6) }}>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12 }}>Already Have An Account?</Text>
