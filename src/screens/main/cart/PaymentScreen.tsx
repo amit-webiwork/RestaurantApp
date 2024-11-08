@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, Platform, Appearance } from 'react-native';
+import { CardField, useConfirmPayment, createPaymentMethod } from '@stripe/stripe-react-native';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
@@ -17,9 +18,17 @@ import { AppDispatch } from '../../../redux/store';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import NormalLoader from '../../../components/NormalLoader';
-import { CardField, useConfirmPayment } from '@stripe/stripe-react-native';
+import { CommonActions } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
+
+// const isDarkMode = Appearance.getColorScheme() === 'dark';
+const isDarkMode1 = Appearance.getColorScheme() === 'dark';
+const isDarkMode = false;
+
+const iconColor = isDarkMode ? "#FFFFFF" : "#6C6C70";
+
+const creditCardColor = isDarkMode ? "#FFFFFF" : "#101010";
 
 function PaymentScreen({ route, navigation }: { route: any; navigation: any }): React.JSX.Element {
     const { total } = route.params;
@@ -120,6 +129,20 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                     orderId: paymentIntent.id,
                     message: "your order is placed sucessfully"
                 })
+
+                // navigation.reset({
+                //     index: 0,
+                //     routes: [
+                //         {
+                //             name: 'OrderPlacedScreen',
+                //             params: {
+                //                 orderId: paymentIntent.id,
+                //                 message: "Your order is placed successfully",
+                //             },
+                //         },
+                //     ],
+                // });
+
                 setLoader(false);
             }
         } catch (err: any) {
@@ -134,7 +157,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
     }, [])
 
     return (
-        <OuterLayout containerStyle={{ backgroundColor: "#FFF9F9" }}>
+        <OuterLayout containerStyle={styles.containerStyle}>
             <NormalLoader visible={loading || cardLoading} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
@@ -145,7 +168,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
                                 >
-                                    <Icon type={Icons.Feather} size={FS(24)} name={`chevron-left`} color={`#6C6C70`} />
+                                    <Icon type={Icons.Feather} size={FS(24)} name={`chevron-left`} color={iconColor} />
                                 </TouchableOpacity>
                                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", gap: HP(5) }}>
                                     <Text style={styles.topHeading1}>bill total:</Text>
@@ -178,7 +201,6 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                                 <Text style={styles.cardBGValue}>••• / •••</Text>
                                             </View>
                                         </View>
-
                                     </ImageBackground>
                                 </View>
                             )}
@@ -196,7 +218,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                                 key={`card-${i}`}
                                             >
                                                 <View style={{ flexDirection: "row", alignItems: "center", gap: HP(21.34) }}>
-                                                    <Icon type={Icons.Feather} size={FS(18)} name={`credit-card`} color={`#101010`} />
+                                                    <Icon type={Icons.Feather} size={FS(18)} name={`credit-card`} color={creditCardColor} />
 
                                                     <View>
                                                         <Text style={styles.cardText}>{d?.display_brand || ""}Card</Text>
@@ -231,25 +253,16 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                     <View style={{ marginTop: VP(17.93), gap: HP(16) }}>
 
                                         <CardField
-                                            postalCodeEnabled={true}
+                                            postalCodeEnabled={false}
                                             placeholders={{
                                                 number: '4242 4242 4242 4242',
                                             }}
-                                            cardStyle={{
-                                                backgroundColor: '#FFFFFF',
-                                                textColor: '#000000',
-                                            }}
-                                            style={{
-                                                width: '100%',
-                                                height: 50,
-                                                marginVertical: 0,
-                                            }}
-                                            onCardChange={(cardDetails: any) => {
-                                                // console.log('cardDetails', cardDetails);
-                                            }}
-                                            onFocus={(focusedField: any) => {
-                                                // console.log('focusField', focusedField);
-                                            }}
+                                            cardStyle={
+                                                Platform.OS === 'android'
+                                                    ? styles.cardStyleAndroid
+                                                    : styles.cardStyleLight
+                                            }
+                                            style={styles.cardField}
                                         />
 
                                         <TouchableOpacity
@@ -263,7 +276,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                                     </View>
                                                 )}
                                             </View>
-                                            <Text style={[styles.labelStyle, { color: savePaymentMethod ? COLORS.BLACK : "#747474" }]}>Save payment information to my account for future payments.</Text>
+                                            <Text style={[styles.labelStyle]}>Save payment information to my account for future payments.</Text>
                                         </TouchableOpacity>
 
                                         <View style={{ marginTop: VP(10), flexDirection: "row", gap: HP(7) }}>
@@ -321,18 +334,21 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textTransform: "capitalize",
         top: VP(-2),
-        textAlign: "center"
+        textAlign: "center",
+        color: isDarkMode ? COLORS.WHITE : COLORS.BLACK
     },
     topHeading2: {
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 18,
         top: VP(-2),
-        textAlign: "center"
+        textAlign: "center",
+        color: isDarkMode ? COLORS.WHITE : COLORS.BLACK
     },
     boxText: {
         ...TextStyles.RALEWAY_REGULAR,
         fontSize: 14,
-        textTransform: "capitalize"
+        textTransform: "capitalize",
+        color: isDarkMode ? COLORS.WHITE : COLORS.BLACK
     },
     buttonText: {
         ...TextStyles.RALEWAY_MEDIUM,
@@ -375,20 +391,23 @@ const styles = StyleSheet.create({
         ...TextStyles.INTER_MEDIUM,
         fontSize: 17.97,
         lineHeight: HP(27),
-        color: "#101010"
+        // color: "#101010",
+        color: isDarkMode ? COLORS.WHITE : "#101010"
     },
     cardText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 15.72,
         lineHeight: HP(22.5),
-        color: "#101010",
-        textTransform: "capitalize"
+        // color: "#101010",
+        textTransform: "capitalize",
+        color: isDarkMode ? COLORS.WHITE : "#101010"
     },
     cardNumber: {
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 13.48,
         lineHeight: HP(18),
-        color: "#878787"
+        // color: "#878787"
+        color: isDarkMode ? COLORS.WHITE : "#878787"
     },
     iconImg: {
         width: FS(35.94),
@@ -405,19 +424,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: HP(21.34),
         justifyContent: "space-between",
         alignItems: "center"
-    },
-    label: {
-        ...TextStyles.RALEWAY_REGULAR,
-        fontSize: 14,
-        textTransform: "capitalize"
-    },
-    styleInput: {
-        ...TextStyles.RALEWAY_REGULAR,
-        fontSize: 14,
-        borderRadius: HP(7),
-        padding: HP(16),
-        borderWidth: 1,
-        borderColor: "#C0C0C0"
     },
     buttonStyle: {
         ...TextStyles.LEXEND_SEMI_BOLD,
@@ -464,8 +470,36 @@ const styles = StyleSheet.create({
     },
     labelStyle: {
         ...TextStyles.RALEWAY_MEDIUM,
-        fontSize: 10.17
+        fontSize: 10.17,
+        color: isDarkMode ? COLORS.WHITE : COLORS.BLACK
     },
+    cardStyleAndroid: {
+        borderWidth: 1,
+        borderColor: COLORS.ICON_DEFAULT,
+        borderRadius: HP(10),
+        color: isDarkMode1 ? COLORS.WHITE : COLORS.BLACK,
+        textColor: isDarkMode1 ? COLORS.WHITE : COLORS.BLACK,
+        backgroundColor: isDarkMode1 ? "#333333" : COLORS.WHITE
+        // backgroundColor: "#333333"
+    },
+    cardStyleLight: {
+        backgroundColor: COLORS.WHITE,
+        textColor: COLORS.BLACK,
+        color: COLORS.BLACK,
+        borderColor: COLORS.ICON_DEFAULT,
+    },
+    cardField: {
+        height: VP(40),
+        borderWidth: 1,
+        borderColor: COLORS.ICON_DEFAULT,
+        padding: 0,
+        margin: 0,
+        borderRadius: HP(10),
+        backgroundColor: isDarkMode ? COLORS.BLACK : COLORS.WHITE,
+    },
+    containerStyle: {
+        backgroundColor: isDarkMode ? "#000000" : "#FFF9F9"
+    }
 });
 
 export default PaymentScreen;

@@ -17,6 +17,7 @@ import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../utils/Con
 import { signup, validateResource } from '../../utils/ValidateResource';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type NavigationProp = NativeStackScreenProps<AuthStackParamList>;
 
@@ -91,6 +92,15 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
         }
     };
 
+    const removeItemFromAsyncStorage = async (key: string) => {
+        try {
+          await AsyncStorage.removeItem(key);
+          console.log(`Item with key ${key} removed from storage.`);
+        } catch (error) {
+          console.error("Error removing item from storage", error);
+        }
+      };
+
     const dumpStorage = async () => {
         removeStorage("userDetails");
         removeStorage("forgotPasswordEmail");
@@ -99,6 +109,7 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
         removeStorage("recentSearchItems");
         removeStorage("fcmToken");
         removeStorage("notificationList");
+        removeItemFromAsyncStorage('fcmToken');
     }
 
     useEffect(() => {

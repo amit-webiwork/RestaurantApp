@@ -25,11 +25,15 @@ import SearchBoxItemsSection from '../../components/home-sections/SearchBoxItems
 import { askInitialPermission } from '../../utils/Permissions.ts';
 import { setDialogContent } from '../../redux/features/customDialog.ts';
 import Warning from '../../assets/svgs/warning.svg';
+import { loadStorage } from '../../utils/Storage.ts';
+import { useIsFocused } from '@react-navigation/native';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
+
+    const isFocused = useIsFocused();
 
     const ProflieDetails = useSelector(proflieDetails);
 
@@ -41,6 +45,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
+    const [notificationCount, setNotificationCount] = useState<number>(0);
 
     const selectCategoryHandler = useCallback((id: number) => {
         setSelectedCategory(id);
@@ -74,10 +79,21 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
         })();
     }, []);
 
-    // checkPermissions
+    // checkPermissions & check unread notification
     useEffect(() => {
         // checkPermissions();
-    }, [])
+        if (isFocused) {
+            (async () => {
+                const notificationList = await loadStorage("notificationList");
+
+                const count = notificationList.length ? notificationList.filter((d: { read: any; }) => !d?.read).length : 0;
+
+                console.log(count, '----count')
+
+                setNotificationCount(count);
+            })()
+        }
+    }, [isFocused])
 
     return (
         <>
@@ -92,11 +108,18 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         <ScrollView showsVerticalScrollIndicator={false}>
                             {/* Top banner area */}
                             <View style={styles.bannerContainer}>
+                                {/* notification icon */}
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`NotificationScreen`)}
-                                    style={{ position: "absolute", marginVertical: HP(20), right: HP(20) }}
+                                    style={styles.notificationBox}
                                 >
-                                    <Icon type={Icons.Feather} size={18} name={`bell`} color={COLORS.WHITE} />
+                                    <Icon type={Icons.Feather} size={20} name={`bell`} color={COLORS.WHITE} />
+
+                                    {notificationCount > 0 && (
+                                        <View style={styles.notificationCountBox}>
+                                            <Text style={styles.notificationCount}>{notificationCount}</Text>
+                                        </View>
+                                    )}
                                 </TouchableOpacity>
                                 <View style={{ flexBasis: "35%", gap: HP(13) }}>
                                     <View style={{ left: HP(17), marginTop: VP(30) }}>
@@ -270,6 +293,26 @@ const styles = StyleSheet.create({
     bannerContainer: {
         flexDirection: "row",
         flex: 1
+    },
+    notificationCount: {
+        ...TextStyles.INTER_SEMI_BOLD,
+        fontSize: HP(10),
+        color: COLORS.WHITE
+    },
+    notificationBox: {
+        position: "absolute",
+        marginVertical: HP(20),
+        right: HP(20)
+    },
+    notificationCountBox: {
+        width: FS(15),
+        height: VP(15),
+        borderRadius: FS(7.5),
+        backgroundColor: COLORS.THEME,
+        justifyContent: "center",
+        alignItems: "center",
+        right: HP(-12),
+        top: HP(-25)
     }
 });
 
