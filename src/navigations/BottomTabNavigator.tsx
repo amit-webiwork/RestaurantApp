@@ -19,6 +19,7 @@ import MenuScreen from '../screens/main/menu/MenuScreen';
 import CartNotificationBarSection from '../components/cart/CartNotificationBar';
 import { itemAdded } from '../redux/features/cart';
 import OrderDetailsScreen from '../screens/main/OrderDetailsScreen';
+import { proflieDetails } from '../redux/features/profile';
 
 export type MenuStackParamList = {
     CategoryScreen: undefined;
@@ -72,8 +73,8 @@ const animate2 = { 0: { scale: 1.2, translateY: -24 }, 1: { scale: 1, translateY
 const circle1 = { 0: { scale: 0 }, 0.3: { scale: .9 }, 0.5: { scale: .2 }, 0.8: { scale: .7 }, 1: { scale: 1 } }
 const circle2 = { 0: { scale: 1 }, 1: { scale: 0 } }
 
-const TabButton = (props: { item: any; onPress: any; accessibilityState: any; }) => {
-    const { item, onPress, accessibilityState } = props;
+const TabButton = (props: { item: any; onPress: any; accessibilityState: any; profile: any; navigation: any }) => {
+    const { item, onPress, accessibilityState, profile, navigation } = props;
     const focused = accessibilityState.selected;
     const viewRef = useRef<any>(null);
     const circleRef = useRef<any>(null);
@@ -95,9 +96,23 @@ const TabButton = (props: { item: any; onPress: any; accessibilityState: any; })
         }
     }, [focused])
 
+    const onPressHandler = () => {
+        if (item.route === "AccountScreen" || item.route === "Order") {
+            if (profile?.token?.accessToken && profile?.user?.name) {
+                onPress();
+            } else {
+                navigation.navigate(`SignUpScreen`);
+            }
+        } else {
+            onPress();
+        }
+        console.log(item.route, '---item')
+    }
+
+
     return (
         <TouchableOpacity
-            onPress={onPress}
+            onPress={onPressHandler}
             activeOpacity={1}
             style={[styles.container]}>
             <Animatable.View
@@ -121,7 +136,9 @@ const TabButton = (props: { item: any; onPress: any; accessibilityState: any; })
 }
 
 export default function BottomTabNavigator() {
-    const navigation = useNavigation(); // Access navigation prop
+    const ProflieDetails = useSelector(proflieDetails);
+
+    const navigation = useNavigation();
     const ItemAdded = useSelector(itemAdded);
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -139,7 +156,7 @@ export default function BottomTabNavigator() {
                             options={{
                                 tabBarShowLabel: false,
                                 tabBarStyle: (item.route === 'CartScreen') ? { display: 'none' } : [styles.tabBar, styles.shadow],
-                                tabBarButton: (props) => <TabButton {...props} item={item} />
+                                tabBarButton: (props) => <TabButton {...props} item={item} profile={ProflieDetails} navigation={navigation} />
                             }}
                         />
                     )

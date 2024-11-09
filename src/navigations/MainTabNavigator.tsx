@@ -22,6 +22,8 @@ import OrderSummaryScreen from '../screens/main/cart/OrderSummaryScreen';
 import PaymentModeScreen from '../screens/main/account/PaymentModeScreen';
 import OrderDetailsScreen from '../screens/main/OrderDetailsScreen';
 import OrderTrackScreen from '../screens/main/OrderTrackScreen';
+import SignUpScreen from '../screens/auth/SignUpScreen';
+import LoginScreen from '../screens/auth/LoginScreen';
 
 export type MainTabParamList = {
     HomeScreen: undefined;
@@ -46,6 +48,8 @@ export type MainTabParamList = {
     PaymentModeScreen: undefined;
     OrderDetailsScreen: undefined;
     OrderTrackScreen: undefined;
+    SignUpScreen: undefined;
+    LoginScreen: undefined;
 };
 
 const MainTabNavigator: React.FunctionComponent = () => {
@@ -130,6 +134,16 @@ const MainTabNavigator: React.FunctionComponent = () => {
                 name={`OrderTrackScreen`}
                 component={OrderTrackScreen}
             />
+            <Stack.Screen
+                name={`SignUpScreen`}
+                component={SignUpScreen}
+            />
+
+            <Stack.Screen
+                name={`LoginScreen`}
+                component={LoginScreen}
+            />
+
             <Stack.Group screenOptions={{
                 presentation: 'transparentModal',
                 animation: 'slide_from_bottom',   // Slide from bottom animation

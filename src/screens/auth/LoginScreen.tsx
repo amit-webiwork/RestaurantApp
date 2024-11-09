@@ -23,9 +23,7 @@ type NavigationProp = NativeStackScreenProps<MainStackParamList>;
 
 const errorObj = { username: { status: false, text: "" }, password: { status: false, text: "" } };
 
-const LoginScreen: React.FunctionComponent<NavigationProp> = ({
-    navigation,
-}) => {
+function LoginScreen({ navigation }: { navigation: NavigationProp }): React.JSX.Element {
     const dispatch = useDispatch();
 
     const [username, setUsername] = useState('');

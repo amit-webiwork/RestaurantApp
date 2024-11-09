@@ -19,13 +19,17 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [showButton, setShowButton] = useState(false);
 
     const getStarted = async () => {
-        // navigation.navigate('SignUpScreen');
-        // return;
+        // set cart items from storage to state
+        setInCartState(dispatch);
+
+        // set searched items from storage to state
+        setInRecentSearchState(dispatch)
+
         navigation.reset({
             index: 0,
             routes: [
                 {
-                    name: 'SignUpScreen',
+                    name: 'MainTabNavigator',
                 },
             ],
         });
@@ -106,7 +110,13 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                         {showButton && (
                             <View style={{ justifyContent: "center", marginHorizontal: HP(30) }}>
-                                <ButtonSwipe title="swipe to get started" backgroundColor="#CC9AFF" titleStyles={styles.titleStyles} swipeAction={getStarted} mainContainerStyle={{ top: "50%", alignItems: "center" }} swipeBackgroundColor="#CC9AFF" />
+                                <ButtonSwipe
+                                    title="swipe to get started"
+                                    backgroundColor="#CC9AFF"
+                                    titleStyles={styles.titleStyles}
+                                    swipeAction={getStarted}
+                                    mainContainerStyle={{ top: "50%", alignItems: "center" }} swipeBackgroundColor="#CC9AFF"
+                                />
                                 {/* VP(28) */}
                                 {/* #DF12CA */}
                             </View>

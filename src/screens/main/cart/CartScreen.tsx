@@ -20,6 +20,7 @@ import { AppDispatch } from '../../../redux/store';
 import NormalLoader from '../../../components/NormalLoader';
 import { appliedCouponId, couponDiscount, couponList, couponLoaded, fetchCoupons } from '../../../redux/features/coupon';
 import { couponCalculationHandler } from '../../../utils/helper/CouponHelper';
+import { proflieDetails } from '../../../redux/features/profile';
 
 function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
@@ -33,6 +34,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const CouponLoaded = useSelector(couponLoaded);
     const AppliedCouponId = useSelector(appliedCouponId);
     const CouponDiscount = useSelector(couponDiscount);
+    const ProflieDetails = useSelector(proflieDetails);
 
     const [cookingRequestShow, setCookingRequestShow] = useState(false);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
@@ -54,8 +56,12 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     }, [PapularItems]);
 
     const handleClick = async (type: string) => {
-        dispatch(setInstructionText(instructionText));
-        navigation.navigate(`OrderSummaryScreen`);
+        if (ProflieDetails?.token?.accessToken && ProflieDetails?.user?.name) {
+            dispatch(setInstructionText(instructionText));
+            navigation.navigate(`OrderSummaryScreen`);
+        } else {
+            navigation.navigate(`SignUpScreen`);
+        }
     }
 
     useEffect(() => {

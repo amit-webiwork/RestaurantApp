@@ -23,9 +23,7 @@ type NavigationProp = NativeStackScreenProps<AuthStackParamList>;
 
 const errorObj = { name: { status: false, text: "" }, email: { status: false, text: "" }, mobile: { status: false, text: "" }, password: { status: false, text: "" } };
 
-const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
-    navigation,
-}) => {
+function SignUpScreen({ navigation }: { navigation: NavigationProp }): React.JSX.Element {
     const dispatch = useDispatch();
 
     const [name, setName] = useState('');
@@ -94,12 +92,12 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
 
     const removeItemFromAsyncStorage = async (key: string) => {
         try {
-          await AsyncStorage.removeItem(key);
-          console.log(`Item with key ${key} removed from storage.`);
+            await AsyncStorage.removeItem(key);
+            console.log(`Item with key ${key} removed from storage.`);
         } catch (error) {
-          console.error("Error removing item from storage", error);
+            console.error("Error removing item from storage", error);
         }
-      };
+    };
 
     const dumpStorage = async () => {
         removeStorage("userDetails");
