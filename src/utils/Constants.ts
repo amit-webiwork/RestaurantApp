@@ -17,7 +17,7 @@ export const COLORS = {
 // export const BACKEND_URL = "https://deloungecafe.com/api/v1";
 export const BACKEND_URL = "http://192.168.0.101:4000/api/v1";
 // export const BACKEND_URL = "https://stable-gobbler-select.ngrok-free.app/api/v1";
-export const CDN_URL = "https://d1wn3ec1bju3mm.cloudfront.net/";
+export const CDN_URL = "https://cdn.deloungecafe.com/";
 
 // local key
 export const STRIPE_PUBLIC_KEY = "pk_test_51QCxBJHliBFhQl5Sfxyactla0vrLw2IO7t4pUFBwHywPjeap3iBS7sEe7bncI6NBdCoetAhdfIUxWGjuajVkJ6F4004SKA6sQ9";
