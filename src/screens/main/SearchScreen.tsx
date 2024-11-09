@@ -149,7 +149,7 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
                         }}
                         style={styles.searchIconContainer}
                     >
-                        <Image source={require(`../../assets/icons/mic.png`)} style={[styles.inputIconRight]} />
+                        {/* <Image source={require(`../../assets/icons/mic.png`)} style={[styles.inputIconRight]} /> */}
                     </TouchableOpacity>
                 )}
             </View>

@@ -36,7 +36,7 @@ const CartNotificationBar = ({ isVisible, navigation, message = "Item added to c
                         duration: 300,
                         useNativeDriver: true,
                     }).start();
-                }, 2000); // Display for 2 seconds
+                }, 4000); // Display for 4 seconds
             });
         }
     }, [isVisible]);

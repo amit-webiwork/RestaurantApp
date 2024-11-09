@@ -69,7 +69,15 @@ const ActiveOrderItem = ({ item, index }: Props) => {
                     <Text style={styles.priceText}> ${orderData?.finalAmount} </Text>
                     <Text style={styles.statusText}> {orderData?.orderStatus} </Text>
                 </View>
-                <Text style={styles.subText}> {formatEstimatedTime(orderData?.estimatedTime)} </Text>
+                <View>
+                    {/* <TouchableOpacity
+                        onPress={() => void (0)}
+                    >
+                        <Text style={styles.trackText}> track order </Text>
+                    </TouchableOpacity> */}
+
+                    <Text style={styles.subText}> {formatEstimatedTime(orderData?.estimatedTime)} </Text>
+                </View>
             </View>
         </View>
     );
@@ -141,6 +149,14 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_REGULAR,
         fontSize: 12,
         alignSelf: "flex-end"
+    },
+    trackText: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 12,
+        alignSelf: "flex-end",
+        textTransform: "capitalize",
+        // textDecorationLine: "underline",
+        // textDecorationStyle: "solid"
     }
 });
 

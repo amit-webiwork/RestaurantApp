@@ -88,7 +88,7 @@ const CategoryBox: React.FunctionComponent<Props> = ({ navigation }) => {
                 <Text style={styles.heading}>
                     categories
                 </Text>
-                {CategoryLoaded && (
+                {/* {CategoryLoaded && (
                     <View style={styles.iconMainContainer}>
                         <TouchableOpacity
                             onPress={scrollLeft}
@@ -103,7 +103,7 @@ const CategoryBox: React.FunctionComponent<Props> = ({ navigation }) => {
                             <RightWhite width={FS(12)} height={VP(12)} />
                         </TouchableOpacity>
                     </View>
-                )}
+                )} */}
             </View>
 
             <View>

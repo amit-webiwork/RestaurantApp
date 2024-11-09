@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import Icon, { Icons } from '../components/Icons';
 import { COLORS } from '../utils/Constants';
-import { HP, VP } from '../utils/Responsive';
+import { FS, HP, VP } from '../utils/Responsive';
 import { TextStyles } from '../utils/TextStyles';
 import ProfileImageContainer from './account/ProfileImageContainer';
 import OuterLayout from './OuterLayout';
@@ -27,12 +27,16 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
                         <ScrollView showsVerticalScrollIndicator={false}>
                             {/* Top container */}
                             <View style={{ marginTop: VP(25), flex: 1 }}>
-                                <TouchableOpacity
-                                    onPress={() => navigation.navigate(`HomeScreen`)}
-                                    style={{ marginHorizontal: HP(18) }}
-                                >
-                                    <Icon type={Icons.Feather} size={18} name={`chevron-left`} color={COLORS.WHITE} />
-                                </TouchableOpacity>
+                                {/* Top Navigation */}
+                                <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: HP(18) }}>
+                                    <TouchableOpacity
+                                        onPress={() => navigation.navigate(`HomeScreen`)}
+                                        style={{ alignSelf: "center"}}
+                                    >
+                                        <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.WHITE} />
+                                    </TouchableOpacity>
+                                    <Text style={styles.topHeading}>0.0.1</Text>
+                                </View>
 
                                 <View style={{ marginTop: VP(6), alignItems: "center" }}>
                                     <ProfileImageContainer profile={user} />
@@ -65,7 +69,16 @@ const styles = StyleSheet.create({
         height: height * 1,
         marginBottom: VP(-40),
         flex: 1
-    }
+    },
+    topHeading: {
+        ...TextStyles.LEXEND_SEMI_BOLD,
+        color: COLORS.WHITE,
+        fontSize: 16,
+        textAlign: "right",
+        flex: 1,
+        textDecorationLine: "underline",
+        textDecorationStyle: "solid",
+    },
 });
 
 const AccountSkeletonSection = memo(AccountSkeleton);

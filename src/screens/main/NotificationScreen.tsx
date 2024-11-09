@@ -147,7 +147,7 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                             }
                         >
                             <View style={{ marginTop: VP(25.21) }}>
-                                {list.map((d: any, i: number) => (
+                                {list?.length ? list.map((d: any, i: number) => (
                                     <View key={`notification-group-${i}`} >
                                         <View>
                                             <View>
@@ -184,7 +184,15 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                                         </View>
                                         <View style={styles.line}></View>
                                     </View>
-                                ))}
+                                )) : (
+                                    <View style={{
+                                        flex: 1,
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}>
+                                        <Text style={styles.title}>No Notification Found</Text>
+                                    </View>
+                                )}
                             </View>
                         </ScrollView>
                     </View>

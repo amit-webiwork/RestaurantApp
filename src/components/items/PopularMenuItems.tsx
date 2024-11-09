@@ -30,11 +30,10 @@ interface Props {
 }
 
 const { width, height } = Dimensions.get('window');
-
 const FooterComponent = ({ dataLoaded, hasMoreData }: { dataLoaded: boolean, hasMoreData: boolean }) => {
     return (
         <>
-            {(dataLoaded) ? <View style={{ flex: 1, height: height * .5,  justifyContent: "center" }}>
+            {(dataLoaded) ? <View style={{ flex: 1, height: height * .5, justifyContent: "center" }}>
                 <ActivityIndicator size="large" color={COLORS.BUTTON} /></View> : null}
             {!hasMoreData && (
                 <View style={{ marginTop: VP(41), marginBottom: VP(151) }}>
@@ -79,18 +78,20 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
                         <TouchableOpacity
                             onPress={() => void (0)}
                         >
-                            <Text style={styles.boxTitle}>{item?.name}</Text>
+                            <Text numberOfLines={1} style={styles.boxTitle}>{item?.name}</Text>
                             <Text style={styles.boxText}>700mL.  Dairy-free ice crusher.</Text>
                         </TouchableOpacity>
 
-                        <View style={styles.priceBox}>
+                        <View style={[styles.priceBox, { flexDirection: item.discountPrice > 0 ? "row" : 'column' }]}>
                             <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.priceText, item.discountPrice > 0 && styles.discountedPriceText]}>${item.itemPrice.toFixed(2)}</Text>
 
-                            {item.discountPrice > 0 && (
+                            {item.discountPrice > 0 ? (
                                 <>
                                     <Text numberOfLines={1} ellipsizeMode="tail" style={styles.priceText}>${item.discountPrice.toFixed(2)}</Text>
                                     <Text numberOfLines={1} ellipsizeMode="tail" style={styles.discountedPercentText}>${item.discountPercent.toFixed(2)}% Off</Text>
                                 </>
+                            ) : (
+                                <Text>{``}</Text>
                             )}
 
                         </View>
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
     boxContainer: {
         marginBottom: HP(10),
         paddingHorizontal: HP(0.75),
-        width: (width / 2) - HP(23.25),
+        width: (width / 2) - (width >= 360 ? HP(24) : HP(23.25)),
         marginHorizontal: HP(3), // Space between items horizontally
 
     },
@@ -185,7 +186,6 @@ const styles = StyleSheet.create({
     },
     priceBox: {
         paddingTop: HP(12),
-        flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         flexWrap: "wrap",

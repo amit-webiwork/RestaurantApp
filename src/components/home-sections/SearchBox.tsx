@@ -55,7 +55,7 @@ const SearchBox: React.FunctionComponent<Props> = ({ inputContainerStyle, setHan
                         zIndex: 2
                     }}
                 >
-                    <Image source={require(`../../assets/icons/mic.png`)} style={[styles.inputIconRight]} />
+                    {/* <Image source={require(`../../assets/icons/mic.png`)} style={[styles.inputIconRight]} /> */}
                 </TouchableOpacity>
             </View>
         </View>

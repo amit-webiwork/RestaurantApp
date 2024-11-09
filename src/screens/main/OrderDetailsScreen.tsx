@@ -228,13 +228,18 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                     <View style={styles.line}></View>
 
                                     {/* Order Item List */}
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: HP(10) }}>
+                                    <View style={{ flexDirection: "column", justifyContent: "space-between", paddingHorizontal: HP(10) }}>
                                         <View style={{ gap: HP(8) }}>
                                             {(orderData?.orderItems && Array.isArray(orderData?.orderItems) && orderData?.orderItems.length > 0) ? (
                                                 orderData?.orderItems.map((d: any, i: number) => (
-                                                    <Text key={`past-order-item-${i}`} style={styles.itemText}>
-                                                        • {d?.qty} x {d?.itemName}
-                                                    </Text>
+                                                    <View key={`item-list-${i}`} style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                                        <Text style={styles.itemText}>
+                                                            • {d?.qty} x {d?.itemName}
+                                                        </Text>
+                                                        <Text style={styles.orderEntityPrice}>
+                                                            ${d?.price}
+                                                        </Text>
+                                                    </View>
                                                 ))
                                             ) : (
                                                 <Text style={styles.itemText}>No items ordered</Text>
@@ -493,9 +498,11 @@ const styles = StyleSheet.create({
         textTransform: "capitalize",
     },
     qtyText: {
-        ...TextStyles.RALEWAY_REGULAR,
+        ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 12,
-        alignSelf: "flex-end"
+        alignSelf: "flex-end",
+        marginTop: HP(10),
+        
     },
     orderEntityText: {
         ...TextStyles.RALEWAY_MEDIUM,
