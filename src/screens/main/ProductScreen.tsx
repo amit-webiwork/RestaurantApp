@@ -240,7 +240,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                     </View> */}
 
                                     {/* Customize item section */}
-                                    <View style={{ marginTop: VP(22), paddingHorizontal: HP(30) }}>
+                                    <View style={{ marginTop: VP(22), paddingHorizontal: HP(30), display: "none" }}>
                                         <Text style={styles.customizeHeading}>customize items</Text>
 
                                         {/* Tabs section */}

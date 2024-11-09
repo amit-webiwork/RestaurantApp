@@ -14,11 +14,12 @@ interface Props {
     HeaderComponent: any;
     switchTab: any;
     activeTab: number;
+    navigation: any;
 }
 
 const limit = 10;
 
-function ActiveOrderTab({ HeaderComponent, switchTab, activeTab }: Props): React.JSX.Element {
+function ActiveOrderTab({ HeaderComponent, switchTab, activeTab, navigation }: Props): React.JSX.Element {
     const [loading, setLoading] = useState<boolean>(false);
     const [activeOrders, setActiveOrders] = useState<any[]>([]);
     const [hasMoreData, setHasMoreData] = useState<boolean>(true);
@@ -29,8 +30,6 @@ function ActiveOrderTab({ HeaderComponent, switchTab, activeTab }: Props): React
         if (loading || !hasMoreData || page === 0) return;
 
         setLoading(true);
-
-        console.log('-ActiveOrderTab run')
 
         try {
             const params = { type: 'Active' };
@@ -79,7 +78,7 @@ function ActiveOrderTab({ HeaderComponent, switchTab, activeTab }: Props): React
             refreshing={isRefreshing}
             showsVerticalScrollIndicator={false}
             data={activeOrders}
-            renderItem={({ item, index }) => <ActiveOrderItemSection item={item} index={index} />}
+            renderItem={({ item, index }) => <ActiveOrderItemSection item={item} index={index} navigation={navigation} />}
             contentContainerStyle={{
                 gap: HP(18)
             }}

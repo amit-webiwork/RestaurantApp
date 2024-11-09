@@ -21,6 +21,7 @@ import OrderScreen from '../screens/main/OrderScreen';
 import OrderSummaryScreen from '../screens/main/cart/OrderSummaryScreen';
 import PaymentModeScreen from '../screens/main/account/PaymentModeScreen';
 import OrderDetailsScreen from '../screens/main/OrderDetailsScreen';
+import OrderTrackScreen from '../screens/main/OrderTrackScreen';
 
 export type MainTabParamList = {
     HomeScreen: undefined;
@@ -44,6 +45,7 @@ export type MainTabParamList = {
     OrderSummaryScreen: undefined;
     PaymentModeScreen: undefined;
     OrderDetailsScreen: undefined;
+    OrderTrackScreen: undefined;
 };
 
 const MainTabNavigator: React.FunctionComponent = () => {
@@ -123,6 +125,10 @@ const MainTabNavigator: React.FunctionComponent = () => {
             <Stack.Screen
                 name={`OrderDetailsScreen`}
                 component={OrderDetailsScreen}
+            />
+            <Stack.Screen
+                name={`OrderTrackScreen`}
+                component={OrderTrackScreen}
             />
             <Stack.Group screenOptions={{
                 presentation: 'transparentModal',

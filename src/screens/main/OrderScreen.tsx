@@ -96,6 +96,7 @@ function OrderScreen({ route, navigation }: { route: any; navigation: any }): Re
                                     HeaderComponent={OrderTabs}
                                     switchTab={switchTab}
                                     activeTab={activeTab}
+                                    navigation={navigation}
                                 />
                             )}
 

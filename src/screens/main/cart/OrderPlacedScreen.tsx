@@ -50,7 +50,6 @@ function OrderPlacedScreen({ route, navigation }: { route: any; navigation: any 
 
                                 <Text style={styles.heading}>order placed</Text>
                                 <Text style={styles.text1}>{message}</Text>
-                                {/* <Text style={[styles.text1, { marginTop: VP(50) }]}>estimated time: {estimatedTime}</Text> */}
                             </View>
                         </View>
                     </View>

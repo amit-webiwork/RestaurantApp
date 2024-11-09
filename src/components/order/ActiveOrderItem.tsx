@@ -3,21 +3,23 @@ import {
     View,
     StyleSheet,
     Text,
-    Image
+    Image,
+    TouchableOpacity
 } from 'react-native';
 import moment from 'moment';
 
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
 import { COLORS } from '../../utils/Constants';
-import { formatEstimatedTime, getOrderComponents } from '../../utils/helper/OrderHelper';
+import { getOrderComponents } from '../../utils/helper/OrderHelper';
 
 interface Props {
     item: any;
     index: number;
+    navigation: any;
 }
 
-const ActiveOrderItem = ({ item, index }: Props) => {
+const ActiveOrderItem = ({ item, index, navigation }: Props) => {
     const orderData = getOrderComponents(item);
 
     return (
@@ -69,14 +71,16 @@ const ActiveOrderItem = ({ item, index }: Props) => {
                     <Text style={styles.priceText}> ${orderData?.finalAmount} </Text>
                     <Text style={styles.statusText}> {orderData?.orderStatus} </Text>
                 </View>
-                <View>
-                    {/* <TouchableOpacity
-                        onPress={() => void (0)}
+                <View style={{flex: 1}}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate(`OrderTrackScreen`, {
+                            orderData
+                        })}
                     >
                         <Text style={styles.trackText}> track order </Text>
-                    </TouchableOpacity> */}
+                    </TouchableOpacity>
 
-                    <Text style={styles.subText}> {formatEstimatedTime(orderData?.estimatedTime)} </Text>
+                    <Text style={styles.subText}> {orderData?.estimatedTimeCustom} </Text>
                 </View>
             </View>
         </View>
@@ -131,7 +135,8 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 12,
         color: "#606060",
-        flexShrink: 1
+        flexShrink: 1,
+        alignSelf: "flex-end",
     },
     itemText: {
         ...TextStyles.RALEWAY_REGULAR,
@@ -154,9 +159,7 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 12,
         alignSelf: "flex-end",
-        textTransform: "capitalize",
-        // textDecorationLine: "underline",
-        // textDecorationStyle: "solid"
+        textTransform: "capitalize"
     }
 });
 

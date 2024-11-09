@@ -35,6 +35,17 @@ export const getOrderStatus = (orderStatus: string) => {
     return status;
 }
 
+export const getOrderTrackSteps = () => {
+    const steps = [
+        { key: "Pending", status: 'order received', icon: require(`../../assets/icons/order-placed.png`), time: "", subText: "we have received your order" },
+        { key: "Preparing", status: 'preparing your order', icon: require(`../../assets/icons/order-process.png`), time: "", subText: "awaiting confirmation..." },
+        { key: "OrderReady", status: 'ready for pickup', icon: require(`../../assets/icons/order-shipped.png`), time: "", subText: "" },
+        { key: "OrderPicked", status: 'Order picked up', icon: require(`../../assets/icons/order-delivered.png`), time: "", subText: "" }
+    ];
+
+    return steps;
+}
+
 export const getOrderComponents = (data: any) => {
     const orderData = { ...data };
 
@@ -44,6 +55,7 @@ export const getOrderComponents = (data: any) => {
 
     orderData['totalQty'] = totalQty;
     orderData['orderStatus'] = orderStatus;
+    orderData['estimatedTimeCustom'] = formatEstimatedTime(orderData?.estimatedTime);
 
     return orderData;
 }
@@ -86,11 +98,11 @@ export const formatEstimatedTime = (estimatedTime: string): string => {
     const [hours, minutes] = estimatedTime ? estimatedTime.split(":").map(Number) : [0, 0];
 
     if (hours && minutes) {
-        return `Estimated time ${hours} hr${hours > 1 ? 's' : ''}, ${minutes} min${minutes > 1 ? 's' : ''}`;
+        return `Est. time ${hours} hr${hours > 1 ? 's' : ''} and ${minutes} min${minutes > 1 ? 's' : ''}`;
     } else if (hours) {
-        return `Estimated time ${hours} hr${hours > 1 ? 's' : ''}`;
+        return `Est. time ${hours} hr${hours > 1 ? 's' : ''}`;
     } else if (minutes) {
-        return `Estimated time ${minutes} min${minutes > 1 ? 's' : ''}`;
+        return `Est. time ${minutes} min${minutes > 1 ? 's' : ''}`;
     } else {
         return "";
     }
