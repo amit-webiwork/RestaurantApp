@@ -12,6 +12,7 @@ import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
 import { COLORS } from '../../utils/Constants';
 import { getOrderComponents } from '../../utils/helper/OrderHelper';
+import Icon, { Icons } from '../Icons';
 
 interface Props {
     item: any;
@@ -21,6 +22,12 @@ interface Props {
 
 const ActiveOrderItem = ({ item, index, navigation }: Props) => {
     const orderData = getOrderComponents(item);
+
+    const [menuVisible, setMenuVisible] = useState(false);
+
+    const toggleMenu = () => {
+        setMenuVisible(!menuVisible);
+    };
 
     return (
         <View style={styles.boxContainer}>
@@ -42,6 +49,34 @@ const ActiveOrderItem = ({ item, index, navigation }: Props) => {
                     <Text style={styles.orderText}>
                         ordered on : {moment(orderData?.createdAt).format('DD MMM YYYY HH:mm A')}
                     </Text>
+                </View>
+
+                {/* Popup menu for view orders */}
+                <View>
+                    <TouchableOpacity
+                        onPress={toggleMenu}
+                    >
+                        <Icon type={Icons.Feather} size={FS(15)} name={`more-vertical`} color={`#686868`} />
+                    </TouchableOpacity>
+
+                    {menuVisible && (
+                        <View style={styles.menu}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    toggleMenu();
+                                    navigation.navigate(`OrderDetailsScreen`, {
+                                        orderId: orderData?.id,
+                                        orderDetails: orderData,
+                                        canDelete: false
+                                    })
+                                }}
+                                style={{ flexDirection: "row", alignItems: "center", gap: HP(6.25) }}
+                            >
+                                <Icon type={Icons.FontAwesome5} size={FS(11)} name={`eye`} color={`#404040`} />
+                                <Text style={styles.menuItem}>view details</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
                 </View>
             </View>
 
@@ -71,7 +106,7 @@ const ActiveOrderItem = ({ item, index, navigation }: Props) => {
                     <Text style={styles.priceText}> ${orderData?.finalAmount} </Text>
                     <Text style={styles.statusText}> {orderData?.orderStatus} </Text>
                 </View>
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                     <TouchableOpacity
                         onPress={() => navigation.navigate(`OrderTrackScreen`, {
                             orderData
@@ -159,6 +194,27 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 12,
         alignSelf: "flex-end",
+        textTransform: "capitalize"
+    },
+    menu: {
+        position: 'absolute',
+        right: 0,
+        top: VP(18),
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        padding: 10,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 5,
+        elevation: 5,
+        zIndex: 1000,
+        minWidth: FS(100)
+    },
+    menuItem: {
+        ...TextStyles.RALEWAY_REGULAR,
+        fontSize: 12,
+        paddingVertical: HP(6),
         textTransform: "capitalize"
     }
 });

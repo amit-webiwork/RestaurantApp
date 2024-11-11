@@ -22,8 +22,8 @@ import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 import CheckmarkWithConfetti from '../../components/CheckmarkWithConfetti';
 import CustomActionDialogComp from '../../components/dialogs/CustomActionDialog';
-import { deleteOrder } from '../../utils/ApiCall';
-import { getReorderItems } from '../../utils/helper/OrderHelper';
+import { deleteOrder, fetchOrderDetails } from '../../utils/ApiCall';
+import { getOrderComponents, getReorderItems } from '../../utils/helper/OrderHelper';
 import { recoverCart } from '../../redux/features/cart';
 
 const titleDelete = `Confirm Delete`;
@@ -34,7 +34,7 @@ const { width, height } = Dimensions.get('window');
 const errorObj = { topicId: { status: false, text: "" }, feedback: { status: false, text: "" } }
 
 function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
-    const { orderId, orderDetails } = route.params;
+    const { orderId, orderDetails, canDelete } = route.params;
 
     const dispatch: AppDispatch = useDispatch();
 
@@ -136,6 +136,20 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
         }
     }
 
+    const getOrderDetails = async (orderId: number) => {
+        setLoading(true);
+        try {
+            const response = await fetchOrderDetails(orderId);
+
+            const orderRes = getOrderComponents(response);
+            setOrderData(orderRes);
+            setLoading(false);
+        } catch (err: any) {
+            setLoading(false);
+            console.log(err?.message, '---err');
+        }
+    }
+
     useEffect(() => {
         setLoading(true);
         if (!TopicLoaded) {
@@ -146,9 +160,15 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
     }, [TopicLoaded])
 
     useEffect(() => {
-        setLoading(true);
-        setOrderData(orderDetails);
-        setLoading(false);
+        if (orderId) {
+            if (orderDetails) {
+                setLoading(true);
+                setOrderData(orderDetails);
+                setLoading(false);
+            } else {
+                getOrderDetails(orderId);
+            }
+        }
     }, [orderId])
 
     return (
@@ -202,11 +222,13 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                         </View>
 
                                         <View>
-                                            <TouchableOpacity
-                                                onPress={toggleMenu}
-                                            >
-                                                <Icon type={Icons.Feather} size={FS(15)} name={`more-vertical`} color={`#686868`} />
-                                            </TouchableOpacity>
+                                            {canDelete && (
+                                                <TouchableOpacity
+                                                    onPress={toggleMenu}
+                                                >
+                                                    <Icon type={Icons.Feather} size={FS(15)} name={`more-vertical`} color={`#686868`} />
+                                                </TouchableOpacity>
+                                            )}
 
                                             {menuVisible && (
                                                 <View style={styles.menu}>
@@ -295,8 +317,13 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderDetailRightText}>order sttaus</Text>
+                                            <Text style={[styles.orderDetailLeftText, { flexBasis: "50%", textAlign: "right" }]}>{orderData?.orderStatus}</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderDetailRightText}>payment</Text>
-                                            <Text style={styles.orderDetailLeftText}>paid using upi</Text>
+                                            <Text style={styles.orderDetailLeftText}>paid using card</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -501,8 +528,7 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 12,
         alignSelf: "flex-end",
-        marginTop: HP(10),
-        
+        marginTop: HP(10)
     },
     orderEntityText: {
         ...TextStyles.RALEWAY_MEDIUM,

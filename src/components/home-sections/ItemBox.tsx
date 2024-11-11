@@ -76,8 +76,8 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation 
                         <TouchableOpacity
                             onPress={() => void (0)}
                         >
-                            <Text style={styles.boxTitle}>{item?.name}</Text>
-                            <Text style={styles.boxText}>{`700mL.`} {`Dairy-free ice crusher.`}</Text>
+                            <Text numberOfLines={1} style={styles.boxTitle}>{item?.name}</Text>
+                            {/* <Text style={styles.boxText}>{`700mL.`} {`Dairy-free ice crusher.`}</Text> */}
                         </TouchableOpacity>
 
                         <View style={styles.priceBox}>

@@ -125,6 +125,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                 setLoader(false);
             } else if (paymentIntent) {
                 setError("");
+                setLoader(false);
                 navigation.navigate(`OrderPlacedScreen`, {
                     orderId: paymentIntent.id,
                     message: "your order is placed sucessfully"
@@ -142,8 +143,6 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                 //         },
                 //     ],
                 // });
-
-                setLoader(false);
             }
         } catch (err: any) {
             setLoader(false);
@@ -214,7 +213,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                         {cardList?.map((d, i) => (
                                             <TouchableOpacity
                                                 onPress={() => setSelectedCard(i)}
-                                                style={[styles.cardSection, { borderColor: selectedCard === i ? COLORS.BUTTON : "#EDEDED" }]}
+                                                style={[styles.cardSection, { borderColor: (selectedCard === i && !addCard) ? COLORS.BUTTON : "#EDEDED" }]}
                                                 key={`card-${i}`}
                                             >
                                                 <View style={{ flexDirection: "row", alignItems: "center", gap: HP(21.34) }}>

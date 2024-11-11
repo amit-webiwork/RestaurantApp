@@ -42,6 +42,18 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
         setPasswordHide((prev: any) => ({ ...prev, [key]: !prev[key] }));
     }, [setPasswordHide]);
 
+    const handleOldPasswordChange = (text: string) => {
+        setOldPassword(text.replace(/\s/g, '')); // Remove spaces
+    };
+
+    const handleNewPasswordChange = (text: string) => {
+        setPassword(text.replace(/\s/g, '')); // Remove spaces
+    };
+
+    const handleConfirmPasswordChange = (text: string) => {
+        setConfirmPassword(text.replace(/\s/g, '')); // Remove spaces
+    };
+
     const handleOnPress = async () => {
         try {
             setError(errorObj);
@@ -104,7 +116,7 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
                                 <Text style={styles.label}>Old Password</Text>
 
                                 <CustomTextInputNoEffect
-                                    formProps={{ text: oldPassword, setText: setOldPassword, error: error.oldPassword }}
+                                    formProps={{ text: oldPassword, setText: handleOldPasswordChange, error: error.oldPassword }}
                                     placeholder="**********"
                                     maxLength={100}
                                     secureTextEntry={passwordHide.oldPassword}
@@ -122,7 +134,7 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
                                 <Text style={styles.label}>New Password</Text>
 
                                 <CustomTextInputNoEffect
-                                    formProps={{ text: password, setText: setPassword, error: error.password }}
+                                    formProps={{ text: password, setText: handleNewPasswordChange, error: error.password }}
                                     placeholder="**********"
                                     maxLength={100}
                                     secureTextEntry={passwordHide.password}
@@ -140,7 +152,7 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
                                 <Text style={styles.label}>Confirm Password</Text>
 
                                 <CustomTextInputNoEffect
-                                    formProps={{ text: confirmPassword, setText: setConfirmPassword, error: error.confirmPassword }}
+                                    formProps={{ text: confirmPassword, setText: handleConfirmPasswordChange, error: error.confirmPassword }}
                                     placeholder="**********"
                                     maxLength={100}
                                     secureTextEntry={passwordHide.confirmPassword}

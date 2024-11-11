@@ -56,6 +56,7 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler, setLoader }: Pr
 
             if (cartItems.length && cartItems.length > 0) {
                 dispatch(recoverCart(cartItems));
+                setLoader(false);
 
                 setTimeout(() => {
                     navigation.navigate(`CartScreen`);
@@ -128,7 +129,8 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler, setLoader }: Pr
                                         toggleMenu();
                                         navigation.navigate(`OrderDetailsScreen`, {
                                             orderId: orderData?.id,
-                                            orderDetails: orderData
+                                            orderDetails: orderData,
+                                            canDelete: true
                                         })
                                     }}
                                     style={{ flexDirection: "row", alignItems: "center", gap: HP(6.25) }}
@@ -163,7 +165,7 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler, setLoader }: Pr
 
                 {/* Total amount and reorder button section */}
                 <View style={{ gap: HP(8), flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                    <View>
+                    <View style={{ flexBasis: "50%"}}>
                         <Text style={styles.priceText}> ${orderData?.finalAmount} </Text>
                         <Text style={styles.statusText}> {orderData?.orderStatus} </Text>
                     </View>
@@ -231,7 +233,9 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: "#232323",
         textTransform: "capitalize",
-        paddingTop: VP(1)
+        paddingTop: VP(1),
+        flexWrap: "wrap",
+        width: "100%"
     },
     itemText: {
         ...TextStyles.RALEWAY_REGULAR,
