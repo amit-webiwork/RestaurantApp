@@ -79,7 +79,7 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
                             onPress={() => void (0)}
                         >
                             <Text numberOfLines={1} style={styles.boxTitle}>{item?.name}</Text>
-                            <Text style={styles.boxText}>700mL.  Dairy-free ice crusher.</Text>
+                            {/* <Text style={styles.boxText}>700mL.  Dairy-free ice crusher.</Text> */}
                         </TouchableOpacity>
 
                         <View style={[styles.priceBox, { flexDirection: item.discountPrice > 0 ? "row" : 'column' }]}>

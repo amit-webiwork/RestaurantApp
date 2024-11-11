@@ -125,6 +125,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                 setLoader(false);
             } else if (paymentIntent) {
                 setError("");
+                setLoader(false);
                 navigation.navigate(`OrderPlacedScreen`, {
                     orderId: paymentIntent.id,
                     message: "your order is placed sucessfully"
@@ -142,8 +143,6 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                 //         },
                 //     ],
                 // });
-
-                setLoader(false);
             }
         } catch (err: any) {
             setLoader(false);

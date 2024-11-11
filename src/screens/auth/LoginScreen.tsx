@@ -89,6 +89,14 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
         }
     };
 
+    const handlePasswordChange = (text: string) => {
+        setPassword(text.replace(/\s/g, '')); // Remove spaces
+    };
+
+    const handleUsernameChange = (text: string) => {
+        setUsername(text.replace(/\s/g, '')); // Remove spaces
+    };
+
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
@@ -99,7 +107,7 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                             <View style={{ marginTop: VP(14) }}>
                                 <CustomTextInput
                                     placeholder='Email / Mobile Number'
-                                    formProps={{ text: username, setText: setUsername, error: error.username }}
+                                    formProps={{ text: username, setText: handleUsernameChange, error: error.username }}
                                     maxLength={100}
                                     styleInput={{
                                         height: "auto",
@@ -109,7 +117,7 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
 
                                 <CustomTextInput
                                     placeholder='Password'
-                                    formProps={{ text: password, setText: setPassword, error: error.password }}
+                                    formProps={{ text: password, setText: handlePasswordChange, error: error.password }}
                                     maxLength={100}
                                     secureTextEntry={passwordHide}
                                     iconName={passwordHide ? require(`../../assets/icons/eyeclosed.png`) : require(`../../assets/icons/eyeopen.png`)}

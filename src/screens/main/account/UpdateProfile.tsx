@@ -84,12 +84,20 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
         }
     };
 
+    const handlePhoneChange = (text: string) => {
+        setPhone(text.replace(/\s/g, '')); // Remove spaces
+    };
+
+    const handleEmailChange = (text: string) => {
+        setEmail(text.replace(/\s/g, '')); // Remove spaces
+    };
+
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
                 <AccountSkeletonSection navigation={navigation} user={user}>
                     <View style={{ flex: 1, paddingHorizontal: HP(34), paddingVertical: HP(150), gap: HP(17.97) }}>
-                        <View style={{}}>
+                        <View>
                             <Text style={styles.label}>full name</Text>
 
                             <CustomTextInputNoEffect
@@ -100,11 +108,11 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                             />
                         </View>
 
-                        <View style={{}}>
+                        <View>
                             <Text style={styles.label}>phone number</Text>
 
                             <CustomTextInputNoEffect
-                                formProps={{ text: phone, setText: setPhone, error: error.phone }}
+                                formProps={{ text: phone, setText: handlePhoneChange, error: error.phone }}
                                 placeholder="Enter Phone Number"
                                 maxLength={20}
                                 keyboardType='numeric'
@@ -112,11 +120,11 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                             />
                         </View>
 
-                        <View style={{}}>
+                        <View>
                             <Text style={styles.label}>email</Text>
 
                             <CustomTextInputNoEffect
-                                formProps={{ text: email, setText: setEmail, error: error.email }}
+                                formProps={{ text: email, setText: handleEmailChange, error: error.email }}
                                 placeholder="Enter Email"
                                 maxLength={100}
                                 styleInput={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 14, paddingVertical: HP(8) }}
