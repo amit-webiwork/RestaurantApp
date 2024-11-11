@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
+import messaging from '@react-native-firebase/messaging';
+import { useIsFocused } from '@react-navigation/native';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
 import { COLORS, errorMessage } from '../../utils/Constants.ts';
@@ -38,8 +40,7 @@ import SearchBoxItemsSection from '../../components/home-sections/SearchBoxItems
 import { askInitialPermission } from '../../utils/Permissions.ts';
 import { setDialogContent } from '../../redux/features/customDialog.ts';
 import Warning from '../../assets/svgs/warning.svg';
-import { loadStorage, saveStorage } from '../../utils/Storage.ts';
-import { useIsFocused } from '@react-navigation/native';
+import { loadStorage, saveNotification, saveStorage } from '../../utils/Storage.ts';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -59,6 +60,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
   const [notificationCount, setNotificationCount] = useState<number>(0);
+  const [notificationTrigger, setNotificationTrigger] = useState<number>(0);
 
   const selectCategoryHandler = useCallback(
     (id: number) => {
@@ -113,7 +115,18 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
         setNotificationCount(count);
       })();
     }
-  }, [isFocused]);
+  }, [isFocused, notificationTrigger]);
+
+  useEffect(() => {
+    // Listener for foreground notifications
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      saveNotification(remoteMessage?.data);
+      setNotificationTrigger(pre => ++pre);
+    });
+
+    // Clean up listener on unmount
+    return unsubscribe;
+  }, []);
 
   const handleNotifications = async () => {
     const notificationList = await loadStorage('notificationList');
@@ -123,7 +136,6 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
         read: true,
       }));
       saveStorage(updatedData, 'notificationList');
-      //   navigation.navigate(`NotificationScreen`);
     }
     navigation.navigate(`NotificationScreen`);
   };

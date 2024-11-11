@@ -27,7 +27,10 @@ export const getOrderStatus = (orderStatus: string) => {
             status = "Order picked up";
             break;
         case "Rejected":
-            status = "Order has been rejected";
+            status = "Order has been rejected & refund initiated";
+            break;
+        case "Failed":
+            status = "Order has been Failed";
             break;
         default:
             status = orderStatus

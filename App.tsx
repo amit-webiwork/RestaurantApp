@@ -142,7 +142,7 @@ async function onMessageReceived(message: FirebaseMessagingTypes.RemoteMessage) 
       android: {
         channelId: 'orders',
       },
-      data: message.data, // Pass data for future access
+      data: message.data
     });
   } catch (error) {
     console.error('Failed to display notification', error);

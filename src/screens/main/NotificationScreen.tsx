@@ -118,7 +118,8 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                         <Text style={styles.deleteText}>Delete notification</Text>
                     </TouchableOpacity>
                 </Animated.View>
-            </Modal >
+            </Modal>
+
             <NormalLoader visible={loader} />
             <OuterLayout containerStyle={globalStyle.containerStyle}>
                 <InnerBlock>
@@ -156,7 +157,10 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                                             <View style={{ gap: HP(19.53), marginTop: VP(19.53) }}>
                                                 {d[1].map((item: any, j: number) => (
                                                     <View style={styles.itemRow} key={`notification-item-${i}-${j}`}>
-                                                        <View style={{ flexBasis: "15%", flexGrow: 1 }}>
+                                                        <TouchableOpacity
+                                                            onPress={() => item?.orderId ? navigation.navigate(`OrderDetailsScreen`, { orderId: item?.orderId, orderDetails: null }) : void (0)}
+                                                            style={{ flexBasis: "15%", flexGrow: 1 }}
+                                                        >
                                                             <View style={styles.iconBtn}>
                                                                 <Icon
                                                                     type={getNotificationIcon(item?.type || 'message')['iconType']}
@@ -164,12 +168,16 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                                                                     name={getNotificationIcon(item?.type || 'message')['icon']}
                                                                     color={getNotificationIcon(item?.type || 'message')['color']} />
                                                             </View>
-                                                        </View>
-                                                        <View style={{ flexBasis: "75%", flexShrink: 1 }}>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity
+                                                            onPress={() => item?.orderId ? navigation.navigate(`OrderDetailsScreen`, { orderId: item?.orderId, orderDetails: null }) : void (0)}
+                                                            style={{ flexBasis: "75%", flexShrink: 1 }}
+                                                        >
                                                             <Text style={styles.itemTitle}>{item.title}</Text>
 
                                                             <Text style={styles.itemText}>{item.body}</Text>
-                                                        </View>
+                                                        </TouchableOpacity>
+
                                                         <View style={{ flexBasis: "10%", flexGrow: 1, alignSelf: "flex-start" }}>
                                                             <Text style={styles.duretionText}>{item.timeAgo}</Text>
                                                             <TouchableOpacity
