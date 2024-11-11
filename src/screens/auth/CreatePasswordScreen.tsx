@@ -69,6 +69,14 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
         }
     };
 
+    const handlePasswordChange = (text: string) => {
+        setPassword(text.replace(/\s/g, '')); // Remove spaces
+    };
+
+    const handleConfirmPasswordChange = (text: string) => {
+        setConfirmPassword(text.replace(/\s/g, '')); // Remove spaces
+    };
+
     useEffect(() => {
         (async () => {
             try {
@@ -116,7 +124,7 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                             <View style={{ marginTop: VP(15) }}>
                                 <CustomTextInput
                                     placeholder='New Password'
-                                    formProps={{ text: password, setText: setPassword, error: error.password }}
+                                    formProps={{ text: password, setText: handlePasswordChange, error: error.password }}
                                     maxLength={100}
                                     secureTextEntry={true}
                                     styleInput={{
@@ -127,7 +135,7 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
 
                                 <CustomTextInput
                                     placeholder='Confirm Password'
-                                    formProps={{ text: confirmPassword, setText: setConfirmPassword, error: error.confirmPassword }}
+                                    formProps={{ text: confirmPassword, setText: handleConfirmPasswordChange, error: error.confirmPassword }}
                                     maxLength={100}
                                     secureTextEntry={true}
                                     styleInput={{

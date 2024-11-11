@@ -34,7 +34,7 @@ const { width, height } = Dimensions.get('window');
 const errorObj = { topicId: { status: false, text: "" }, feedback: { status: false, text: "" } }
 
 function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
-    const { orderId, orderDetails } = route.params;
+    const { orderId, orderDetails, canDelete } = route.params;
 
     const dispatch: AppDispatch = useDispatch();
 
@@ -52,7 +52,6 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
     const [textLength, setTextLength] = useState(200);
     const [showPopUp, setShowPopUp] = useState(false);
     const [orderDeleteDialogVisible, setOrderDeleteDialogVisible] = useState(false);
-    const [canDelete, setCanDelete] = useState(false);
 
     const toggleMenu = () => {
         setMenuVisible(!menuVisible);
@@ -165,7 +164,6 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
             if (orderDetails) {
                 setLoading(true);
                 setOrderData(orderDetails);
-                setCanDelete(true);
                 setLoading(false);
             } else {
                 getOrderDetails(orderId);

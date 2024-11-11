@@ -12,7 +12,7 @@ import { TextStyles } from '../../utils/TextStyles';
 import NormalLoader from '../../components/NormalLoader';
 import { AppDispatch } from '../../redux/store';
 import { getOrderTrack } from '../../utils/ApiCall';
-import { getOrderTrackSteps } from '../../utils/helper/OrderHelper';
+import { formatEstimatedTime, getOrderTrackSteps } from '../../utils/helper/OrderHelper';
 
 const { width, height } = Dimensions.get('window');
 
@@ -27,6 +27,7 @@ function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }
     const [orderId, setOrderId] = useState(0);
     const [currentStep, setCurrentStep] = useState(0);
     const [orderSteps, setOrderSteps] = useState<any[]>([]);
+    const [estimatedTime, setEstimatedTime] = useState<string>("");
 
     const fetchOrderTrack = async (orderId: number) => {
 
@@ -35,27 +36,33 @@ function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }
         try {
             const response = await getOrderTrack(orderId);
 
-            if (response && Array.isArray(response)) {
-                const stepsGet = [...steps];
+            if (response) {
+                if (response?.estimatedTime) {
+                    setEstimatedTime(formatEstimatedTime(response?.estimatedTime));
+                }
 
-                stepsGet.forEach((step, i) => {
-                    const match = response.find(item => item.orderStatus === step.key);
+                if (Array.isArray(response?.data)) {
+                    const stepsGet = [...steps];
 
-                    if (match) {
-                        step.time = moment(match.createdAt).format("HH:mm");
-                        setCurrentStep(i);
-                        if(step.key === 'Preparing') {
-                            step.subText = 'order is confirmed'
+                    stepsGet.forEach((step, i) => {
+                        const match = response.data.find((item: { orderStatus: string; }) => item.orderStatus === step.key);
+
+                        if (match) {
+                            step.time = moment(match.createdAt).format("HH:mm");
+                            setCurrentStep(i);
+                            if (step.key === 'Preparing') {
+                                step.subText = 'order is confirmed'
+                            }
+                        } else {
+                            step.time = "";
+                            if (step.key === 'Preparing') {
+                                step.subText = 'awaiting confirmation...'
+                            }
                         }
-                    } else {
-                        step.time = "";
-                        if(step.key === 'Preparing') {
-                            step.subText = 'awaiting confirmation...'
-                        }
-                    }
-                });
+                    });
 
-                setOrderSteps(stepsGet);
+                    setOrderSteps(stepsGet);
+                }
             }
         } catch (err) {
             console.log(err, '------err');
@@ -114,7 +121,7 @@ function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }
                             </View>
 
                             <View style={{ paddingHorizontal: HP(30), marginTop: VP(41) }}>
-                                <Text style={styles.text1}>{orderData?.estimatedTimeCustom}</Text>
+                                <Text style={styles.text1}>{estimatedTime}</Text>
 
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <Text style={styles.text2}>order ID : #{orderData?.id || ""}</Text>

@@ -158,7 +158,13 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                                                 {d[1].map((item: any, j: number) => (
                                                     <View style={styles.itemRow} key={`notification-item-${i}-${j}`}>
                                                         <TouchableOpacity
-                                                            onPress={() => item?.orderId ? navigation.navigate(`OrderDetailsScreen`, { orderId: item?.orderId, orderDetails: null }) : void (0)}
+                                                            onPress={() => item?.orderId ? navigation.navigate(`OrderDetailsScreen`,
+                                                                {
+                                                                    orderId: item?.orderId,
+                                                                    orderDetails: null,
+                                                                    canDelete: false
+                                                                }
+                                                            ) : void (0)}
                                                             style={{ flexBasis: "15%", flexGrow: 1 }}
                                                         >
                                                             <View style={styles.iconBtn}>
@@ -170,7 +176,13 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                                                             </View>
                                                         </TouchableOpacity>
                                                         <TouchableOpacity
-                                                            onPress={() => item?.orderId ? navigation.navigate(`OrderDetailsScreen`, { orderId: item?.orderId, orderDetails: null }) : void (0)}
+                                                            onPress={() => item?.orderId ? navigation.navigate(`OrderDetailsScreen`,
+                                                                {
+                                                                    orderId: item?.orderId,
+                                                                    orderDetails: null,
+                                                                    canDelete: false
+                                                                }
+                                                            ) : void (0)}
                                                             style={{ flexBasis: "75%", flexShrink: 1 }}
                                                         >
                                                             <Text style={styles.itemTitle}>{item.title}</Text>

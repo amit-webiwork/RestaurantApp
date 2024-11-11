@@ -129,7 +129,8 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler, setLoader }: Pr
                                         toggleMenu();
                                         navigation.navigate(`OrderDetailsScreen`, {
                                             orderId: orderData?.id,
-                                            orderDetails: orderData
+                                            orderDetails: orderData,
+                                            canDelete: true
                                         })
                                     }}
                                     style={{ flexDirection: "row", alignItems: "center", gap: HP(6.25) }}
