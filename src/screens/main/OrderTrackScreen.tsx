@@ -124,15 +124,14 @@ function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }
                                 <Text style={styles.text1}>{estimatedTime}</Text>
 
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                    <Text style={styles.text2}>order ID : #{orderData?.id || ""}</Text>
+                                    <Text style={styles.text2}>order ID : #{orderData?.orderId || ""}</Text>
                                     <Text style={styles.text3}>order total : ${orderData?.finalAmount}</Text>
                                 </View>
 
                                 <View style={{
                                     flex: 1,
                                     justifyContent: 'center',
-                                    marginTop: VP(40),
-                                    //  margin: "auto", 
+                                    marginTop: VP(40)
                                 }}>
                                     <FlatList
                                         data={orderSteps}
@@ -207,8 +206,7 @@ const styles = StyleSheet.create({
     img: {
         resizeMode: "contain",
         width: FS(18),
-        height: VP(18),
-        // flexBasis: '10%'
+        height: VP(18)
     },
     container: {
     },
@@ -235,7 +233,7 @@ const styles = StyleSheet.create({
         width: FS(2),
         height: VP(60),
         backgroundColor: '#ccc',
-        marginTop: VP(4),
+        marginTop: VP(4)
     },
     activeLine: {
         backgroundColor: '#4CAF50',
@@ -256,8 +254,7 @@ const styles = StyleSheet.create({
         color: '#676767',
         flexShrink: 1,
         textTransform: "capitalize",
-        fontSize: FS(13),
-        // width: FS(200)
+        fontSize: FS(13)
     },
     time: {
         ...TextStyles.RALEWAY_MEDIUM,

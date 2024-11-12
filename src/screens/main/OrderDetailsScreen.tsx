@@ -313,7 +313,7 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                     <View style={{ paddingHorizontal: HP(20), gap: HP(10), marginVertical: HP(24) }}>
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderDetailRightText}>order number</Text>
-                                            <Text style={styles.orderDetailLeftText}>#{orderData?.id}</Text>
+                                            <Text style={styles.orderDetailLeftText}>#{orderData?.orderId}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>

@@ -131,7 +131,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
   const handleNotifications = async () => {
     const notificationList = await loadStorage('notificationList');
     if (Array.isArray(notificationList)) {
-      const updatedData = notificationList?.map((item: []) => ({
+      const updatedData = notificationList?.filter(item => Object.keys(item).length > 0)?.map((item: []) => ({
         ...item,
         read: true,
       }));

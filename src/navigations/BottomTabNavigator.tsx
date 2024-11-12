@@ -79,6 +79,8 @@ const TabButton = (props: { item: any; onPress: any; accessibilityState: any; })
     const circleRef = useRef<any>(null);
     const textRef = useRef<any>(null);
     const isDarkMode = useColorScheme() === 'dark';
+    const ItemAdded = useSelector(itemAdded);
+    const navigation = useNavigation();
 
     const color = COLORS.BLACK;
     const bgColor = COLORS.BACKGROUND;
@@ -96,36 +98,42 @@ const TabButton = (props: { item: any; onPress: any; accessibilityState: any; })
     }, [focused])
 
     return (
-        <TouchableOpacity
-            onPress={onPress}
-            activeOpacity={1}
-            style={[styles.container]}>
-            <Animatable.View
-                ref={viewRef}
-                duration={1000}
+        <>
+            {item.route === 'HomeScreen' && (
+                <CartNotificationBarSection isVisible={ItemAdded} navigation={navigation} />
+            )}
+            <TouchableOpacity
+                onPress={onPress}
+                activeOpacity={1}
                 style={[styles.container]}>
-                <View style={[styles.btn, { borderColor: bgColor, backgroundColor: bgColor }]}>
-                    <Animatable.View
-                        ref={circleRef}
-                        style={styles.circle} />
-                    <Icon type={item.type} size={FS(31)} name={item.icon} color={focused ? COLORS.WHITE : COLORS.ICON_DEFAULT} />
-                </View>
-                <Animatable.Text
-                    ref={textRef}
-                    style={[styles.text, { color }]}>
-                    {item.label}
-                </Animatable.Text>
-            </Animatable.View>
-        </TouchableOpacity>
+                <Animatable.View
+                    ref={viewRef}
+                    duration={1000}
+                    style={[styles.container]}>
+                    <View style={[styles.btn, { borderColor: bgColor, backgroundColor: bgColor }]}>
+                        <Animatable.View
+                            ref={circleRef}
+                            style={styles.circle} />
+                        <Icon type={item.type} size={FS(31)} name={item.icon} color={focused ? COLORS.WHITE : COLORS.ICON_DEFAULT} />
+                    </View>
+                    <Animatable.Text
+                        ref={textRef}
+                        style={[styles.text, { color }]}>
+                        {item.label}
+                    </Animatable.Text>
+                </Animatable.View>
+            </TouchableOpacity>
+        </>
     )
 }
 
 export default function BottomTabNavigator() {
-    const navigation = useNavigation(); // Access navigation prop
-    const ItemAdded = useSelector(itemAdded);
+    // const navigation = useNavigation();
+    // const ItemAdded = useSelector(itemAdded);
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <CartNotificationBarSection isVisible={ItemAdded} navigation={navigation} />
+            {/* <CartNotificationBarSection isVisible={ItemAdded} navigation={navigation} /> */}
             <Tab.Navigator
                 initialRouteName="HomeScreen"
                 screenOptions={{

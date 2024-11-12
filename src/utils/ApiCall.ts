@@ -252,4 +252,17 @@ const fetchOrderDetails = async (orderId: number) => {
     }
 };
 
-export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder, getCouponList, cartConfirmV1, createPaymentIntent, fetchCardList, deleteCard, getOrderTrack, fetchOrderDetails };
+const getRefundOrderList = async (limit = 10, offset = 0) => {
+    try {
+        const paramData = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.refundOrders}?${paramData}`);
+        return res.data;
+    } catch (error: any) {
+        const { response } = error;
+        const message = response?.data?.message || error?.message || "Unknown error";
+        throw new Error(message);
+    }
+};
+
+export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder, getCouponList, cartConfirmV1, createPaymentIntent, fetchCardList, deleteCard, getOrderTrack, fetchOrderDetails, getRefundOrderList };

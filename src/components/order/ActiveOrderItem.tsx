@@ -43,7 +43,7 @@ const ActiveOrderItem = ({ item, index, navigation }: Props) => {
                             dishes
                         </Text>
                         <Text style={styles.itemTitle}>
-                            #{orderData?.id}
+                            #{orderData?.orderId}
                         </Text>
                     </View>
                     <Text style={styles.orderText}>

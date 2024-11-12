@@ -95,7 +95,7 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler, setLoader }: Pr
                                 dishes
                             </Text>
                             <Text style={styles.itemTitle}>
-                                #{orderData?.id}
+                                #{orderData?.orderId}
                             </Text>
                         </View>
                         <Text style={styles.orderText}>
