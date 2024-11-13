@@ -14,7 +14,7 @@ import CartQtyButtonV2Section from '../product-sections/CartQtyButtonV2';
 import { addToCart } from '../../utils/helper/CartHelper';
 import { AppDispatch } from '../../redux/store';
 import { removeFromCart } from '../../redux/features/cart';
-import { CDN_URL } from '../../utils/Constants';
+import { CDN_URL, COLORS } from '../../utils/Constants';
 
 interface Props {
     data: any;
@@ -46,7 +46,15 @@ const CartItem: React.FunctionComponent<Props> = ({ data }) => {
     return (
         <View style={styles.boxContainer}>
             <View style={styles.boxSubContainer}>
-                <Image source={{ uri: `${CDN_URL}${data?.imgUrl}` }} style={[styles.img]} />
+                <View>
+                    <Image source={{ uri: `${CDN_URL}${data?.imgUrl}` }} style={[styles.img]} />
+                    <TouchableOpacity
+                        onPress={() => void (0)}
+                        style={{ alignSelf: "center", }}
+                    >
+                        <Text style={styles.editText}>Edit</Text>
+                    </TouchableOpacity>
+                </View>
 
                 <View style={styles.itemInfoContainer}>
                     <View style={{ flex: 1 }}>
@@ -88,13 +96,13 @@ const styles = StyleSheet.create({
         width: FS(83),
         height: VP(83),
         resizeMode: "cover",
-        borderRadius: HP(14),
+        borderRadius: HP(14)
     },
     itemTitle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 12,
         textTransform: "capitalize",
-        marginRight: HP(5),
+        marginRight: HP(5)
     },
     itemInfoContainer: {
         flex: 1,
@@ -105,7 +113,7 @@ const styles = StyleSheet.create({
     },
     itemPrice: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: 14,
+        fontSize: 14
     },
     discountedPriceText: {
         ...TextStyles.RALEWAY_MEDIUM,
@@ -117,7 +125,15 @@ const styles = StyleSheet.create({
     iconImg: {
         width: FS(20),
         height: FS(20)
-    }
+    },
+    editText: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        color: COLORS.BUTTON,
+        textDecorationLine: "underline",
+        textDecorationStyle: "solid",
+        fontSize: 14,
+        textAlign: "center"
+    },
 });
 
 const CartItemSection = memo(CartItem);

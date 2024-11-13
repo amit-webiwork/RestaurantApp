@@ -12,21 +12,21 @@ import OuterLayout from '../../components/OuterLayout.tsx';
 import InnerBlock from '../../components/InnerBlock.tsx';
 import { globalStyle } from '../../utils/GlobalStyle.ts';
 import HeadingSection from '../../components/Heading.tsx';
-import { productRatings } from '../../utils/MockData.ts';
+import { customizeOptions, productRatings } from '../../utils/MockData.ts';
 import ProductRatingsSection from '../../components/product-sections/ProductRatings.tsx';
 import CartQtyButtonV1Section from '../../components/product-sections/CartQtyButtonV1.tsx';
 import CookingRequestSection from '../../components/product-sections/CookingRequest.tsx';
 import CartLayout from '../../components/cart/CartLayout.tsx';
-import { addToCart } from '../../utils/helper/CartHelper.ts';
+import { addToCart, updateCheckedOptions, updateItemOptionsHelper } from '../../utils/helper/CartHelper.ts';
 import { fetchPopularItems, papularItemLoaded, papularItems } from '../../redux/features/items.ts';
 import { AppDispatch } from '../../redux/store.ts';
-import { cartItemList, getCartQty } from '../../redux/features/cart.ts';
+import { cartItemIds, cartItemList, getCartCustomizeOptions, getCartQty, getItemInCart, updateItemOptions } from '../../redux/features/cart.ts';
 import ProductScreenLoader from '../../components/skeleton/ProductScreenLoader.tsx';
 import { getItemPriceComponents } from '../../utils/helper/ItemHelper.ts';
+import { useCartQuantity } from '../../utils/customHooks/useCartQuantity.ts';
+import { useScrollToTop } from '../../utils/customHooks/useScrollToTop.ts';
 
 const { width, height } = Dimensions.get('window');
-
-const tabs = [{ title: "toppings", options: [{ title: "herbal jelly", price: 1.20, image: require(`../../assets/images/jelly.png`) }, { title: "pudding", price: 1.20, image: require(`../../assets/images/pudding.png`) }, { title: "brown sugar pearls", price: 1.20, image: require(`../../assets/images/sugar.png`) }, { title: "coffee jelly", price: 1.20, image: require(`../../assets/images/coffee.png`) }, { title: "lychee pearls", price: 1.20 }] }, { title: "size", options: [{ title: "small", price: 12 }, { title: "medium", price: 14 }, { title: "large", price: 16 }] }, { title: "ice", options: [{ title: "normal ice" }, { title: "half ice" }, { title: "no ice" }] }, { title: "sweetness", options: [{ title: "extra sugar" }, { title: "standard sugar" }, { title: "half sugar" }, { title: "less sugar" }, { title: "no sugar" }] }, { title: "milk", options: [{ title: "fresh milk instead", image: require(`../../assets/images/milk-fresh.png`) }, { title: "soya milk instead", price: 1.20, image: require(`../../assets/images/milk-fresh.png`) }] }]
 
 // Enable Layout Animation for Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -35,26 +35,33 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 function ProductScreen({ route, navigation }: { navigation: any, route: any }): React.JSX.Element {
     const { id, item } = route.params;
+    const scrollViewRef = useRef<any>(null);
 
     const dispatch: AppDispatch = useDispatch();
+
+    const { quantity: cartQuantity, setQuantity: setCartQuantity, increment: incrementCart, decrement: decrementCart } = useCartQuantity(1);
+
+    useScrollToTop(id, scrollViewRef);
+
+    const customizeOptionsGet = JSON.parse(JSON.stringify(customizeOptions));
 
     const PapularItemLoaded = useSelector(papularItemLoaded);
     const PapularItems = useSelector(papularItems);
     const CartItemList = useSelector(cartItemList);
+    const CartItemIds = useSelector(cartItemIds);
 
-    const scrollViewRef = useRef<any>(null);
     const scrollY = useRef(new Animated.Value(0)).current;
 
     const [instructionText, setInstructionText] = useState<string>("");
     const [errorInstruction, setErrorInstruction] = useState({ status: false, text: "" });
-    const [cartQuantity, setCartQuantity] = useState(1);
+
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
     const [itemDetails, setItemDetails] = useState<any>({});
 
     const [textWidths, setTextWidths] = useState<any>({});
     const [activeTab, setActiveTab] = useState(1);
-    const [customizeTabs, setCustomizeTabs] = useState<any>(tabs);
+    const [customizeTabs, setCustomizeTabs] = useState<any[]>([]);
 
     const setInstructionTextHandler = useCallback((e: string) => {
         setInstructionText(e);
@@ -67,7 +74,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
         const filtered = PapularItems.filter(item => (item?.category_id === id || id === 0));
 
         setItemListFiltered(filtered);
-    }, [PapularItems]);
+    }, [PapularItems, setSelectedCategory, setItemListFiltered]);
 
     useEffect(() => {
         if (!PapularItemLoaded) {
@@ -80,24 +87,22 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
     useEffect(() => {
         if (id) {
             setItemDetails(getItemPriceComponents(item));
-            setCartQuantity(getCartQty(item?.id, CartItemList))
+            setCartQuantity(getCartQty(item?.id, CartItemList));
+
+            const cartCustomizeOptions = getCartCustomizeOptions(item?.id, CartItemList);
+
+            updateCheckedOptions(customizeOptionsGet, cartCustomizeOptions);
+            setCustomizeTabs(customizeOptionsGet);
         }
     }, [id])
 
-    // Ensure that when the route parameter changes, it scrolls to the top
     useEffect(() => {
-        // if (scrollViewRef?.current) {
-        //     scrollViewRef.current.scrollTo({ y: 0, animated: true });
-        // }
-    }, [id]);
+        const status = getItemInCart(id, CartItemIds);
 
-    const incrementCart = useCallback(() => {
-        setCartQuantity(prevQty => prevQty + 1);
-    }, [setCartQuantity]);
-
-    const decrementCart = useCallback(() => {
-        setCartQuantity(prevQty => (prevQty > 1 ? prevQty - 1 : 1));
-    }, [setCartQuantity]);
+        if (status) {
+            updateItemOptionsHelper(id, customizeTabs, dispatch);
+        }
+    }, [id, customizeTabs]);
 
     const switchTab = useCallback((tab: number) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -115,24 +120,23 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
         [setTextWidths] // Dependency array
     );
 
-    const clickOptionHandler = (optionIndex: number) => {
-        const updatedTabs = customizeTabs.map((tab: { options: any[]; }, i: number) => {
-            if (i === (activeTab - 1)) {
-                const updatedOptions = tab.options.map((option, index) => {
-                    // Toggle the "checked" key for the selected option
-                    if (index === optionIndex) {
-                        return { ...option, checked: !option.checked };
-                    }
-                    return option;
-                });
-                return { ...tab, options: updatedOptions };
-            }
-            return tab;
-        });
+    const clickOptionHandler = useCallback(
+        (optionIndex: number) => {
+            setCustomizeTabs((prevTabs: any[]) =>
+                prevTabs.map((tab, i) => {
+                    if (i !== activeTab - 1) return tab;
 
-        // Update the state with the updated tabs
-        setCustomizeTabs(updatedTabs);
-    }
+                    const updatedOptions = tab.options.map((option: { checked: any; }, index: number) => ({
+                        ...option,
+                        checked: index === optionIndex ? !option.checked : tab.multiple ? option.checked : false,
+                    }));
+
+                    return { ...tab, options: updatedOptions };
+                })
+            );
+        },
+        [activeTab, setCustomizeTabs]
+    );
 
     const imageHeight = scrollY.interpolate({
         inputRange: [0, 300],
@@ -240,7 +244,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                     </View> */}
 
                                     {/* Customize item section */}
-                                    <View style={{ marginTop: VP(22), paddingHorizontal: HP(30), display: "none" }}>
+                                    <View style={{ marginTop: VP(22), paddingHorizontal: HP(30) }}>
                                         <Text style={styles.customizeHeading}>customize items</Text>
 
                                         {/* Tabs section */}
@@ -273,10 +277,10 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         {customizeTabs[(activeTab - 1)]?.options && (
                                             <View style={{ marginTop: VP(6) }}>
                                                 {customizeTabs[(activeTab - 1)].options.map((d: any, i: number) => (
-                                                    <View key={`tab-options-${i}`} style={{ gap: HP(8), marginTop: VP(6) }}>
-                                                        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                                                    <View key={`tab-options-${i}`} style={styles.tabMain}>
+                                                        <View style={styles.tabSub}>
 
-                                                            <View style={{ flexDirection: "row", alignItems: "center", gap: HP(10.37), padding: HP(8) }}>
+                                                            <View style={styles.tabLeft}>
                                                                 {/* {d?.image ? (
                                                                     <Image source={d?.image} style={styles.optionImg} />
                                                                 ) : <></>} */}
@@ -285,15 +289,18 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                                             </View>
 
 
-                                                            <View style={{ flexDirection: "row", alignItems: "center", gap: HP(10.02) }}>
-                                                                <Text style={styles.optionPrice}>{(d.price && d.price > 0) ? `$${d.price.toFixed(2)}` : ""}</Text>
+                                                            <View style={styles.tabRight}>
+                                                                <Text style={styles.optionPrice}>
+                                                                    {(d.price && d.price > 0) ?
+                                                                        `$${d.price.toFixed(2)}` : ""}
+                                                                </Text>
 
                                                                 <TouchableOpacity
                                                                     onPress={() => clickOptionHandler(i)}
                                                                 >
-                                                                    <View style={styles.checkbox}>
+                                                                    <View style={[styles.checkbox, !customizeTabs[(activeTab - 1)]?.multiple && styles.radiobox]}>
                                                                         {(d?.checked && d.checked === true) && (
-                                                                            <View style={styles.checkedBox}>
+                                                                            <View style={[styles.checkedBox, !customizeTabs[(activeTab - 1)]?.multiple && styles.radiobox]}>
                                                                                 <Icon type={Icons.Feather} size={FS(12)} name={`check`} color={COLORS.WHITE} />
                                                                             </View>
                                                                         )}
@@ -301,7 +308,6 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                                                 </TouchableOpacity>
                                                             </View>
                                                         </View>
-
 
                                                         <View style={styles.lineTab}></View>
                                                     </View>
@@ -326,7 +332,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                                 />
 
                                                 <TouchableOpacity
-                                                    onPress={() => addToCart(itemDetails, cartQuantity, dispatch)}
+                                                    onPress={() => addToCart(itemDetails, cartQuantity, dispatch, undefined, undefined, customizeTabs)}
                                                     style={{ width: FS(31), height: FS(31), borderRadius: FS(15.5), backgroundColor: COLORS.WHITE, alignItems: "center", justifyContent: "center" }}
                                                 >
                                                     <Image
@@ -346,7 +352,10 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
                                     {/* Category Tab */}
                                     <View style={{ marginTop: VP(25.66), paddingLeft: HP(30) }}>
-                                        <CategortyTabsSection setSelectedCategory={selectCategoryHandler} selectedCategory={selectedCategory} />
+                                        <CategortyTabsSection
+                                            setSelectedCategory={selectCategoryHandler}
+                                            selectedCategory={selectedCategory}
+                                        />
                                     </View>
 
                                     {/* item boxes */}
@@ -474,8 +483,7 @@ const styles = StyleSheet.create({
         borderColor: '#FFAFF6',  // Border color for the checkbox
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: HP(6.11),
-        borderRadius: HP(2.96)
+        marginRight: HP(6.11)
     },
     checkedBox: {
         width: FS(15.11),
@@ -483,6 +491,9 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.BUTTON,
         justifyContent: "center",
         alignItems: "center"
+    },
+    radiobox: {
+        borderRadius: HP(15.11 / 2)
     },
     optionPrice: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
@@ -493,6 +504,26 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
         width: FS(19),
         height: VP(19)
+    },
+    tabMain: {
+        gap: HP(8),
+        marginTop: VP(6)
+    },
+    tabSub: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+    tabLeft: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: HP(10.37),
+        padding: HP(8)
+    },
+    tabRight: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: HP(10.02)
     }
 });
 

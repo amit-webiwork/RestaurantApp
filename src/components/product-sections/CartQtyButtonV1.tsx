@@ -55,19 +55,19 @@ const styles = StyleSheet.create({
         borderColor: COLORS.WHITE,
         borderRadius: HP(62.5),
         overflow: 'hidden',
-        width: FS(125),
+        width: FS(125)
     },
     qtyButton: {
         backgroundColor: COLORS.BUTTON,
         paddingLeft: HP(10),
         paddingRight: HP(10),
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     qtyButtonText: {
         fontSize: 21,
         fontWeight: "bold",
-        color: COLORS.WHITE,
+        color: COLORS.WHITE
     },
     qtyInput: {
         flex: 1,

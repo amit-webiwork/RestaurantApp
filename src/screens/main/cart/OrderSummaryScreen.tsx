@@ -68,7 +68,8 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                     const itemDetails = getItemPriceComponents(item);
                     itemDetails.id = itemDetails.itemId || 0;
                     const qty = item.qty || 1;
-                    addToCart(itemDetails, qty, dispatch, undefined, false);
+                    const options = item.options || [];
+                    addToCart(itemDetails, qty, dispatch, undefined, false, options);
                 }
                 resolve(1);
             }, 100);
@@ -232,7 +233,7 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                                 </View>
 
                                 {/* Reorder button */}
-                                {proceed && (
+                                {(proceed && CartItemList.length > 0) && (
                                     <Button
                                         text={'Place order'}
                                         onPress={handleClick}

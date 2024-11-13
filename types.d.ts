@@ -9,6 +9,7 @@ interface CartItemDetails {
     discountPrice: number;
     itemPrice: number;
     discountPercent: number;
+    options: any[];
 }
 
 interface ItemDetails {
@@ -29,6 +30,7 @@ interface ItemDetails {
     isAvailable?: boolean;
     qty?: number;
     itemId?: number;
+    options?: any[];
 }
 
 interface CouponDetails {
