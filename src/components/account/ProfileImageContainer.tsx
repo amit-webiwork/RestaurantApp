@@ -9,7 +9,7 @@ import { loadStorage, saveStorage } from '../../utils/Storage';
 import { setProflieDetails } from '../../redux/features/profile';
 import { showFadeAlert } from '../../utils/Alert';
 import { setDialogContent } from '../../redux/features/customDialog';
-import { FS, HP, VP } from '../../utils/Responsive';
+import { FS, VP } from '../../utils/Responsive';
 import Warning from '../../assets/svgs/warning.svg';
 import NormalLoader from '../NormalLoader';
 import { AppDispatch } from '../../redux/store';

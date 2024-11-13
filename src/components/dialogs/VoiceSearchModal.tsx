@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, memo } from 'react';
+import React, { useRef, useEffect, memo } from 'react';
 import { Modal, View, Text, StyleSheet, Animated, Easing, TouchableOpacity, Image } from 'react-native';
 import LoadingDots from 'react-native-loading-dots';
 

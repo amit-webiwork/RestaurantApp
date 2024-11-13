@@ -11,11 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
-import { categoryList, categoryLoaded, fetchCategories, getAppliedFilterArray, getFilters, priceRangeFilter, removeFilter, removeFromRangeFilter, resetFilter } from '../../redux/features/items';
-import CategoryTabsLoaderSection from '../skeleton/CategoryTabsLoader';
+import { getAppliedFilterArray, priceRangeFilter, removeFilter, removeFromRangeFilter, resetFilter } from '../../redux/features/items';
 import { AppDispatch } from '../../redux/store';
 import Icon, { Icons } from '../Icons';
-import { boolean } from 'yup';
 
 interface Props {
     loading?: boolean;
@@ -144,7 +142,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         gap: HP(3),
         alignItems: "baseline"
-    },
+    }
 });
 
 const FilterAppliedTabsSection = memo(FilterAppliedTabs);

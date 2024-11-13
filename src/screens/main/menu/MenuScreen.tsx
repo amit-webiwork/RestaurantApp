@@ -31,17 +31,22 @@ const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading
     return (
         <>
             {/* Top Navigation */}
-            <View style={{ paddingHorizontal: HP(21), paddingVertical: HP(20), }}>
+            <View style={{ paddingHorizontal: HP(21), paddingVertical: HP(20) }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}
-                        style={{ alignSelf: "center" }}
+                        style={{ 
+                            alignSelf: "center"
+                        }}
                     >
-                        <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                        <View>
+                            <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                        </View>
                     </TouchableOpacity>
                     <Text style={styles.topHeading}>Menu</Text>
                 </View>
             </View>
+
             {/* Category box tab */}
             <View style={{ marginTop: VP(7), paddingLeft: HP(21) }}>
                 <CategortyTabsSection setSelectedCategory={setSelectedCategoryhandler} selectedCategory={selectedCategory} loading={loading} />
@@ -105,7 +110,7 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
             const popularItemParams = { itemIds: filterList['popularItems'].length > 0 ? filterList['popularItems'] : '' }
 
             const params = { ...categoryParams, ...dietaryParams, ...cuisineParams, ...priceParams, ...popularItemParams };
-            
+
             const offset = (page - 1) * limit;
 
             const response = await getItemList(params, limit, offset);

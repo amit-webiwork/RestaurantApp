@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: HP(0.75),
         width: (width / 2) - HP(23.25),
         marginHorizontal: HP(3)
-
     },
     boxSubContainer: {
         borderRadius: FS(16.42),

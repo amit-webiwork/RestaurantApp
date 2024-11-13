@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     },
     priceText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: 14,
+        fontSize: 14
     },
     statusText: {
         ...TextStyles.RALEWAY_REGULAR,
@@ -171,12 +171,12 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: "#606060",
         flexShrink: 1,
-        alignSelf: "flex-end",
+        alignSelf: "flex-end"
     },
     itemText: {
         ...TextStyles.RALEWAY_REGULAR,
         fontSize: 14,
-        textTransform: "capitalize",
+        textTransform: "capitalize"
     },
     line: {
         height: 1,

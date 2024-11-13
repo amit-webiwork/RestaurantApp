@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
 import CartQtyButtonV2Section from '../product-sections/CartQtyButtonV2';
