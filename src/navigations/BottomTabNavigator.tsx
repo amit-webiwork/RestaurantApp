@@ -143,7 +143,10 @@ export default function BottomTabNavigator() {
             >
                 {TabArr.map((item, index) => {
                     return (
-                        <Tab.Screen key={index} name={item.route} component={item.component}
+                        <Tab.Screen
+                            key={index}
+                            name={item.route}
+                            component={item.component}
                             options={{
                                 tabBarShowLabel: false,
                                 tabBarStyle: (item.route === 'CartScreen') ? { display: 'none' } : [styles.tabBar, styles.shadow],

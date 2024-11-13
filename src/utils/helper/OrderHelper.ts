@@ -51,9 +51,9 @@ export const getOrderTrackSteps = () => {
 
 export const getOrderRefundTrackSteps = () => {
     const steps = [
-        { key: "Pending", status: 'refund initiated', icon: require(`../../assets/icons/order-placed.png`), time: "", subText: "6 Nov, 2024" },
-        { key: "Preparing", status: 'Your bank has proceesedd your refund', icon: require(`../../assets/icons/order-process.png`), time: "", subText: "awaiting confirmation..." },
-        { key: "OrderReady", status: 'refund creadited to your account', icon: require(`../../assets/icons/order-shipped.png`), time: "", subText: "" }
+        { key: "refund", orderStatus: "pending", status: 'refund initiated', icon: require(`../../assets/icons/order-placed.png`), subText: "" },
+        { key: "refund", orderStatus: "available", status: 'refund is being processed.', icon: require(`../../assets/icons/order-placed.png`), subText: "" },
+        { key: "charge", orderStatus: "", status: 'refunded amount sent to your bank.', icon: require(`../../assets/icons/order-placed.png`), subText: "" }
     ];
 
     return steps;

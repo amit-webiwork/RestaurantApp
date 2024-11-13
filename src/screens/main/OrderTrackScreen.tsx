@@ -16,10 +16,11 @@ import { formatEstimatedTime, getOrderTrackSteps } from '../../utils/helper/Orde
 
 const { width, height } = Dimensions.get('window');
 
-const steps = getOrderTrackSteps();
 
 function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
     const { orderData } = route.params;
+    
+    const steps = getOrderTrackSteps();
 
     const dispatch: AppDispatch = useDispatch();
 

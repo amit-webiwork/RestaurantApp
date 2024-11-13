@@ -35,7 +35,7 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
                                     >
                                         <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.WHITE} />
                                     </TouchableOpacity>
-                                    <Text style={styles.topHeading}>0.0.1</Text>
+                                    <Text style={styles.topHeading}>0.0.2</Text>
                                 </View>
 
                                 <View style={{ marginTop: VP(6), alignItems: "center" }}>
