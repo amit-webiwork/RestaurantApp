@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity, Dimensions, Animated, Platform, UIManager, LayoutAnimation, LayoutChangeEvent } from 'react-native';
+import { StyleSheet, Image, View, Text, TouchableOpacity, Dimensions, Animated, Platform, UIManager, LayoutChangeEvent } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
@@ -12,19 +12,21 @@ import OuterLayout from '../../components/OuterLayout.tsx';
 import InnerBlock from '../../components/InnerBlock.tsx';
 import { globalStyle } from '../../utils/GlobalStyle.ts';
 import HeadingSection from '../../components/Heading.tsx';
-import { customizeOptions, productRatings } from '../../utils/MockData.ts';
+import { productRatings } from '../../utils/MockData.ts';
 import ProductRatingsSection from '../../components/product-sections/ProductRatings.tsx';
 import CartQtyButtonV1Section from '../../components/product-sections/CartQtyButtonV1.tsx';
 import CookingRequestSection from '../../components/product-sections/CookingRequest.tsx';
 import CartLayout from '../../components/cart/CartLayout.tsx';
-import { addToCart, updateCheckedOptions, updateItemOptionsHelper } from '../../utils/helper/CartHelper.ts';
+import { addToCart } from '../../utils/helper/CartHelper.ts';
 import { fetchPopularItems, papularItemLoaded, papularItems } from '../../redux/features/items.ts';
 import { AppDispatch } from '../../redux/store.ts';
-import { cartItemIds, cartItemList, getCartCustomizeOptions, getCartQty, getItemInCart, updateItemOptions } from '../../redux/features/cart.ts';
+import { cartItemList, getCartQty } from '../../redux/features/cart.ts';
 import ProductScreenLoader from '../../components/skeleton/ProductScreenLoader.tsx';
 import { getItemPriceComponents } from '../../utils/helper/ItemHelper.ts';
 import { useCartQuantity } from '../../utils/customHooks/useCartQuantity.ts';
 import { useScrollToTop } from '../../utils/customHooks/useScrollToTop.ts';
+import CustomizeItemSection from '../../components/product-sections/CustomizeItem.tsx';
+import { useCustomizeItem } from '../../utils/customHooks/useCustomizeItem.ts';
 
 const { width, height } = Dimensions.get('window');
 
@@ -41,14 +43,13 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
     const { quantity: cartQuantity, setQuantity: setCartQuantity, increment: incrementCart, decrement: decrementCart } = useCartQuantity(1);
 
-    useScrollToTop(id, scrollViewRef);
+    const { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler } = useCustomizeItem(id, 0);
 
-    const customizeOptionsGet = JSON.parse(JSON.stringify(customizeOptions));
+    useScrollToTop(id, scrollViewRef);
 
     const PapularItemLoaded = useSelector(papularItemLoaded);
     const PapularItems = useSelector(papularItems);
     const CartItemList = useSelector(cartItemList);
-    const CartItemIds = useSelector(cartItemIds);
 
     const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -58,10 +59,6 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
     const [itemDetails, setItemDetails] = useState<any>({});
-
-    const [textWidths, setTextWidths] = useState<any>({});
-    const [activeTab, setActiveTab] = useState(1);
-    const [customizeTabs, setCustomizeTabs] = useState<any[]>([]);
 
     const setInstructionTextHandler = useCallback((e: string) => {
         setInstructionText(e);
@@ -88,55 +85,8 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
         if (id) {
             setItemDetails(getItemPriceComponents(item));
             setCartQuantity(getCartQty(item?.id, CartItemList));
-
-            const cartCustomizeOptions = getCartCustomizeOptions(item?.id, CartItemList);
-
-            updateCheckedOptions(customizeOptionsGet, cartCustomizeOptions);
-            setCustomizeTabs(customizeOptionsGet);
         }
     }, [id])
-
-    useEffect(() => {
-        const status = getItemInCart(id, CartItemIds);
-
-        if (status) {
-            updateItemOptionsHelper(id, customizeTabs, dispatch);
-        }
-    }, [id, customizeTabs]);
-
-    const switchTab = useCallback((tab: number) => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setActiveTab(tab);
-    }, [setActiveTab]);
-
-    const handleTextLayout = useCallback(
-        (event: LayoutChangeEvent, index: number) => {
-            const { width } = event.nativeEvent.layout;
-            setTextWidths((prevWidths: any) => ({
-                ...prevWidths,
-                [index]: width,
-            }));
-        },
-        [setTextWidths] // Dependency array
-    );
-
-    const clickOptionHandler = useCallback(
-        (optionIndex: number) => {
-            setCustomizeTabs((prevTabs: any[]) =>
-                prevTabs.map((tab, i) => {
-                    if (i !== activeTab - 1) return tab;
-
-                    const updatedOptions = tab.options.map((option: { checked: any; }, index: number) => ({
-                        ...option,
-                        checked: index === optionIndex ? !option.checked : tab.multiple ? option.checked : false,
-                    }));
-
-                    return { ...tab, options: updatedOptions };
-                })
-            );
-        },
-        [activeTab, setCustomizeTabs]
-    );
 
     const imageHeight = scrollY.interpolate({
         inputRange: [0, 300],
@@ -245,75 +195,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
                                     {/* Customize item section */}
                                     <View style={{ marginTop: VP(22), paddingHorizontal: HP(30) }}>
-                                        <Text style={styles.customizeHeading}>customize items</Text>
-
-                                        {/* Tabs section */}
-                                        <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: VP(14.48) }}>
-
-                                            {customizeTabs.map((d: any, i: number) => (
-                                                <TouchableOpacity
-                                                    onPress={() => switchTab((i + 1))}
-                                                    key={`tab-${i}`}
-                                                >
-                                                    <Text
-                                                        style={styles.menuText}
-                                                        onLayout={(event) => handleTextLayout(event, i)}
-                                                    >
-                                                        {d.title}
-                                                    </Text>
-                                                    {activeTab === (i + 1) && (
-                                                        <Image
-                                                            source={require('../../assets/images/active.png')}
-                                                            style={{ width: (textWidths[i] || 0), height: VP(4), resizeMode: "stretch", marginTop: VP(8.9) }}
-                                                        />
-                                                    )}
-                                                </TouchableOpacity>
-                                            ))}
-                                        </View>
-
-                                        <View style={styles.lineTab}></View>
-
-                                        {/* Tab options section */}
-                                        {customizeTabs[(activeTab - 1)]?.options && (
-                                            <View style={{ marginTop: VP(6) }}>
-                                                {customizeTabs[(activeTab - 1)].options.map((d: any, i: number) => (
-                                                    <View key={`tab-options-${i}`} style={styles.tabMain}>
-                                                        <View style={styles.tabSub}>
-
-                                                            <View style={styles.tabLeft}>
-                                                                {/* {d?.image ? (
-                                                                    <Image source={d?.image} style={styles.optionImg} />
-                                                                ) : <></>} */}
-
-                                                                <Text style={styles.customizeOptionText}>{d.title}</Text>
-                                                            </View>
-
-
-                                                            <View style={styles.tabRight}>
-                                                                <Text style={styles.optionPrice}>
-                                                                    {(d.price && d.price > 0) ?
-                                                                        `$${d.price.toFixed(2)}` : ""}
-                                                                </Text>
-
-                                                                <TouchableOpacity
-                                                                    onPress={() => clickOptionHandler(i)}
-                                                                >
-                                                                    <View style={[styles.checkbox, !customizeTabs[(activeTab - 1)]?.multiple && styles.radiobox]}>
-                                                                        {(d?.checked && d.checked === true) && (
-                                                                            <View style={[styles.checkedBox, !customizeTabs[(activeTab - 1)]?.multiple && styles.radiobox]}>
-                                                                                <Icon type={Icons.Feather} size={FS(12)} name={`check`} color={COLORS.WHITE} />
-                                                                            </View>
-                                                                        )}
-                                                                    </View>
-                                                                </TouchableOpacity>
-                                                            </View>
-                                                        </View>
-
-                                                        <View style={styles.lineTab}></View>
-                                                    </View>
-                                                ))}
-                                            </View>
-                                        )}
+                                        <CustomizeItemSection activeTabProp={activeTab} textWidthsProp={textWidths} customizeTabs={customizeTabs} switchTabHandler={switchTab} handleTextLayoutHandler={handleTextLayout} clickOptionHandlerProp={clickOptionHandler} />
                                     </View>
 
                                     {/* Cart with qty Button */}
@@ -444,86 +326,6 @@ const styles = StyleSheet.create({
         width: FS(25),
         height: FS(25),
         zIndex: 10
-    },
-    line: {
-        height: 2,
-        width: "100%",
-        flex: 1,
-        flexGrow: 1,
-        backgroundColor: "#eee",
-        marginTop: VP(27)
-
-    },
-    customizeHeading: {
-        ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: 20.8,
-        textTransform: 'capitalize'
-    },
-    menuText: {
-        ...TextStyles.RALEWAY_MEDIUM,
-        fontSize: 14.56,
-        textTransform: "capitalize",
-        padding: HP(8)
-    },
-    lineTab: {
-        height: 2,
-        flex: 1,
-        flexGrow: 1,
-        backgroundColor: "#E6E6E6"
-    },
-    customizeOptionText: {
-        ...TextStyles.RALEWAY_MEDIUM,
-        fontSize: 14.56,
-        textTransform: "capitalize"
-    },
-    checkbox: {
-        width: FS(15.11),
-        height: FS(15.11),
-        borderWidth: 1,
-        borderColor: '#FFAFF6',  // Border color for the checkbox
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: HP(6.11)
-    },
-    checkedBox: {
-        width: FS(15.11),
-        height: FS(15.11),
-        backgroundColor: COLORS.BUTTON,
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    radiobox: {
-        borderRadius: HP(15.11 / 2)
-    },
-    optionPrice: {
-        ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: 12,
-        color: "#383838"
-    },
-    optionImg: {
-        resizeMode: "contain",
-        width: FS(19),
-        height: VP(19)
-    },
-    tabMain: {
-        gap: HP(8),
-        marginTop: VP(6)
-    },
-    tabSub: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center"
-    },
-    tabLeft: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: HP(10.37),
-        padding: HP(8)
-    },
-    tabRight: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: HP(10.02)
     }
 });
 

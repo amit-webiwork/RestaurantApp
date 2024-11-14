@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
+import { useIsFocused } from '@react-navigation/native';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
@@ -14,7 +15,7 @@ import CartItemSection from '../../../components/cart/CartItem';
 import ItemBoxSection from '../../../components/home-sections/ItemBox';
 import CookingRequestSection from '../../../components/product-sections/CookingRequest';
 import { ButtonSection as Button } from '../../../components/Button';
-import { cartItemList, cartLoading, getCartTotal, resetCart, setInstructionText } from '../../../redux/features/cart';
+import { cartItemList, cartLoading, getCartTotal, setInstructionText } from '../../../redux/features/cart';
 import { fetchPopularItems, papularItemLoaded, papularItems } from '../../../redux/features/items';
 import { AppDispatch } from '../../../redux/store';
 import NormalLoader from '../../../components/NormalLoader';
@@ -23,6 +24,8 @@ import { couponCalculationHandler } from '../../../utils/helper/CouponHelper';
 
 function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
+
+    const isFocused = useIsFocused();
 
     const CartItemList = useSelector(cartItemList);
     const PapularItemLoaded = useSelector(papularItemLoaded);
@@ -40,6 +43,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [instructionText, setInstructionTextState] = useState<string>("");
     const [couponChangesLoading, setCouponChangesLoading] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [itemRerender, setItemRerender] = useState(0);
 
     const setInstructionTextHandler = useCallback((e: string) => {
         setInstructionTextState(e);
@@ -78,6 +82,12 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
         couponCalculationHandler(GetCartTotal, setCouponChangesLoading, dispatch);
     }, [GetCartTotal, dispatch, setCouponChangesLoading])
 
+    useEffect(() => {
+        if (isFocused) {
+            setItemRerender(pre => ++pre)
+        }
+    }, [isFocused])
+
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
             <NormalLoader visible={CartLoading || couponChangesLoading || loading} />
@@ -106,7 +116,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     <>
                                         {(CartItemList || []).map((d, i) => (
                                             <View key={`cart-item-${i}`}>
-                                                <CartItemSection data={d} />
+                                                <CartItemSection data={d} render={itemRerender} />
                                             </View>
                                         ))}
                                     </>

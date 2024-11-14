@@ -1,10 +1,12 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
     View,
     StyleSheet,
     Text,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    Animated,
+    Dimensions
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -15,15 +17,20 @@ import { addToCart } from '../../utils/helper/CartHelper';
 import { AppDispatch } from '../../redux/store';
 import { removeFromCart } from '../../redux/features/cart';
 import { CDN_URL, COLORS } from '../../utils/Constants';
+import CustomizeItemDialog from '../dialogs/CustomizeItemDialog';
 
 interface Props {
     data: any;
+    render: number;
 }
 
-const CartItem: React.FunctionComponent<Props> = ({ data }) => {
+const CartItem: React.FunctionComponent<Props> = ({ data, render }) => {
     const dispatch: AppDispatch = useDispatch();
 
+    const slideAnim = useRef(new Animated.Value(300)).current;
+
     const [cartQuantity, setCartQuantity] = useState(1);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const incrementCart = () => {
         addToCart({ ...data, id: data.itemId }, 1, dispatch, 'add', false);
@@ -39,44 +46,68 @@ const CartItem: React.FunctionComponent<Props> = ({ data }) => {
         dispatch(removeFromCart(data.itemId));
     }
 
+    const openDrawer = useCallback(() => {
+        setModalVisible(true);
+        Animated.timing(slideAnim, {
+            toValue: 0, // Slide up
+            duration: 300,
+            useNativeDriver: true,
+        }).start();
+    },
+        [slideAnim, setModalVisible]
+    );
+
+    const closeDrawer = useCallback(() => {
+        Animated.timing(slideAnim, {
+            toValue: 300,
+            duration: 300,
+            useNativeDriver: true,
+        }).start(() => {
+            setModalVisible(false);
+        });
+    }, [slideAnim, setModalVisible]);
+
     useEffect(() => {
         setCartQuantity(+data?.qty || 1)
     }, [data])
 
     return (
-        <View style={styles.boxContainer}>
-            <View style={styles.boxSubContainer}>
-                <View>
-                    <Image source={{ uri: `${CDN_URL}${data?.imgUrl}` }} style={[styles.img]} />
-                    <TouchableOpacity
-                        onPress={() => void (0)}
-                        style={{ alignSelf: "center", }}
-                    >
-                        <Text style={styles.editText}>Edit</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.itemInfoContainer}>
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.itemTitle}>{data?.name || ""}</Text>
-                        <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.itemPrice, data.discountPrice > 0 && styles.discountedPriceText]}>${data?.itemPrice?.toFixed(2) || 0.00}</Text>
-
-                        {data.discountPrice > 0 && (
-                            <>
-                                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.itemPrice}>${data.discountPrice.toFixed(2)}</Text>
-                            </>
-                        )}
+        <>
+            <CustomizeItemDialog visible={modalVisible} slideAnim={slideAnim} data={data} closeHandler={closeDrawer} render={render} />
+            <View style={styles.boxContainer}>
+                <View style={styles.boxSubContainer}>
+                    <View>
+                        <Image source={{ uri: `${CDN_URL}${data?.imgUrl}` }} style={[styles.img]} />
+                        <TouchableOpacity
+                            onPress={() => openDrawer()}
+                            style={{ alignSelf: "center" }}
+                        >
+                            <Text style={styles.editText}>Edit</Text>
+                        </TouchableOpacity>
                     </View>
 
-                    <CartQtyButtonV2Section decrement={decrementCart} qty={cartQuantity} increment={incrementCart} />
+                    <View style={styles.itemInfoContainer}>
+                        <View style={{ flex: 1 }}>
+                            <Text style={styles.itemTitle}>{data?.name || ""}</Text>
+                            <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.itemPrice, data.discountPrice > 0 && styles.discountedPriceText]}>${data?.itemPrice?.toFixed(2) || 0.00}</Text>
 
-                    {/* Remove button */}
-                    <TouchableOpacity onPress={removeItemFromCart}>
-                        <Image source={require(`../../assets/icons/cart-remove.png`)} style={[styles.iconImg]} />
-                    </TouchableOpacity>
+                            {data.discountPrice > 0 && (
+                                <>
+                                    <Text numberOfLines={1} ellipsizeMode="tail" style={styles.itemPrice}>${data.discountPrice.toFixed(2)}</Text>
+                                </>
+                            )}
+                        </View>
+
+                        <CartQtyButtonV2Section decrement={decrementCart} qty={cartQuantity} increment={incrementCart} />
+
+                        {/* Remove button */}
+                        <TouchableOpacity onPress={removeItemFromCart}>
+                            <Image source={require(`../../assets/icons/cart-remove.png`)} style={[styles.iconImg]} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
-        </View>
+        </>
     );
 };
 
@@ -133,7 +164,7 @@ const styles = StyleSheet.create({
         textDecorationStyle: "solid",
         fontSize: 14,
         textAlign: "center"
-    },
+    }
 });
 
 const CartItemSection = memo(CartItem);
