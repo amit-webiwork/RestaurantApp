@@ -43,7 +43,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
     const { quantity: cartQuantity, setQuantity: setCartQuantity, increment: incrementCart, decrement: decrementCart } = useCartQuantity(1);
 
-    const { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler } = useCustomizeItem(id, 0);
+    const { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler } = useCustomizeItem(id, 1);
 
     useScrollToTop(id, scrollViewRef);
 

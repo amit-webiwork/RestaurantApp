@@ -73,7 +73,13 @@ const CartItem: React.FunctionComponent<Props> = ({ data, render }) => {
 
     return (
         <>
-            <CustomizeItemDialog visible={modalVisible} slideAnim={slideAnim} data={data} closeHandler={closeDrawer} render={render} />
+            <CustomizeItemDialog
+                visible={modalVisible}
+                slideAnim={slideAnim}
+                itemId={data?.itemId}
+                closeHandler={closeDrawer}
+                render={render}
+            />
             <View style={styles.boxContainer}>
                 <View style={styles.boxSubContainer}>
                     <View>

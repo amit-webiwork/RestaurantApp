@@ -53,7 +53,7 @@ export function useCustomizeItem(itemId: number, render: number) {
     );
 
     useEffect(() => {
-        if (itemId) {
+        if (itemId && render > 0) {
             const cartCustomizeOptions = getCartCustomizeOptions(itemId, CartItemList);
 
             updateCheckedOptions(customizeOptionsGet, cartCustomizeOptions);
@@ -62,12 +62,14 @@ export function useCustomizeItem(itemId: number, render: number) {
     }, [itemId, render])
 
     useEffect(() => {
-        const status = getItemInCart(itemId, CartItemIds);
+        if (render > 0) {
+            const status = getItemInCart(itemId, CartItemIds);
 
-        if (status) {
-            updateItemOptionsHelper(itemId, customizeTabs, dispatch);
+            if (status) {
+                updateItemOptionsHelper(itemId, customizeTabs, dispatch);
+            }
         }
-    }, [itemId, customizeTabs]);
+    }, [itemId, customizeTabs, render]);
 
     return { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler };
 }

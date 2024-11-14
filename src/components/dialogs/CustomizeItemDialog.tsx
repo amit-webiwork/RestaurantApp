@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated, ImageBackground } from 'react-native';
 
 import { TextStyles } from '../../utils/TextStyles';
@@ -7,19 +7,51 @@ import { CDN_URL, COLORS } from '../../utils/Constants';
 import Icon, { Icons } from '../Icons';
 import CustomizeItemSection from '../product-sections/CustomizeItem';
 import { useCustomizeItem } from '../../utils/customHooks/useCustomizeItem';
+import CustomizeItemDialogLoader from '../skeleton/CustomizeItemDialogLoader';
+import { getItemDetails } from '../../utils/ApiCall';
 
 interface Props {
     visible: boolean;
     slideAnim: Animated.Value;
-    data: any;
+    itemId: number;
     closeHandler: () => void;
     render: number;
 }
 
 const { width, height } = Dimensions.get('window');
 
-const CustomizeItemDialog = ({ visible, slideAnim, data, closeHandler, render }: Props) => {
-    const { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler } = useCustomizeItem(data?.itemId, render);
+const CustomizeItemDialog = ({ visible, slideAnim, itemId, closeHandler, render }: Props) => {
+    const { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler } = useCustomizeItem(itemId, render);
+
+    const [loading, setLoading] = useState(false);
+    const [itemData, setItemData] = useState<any>({});
+    const [itemCall, setItemCall] = useState(false);
+
+    const fetchItem = async (itemId: number) => {
+        setLoading(true);
+
+        try {
+
+            const response = await getItemDetails(itemId);
+
+            setItemData(response);
+        } catch (err) {
+            console.log(err, '----err');
+            setItemCall(false);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        if (itemId && itemCall)
+            fetchItem(itemId);
+    }, [itemId, itemCall])
+
+    useEffect(() => {
+        if (visible)
+            setItemCall(true);
+    }, [visible])
 
     return (
         <Modal
@@ -32,27 +64,49 @@ const CustomizeItemDialog = ({ visible, slideAnim, data, closeHandler, render }:
             <TouchableOpacity style={styles.overlay} onPress={closeHandler} />
 
             {/* Close Icon */}
-            <TouchableOpacity style={[styles.closeIcon, { transform: [{ translateY: slideAnim }] }]} onPress={closeHandler}>
-                <Icon type={Icons.Feather} size={FS(20)} name="x" color={COLORS.WHITE} />
+            <TouchableOpacity
+                style={[styles.closeIcon, { transform: [{ translateY: slideAnim }] }]}
+                onPress={closeHandler}
+            >
+                <Icon
+                    type={Icons.Feather}
+                    size={FS(20)}
+                    name="x"
+                    color={COLORS.WHITE}
+                />
             </TouchableOpacity>
 
-            {/* Animated drawer container */}
-            <Animated.ScrollView contentContainerStyle={styles.scrollContent} style={[styles.drawerContainer, { transform: [{ translateY: slideAnim }] }]}>
-                <ImageBackground
-                    source={{ uri: `${CDN_URL}${data?.imgUrl}` }}
-                    imageStyle={styles.imageStyle}
-                    style={styles.bg}
-                />
-                <View style={styles.contentBox}>
-                    <Text style={styles.boxTitle}>{data?.name}</Text>
+            {/* Scrollable Animated container */}
+            <Animated.ScrollView
+                contentContainerStyle={styles.scrollContent}
+                style={[styles.drawerContainer, { transform: [{ translateY: slideAnim }] }]}
+            >
+                {loading ? (
+                    <CustomizeItemDialogLoader />
+                ) : (
+                    <>
+                        <ImageBackground
+                            source={{ uri: `${CDN_URL}${itemData?.imgUrl}` }}
+                            imageStyle={styles.imageStyle}
+                            style={styles.bg}
+                        />
+                        <View style={styles.contentBox}>
+                            <Text style={styles.boxTitle}>{itemData?.name}</Text>
 
-                    {/* Scrollable content */}
-
-                    {/* Customize item section */}
-                    <View style={{ marginTop: VP(20) }}>
-                        <CustomizeItemSection activeTabProp={activeTab} textWidthsProp={textWidths} customizeTabs={customizeTabs} switchTabHandler={switchTab} handleTextLayoutHandler={handleTextLayout} clickOptionHandlerProp={clickOptionHandler} />
-                    </View>
-                </View>
+                            {/* Customize item section */}
+                            <View style={{ marginTop: VP(20) }}>
+                                <CustomizeItemSection
+                                    activeTabProp={activeTab}
+                                    textWidthsProp={textWidths}
+                                    customizeTabs={customizeTabs}
+                                    switchTabHandler={switchTab}
+                                    handleTextLayoutHandler={handleTextLayout}
+                                    clickOptionHandlerProp={clickOptionHandler}
+                                />
+                            </View>
+                        </View>
+                    </>
+                )}
             </Animated.ScrollView>
         </Modal>
     );
