@@ -100,54 +100,57 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
                     <View style={{ flex: 9 }}>
                         <ScrollView showsVerticalScrollIndicator={false}>
                             {/* Top Navigation */}
-                            <View style={{ flexDirection: "row" }}>
+                            <View style={{ flexDirection: "row", marginHorizontal: HP(18) }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
-                                    style={{ alignSelf: "center", top: VP(2) }}
+                                    style={globalStyle.navigationIconBox}
                                 >
                                     <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                                 </TouchableOpacity>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textAlign: "center", flex: 1 }}>Create New Password</Text>
                             </View>
-                            <View style={{ marginTop: VP(50) }}>
-                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: FS(52.83), paddingLeft: FS(65.69), paddingRight: FS(63.9), paddingTop: FS(52.62), backgroundColor: "#FFEAFD", width: FS(202), height: FS(202), borderRadius: FS(101), alignSelf: "center" }}>
-                                    <Image source={require('../../assets/images/lock.png')} style={styles.icon} />
+
+                            <View style={{ marginHorizontal: HP(30) }}>
+                                <View style={{ marginTop: VP(50) }}>
+                                    <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: FS(52.83), paddingLeft: FS(65.69), paddingRight: FS(63.9), paddingTop: FS(52.62), backgroundColor: "#FFEAFD", width: FS(202), height: FS(202), borderRadius: FS(101), alignSelf: "center" }}>
+                                        <Image source={require('../../assets/images/lock.png')} style={styles.icon} />
+                                    </View>
                                 </View>
-                            </View>
 
-                            <View style={{ marginTop: VP(36) }}>
-                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, textTransform: "capitalize", textAlign: "center", width: FS(290), lineHeight: VP(22) }}>
-                                    your new password must be different from previously used password.
-                                </Text>
-                            </View>
+                                <View style={{ marginTop: VP(36) }}>
+                                    <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, textTransform: "capitalize", textAlign: "center", width: FS(290), lineHeight: VP(22) }}>
+                                        your new password must be different from previously used password.
+                                    </Text>
+                                </View>
 
-                            <View style={{ marginTop: VP(15) }}>
-                                <CustomTextInput
-                                    placeholder='New Password'
-                                    formProps={{ text: password, setText: handlePasswordChange, error: error.password }}
-                                    maxLength={100}
-                                    secureTextEntry={true}
-                                    styleInput={{
-                                        height: "auto",
-                                        marginTop: HP(12)
-                                    }}
-                                />
+                                <View style={{ marginTop: VP(15) }}>
+                                    <CustomTextInput
+                                        placeholder='New Password'
+                                        formProps={{ text: password, setText: handlePasswordChange, error: error.password }}
+                                        maxLength={100}
+                                        secureTextEntry={true}
+                                        styleInput={{
+                                            height: "auto",
+                                            marginTop: HP(12)
+                                        }}
+                                    />
 
-                                <CustomTextInput
-                                    placeholder='Confirm Password'
-                                    formProps={{ text: confirmPassword, setText: handleConfirmPasswordChange, error: error.confirmPassword }}
-                                    maxLength={100}
-                                    secureTextEntry={true}
-                                    styleInput={{
-                                        height: "auto",
-                                        marginTop: HP(12)
-                                    }}
-                                />
+                                    <CustomTextInput
+                                        placeholder='Confirm Password'
+                                        formProps={{ text: confirmPassword, setText: handleConfirmPasswordChange, error: error.confirmPassword }}
+                                        maxLength={100}
+                                        secureTextEntry={true}
+                                        styleInput={{
+                                            height: "auto",
+                                            marginTop: HP(12)
+                                        }}
+                                    />
+                                </View>
                             </View>
                         </ScrollView>
                     </View>
 
-                    <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1, marginHorizontal: HP(30) }}>
                         <Button
                             text={'save'}
                             onPress={handleOnPress}
@@ -167,7 +170,6 @@ const CreatePasswordScreen: React.FunctionComponent<NavigationProp> = ({
 
 const styles = StyleSheet.create({
     main: {
-        marginHorizontal: HP(30),
         marginVertical: HP(20),
         flex: 1
     },
@@ -175,7 +177,7 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 20,
         color: COLORS.WHITE,
-        textTransform: "capitalize",
+        textTransform: "capitalize"
     },
     icon: {
         width: FS(72.41),

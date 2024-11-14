@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, RefreshControl, Modal, Animated } from 'react-native';
-import moment from 'moment';
 
 import OuterLayout from '../../components/OuterLayout';
 import { globalStyle } from '../../utils/GlobalStyle';
@@ -128,9 +127,14 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                         <View style={styles.top}>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(`HomeScreen`)}
-                                style={{ position: 'absolute', left: 0, alignSelf: "center" }}
+                                style={globalStyle.navigationIconBox}
                             >
-                                <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                                <Icon
+                                    type={Icons.Feather}
+                                    size={FS(18)}
+                                    name={`chevron-left`}
+                                    color={COLORS.BLACK}
+                                />
                             </TouchableOpacity>
 
                             <Text style={styles.headingText}>
@@ -141,9 +145,9 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                             showsVerticalScrollIndicator={false}
                             refreshControl={
                                 <RefreshControl
-                                    refreshing={loading} // Bind refreshing state
-                                    onRefresh={onRefresh} // Trigger refresh on pull
-                                    tintColor={COLORS.BUTTON} // Customize indicator color
+                                    refreshing={loading}
+                                    onRefresh={onRefresh}
+                                    tintColor={COLORS.BUTTON}
                                 />
                             }
                         >
@@ -238,7 +242,8 @@ const styles = StyleSheet.create({
         color: "#424242",
         textTransform: "capitalize",
         fontSize: 18,
-        textAlign: 'center'
+        textAlign: 'center',
+        flex: 1
     },
     title: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

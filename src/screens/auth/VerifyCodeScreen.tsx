@@ -35,8 +35,6 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
     const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
 
     const handleOnPress = async () => {
-        // navigation.navigate(`CreatePasswordScreen`);
-        // return;
         try {
             const email = await loadStorage("forgotPasswordEmail");
 
@@ -115,58 +113,66 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
             <InnerBlock>
                 <View style={styles.main}>
                     {/* Top Navigation */}
-                    <View style={{ flexDirection: "row" }}>
+                    <View style={{ flexDirection: "row", marginHorizontal: HP(18) }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}
-                            style={{ alignSelf: "center" }}
+                            style={globalStyle.navigationIconBox}
                         >
-                            <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                            <Icon
+                                type={Icons.Feather}
+                                size={FS(18)}
+                                name={`chevron-left`}
+                                color={COLORS.BLACK}
+                            />
                         </TouchableOpacity>
                         <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textTransform: "capitalize", textAlign: "center", flex: 1 }}>verify your email</Text>
                     </View>
-                    <View style={{ flex: 4 }}>
-                        <ScrollView showsVerticalScrollIndicator={false}>
-                            <View style={{ marginTop: VP(50) }}>
-                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: FS(54.70), paddingLeft: FS(54.70), paddingRight: FS(54.70), paddingTop: FS(54.70), backgroundColor: "#FFEAFD", width: FS(195), height: FS(195), borderRadius: FS(97.5), alignSelf: "center" }}>
-                                    <Image source={require('../../assets/images/letter.png')} style={styles.icon} />
+
+                    <View style={{ marginHorizontal: HP(30), flex: 1 }}>
+                        <View style={{ flex: 4 }}>
+                            <ScrollView showsVerticalScrollIndicator={false}>
+                                <View style={{ marginTop: VP(50) }}>
+                                    <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: FS(54.70), paddingLeft: FS(54.70), paddingRight: FS(54.70), paddingTop: FS(54.70), backgroundColor: "#FFEAFD", width: FS(195), height: FS(195), borderRadius: FS(97.5), alignSelf: "center" }}>
+                                        <Image source={require('../../assets/images/letter.png')} style={styles.icon} />
+                                    </View>
                                 </View>
-                            </View>
 
-                            <View style={{ marginTop: VP(36) }}>
-                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, textTransform: "capitalize", textAlign: "center", width: FS(290), lineHeight: VP(22) }}>
-                                    please enter the 4 digit code sent to <Text style={{ fontWeight: "bold" }}>
-                                        {forgotPasswordEmail}
+                                <View style={{ marginTop: VP(36) }}>
+                                    <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, textTransform: "capitalize", textAlign: "center", width: FS(290), lineHeight: VP(22) }}>
+                                        please enter the 4 digit code sent to <Text style={{ fontWeight: "bold" }}>
+                                            {forgotPasswordEmail}
+                                        </Text>
                                     </Text>
-                                </Text>
+                                </View>
+
+                                <View style={{ marginTop: VP(56) }}>
+                                    <OTPInput formProps={{ value, setValue, error }} />
+                                </View>
+                            </ScrollView>
+                        </View>
+
+                        <View style={{ flex: 1 }}>
+                            <View style={{ marginTop: VP(17) }}>
+                                <TouchableOpacity
+                                    onPress={handleOnResend}
+                                    style={{}}
+                                >
+                                    <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, color: COLORS.BUTTON, textAlign: "center", textDecorationStyle: "solid", textDecorationLine: "underline", }}>
+                                        Resend Code
+                                    </Text>
+                                </TouchableOpacity>
+
+                                <Button
+                                    text={'verify'}
+                                    onPress={handleOnPress}
+                                    textStyle={styles.buttonStyle}
+                                    isLoading={loading}
+                                    activeButtonText={{ opacity: .65 }}
+                                    mainContainerStyle={{ marginTop: VP(37) }}
+                                    LinearGradienrColor={["#FF00E2", "#FF00E2"]}
+                                    contentContainerStyle={{ top: -2 }}
+                                />
                             </View>
-
-                            <View style={{ marginTop: VP(56) }}>
-                                <OTPInput formProps={{ value, setValue, error }} />
-                            </View>
-                        </ScrollView>
-                    </View>
-
-                    <View style={{ flex: 1 }}>
-                        <View style={{ marginTop: VP(17) }}>
-                            <TouchableOpacity
-                                onPress={handleOnResend}
-                                style={{}}
-                            >
-                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, color: COLORS.BUTTON, textAlign: "center", textDecorationStyle: "solid", textDecorationLine: "underline", }}>
-                                    Resend Code
-                                </Text>
-                            </TouchableOpacity>
-
-                            <Button
-                                text={'verify'}
-                                onPress={handleOnPress}
-                                textStyle={styles.buttonStyle}
-                                isLoading={loading}
-                                activeButtonText={{ opacity: .65 }}
-                                mainContainerStyle={{ marginTop: VP(37) }}
-                                LinearGradienrColor={["#FF00E2", "#FF00E2"]}
-                                contentContainerStyle={{ top: -2 }}
-                            />
                         </View>
                     </View>
                 </View>
@@ -177,7 +183,6 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
 
 const styles = StyleSheet.create({
     main: {
-        marginHorizontal: HP(30),
         marginVertical: VP(20),
         flex: 1,
         flexDirection: 'column'
