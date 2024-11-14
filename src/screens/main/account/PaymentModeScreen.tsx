@@ -13,6 +13,7 @@ import { AppDispatch } from '../../../redux/store';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import NormalLoader from '../../../components/NormalLoader';
+import { globalStyle } from '../../../utils/GlobalStyle';
 
 const { width, height } = Dimensions.get('window');
 
@@ -76,12 +77,18 @@ function PaymentModeScreen({ navigation }: { navigation: any }): React.JSX.Eleme
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20) }}>
                         {/* Navigation section */}
-                        <View style={{ paddingHorizontal: HP(16) }}>
+                        <View style={{ paddingHorizontal: HP(20) }}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
+                                    style={globalStyle.navigationIconBox}
                                 >
-                                    <Icon type={Icons.Feather} size={FS(24)} name={`chevron-left`} color={`#6C6C70`} />
+                                    <Icon
+                                        type={Icons.Feather}
+                                        size={FS(20)}
+                                        name={`chevron-left`}
+                                        color={`#6C6C70`}
+                                    />
                                 </TouchableOpacity>
                                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", gap: HP(5) }}>
                                     <Text style={styles.topHeading}>Payment Modes</Text>

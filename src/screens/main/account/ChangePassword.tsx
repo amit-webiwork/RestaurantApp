@@ -93,19 +93,24 @@ function ChangePassword({ navigation }: { navigation: any }): React.JSX.Element 
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{ paddingHorizontal: HP(21), paddingVertical: HP(27.79) }}>
+                    <View style={{ paddingVertical: HP(27.79) }}>
                         {/* Top Navigation */}
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: HP(20) }}>
                             <TouchableOpacity
                                 onPress={() => navigation.goBack()}
-                                style={{ alignSelf: "center" }}
+                                style={globalStyle.navigationIconBox}
                             >
-                                <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                                <Icon
+                                    type={Icons.Feather}
+                                    size={FS(18)}
+                                    name={`chevron-left`}
+                                    color={COLORS.BLACK}
+                                />
                             </TouchableOpacity>
                             <Text style={styles.topHeading}>change Password</Text>
                         </View>
 
-                        <View style={{ marginTop: VP(34.85) }}>
+                        <View style={{ marginTop: VP(34.85), paddingHorizontal: HP(21) }}>
                             <View style={{ gap: HP(9.62) }}>
                                 <Text style={styles.heading}>change Password</Text>
                                 <Text style={styles.info}>Your new password must be different from the previously used password.</Text>

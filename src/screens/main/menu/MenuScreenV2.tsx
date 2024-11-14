@@ -30,13 +30,18 @@ const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading
     return (
         <>
             {/* Top Navigation */}
-            <View style={{ paddingHorizontal: HP(21), paddingVertical: HP(20) }}>
+            <View style={{ paddingHorizontal: HP(18), paddingVertical: HP(20) }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}
-                        style={{ alignSelf: "center" }}
+                        style={globalStyle.navigationIconBox}
                     >
-                        <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                        <Icon
+                            type={Icons.Feather}
+                            size={FS(18)}
+                            name={`chevron-left`}
+                            color={COLORS.BLACK}
+                        />
                     </TouchableOpacity>
                     <Text style={styles.topHeading}>Menu</Text>
                 </View>
@@ -187,17 +192,17 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
                 <View style={{ marginBottom: VP(0) }}>
                     {/* Menu Items */}
                     <View style={{}}>
-                        <ItemVerticalBoxSection 
-                        data={itemList} 
-                        dataLoaded={loader} 
-                        navigation={navigation} 
-                        loadMore={loadMoreItems} 
-                        hasMoreData={hasMoreData} 
-                        loading={loading} 
-                        scrollEnabled={true} 
-                        HeaderComponent={HeaderComponent} 
-                        setSelectedCategoryhandler={setSelectedCategoryHandler} 
-                        selectedCategory={selectedCategory} 
+                        <ItemVerticalBoxSection
+                            data={itemList}
+                            dataLoaded={loader}
+                            navigation={navigation}
+                            loadMore={loadMoreItems}
+                            hasMoreData={hasMoreData}
+                            loading={loading}
+                            scrollEnabled={true}
+                            HeaderComponent={HeaderComponent}
+                            setSelectedCategoryhandler={setSelectedCategoryHandler}
+                            selectedCategory={selectedCategory}
                         />
                     </View>
                 </View>

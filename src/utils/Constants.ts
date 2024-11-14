@@ -12,7 +12,10 @@ export const COLORS = {
     BACKGROUND_DEFAULT: "#F8F8F8",
     SUCCESS: "#27AE60",
     FAILED: "#D93A3A",
+    NAV_ICON_BG: "#DADADA"
 };
+
+export const APP_VERSION = '0.0.3'
 
 // export const BACKEND_URL = "https://deloungecafe.com/api/v1";
 export const BACKEND_URL = "http://192.168.0.101:4000/api/v1";

@@ -31,13 +31,11 @@ const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading
     return (
         <>
             {/* Top Navigation */}
-            <View style={{ paddingHorizontal: HP(21), paddingVertical: HP(20) }}>
+            <View style={{ paddingHorizontal: HP(18), paddingVertical: HP(20) }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}
-                        style={{ 
-                            alignSelf: "center"
-                        }}
+                        style={globalStyle.navigationIconBox}
                     >
                         <View>
                             <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
@@ -48,7 +46,7 @@ const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading
             </View>
 
             {/* Category box tab */}
-            <View style={{ marginTop: VP(7), paddingLeft: HP(21) }}>
+            <View style={{ marginTop: VP(7), paddingLeft: HP(18) }}>
                 <CategortyTabsSection setSelectedCategory={setSelectedCategoryhandler} selectedCategory={selectedCategory} loading={loading} />
             </View>
 

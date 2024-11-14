@@ -14,6 +14,7 @@ import { COLORS } from '../../../utils/Constants';
 import { getCouponList } from '../../../utils/ApiCall';
 import { getCartTotal } from '../../../redux/features/cart';
 import NormalLoader from '../../../components/NormalLoader';
+import { globalStyle } from '../../../utils/GlobalStyle';
 
 function CouponScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
@@ -74,12 +75,18 @@ function CouponScreen({ navigation }: { navigation: any }): React.JSX.Element {
                 >
                     <View style={{ paddingVertical: HP(20) }}>
                         {/* Navigation section */}
-                        <View style={{ paddingHorizontal: HP(16) }}>
+                        <View style={{ paddingHorizontal: HP(18) }}>
                             <View style={{ flexDirection: "row", gap: HP(12.72) }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
+                                    style={globalStyle.navigationIconBox}
                                 >
-                                    <Icon type={Icons.Feather} size={FS(24)} name={`chevron-left`} color={`#6C6C70`} />
+                                    <Icon
+                                        type={Icons.Feather}
+                                        size={FS(22)}
+                                        name={`chevron-left`}
+                                        color={`#6C6C70`}
+                                    />
                                 </TouchableOpacity>
                                 <Text style={styles.topHeading}>apply coupon</Text>
                             </View>

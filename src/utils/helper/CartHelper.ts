@@ -23,7 +23,7 @@ export const addToCart = (item: ItemDetails, qty: number, dispatch: AppDispatch,
 
     setTimeout(() => {
         dispatch(setCartLoading(false));
-    }, 1000);
+    }, 500);
 }
 
 export const updateItemOptionsHelper = (itemId: number, customizeOptions: any[], dispatch: AppDispatch) => {

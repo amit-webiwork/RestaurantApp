@@ -77,13 +77,18 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
             <InnerBlock>
                 <View style={{ paddingVertical: HP(20), marginBottom: VP(0) }}>
                     {/* Top navigation */}
-                    <View style={{ paddingHorizontal: HP(21), paddingBottom: HP(20) }}>
+                    <View style={{ paddingHorizontal: HP(18), paddingBottom: HP(20) }}>
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <TouchableOpacity
                                 onPress={() => navigation.goBack()}
-                                style={{ alignSelf: "center" }}
+                                style={globalStyle.navigationIconBox}
                             >
-                                <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                                <Icon
+                                    type={Icons.Feather}
+                                    size={FS(18)}
+                                    name={`chevron-left`}
+                                    color={COLORS.BLACK}
+                                />
                             </TouchableOpacity>
                             <Text style={styles.topHeading}>popular {name}</Text>
                         </View>

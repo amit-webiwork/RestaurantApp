@@ -21,6 +21,7 @@ import { AppDispatch } from '../../../redux/store';
 import NormalLoader from '../../../components/NormalLoader';
 import { appliedCouponId, couponDiscount, couponList, couponLoaded, fetchCoupons } from '../../../redux/features/coupon';
 import { couponCalculationHandler } from '../../../utils/helper/CouponHelper';
+import { globalStyle } from '../../../utils/GlobalStyle';
 
 function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
@@ -95,20 +96,25 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20) }}>
                         {/* Navigation section */}
-                        <View style={{ paddingHorizontal: HP(21) }}>
+                        <View style={{ paddingHorizontal: HP(18) }}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`HomeScreen`)}
-                                    style={{ alignSelf: "center", }}
+                                    style={globalStyle.navigationIconBox}
                                 >
-                                    <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                                    <Icon
+                                        type={Icons.Feather}
+                                        size={FS(18)}
+                                        name={`chevron-left`}
+                                        color={COLORS.BLACK}
+                                    />
                                 </TouchableOpacity>
                                 <Text style={styles.topHeading}>Cart</Text>
                             </View>
                         </View>
 
                         {/* Body section */}
-                        <View style={{}}>
+                        <View>
                             {/* First section including cart, add more item, coocking request */}
                             <View style={{ marginTop: VP(34), backgroundColor: COLORS.WHITE, borderRadius: HP(21), marginHorizontal: HP(20) }}>
                                 {/* Cart Items Loop */}
@@ -290,11 +296,11 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 const styles = StyleSheet.create({
     topHeading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",
-        flex: 1
+        flex: 1,
+        alignSelf: "center"
     },
     couponText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

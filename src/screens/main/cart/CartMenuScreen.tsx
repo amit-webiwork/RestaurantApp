@@ -26,7 +26,6 @@ function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element 
     const CartItemList = useSelector(cartItemList);
     const PapularItemLoaded = useSelector(papularItemLoaded);
     const PapularItems = useSelector(papularItems);
-    const InstructionText = useSelector(instructionText);
     const CartLoading = useSelector(cartLoading);
 
     const [itemList, setItemList] = useState<any[]>([]);
@@ -42,26 +41,6 @@ function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element 
 
     const handleClick = async () => {
         navigation.navigate(`CartScreen`);
-        // setLoading(true);
-        // try {
-        //     // now call order API
-        //     const dataPayload = {
-        //         extraNote: InstructionText,
-        //         items: CartItemList.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } })
-        //     };
-
-        //     const response: any = await orderSubmit(dataPayload);
-
-        //     navigation.navigate(`OrderPlacedScreen`, {
-        //         ...response.data
-        //     })
-
-        //     setLoading(false);
-        // } catch (err: any) {
-        //     setLoading(false);
-        //     console.log(err?.message, '---err');
-        //     dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || err?.message || errorMessage?.commonMessage }));
-        // }
     }
 
     return (
@@ -71,13 +50,18 @@ function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element 
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20) }}>
                         {/* Navigation Text */}
-                        <View style={{ paddingHorizontal: HP(21) }}>
+                        <View style={{ paddingHorizontal: HP(18) }}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
-                                    style={{ alignSelf: "center" }}
+                                    style={globalStyle.navigationIconBox}
                                 >
-                                    <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                                    <Icon
+                                        type={Icons.Feather}
+                                        size={FS(18)}
+                                        name={`chevron-left`}
+                                        color={COLORS.BLACK}
+                                    />
                                 </TouchableOpacity>
                                 <Text style={styles.topHeading}>My Cart</Text>
                             </View>

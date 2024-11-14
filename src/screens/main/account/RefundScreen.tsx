@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, Dimensions, FlatList, ActivityIndicator } from 'react-native';
-import moment from 'moment';
-import { useDispatch } from 'react-redux';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Dimensions, FlatList, ActivityIndicator } from 'react-native';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
@@ -10,17 +8,15 @@ import Icon, { Icons } from '../../../components/Icons';
 import { COLORS } from '../../../utils/Constants';
 import { TextStyles } from '../../../utils/TextStyles';
 import NormalLoader from '../../../components/NormalLoader';
-import { AppDispatch } from '../../../redux/store';
 import { getRefundOrderList } from '../../../utils/ApiCall';
 import RefundOrderItemSection from '../../../components/order/RefundOrderItem';
+import { globalStyle } from '../../../utils/GlobalStyle';
 
 const { width, height } = Dimensions.get('window');
 
 const limit = 10;
 
 function RefundScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
-    const dispatch: AppDispatch = useDispatch();
-
     const [loading, setLoading] = useState(false);
 
     const [hasMoreData, setHasMoreData] = useState<boolean>(true);
@@ -30,8 +26,6 @@ function RefundScreen({ route, navigation }: { route: any, navigation: any }): R
 
     const fetchRefundOrders = async (page: number) => {
         if (loading || !hasMoreData || page === 0) return;
-
-        console.log('----------run')
 
         setLoading(true);
 
@@ -84,13 +78,18 @@ function RefundScreen({ route, navigation }: { route: any, navigation: any }): R
                     >
                         <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
                             {/* Navigation section */}
-                            <View style={{ paddingHorizontal: HP(20) }}>
+                            <View style={{ paddingHorizontal: HP(18) }}>
                                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                                     <TouchableOpacity
                                         onPress={() => navigation.goBack()}
-                                        style={{ alignSelf: "center", }}
+                                        style={globalStyle.navigationIconBox}
                                     >
-                                        <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BLACK} />
+                                        <Icon
+                                            type={Icons.Feather}
+                                            size={FS(20)}
+                                            name={`chevron-left`}
+                                            color={COLORS.BLACK}
+                                        />
                                     </TouchableOpacity>
                                     <Text style={styles.topHeading}>Refund List</Text>
                                 </View>

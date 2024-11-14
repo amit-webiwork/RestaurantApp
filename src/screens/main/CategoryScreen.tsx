@@ -22,7 +22,7 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
 
     const CategoryLoaded = useSelector(categoryLoaded);
     const CategoryList = useSelector(categoryList);
-    
+
     const [categoryListFiltered, setCategoryListFiltered] = useState<any[]>();
 
     useEffect(() => {
@@ -75,7 +75,7 @@ function CategoryScreen({ navigation }: { navigation: any }): React.JSX.Element 
                         <View style={styles.top}>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(`HomeScreen`)}
-                                style={{ position: 'absolute', left: 0 }}
+                                style={globalStyle.navigationIconBox}
                             >
                                 <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
                             </TouchableOpacity>
@@ -130,7 +130,8 @@ const styles = StyleSheet.create({
         color: "#424242",
         textTransform: "capitalize",
         fontSize: 18,
-        textAlign: 'center'
+        textAlign: 'center',
+        flex: 1
     },
     boxStyle: {
         // aspectRatio: .6,

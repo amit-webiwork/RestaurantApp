@@ -13,13 +13,14 @@ import NormalLoader from '../../components/NormalLoader';
 import { AppDispatch } from '../../redux/store';
 import { getOrderTrack } from '../../utils/ApiCall';
 import { formatEstimatedTime, getOrderTrackSteps } from '../../utils/helper/OrderHelper';
+import { globalStyle } from '../../utils/GlobalStyle';
 
 const { width, height } = Dimensions.get('window');
 
 
 function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
     const { orderData } = route.params;
-    
+
     const steps = getOrderTrackSteps();
 
     const dispatch: AppDispatch = useDispatch();
@@ -101,9 +102,9 @@ function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }
                         showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl
-                                refreshing={loading} // Bind refreshing state
-                                onRefresh={onRefresh} // Trigger refresh on pull
-                                tintColor={COLORS.BUTTON} // Customize indicator color
+                                refreshing={loading}
+                                onRefresh={onRefresh}
+                                tintColor={COLORS.BUTTON}
                             />
                         }
                     >
@@ -113,9 +114,14 @@ function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }
                                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                                     <TouchableOpacity
                                         onPress={() => navigation.goBack()}
-                                        style={{ alignSelf: "center", }}
+                                        style={globalStyle.navigationIconBox}
                                     >
-                                        <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BLACK} />
+                                        <Icon
+                                            type={Icons.Feather}
+                                            size={FS(20)}
+                                            name={`chevron-left`}
+                                            color={COLORS.BLACK}
+                                        />
                                     </TouchableOpacity>
                                     <Text style={styles.topHeading}>track order</Text>
                                 </View>

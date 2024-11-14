@@ -19,6 +19,7 @@ import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import NormalLoader from '../../../components/NormalLoader';
 import { CommonActions } from '@react-navigation/native';
+import { globalStyle } from '../../../utils/GlobalStyle';
 
 const { width, height } = Dimensions.get('window');
 
@@ -162,12 +163,18 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                 <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
                     <View style={{ paddingVertical: HP(20) }}>
                         {/* Navigation section */}
-                        <View style={{ paddingHorizontal: HP(16) }}>
+                        <View style={{ paddingHorizontal: HP(18) }}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
+                                    style={globalStyle.navigationIconBox}
                                 >
-                                    <Icon type={Icons.Feather} size={FS(24)} name={`chevron-left`} color={iconColor} />
+                                    <Icon
+                                        type={Icons.Feather}
+                                        size={FS(22)}
+                                        name={`chevron-left`}
+                                        color={iconColor}
+                                    />
                                 </TouchableOpacity>
                                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", gap: HP(5) }}>
                                     <Text style={styles.topHeading1}>bill total:</Text>
