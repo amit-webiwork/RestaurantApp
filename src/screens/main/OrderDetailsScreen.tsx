@@ -650,7 +650,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         textTransform: "capitalize",
         width: width * .90
-    },
+    }
 });
 
 export default OrderDetailsScreen;

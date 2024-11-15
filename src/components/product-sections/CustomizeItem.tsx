@@ -95,7 +95,7 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
 
                                 <View style={styles.tabRight}>
                                     <Text style={styles.optionPrice}>
-                                        {(d?.price && +d?.price > 0) ? `$${d.price}` : ""}
+                                        {(d?.price && +d?.price > 0) ? `+$${d.price}` : ""}
                                     </Text>
 
                                     <TouchableOpacity
