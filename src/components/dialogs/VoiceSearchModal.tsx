@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     listeningText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 20,
-        color: '#fff',
+        color: COLORS.WHITE,
         marginTop: VP(15.51)
     },
     img: {

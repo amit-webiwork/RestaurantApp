@@ -23,7 +23,7 @@ const CheckmarkWithConfetti = () => {
                     <Path
                         d="M30 50 L45 65 L70 40"
                         fill="none"
-                        stroke="#fff"
+                        stroke=COLORS.WHITE
                         strokeWidth="5"
                     />
                 </Svg> */}

@@ -43,7 +43,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
     const { quantity: cartQuantity, setQuantity: setCartQuantity, increment: incrementCart, decrement: decrementCart } = useCartQuantity(1);
 
-    const { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler } = useCustomizeItem(id, 1);
+    const { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler } = useCustomizeItem(item, 1);
 
     useScrollToTop(id, scrollViewRef);
 
@@ -138,7 +138,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                 >
                                     <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.WHITE} />
                                 </TouchableOpacity>
-                                <View style={{ position: 'absolute', top: VP(31), right: HP(20), backgroundColor: "#0000006E", padding: HP(10), borderRadius: FS(32), minWidth: FS(100) }}>
+                                <View style={styles.nameSection}>
                                     <Text style={styles.title}>{itemDetails?.name}</Text>
                                 </View>
                             </Animated.View>
@@ -148,7 +148,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                 {/* Review count box and heart icon */}
                                 <View style={{ flexDirection: "row", justifyContent: "space-evenly", top: VP(-20) }}>
 
-                                    <View style={{ flexDirection: "row", backgroundColor: "#FFFFFF", padding: 10, borderRadius: FS(32), justifyContent: "space-between", gap: HP(47), alignItems: "center" }}>
+                                    <View style={{ flexDirection: "row", backgroundColor: COLORS.WHITE, padding: 10, borderRadius: FS(32), justifyContent: "space-between", gap: HP(47), alignItems: "center" }}>
                                         <View style={{ flexDirection: "row" }}>
                                             <Image
                                                 source={require('../../assets/images/person-1.png')}
@@ -195,7 +195,14 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
                                     {/* Customize item section */}
                                     <View style={{ marginTop: VP(22), paddingHorizontal: HP(30) }}>
-                                        <CustomizeItemSection activeTabProp={activeTab} textWidthsProp={textWidths} customizeTabs={customizeTabs} switchTabHandler={switchTab} handleTextLayoutHandler={handleTextLayout} clickOptionHandlerProp={clickOptionHandler} />
+                                        <CustomizeItemSection
+                                            activeTabProp={activeTab}
+                                            textWidthsProp={textWidths}
+                                            customizeTabs={customizeTabs}
+                                            switchTabHandler={switchTab}
+                                            handleTextLayoutHandler={handleTextLayout}
+                                            clickOptionHandlerProp={clickOptionHandler}
+                                        />
                                     </View>
 
                                     {/* Cart with qty Button */}
@@ -203,7 +210,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         <View style={{ paddingHorizontal: HP(30) }}>
                                             <View style={{ flexDirection: "row", marginTop: VP(44), backgroundColor: COLORS.BUTTON, borderRadius: HP(40), padding: HP(17), justifyContent: "space-between", alignItems: "center", }}>
                                                 <View>
-                                                    <Text style={{ ...TextStyles.RALEWAY_BOLD, fontSize: 20, color: COLORS.WHITE }}>${itemDetails?.finalPrice.toFixed(2)}</Text>
+                                                    <Text style={styles.priceText}>${itemDetails?.finalPrice.toFixed(2)}</Text>
                                                 </View>
 
                                                 <CartQtyButtonV1Section
@@ -219,7 +226,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                                 >
                                                     <Image
                                                         source={require('../../assets/icons/cart.png')}
-                                                        style={{ width: FS(21), height: FS(20), }}
+                                                        style={{ width: FS(21), height: FS(20) }}
                                                         resizeMode="cover"
                                                     />
                                                 </TouchableOpacity>
@@ -261,8 +268,7 @@ const styles = StyleSheet.create({
         top: VP(-40),
         borderTopLeftRadius: HP(50),
         borderTopRightRadius: HP(50),
-        backgroundColor: "#FDF6F5",
-
+        backgroundColor: "#FDF6F5"
     },
     descText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
@@ -279,7 +285,7 @@ const styles = StyleSheet.create({
     },
     image: {
         width: width * 1,
-        height: '100%',
+        height: '100%'
     },
     imageContainer: {
         height: height * 0.5,
@@ -313,7 +319,7 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
         backgroundColor: 'rgba(255, 0, 0, 0.7)',
         padding: HP(10),
-        borderRadius: FS(10),
+        borderRadius: FS(10)
     },
     backButton: {
         position: 'absolute',
@@ -326,6 +332,20 @@ const styles = StyleSheet.create({
         width: FS(25),
         height: FS(25),
         zIndex: 10
+    },
+    priceText: {
+        ...TextStyles.RALEWAY_BOLD,
+        fontSize: 20,
+        color: COLORS.WHITE
+    },
+    nameSection: {
+        position: 'absolute',
+        top: VP(31),
+        right: HP(20),
+        backgroundColor: "#0000006E",
+        padding: HP(10),
+        borderRadius: FS(32),
+        minWidth: FS(100)
     }
 });
 

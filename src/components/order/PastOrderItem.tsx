@@ -19,6 +19,7 @@ import { globalStyle } from '../../utils/GlobalStyle';
 import { AppDispatch } from '../../redux/store';
 import { useDispatch } from 'react-redux';
 import { recoverCart } from '../../redux/features/cart';
+import { showFadeAlert } from '../../utils/Alert';
 
 const titleDelete = `Confirm Delete`;
 const messageDelete = `Are you sure you want to delete this order?`;
@@ -61,8 +62,13 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler, setLoader }: Pr
                 setTimeout(() => {
                     navigation.navigate(`CartScreen`);
                 }, 100)
+            } else {
+                showFadeAlert('Currently unavailable for reorder.');
             }
         } catch (err) {
+            console.log(err, '--------------err');
+            setLoader(false);
+        } finally {
             setLoader(false);
         }
     }
@@ -165,12 +171,12 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler, setLoader }: Pr
 
                 {/* Total amount and reorder button section */}
                 <View style={{ gap: HP(8), flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                    <View style={{ flexBasis: "50%"}}>
+                    <View style={{ flexBasis: "50%" }}>
                         <Text style={styles.priceText}> ${orderData?.finalAmount} </Text>
                         <Text style={styles.statusText}> {orderData?.orderStatus} </Text>
                     </View>
                     {orderData?.orderItems && Array.isArray(orderData?.orderItems) && orderData?.orderItems.length > 0 && (
-                        <View style={{ width: "50%", alignItems: "flex-end", alignSelf: "flex-end" }}>
+                        <View style={styles.reorderBox}>
                             <Button
                                 text={`reorder`}
                                 onPress={reOrderHandler}
@@ -201,7 +207,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 4,
         elevation: 5,
-        backgroundColor: "#fff",
+        backgroundColor: COLORS.WHITE,
         padding: HP(14),
         position: 'relative'
     },
@@ -264,10 +270,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: VP(18),
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.WHITE,
         borderRadius: 5,
         padding: 10,
-        shadowColor: '#000',
+        shadowColor: COLORS.BLACK,
         shadowOpacity: 0.1,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 5,
@@ -280,6 +286,11 @@ const styles = StyleSheet.create({
         fontSize: 12,
         paddingVertical: HP(6),
         textTransform: "capitalize"
+    },
+    reorderBox: {
+        width: "50%",
+        alignItems: "flex-end",
+        alignSelf: "flex-end"
     }
 });
 const PastOrderItemSection = memo(PastOrderItem);

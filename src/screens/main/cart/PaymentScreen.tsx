@@ -27,9 +27,9 @@ const { width, height } = Dimensions.get('window');
 const isDarkMode1 = Appearance.getColorScheme() === 'dark';
 const isDarkMode = false;
 
-const iconColor = isDarkMode ? "#FFFFFF" : "#6C6C70";
+const iconColor = isDarkMode ? COLORS.WHITE : "#6C6C70";
 
-const creditCardColor = isDarkMode ? "#FFFFFF" : "#101010";
+const creditCardColor = isDarkMode ? COLORS.WHITE : "#101010";
 
 function PaymentScreen({ route, navigation }: { route: any; navigation: any }): React.JSX.Element {
     const { total } = route.params;
@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
         backgroundColor: isDarkMode ? COLORS.BLACK : COLORS.WHITE,
     },
     containerStyle: {
-        backgroundColor: isDarkMode ? "#000000" : "#FFF9F9"
+        backgroundColor: isDarkMode ? COLORS.BLACK : "#FFF9F9"
     }
 });
 

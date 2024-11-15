@@ -25,6 +25,7 @@ import CustomActionDialogComp from '../../components/dialogs/CustomActionDialog'
 import { deleteOrder, fetchOrderDetails } from '../../utils/ApiCall';
 import { getOrderComponents, getReorderItems } from '../../utils/helper/OrderHelper';
 import { recoverCart } from '../../redux/features/cart';
+import { showFadeAlert } from '../../utils/Alert';
 
 const titleDelete = `Confirm Delete`;
 const messageDelete = `Are you sure you want to delete this order?`;
@@ -130,8 +131,11 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                 setTimeout(() => {
                     navigation.navigate(`CartScreen`);
                 }, 100)
+            } else {
+                showFadeAlert('Currently unavailable for reorder.');
             }
         } catch (err) {
+        } finally {
             setLoading(false);
         }
     }
@@ -460,7 +464,7 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
 const styles = StyleSheet.create({
     topHeading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
+        color: COLORS.BLACK,
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",
@@ -491,7 +495,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 4,
         elevation: 5,
-        backgroundColor: "#fff",
+        backgroundColor: COLORS.WHITE,
         borderRadius: HP(10),
         padding: HP(14),
         gap: HP(14.69),
@@ -500,10 +504,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: VP(18),
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.WHITE,
         borderRadius: 5,
         padding: 10,
-        shadowColor: '#000',
+        shadowColor: COLORS.BLACK,
         shadowOpacity: 0.1,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 5,

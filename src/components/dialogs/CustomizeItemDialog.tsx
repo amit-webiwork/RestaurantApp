@@ -21,7 +21,6 @@ interface Props {
 const { width, height } = Dimensions.get('window');
 
 const CustomizeItemDialog = ({ visible, slideAnim, itemId, closeHandler, render }: Props) => {
-    const { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler } = useCustomizeItem(itemId, render);
 
     const [loading, setLoading] = useState(false);
     const [itemData, setItemData] = useState<any>({});
@@ -52,6 +51,8 @@ const CustomizeItemDialog = ({ visible, slideAnim, itemId, closeHandler, render 
         if (visible)
             setItemCall(true);
     }, [visible])
+
+    const { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler } = useCustomizeItem(itemData, render);
 
     return (
         <Modal
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     },
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
     },
     drawerContainer: {
         position: 'absolute',
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         height: height * .8,
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.WHITE,
         borderTopLeftRadius: HP(15),
         borderTopRightRadius: HP(15),
         paddingHorizontal: HP(15),

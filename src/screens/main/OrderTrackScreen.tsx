@@ -187,7 +187,7 @@ function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }
 const styles = StyleSheet.create({
     topHeading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
+        color: COLORS.BLACK,
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",

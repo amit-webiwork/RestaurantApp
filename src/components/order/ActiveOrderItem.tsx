@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 4,
         elevation: 5,
-        backgroundColor: "#fff",
+        backgroundColor: COLORS.WHITE,
         padding: HP(14)
     },
     boxImg: {
@@ -200,10 +200,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: VP(18),
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.WHITE,
         borderRadius: 5,
         padding: 10,
-        shadowColor: '#000',
+        shadowColor: COLORS.BLACK,
         shadowOpacity: 0.1,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 5,

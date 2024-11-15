@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.WHITE,
         padding: HP(20),
         borderRadius: HP(10),
-        shadowColor: "#000",
+        shadowColor: COLORS.BLACK,
         shadowOffset: {
             width: -2,
             height: 4,

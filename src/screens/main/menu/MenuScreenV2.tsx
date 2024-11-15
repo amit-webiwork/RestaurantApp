@@ -215,7 +215,7 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
 const styles = StyleSheet.create({
     topHeading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
+        color: COLORS.BLACK,
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",

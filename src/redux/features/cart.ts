@@ -124,7 +124,7 @@ export const getCartTotal = (state: { cart: CartState }) =>
 
         // Calculate the sum of all checked options' prices
         const optionsTotal = item?.options?.reduce((optTotal, variant) => {
-            const checkedOptionsPrice = variant.options
+            const checkedOptionsPrice = variant.variantAttributes
                 .filter((opt: { checked: any; }) => opt.checked)
                 .reduce((sum: number, opt: { price: string | number; }) => sum + (+opt.price || 0), 0);
             return optTotal + checkedOptionsPrice;

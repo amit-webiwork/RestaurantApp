@@ -33,6 +33,8 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
 
     const [loading, setLoading] = useState(false);
     const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+    const [resendStatus, setResendStatus] = useState(false);
+    const [timer, setTimer] = useState(30);
 
     const handleOnPress = async () => {
         try {
@@ -82,6 +84,9 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                     setLoading(false);
 
                     dispatch(setDialogContent({ title: <Success width={FS(40)} height={VP(40)} />, message: response?.data?.message || "" }));
+
+                    setResendStatus(false);
+                    setTimer(30);
                 })
                 .catch(error => {
                     setLoading(false);
@@ -108,6 +113,17 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
         })()
     }, [])
 
+    useEffect(() => {
+        if (timer > 0) {
+            const interval = setInterval(() => {
+                setTimer(prev => prev - 1);
+            }, 1000);
+            return () => clearInterval(interval);
+        } else {
+            setResendStatus(true);
+        }
+    }, [timer]);
+
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
@@ -132,13 +148,13 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                         <View style={{ flex: 4 }}>
                             <ScrollView showsVerticalScrollIndicator={false}>
                                 <View style={{ marginTop: VP(50) }}>
-                                    <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: FS(54.70), paddingLeft: FS(54.70), paddingRight: FS(54.70), paddingTop: FS(54.70), backgroundColor: "#FFEAFD", width: FS(195), height: FS(195), borderRadius: FS(97.5), alignSelf: "center" }}>
+                                    <View style={styles.imageBox}>
                                         <Image source={require('../../assets/images/letter.png')} style={styles.icon} />
                                     </View>
                                 </View>
 
                                 <View style={{ marginTop: VP(36) }}>
-                                    <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, textTransform: "capitalize", textAlign: "center", width: FS(290), lineHeight: VP(22) }}>
+                                    <Text style={styles.helperText}>
                                         please enter the 4 digit code sent to <Text style={{ fontWeight: "bold" }}>
                                             {forgotPasswordEmail}
                                         </Text>
@@ -155,10 +171,10 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                             <View style={{ marginTop: VP(17) }}>
                                 <TouchableOpacity
                                     onPress={handleOnResend}
-                                    style={{}}
+                                    disabled={!resendStatus || loading}
                                 >
-                                    <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, color: COLORS.BUTTON, textAlign: "center", textDecorationStyle: "solid", textDecorationLine: "underline", }}>
-                                        Resend Code
+                                    <Text style={[styles.resendText]}>
+                                        {resendStatus ? "Resend Code" : `You can resend the OTP in ${timer} seconds`}
                                     </Text>
                                 </TouchableOpacity>
 
@@ -188,23 +204,52 @@ const styles = StyleSheet.create({
         flexDirection: 'column'
     },
     textInputStyle: {
-        width: "100%",
+        width: "100%"
     },
     buttonStyle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 20,
         color: COLORS.WHITE,
-        textTransform: "capitalize",
+        textTransform: "capitalize"
     },
     line: {
         height: 1,
         backgroundColor: "#929292",
-        width: "20%",
+        width: "20%"
     },
     icon: {
         width: FS(86.61),
         height: VP(87.58),
         resizeMode: "contain"
+    },
+    resendText: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 14,
+        color: COLORS.BUTTON,
+        textAlign: "center",
+        // textDecorationStyle: "solid",
+        // textDecorationLine: "underline"
+    },
+    imageBox: {
+        justifyContent: "center",
+        flexDirection: "row",
+        paddingBottom: FS(54.70),
+        paddingLeft: FS(54.70),
+        paddingRight: FS(54.70),
+        paddingTop: FS(54.70),
+        backgroundColor: "#FFEAFD",
+        width: FS(195),
+        height: FS(195),
+        borderRadius: FS(97.5),
+        alignSelf: "center"
+    },
+    helperText: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 14,
+        textTransform: "capitalize",
+        textAlign: "center",
+        width: FS(290),
+        lineHeight: VP(22)
     }
 });
 

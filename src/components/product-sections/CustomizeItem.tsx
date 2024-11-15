@@ -48,11 +48,11 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
     }, [textWidthsProp])
 
     return (
-        <View style={{ }}>
+        <View>
             <Text style={styles.customizeHeading}>customize items</Text>
 
             {/* Tabs section */}
-            <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: VP(14.48) }}>
+            <View style={styles.tabTitleSection}>
 
                 {customizeTabs.map((d: any, i: number) => (
                     <TouchableOpacity
@@ -63,12 +63,12 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
                             style={styles.menuText}
                             onLayout={(event) => handleTextLayout(event, i)}
                         >
-                            {d.title}
+                            {d?.customizeOption?.name || ``}
                         </Text>
                         {activeTab === (i + 1) && (
                             <Image
                                 source={require('../../assets/images/active.png')}
-                                style={{ width: (textWidths[i] || 0), height: VP(4), resizeMode: "stretch", marginTop: VP(8.9) }}
+                                style={[styles.activeLine, { width: (textWidths[i] || 0) }]}
                             />
                         )}
                     </TouchableOpacity>
@@ -78,9 +78,9 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
             <View style={styles.lineTab}></View>
 
             {/* Tab options section */}
-            {customizeTabs[(activeTab - 1)]?.options && (
+            {customizeTabs[(activeTab - 1)]?.variantAttributes && (
                 <View style={{ marginTop: VP(6) }}>
-                    {customizeTabs[(activeTab - 1)].options.map((d: any, i: number) => (
+                    {customizeTabs[(activeTab - 1)].variantAttributes.map((d: any, i: number) => (
                         <View key={`tab-options-${i}`} style={styles.tabMain}>
                             <View style={styles.tabSub}>
 
@@ -89,22 +89,21 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
                                         <Image source={d?.image} style={styles.optionImg} />
                                     ) : <></>} */}
 
-                                    <Text style={styles.customizeOptionText}>{d.title}</Text>
+                                    <Text style={styles.customizeOptionText}>{d?.customizeAttribute?.name || ``}</Text>
                                 </View>
 
 
                                 <View style={styles.tabRight}>
                                     <Text style={styles.optionPrice}>
-                                        {(d.price && d.price > 0) ?
-                                            `$${d.price.toFixed(2)}` : ""}
+                                        {(d?.price && +d?.price > 0) ? `$${d.price}` : ""}
                                     </Text>
 
                                     <TouchableOpacity
                                         onPress={() => clickOptionHandler(i)}
                                     >
-                                        <View style={[styles.checkbox, !customizeTabs[(activeTab - 1)]?.multiple && styles.radiobox]}>
+                                        <View style={[styles.checkbox, !customizeTabs[(activeTab - 1)]?.isMultiple && styles.radiobox]}>
                                             {(d?.checked && d.checked === true) && (
-                                                <View style={[styles.checkedBox, !customizeTabs[(activeTab - 1)]?.multiple && styles.radiobox]}>
+                                                <View style={[styles.checkedBox, !customizeTabs[(activeTab - 1)]?.isMultiple && styles.radiobox]}>
                                                     <Icon type={Icons.Feather} size={FS(12)} name={`check`} color={COLORS.WHITE} />
                                                 </View>
                                             )}
@@ -194,6 +193,16 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
         width: FS(19),
         height: VP(19)
+    },
+    activeLine: {
+        height: VP(4),
+        resizeMode: "stretch",
+        marginTop: VP(8.9)
+    },
+    tabTitleSection: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        marginTop: VP(14.48)
     }
 });
 

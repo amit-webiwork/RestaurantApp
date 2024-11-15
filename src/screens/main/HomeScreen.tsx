@@ -191,7 +191,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                       textStyle={styles.buttonStyle}
                       activeButtonText={{ opacity: 0.65 }}
                       mainContainerStyle={{ borderRadius: FS(16) }}
-                      LinearGradienrColor={['#FFFFFF', '#FFFFFF']}
+                      LinearGradienrColor={[COLORS.WHITE, COLORS.WHITE]}
                       contentContainerStyle={{ top: -2 }}
                       style={{ width: FS(104), height: FS(30) }}
                     />

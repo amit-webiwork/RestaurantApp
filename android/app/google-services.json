@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "81562158085",
-    "project_id": "restaurant-76b33",
-    "storage_bucket": "restaurant-76b33.appspot.com"
+    "project_number": "910822640980",
+    "project_id": "deloungecafe-6dbaf",
+    "storage_bucket": "deloungecafe-6dbaf.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:81562158085:android:3b056a7eb34c138f5c486c",
+        "mobilesdk_app_id": "1:910822640980:android:6a89a33fe7472e000a0cc1",
         "android_client_info": {
           "package_name": "com.restaurantapp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCmZM5V5Up24N1RMR1Eu_q-2XBXsZBnSrE"
+          "current_key": "AIzaSyB01XztFndT8YEqPF6qSOS8a946gNmPiv8"
         }
       ],
       "services": {

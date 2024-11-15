@@ -97,7 +97,8 @@ export const getReorderItems = async (orderData: OrderData): Promise<any[]> => {
                 itemPrice,
                 discountPercent,
                 itemId: d.id,
-                qty: (orderData?.orderItems?.find((item: { itemId: number; }) => item.itemId === d.id)?.qty) || 1
+                qty: (orderData?.orderItems?.find((item: { itemId: number; }) => item.itemId === d.id)?.qty) || 1,
+                options: []
             };
         })
 

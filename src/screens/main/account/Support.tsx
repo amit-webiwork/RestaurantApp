@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         gap: HP(12),
         padding: FS(10),
         shadowOpacity: 0.2,
-        shadowColor: "#000",
+        shadowColor: COLORS.BLACK,
         shadowOffset: {
             width: -2,
             height: 4,
