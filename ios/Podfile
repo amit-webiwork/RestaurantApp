@@ -23,6 +23,9 @@ target 'RestaurantApp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+
   target 'RestaurantAppTests' do
     inherit! :complete
     # Pods for testing
