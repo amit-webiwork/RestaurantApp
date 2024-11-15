@@ -28,10 +28,18 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
                             {/* Top container */}
                             <View style={{ marginTop: VP(25), flex: 1 }}>
                                 {/* Top Navigation */}
-                                <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: HP(18) }}>
+                                <View style={{
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    paddingHorizontal: HP(18)
+                                }}>
                                     <TouchableOpacity
                                         onPress={() => navigation.goBack()}
-                                        style={[globalStyle.navigationIconBox, { backgroundColor: "#00000080" }]}
+                                        style={
+                                            [globalStyle.navigationIconBox,
+                                            { backgroundColor: "#00000080" }
+                                            ]
+                                        }
                                     >
                                         <Icon
                                             type={Icons.Feather}
@@ -56,11 +64,15 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
 
                             {/* Bottom container */}
                             <View style={{ flex: 1 }}>
-                                <ImageBackground source={require(`../assets/images/white-bg.png`)} style={[styles.bg]} resizeMode='stretch'>
+                                <ImageBackground
+                                    source={require(`../assets/images/white-bg.png`)}
+                                    style={[styles.bg]}
+                                    resizeMode='stretch'
+                                >
                                     {children}
                                 </ImageBackground>
 
-                                <Text style={styles.bottomHeading}>App Version: {APP_VERSION}</Text>
+                                <Text style={styles.bottomHeading}>App version {APP_VERSION}</Text>
                             </View>
                         </ScrollView>
                     </LinearGradient>

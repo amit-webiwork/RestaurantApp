@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ScrollView, TouchableOpacity, View, Text, StyleSheet, Keyboard } from 'react-native';
+import { ScrollView, TouchableOpacity, View, Text, StyleSheet, Keyboard, ImageBackground, Dimensions } from 'react-native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
@@ -18,6 +18,9 @@ import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 import { MainStackParamList } from '../../navigations/MainStackNavigator';
 import { setProflieDetails } from '../../redux/features/profile';
+import { useKeyboardListener } from '../../utils/customHooks/useKeyboardListener';
+
+const { width, height } = Dimensions.get('window');
 
 type NavigationProp = NativeStackScreenProps<MainStackParamList>;
 
@@ -27,6 +30,8 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
     navigation,
 }) => {
     const dispatch = useDispatch();
+
+    const { isKeyboardVisible } = useKeyboardListener();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState("");
@@ -65,7 +70,7 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                         saveStorage(responseData, "userDetails");
 
                         dispatch(setProflieDetails(responseData));
-                        
+
                         navigation.reset({
                             index: 0,
                             routes: [
@@ -98,78 +103,90 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
     };
 
     return (
-        <OuterLayout containerStyle={globalStyle.containerStyle}>
-            <InnerBlock>
-                <View style={styles.main}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={{ flex: 1 }}>
-                            <Text style={styles.headingText}>log in</Text>
-                            <View style={{ marginTop: VP(14) }}>
-                                <CustomTextInput
-                                    placeholder='Email / Mobile Number'
-                                    formProps={{ text: username, setText: handleUsernameChange, error: error.username }}
-                                    maxLength={100}
-                                    styleInput={{
-                                        height: "auto",
-                                        marginTop: VP(13)
-                                    }}
-                                />
+        <ImageBackground
+            source={require(`../../assets/images/bg.png`)}
+            style={[styles.bg]}
+            resizeMode='contain'
+        >
+            <OuterLayout containerStyle={[globalStyle.containerStyle, styles.containerStyle]}>
+                <InnerBlock>
+                    <View style={styles.main}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            <View style={{ flex: 1, marginVertical: VP(50) }}>
+                                <Text style={styles.headingText}>log in</Text>
+                                <View style={{ marginTop: VP(14) }}>
+                                    <CustomTextInput
+                                        placeholder='Email / Mobile Number'
+                                        formProps={{ text: username, setText: handleUsernameChange, error: error.username }}
+                                        maxLength={100}
+                                        styleInput={{
+                                            height: "auto",
+                                            marginTop: VP(13)
+                                        }}
+                                    />
 
-                                <CustomTextInput
-                                    placeholder='Password'
-                                    formProps={{ text: password, setText: handlePasswordChange, error: error.password }}
-                                    maxLength={100}
-                                    secureTextEntry={passwordHide}
-                                    iconName={passwordHide ? require(`../../assets/icons/eyeclosed.png`) : require(`../../assets/icons/eyeopen.png`)}
-                                    iconClick={true}
-                                    iconAction={handlePasswordHide}
-                                    styleInput={{
-                                        height: "auto",
-                                        marginTop: VP(13)
-                                    }}
-                                />
-                            </View>
-                            <TouchableOpacity
-                                onPress={() => navigation.navigate(`ForgotScreen`)}
-                                style={{ marginTop: VP(16.5), alignSelf: "flex-end" }}
-                            >
-                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: COLORS.BUTTON, fontSize: 12 }}>Forgot Password?</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={{ flex: 1 }}>
-                            <Button
-                                text={'log in'}
-                                onPress={handleOnPress}
-                                textStyle={styles.buttonStyle}
-                                isLoading={loading}
-                                activeButtonText={{ opacity: .65 }}
-                                mainContainerStyle={{ marginTop: VP(47) }}
-                                LinearGradienrColor={["#FF00E2", "#FF00E2"]}
-                                contentContainerStyle={{ top: -2 }}
-                            />
-                            <View style={{ marginTop: VP(240), flexDirection: "row", justifyContent: "center", gap: HP(6) }}>
-                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12, textTransform: "capitalize" }}>don’t have an account?</Text>
+                                    <CustomTextInput
+                                        placeholder='Password'
+                                        formProps={{ text: password, setText: handlePasswordChange, error: error.password }}
+                                        maxLength={100}
+                                        secureTextEntry={passwordHide}
+                                        iconName={passwordHide ? require(`../../assets/icons/eyeclosed.png`) : require(`../../assets/icons/eyeopen.png`)}
+                                        iconClick={true}
+                                        iconAction={handlePasswordHide}
+                                        styleInput={{
+                                            height: "auto",
+                                            marginTop: VP(13)
+                                        }}
+                                    />
+                                </View>
                                 <TouchableOpacity
-                                    onPress={() => navigation.navigate(`SignUpScreen`)}
-                                    style={{}}
+                                    onPress={() => navigation.navigate(`ForgotScreen`)}
+                                    style={{ alignSelf: "flex-end" }}
                                 >
-                                    <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12, color: COLORS.THEME }}>Sign Up</Text>
+                                    <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
                                 </TouchableOpacity>
                             </View>
+
+                            <View style={{ flex: 1, marginVertical: VP(50) }}>
+                                <Button
+                                    text={'log in'}
+                                    onPress={handleOnPress}
+                                    textStyle={styles.buttonStyle}
+                                    isLoading={loading}
+                                    activeButtonText={{ opacity: .65 }}
+                                    // mainContainerStyle={{ marginTop: VP(60) }}
+                                    LinearGradienrColor={["#FF00E2", "#FF00E2"]}
+                                    contentContainerStyle={{ top: -2 }}
+                                />
+                            </View>
+                        </ScrollView>
+
+                        <View style={[styles.bottomSection, { display: isKeyboardVisible ? "none" : "flex" }]}>
+                            <Text style={styles.bottomText}>don’t have an account?</Text>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate(`SignUpScreen`)}
+                            >
+                                <Text style={styles.bottomLink}>Sign Up</Text>
+                            </TouchableOpacity>
                         </View>
-                    </ScrollView>
-                </View>
-            </InnerBlock>
-        </OuterLayout>
+                    </View>
+                </InnerBlock>
+            </OuterLayout>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
+    containerStyle: {
+        maxHeight: height * .8,
+        margin: "auto",
+        width: width * .9,
+        borderRadius: HP(46)
+    },
     main: {
         marginHorizontal: HP(30),
-        marginVertical: VP(16),
-        flex: 1
+        flex: 1,
+        marginVertical: VP(10)
     },
     headingText: {
         ...TextStyles.RALEWAY_BOLD,
@@ -181,17 +198,46 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 20,
         color: COLORS.WHITE,
-        textTransform: "capitalize",
+        textTransform: "capitalize"
     },
     line: {
         height: 1,
         backgroundColor: "#929292",
-        width: "20%",
+        width: "20%"
     },
     icon: {
         width: FS(24),
         height: VP(24),
         resizeMode: "contain"
+    },
+    bg: {
+        width: "100%",
+        height: height * 1,
+        flex: 1
+    },
+    forgotPasswordText: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        color: COLORS.BUTTON,
+        fontSize: 12
+    },
+    bottomSection: {
+        flexDirection: "row",
+        justifyContent: "center",
+        gap: HP(6),
+        position: "absolute",
+        bottom: 0,
+        alignSelf: "center",
+        marginVertical: VP(20)
+    },
+    bottomText: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 12,
+        textTransform: "capitalize"
+    },
+    bottomLink: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 12,
+        color: COLORS.THEME
     }
 });
 

@@ -17,7 +17,7 @@ export const COLORS = {
 
 export const APP_VERSION = '0.0.3'
 
-// export const BACKEND_URL = "https://deloungecafe.com/api/v1";
+// export const BACKEND_URL = "https://api.deloungecafe.com/api/v1";
 export const BACKEND_URL = "http://192.168.0.101:4000/api/v1";
 export const CDN_URL = "https://cdn.deloungecafe.com/";
 
