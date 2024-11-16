@@ -109,6 +109,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     if (isFocused) {
       (async () => {
         const notificationList = await loadStorage('notificationList');
+        
         const count = notificationList.length
           ? notificationList.filter((d: { read: any }) => !d?.read).length
           : 0;
@@ -158,7 +159,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                   style={styles.notificationBox}>
                   <Icon
                     type={Icons.Feather}
-                    size={20}
+                    size={FS(20)}
                     name={`bell`}
                     color={COLORS.WHITE}
                   />
@@ -419,7 +420,7 @@ const styles = StyleSheet.create({
   },
   notificationCountBox: {
     width: FS(15),
-    height: VP(15),
+    height: FS(15),
     borderRadius: FS(7.5),
     backgroundColor: COLORS.THEME,
     justifyContent: 'center',

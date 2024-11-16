@@ -16,12 +16,12 @@ interface Props {
 
 const CookingRequest: React.FunctionComponent<Props> = ({ setHandler }) => {
     const [instructionText, setInstructionText] = useState<string>("");
-    const [textLength, setTextLength] = useState<number>(100);
+    const [textLength, setTextLength] = useState<number>(50);
     const [errorInstruction, setErrorInstruction] = useState({ status: false, text: "" });
 
     const setInstructionTextHandler = (e: string) => {
         setInstructionText(e);
-        setTextLength(100 - e.length);
+        setTextLength(50 - e.length);
         setHandler(e);
     }
 
@@ -31,7 +31,7 @@ const CookingRequest: React.FunctionComponent<Props> = ({ setHandler }) => {
                 value={instructionText}
                 onChangeText={setInstructionTextHandler}
                 placeholder="e.g. Don’t make it too sweet"
-                maxLength={100}
+                maxLength={50}
                 multiline={true}
                 numberOfLines={5}
                 placeholderTextColor={`#A7A7A7`}

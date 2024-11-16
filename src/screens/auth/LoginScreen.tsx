@@ -106,7 +106,7 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
         <ImageBackground
             source={require(`../../assets/images/bg.png`)}
             style={[styles.bg]}
-            resizeMode='contain'
+            resizeMode='cover'
         >
             <OuterLayout containerStyle={[globalStyle.containerStyle, styles.containerStyle]}>
                 <InnerBlock>

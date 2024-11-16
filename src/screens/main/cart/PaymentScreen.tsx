@@ -18,7 +18,6 @@ import { AppDispatch } from '../../../redux/store';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import NormalLoader from '../../../components/NormalLoader';
-import { CommonActions } from '@react-navigation/native';
 import { globalStyle } from '../../../utils/GlobalStyle';
 
 const { width, height } = Dimensions.get('window');
@@ -87,7 +86,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
         try {
             const dataPayload = {
                 extraNote: InstructionText,
-                items: CartItemList.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } }),
+                items: CartItemList.map((d: { itemId: number; qty: number; options: any[]; }) => { return { itemId: d.itemId, qty: d.qty, variants: d.options } }),
                 couponId: AppliedCouponId,
                 savePaymentMethod
             };

@@ -68,7 +68,7 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                     const itemDetails = getItemPriceComponents(item);
                     itemDetails.id = itemDetails.itemId || 0;
                     const qty = item.qty || 1;
-                    const options = item.options || [];
+                    const options = item.variants || [];
                     addToCart(itemDetails, qty, dispatch, undefined, false, options);
                 }
                 resolve(1);
@@ -96,7 +96,14 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
         try {
             const dataPayload = [...CartItemList]
 
-            const response: any = await cartConfirmV1({ items: dataPayload, couponId: AppliedCouponId });
+            const dataPayloadV1 = [
+                ...dataPayload.map((d) => {
+                    const { options, ...rest } = d;
+                    return { ...rest, variants: d.options };
+                })
+            ];
+
+            const response: any = await cartConfirmV1({ items: dataPayloadV1, couponId: AppliedCouponId });
 
             dispatch(resetCart());
 

@@ -31,6 +31,7 @@ interface ItemDetails {
     qty?: number;
     itemId?: number;
     options?: any[];
+    variants?: any[];
 }
 
 interface CouponDetails {

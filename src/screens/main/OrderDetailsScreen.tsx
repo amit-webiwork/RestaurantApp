@@ -26,6 +26,7 @@ import { deleteOrder, fetchOrderDetails } from '../../utils/ApiCall';
 import { getOrderComponents, getReorderItems } from '../../utils/helper/OrderHelper';
 import { recoverCart } from '../../redux/features/cart';
 import { showFadeAlert } from '../../utils/Alert';
+import { useReceiptDownload } from '../../utils/customHooks/useReceiptDownload';
 
 const titleDelete = `Confirm Delete`;
 const messageDelete = `Are you sure you want to delete this order?`;
@@ -43,6 +44,9 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
     const TopicList = useSelector(topicList);
 
     const [orderData, setOrderData] = useState<any>({});
+
+    const { createPDF } = useReceiptDownload(orderData);
+
     const [loading, setLoading] = useState<boolean>(false);
     const [buttonLoading, setButtonLoading] = useState<boolean>(false);
     const [rating, setRating] = useState(5);
@@ -246,10 +250,26 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                                             toggleMenu();
                                                             setOrderDeleteDialogVisible(true)
                                                         }}
-                                                        style={{ flexDirection: "row", alignItems: "center", gap: HP(7.25) }}
+                                                        style={styles.actionLink}
                                                     >
                                                         <Icon type={Icons.Feather} size={FS(12)} name={`trash-2`} color={`#FF3434`} />
                                                         <Text style={styles.menuItem}>delete</Text>
+                                                    </TouchableOpacity>
+
+                                                    <TouchableOpacity
+                                                        onPress={() => {
+                                                            toggleMenu();
+                                                            createPDF();
+                                                        }}
+                                                        style={[styles.actionLink, { start: HP(2) }]}
+                                                    >
+                                                        <Icon
+                                                            type={Icons.FontAwesome5}
+                                                            size={FS(11)}
+                                                            name={`file-invoice`}
+                                                            color={`#404040`}
+                                                        />
+                                                        <Text style={styles.menuItem}>Download receipt</Text>
                                                     </TouchableOpacity>
                                                 </View>
                                             )}
@@ -513,7 +533,8 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 5,
         zIndex: 1000,
-        minWidth: FS(80)
+        minWidth: FS(80),
+        gap: HP(7.25)
     },
     menuItem: {
         ...TextStyles.RALEWAY_REGULAR,
@@ -650,6 +671,11 @@ const styles = StyleSheet.create({
         textAlign: "center",
         textTransform: "capitalize",
         width: width * .90
+    },
+    actionLink: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: HP(7.25)
     }
 });
 
