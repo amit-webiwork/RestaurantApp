@@ -281,20 +281,58 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                     {/* Order Item List */}
                                     <View style={{ flexDirection: "column", justifyContent: "space-between", paddingHorizontal: HP(10) }}>
                                         <View style={{ gap: HP(8) }}>
-                                            {(orderData?.orderItems && Array.isArray(orderData?.orderItems) && orderData?.orderItems.length > 0) ? (
-                                                orderData?.orderItems.map((d: any, i: number) => (
-                                                    <View key={`item-list-${i}`} style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                                        <Text style={styles.itemText}>
-                                                            • {d?.qty} x {d?.itemName}
-                                                        </Text>
-                                                        <Text style={styles.orderEntityPrice}>
-                                                            ${d?.price}
-                                                        </Text>
-                                                    </View>
-                                                ))
-                                            ) : (
-                                                <Text style={styles.itemText}>No items ordered</Text>
-                                            )}
+                                            {(orderData?.orderItems &&
+                                                Array.isArray(orderData?.orderItems) &&
+                                                orderData?.orderItems.length > 0) ?
+                                                (
+                                                    orderData?.orderItems.map((d: any, i: number) => (
+                                                        <View
+                                                            key={`item-list-${i}`}
+                                                            style={{
+                                                                flexDirection: "row",
+                                                                justifyContent: "space-between"
+                                                            }}
+                                                        >
+                                                            <View style={{ flexBasis: "70%" }}>
+                                                                <Text style={styles.itemText}>
+                                                                    • {d?.qty} x {d?.itemName}
+                                                                </Text>
+
+                                                                <View
+                                                                    style={styles.variantMain}>
+                                                                    {d?.variants?.map((k: any, j: number) => (
+                                                                        <View
+                                                                            key={`item-variants-${i}-${j}`}
+                                                                            style={styles.variantSub}
+                                                                        >
+                                                                            <Icon
+                                                                                type={Icons.FontAwesome5}
+                                                                                size={FS(11)}
+                                                                                name={`long-arrow-alt-right`}
+                                                                                color={`#787878`}
+                                                                            />
+
+                                                                            <Text style={styles.variantName}>{k?.name}:</Text>
+                                                                            <View>
+                                                                                <Text style={styles.atrributeName}>
+                                                                                    {k?.variantAttributes
+                                                                                        .map((attr: { name: string; }) => attr.name)
+                                                                                        .join(', ')}
+                                                                                </Text>
+                                                                            </View>
+                                                                        </View>
+                                                                    ))}
+                                                                </View>
+                                                            </View>
+
+                                                            <Text style={styles.orderEntityPrice}>
+                                                                ${d?.price}
+                                                            </Text>
+                                                        </View>
+                                                    ))
+                                                ) : (
+                                                    <Text style={styles.itemText}>No items ordered</Text>
+                                                )}
                                         </View>
                                         {orderData?.orderItems?.length > 1 && (<Text style={styles.qtyText}>qty {orderData?.totalQty}</Text>)}
                                     </View>
@@ -306,6 +344,11 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>item:</Text>
                                             <Text style={styles.orderEntityPrice}>${orderData?.itemTotal}</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderEntityText}>Extra Add On:</Text>
+                                            <Text style={styles.orderEntityPrice}>${orderData?.variantTotalPrice}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -676,6 +719,30 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: HP(7.25)
+    },
+    variantMain: {
+        flexDirection: "row",
+        gap: HP(5),
+        start: HP(10),
+        flexWrap: "wrap"
+    },
+    variantSub: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: HP(5),
+        width: "100%"
+    },
+    variantName: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 12,
+        textTransform: "capitalize",
+        color: "#787878"
+    },
+    atrributeName: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 10,
+        textTransform: "capitalize",
+        color: "#787878"
     }
 });
 

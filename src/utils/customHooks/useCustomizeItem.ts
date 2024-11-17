@@ -41,7 +41,7 @@ export function useCustomizeItem(item: any, render: number) {
                     if (i !== activeTab - 1) return tab;
                     const updatedOptions = tab.variantAttributes.map((option: { checked: any; }, index: number) => ({
                         ...option,
-                        checked: index === optionIndex ? !option.checked : tab.multiple ? option.checked : false,
+                        checked: index === optionIndex ? !option.checked : tab.isMultiple ? option.checked : false,
                     }));
 
                     return { ...tab, variantAttributes: updatedOptions };

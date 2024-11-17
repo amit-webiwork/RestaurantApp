@@ -15,7 +15,7 @@ import { AppDispatch } from '../../../redux/store';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import { cartConfirmV1 } from '../../../utils/ApiCall';
-import { cartItemList, getCartTotal, instructionText, resetCart } from '../../../redux/features/cart';
+import { cartItemList, resetCart } from '../../../redux/features/cart';
 import { appliedCouponId } from '../../../redux/features/coupon';
 import { getItemPriceComponents } from '../../../utils/helper/ItemHelper';
 import { addToCart } from '../../../utils/helper/CartHelper';
@@ -30,7 +30,8 @@ interface confirmOrderDataType {
     itemTotal: number,
     packagingCost: number,
     taxAmount: number,
-    totalWithOutTax: number
+    totalWithOutTax: number,
+    variantTotalPrice: number
 }
 
 const confirmOrderDataInitial = {
@@ -46,8 +47,6 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
     const dispatch: AppDispatch = useDispatch();
 
     const CartItemList = useSelector(cartItemList);
-    const GetCartTotal = useSelector(getCartTotal);
-    const InstructionText = useSelector(instructionText);
     const AppliedCouponId = useSelector(appliedCouponId);
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -127,7 +126,17 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                 dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.cartUpdate, buttonAction: true, buttonText2: "Back to cart", onAction: 'Cart' }));
             }
 
-            setConfirmOrderData({ couponDiscount: response?.data?.couponDiscount || 0, finalAmount: response?.data?.finalAmount || 0, itemTotal: response?.data?.itemTotal || 0, packagingCost: response?.data?.packagingCost || 0, taxAmount: response?.data?.taxAmount || 0, totalWithOutTax: response?.data?.totalWithOutTax || 0 });
+            console.log(JSON.stringify(response?.data), '---response?.data')
+
+            setConfirmOrderData({
+                couponDiscount: response?.data?.couponDiscount || 0,
+                finalAmount: response?.data?.finalAmount || 0,
+                itemTotal: response?.data?.itemTotal || 0,
+                packagingCost: response?.data?.packagingCost || 0,
+                taxAmount: response?.data?.taxAmount || 0,
+                totalWithOutTax: response?.data?.totalWithOutTax || 0,
+                variantTotalPrice: response?.data?.variantTotalPrice || 0
+            });
 
             setLoading(false);
             setProceed(true);
@@ -210,6 +219,11 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>item:</Text>
                                             <Text style={styles.orderEntityPrice}>${confirmOrderData.itemTotal.toFixed(2)}</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderEntityText}>Extra Add On:</Text>
+                                            <Text style={styles.orderEntityPrice}>${confirmOrderData.variantTotalPrice.toFixed(2)}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>

@@ -103,7 +103,9 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
                                     >
                                         <View style={[styles.checkbox, !customizeTabs[(activeTab - 1)]?.isMultiple && styles.radiobox]}>
                                             {(d?.checked && d.checked === true) && (
-                                                <View style={[styles.checkedBox, !customizeTabs[(activeTab - 1)]?.isMultiple && styles.radiobox]}>
+                                                <View
+                                                    style={[styles.checkedBox, !customizeTabs[(activeTab - 1)]?.isMultiple && styles.radiobox]}
+                                                >
                                                     <Icon type={Icons.Feather} size={FS(12)} name={`check`} color={COLORS.WHITE} />
                                                 </View>
                                             )}
