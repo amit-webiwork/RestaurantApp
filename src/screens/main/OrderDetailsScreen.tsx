@@ -279,7 +279,11 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                     <View style={styles.line}></View>
 
                                     {/* Order Item List */}
-                                    <View style={{ flexDirection: "column", justifyContent: "space-between", paddingHorizontal: HP(10) }}>
+                                    <View style={{
+                                        flexDirection: "column",
+                                        justifyContent: "space-between",
+                                        paddingHorizontal: HP(10)
+                                    }}>
                                         <View style={{ gap: HP(8) }}>
                                             {(orderData?.orderItems &&
                                                 Array.isArray(orderData?.orderItems) &&
@@ -366,11 +370,6 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                             <Text style={styles.orderEntityPrice}>${orderData?.taxAmount}</Text>
                                         </View>
 
-                                        {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                            <Text style={styles.orderEntityText}>total:</Text>
-                                            <Text style={styles.orderEntityPrice}>${orderData?.finalAmount}</Text>
-                                        </View> */}
-
                                         <View style={styles.line}></View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -389,7 +388,7 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                            <Text style={styles.orderDetailRightText}>order sttaus</Text>
+                                            <Text style={styles.orderDetailRightText}>order status</Text>
                                             <Text style={[styles.orderDetailLeftText, { flexBasis: "50%", textAlign: "right" }]}>{orderData?.orderStatus}</Text>
                                         </View>
 

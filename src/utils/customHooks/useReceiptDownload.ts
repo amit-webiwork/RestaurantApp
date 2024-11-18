@@ -126,14 +126,14 @@ export function useReceiptDownload(orderData: any) {
                   <span>
                     • ${item?.qty} x ${item?.itemName}
                     <div class="variant-main">
-                      ${item?.variants?.map((k) =>
+                      ${(item?.variants || []).map((k) =>
             `<div class="variant-sub">
                           <span>-</span>
                           <span class="variant-name">
                             <span> ${k?.name}: </span> 
                             <div>
                               <span class="atrribute-name">
-                              ${k?.variantAttributes?.map((attr: { name: string; }) => attr.name)
+                              ${(k?.variantAttributes || []).map((attr: { name: string; }) => attr.name)
               .join(', ')}
                                 </span>
                             </div>

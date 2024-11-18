@@ -14,7 +14,7 @@ import { ButtonSection as Button } from '../../../components/Button';
 import { AppDispatch } from '../../../redux/store';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
-import { cartConfirmV1 } from '../../../utils/ApiCall';
+import { cartConfirm } from '../../../utils/ApiCall';
 import { cartItemList, resetCart } from '../../../redux/features/cart';
 import { appliedCouponId } from '../../../redux/features/coupon';
 import { getItemPriceComponents } from '../../../utils/helper/ItemHelper';
@@ -40,7 +40,8 @@ const confirmOrderDataInitial = {
     itemTotal: 0,
     packagingCost: 0,
     taxAmount: 0,
-    totalWithOutTax: 0
+    totalWithOutTax: 0,
+    variantTotalPrice: 0
 }
 
 function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
@@ -102,7 +103,7 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                 })
             ];
 
-            const response: any = await cartConfirmV1({ items: dataPayloadV1, couponId: AppliedCouponId });
+            const response: any = await cartConfirm({ items: dataPayloadV1, couponId: AppliedCouponId });
 
             dispatch(resetCart());
 
@@ -126,7 +127,7 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                 dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.cartUpdate, buttonAction: true, buttonText2: "Back to cart", onAction: 'Cart' }));
             }
 
-            console.log(JSON.stringify(response?.data), '---response?.data')
+            // console.log(JSON.stringify(response?.data), '---response?.data')
 
             setConfirmOrderData({
                 couponDiscount: response?.data?.couponDiscount || 0,
@@ -154,6 +155,8 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
     if (loading) {
         return <OrderSummaryScreenLoaderSection />
     }
+
+    // console.log(JSON.stringify(CartItemList), '-----CartItemList')
 
     return (
         <>
@@ -197,19 +200,66 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
 
                                     <View style={styles.line}></View>
                                     {/* Cart Item List */}
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: HP(10) }}>
+                                    <View style={{
+                                        flexDirection: "column",
+                                        justifyContent: "space-between",
+                                        paddingHorizontal: HP(10)
+                                    }}>
                                         <View style={{ gap: HP(8) }}>
                                             {(CartItemList && Array.isArray(CartItemList) && CartItemList?.length > 0) ? (
                                                 CartItemList?.map((d: any, i: number) => (
-                                                    <Text key={`cart-order-item-${i}`} style={styles.itemText}>
-                                                        • {d?.qty} x {d?.name}
-                                                    </Text>
+                                                    <View key={`cart-order-item-${i}`}>
+                                                        <Text
+                                                            style={styles.itemText}
+                                                        >
+                                                            • {d?.qty} x {d?.name}
+                                                        </Text>
+
+                                                        <View
+                                                            style={styles.variantMain}>
+                                                            {d?.options?.map((k: any, j: number) => (
+                                                                <View
+                                                                    key={`item-variants-${i}-${j}`}
+                                                                    style={styles.variantSub}
+                                                                >
+                                                                    <Icon
+                                                                        type={Icons.FontAwesome5}
+                                                                        size={FS(11)}
+                                                                        name={`long-arrow-alt-right`}
+                                                                        color={`#787878`}
+                                                                    />
+
+                                                                    <Text
+                                                                        style={styles.variantName}
+                                                                    >
+                                                                        {k?.customizeOption?.name}:
+                                                                    </Text>
+                                                                    <View>
+                                                                        <Text
+                                                                            style={styles.atrributeName}
+                                                                        >
+                                                                            {k?.variantAttributes?.map((attr: any) => attr?.customizeAttribute?.name).join(', ')}
+                                                                        </Text>
+                                                                    </View>
+                                                                </View>
+                                                            ))}
+                                                        </View>
+                                                    </View>
                                                 ))
                                             ) : (
                                                 <Text style={styles.itemText}>No items ordered</Text>
                                             )}
                                         </View>
-                                        {CartItemList?.length > 1 && (<Text style={styles.qtyText}>qty {CartItemList?.reduce((acc, item) => acc + item.qty, 0)}</Text>)}
+                                        {CartItemList?.length > 1 &&
+                                            (
+                                                <View>
+                                                    <Text
+                                                        style={styles.qtyText}
+                                                    >
+                                                        qty {CartItemList?.reduce((acc, item) => acc + item.qty, 0)}
+                                                    </Text>
+                                                </View>
+                                            )}
                                     </View>
 
                                     <View style={styles.line}></View>
@@ -470,6 +520,31 @@ const styles = StyleSheet.create({
         textTransform: "capitalize",
         width: width * .90
     },
+    variantMain: {
+        flexDirection: "row",
+        gap: HP(5),
+        start: HP(10),
+        flexWrap: "wrap",
+        marginTop: VP(3)
+    },
+    variantSub: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: HP(5),
+        width: "100%"
+    },
+    variantName: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 12,
+        textTransform: "capitalize",
+        color: "#787878"
+    },
+    atrributeName: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 10,
+        textTransform: "capitalize",
+        color: "#787878"
+    }
 });
 
 export default OrderSummaryScreen;
