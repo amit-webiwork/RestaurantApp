@@ -12,7 +12,7 @@ import { FS, HP, VP } from '../../utils/Responsive';
 import { loadStorage, saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
 import { globalStyle } from '../../utils/GlobalStyle';
-import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, OTP_SEND_WAIT_TIME } from '../../utils/Constants';
 import OTPInput from '../../components/OTPInput';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
@@ -34,7 +34,7 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
     const [loading, setLoading] = useState(false);
     const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
     const [resendStatus, setResendStatus] = useState(false);
-    const [timer, setTimer] = useState(30);
+    const [timer, setTimer] = useState(OTP_SEND_WAIT_TIME);
 
     const handleOnPress = async () => {
         try {
@@ -86,7 +86,7 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                     dispatch(setDialogContent({ title: <Success width={FS(40)} height={VP(40)} />, message: response?.data?.message || "" }));
 
                     setResendStatus(false);
-                    setTimer(30);
+                    setTimer(OTP_SEND_WAIT_TIME);
                 })
                 .catch(error => {
                     setLoading(false);
@@ -144,7 +144,11 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                         <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textTransform: "capitalize", textAlign: "center", flex: 1 }}>verify your email</Text>
                     </View>
 
-                    <View style={{ marginHorizontal: HP(30), flex: 1 }}>
+                    <View
+                        style={{
+                            marginHorizontal: HP(30),
+                            flex: 1
+                        }}>
                         <View style={{ flex: 4 }}>
                             <ScrollView showsVerticalScrollIndicator={false}>
                                 <View style={{ marginTop: VP(50) }}>

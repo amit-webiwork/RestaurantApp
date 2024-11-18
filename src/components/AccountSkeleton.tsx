@@ -72,7 +72,7 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
                                     {children}
                                 </ImageBackground>
 
-                                <Text style={styles.bottomHeading}>App version {APP_VERSION}</Text>
+                                <Text style={styles.bottomHeading}>App Version {APP_VERSION}</Text>
                             </View>
                         </ScrollView>
                     </LinearGradient>

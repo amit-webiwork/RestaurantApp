@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity, Dimensions, Animated, Platform, UIManager, LayoutChangeEvent } from 'react-native';
+import { StyleSheet, Image, View, Text, TouchableOpacity, Dimensions, Animated, Platform, UIManager } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
@@ -194,16 +194,18 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                     </View> */}
 
                                     {/* Customize item section */}
-                                    <View style={{ marginTop: VP(22), paddingHorizontal: HP(30) }}>
-                                        <CustomizeItemSection
-                                            activeTabProp={activeTab}
-                                            textWidthsProp={textWidths}
-                                            customizeTabs={customizeTabs}
-                                            switchTabHandler={switchTab}
-                                            handleTextLayoutHandler={handleTextLayout}
-                                            clickOptionHandlerProp={clickOptionHandler}
-                                        />
-                                    </View>
+                                    {(customizeTabs && customizeTabs.length > 0) && (
+                                        <View style={{ marginTop: VP(22), paddingHorizontal: HP(30) }}>
+                                            <CustomizeItemSection
+                                                activeTabProp={activeTab}
+                                                textWidthsProp={textWidths}
+                                                customizeTabs={customizeTabs}
+                                                switchTabHandler={switchTab}
+                                                handleTextLayoutHandler={handleTextLayout}
+                                                clickOptionHandlerProp={clickOptionHandler}
+                                            />
+                                        </View>
+                                    )}
 
                                     {/* Cart with qty Button */}
                                     {itemDetails?.is_available && (

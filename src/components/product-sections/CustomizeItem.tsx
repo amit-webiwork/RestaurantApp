@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     radiobox: {
-        borderRadius: HP(15.11 / 2)
+        borderRadius: FS(15.11 / 2)
     },
     optionImg: {
         resizeMode: "contain",
