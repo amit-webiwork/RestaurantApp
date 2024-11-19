@@ -45,7 +45,7 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
 
     const [orderData, setOrderData] = useState<any>({});
 
-    const { createPDF } = useReceiptDownload(orderData);
+    const { createPDF } = useReceiptDownload(orderData, navigation);
 
     const [loading, setLoading] = useState<boolean>(false);
     const [buttonLoading, setButtonLoading] = useState<boolean>(false);

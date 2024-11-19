@@ -24,7 +24,7 @@ interface Props {
 const ActiveOrderItem = ({ item, index, navigation }: Props) => {
   const orderData = getOrderComponents(item);
 
-  const { createPDF } = useReceiptDownload(orderData);
+  const { createPDF } = useReceiptDownload(orderData, navigation);
 
   const [menuVisible, setMenuVisible] = useState(false);
 

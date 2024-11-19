@@ -6,7 +6,7 @@ import moment from 'moment';
 import { requestStoragePermissions } from '../Permissions';
 import { showFadeAlert } from '../Alert';
 
-export function useReceiptDownload(orderData: any) {
+export function useReceiptDownload(orderData: any, navigation: any) {
   const htmlContent = `
     <!DOCTYPE html>
 <html lang="en">
@@ -24,22 +24,22 @@ export function useReceiptDownload(orderData: any) {
 
     .container {
       padding: 16px;
-      max-width: 480px;
-      margin: 0 auto;
+      max-width: 600px;
+      margin: auto;
       background: #fff;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .top-heading {
       text-align: center;
-      font-size: 18px;
+      font-size: 22px;
       font-weight: bold;
       margin: 16px 0 0 0;
     }
 
     .top-sub-heading {
       text-align: center;
-      font-size: 14px;
+      font-size: 18px;
       font-weight: bold;
     }
 
@@ -59,15 +59,19 @@ export function useReceiptDownload(orderData: any) {
     .order-items .item {
       display: flex;
       justify-content: space-between;
-      font-size: 14px;
+      font-size: 20px;
       margin-top: 10px;
     }
 
     .order-amount .row {
       display: flex;
       justify-content: space-between;
-      font-size: 14px;
+      font-size: 20px;
       margin: 4px 0;
+    }
+
+    .order-amount.bottom .row{
+    font-size: 20px;
     }
 
     .total {
@@ -77,7 +81,7 @@ export function useReceiptDownload(orderData: any) {
 
     .qty-text {
       text-align: right;
-      font-size: 12px;
+      font-size: 18px;
       margin-top: 10px;
     }
 
@@ -98,7 +102,7 @@ export function useReceiptDownload(orderData: any) {
     }
 
     .variant-name {
-      font-size: 12px;
+      font-size: 16px;
       text-transform: capitalize;
       color: #271919;
       flex-direction: row;
@@ -106,7 +110,7 @@ export function useReceiptDownload(orderData: any) {
     }
 
     .atrribute-name {
-      font-size: 11px;
+      font-size: 15px;
       text-transform: capitalize;
       color: #271919;
     }
@@ -178,6 +182,24 @@ export function useReceiptDownload(orderData: any) {
               <span>$${orderData.finalAmount}</span>
             </div>
           </div>
+
+           <hr class="line">
+          <div class="order-amount bottom">
+            <div class="row">
+              <span>Date:</span>
+              <span>${moment(orderData?.createdAt).format('DD MMM')}</span>
+            </div>
+
+            <div class="row">
+              <span>Name:</span>
+              <span>${orderData?.user?.name}</span>
+            </div>
+
+            <div class="row">
+              <span>Phone no.:</span>
+              <span>${orderData?.user?.phoneNo}</span>
+            </div>
+          </div>
         </div>
       </div>
 </body>
@@ -211,13 +233,20 @@ export function useReceiptDownload(orderData: any) {
       let file = await RNHTMLtoPDF.convert(PDFOptions);
       if (!file.filePath) return;
 
+      let filePath = file.filePath;
+
       if (Platform.OS === 'android') {
         // Move file to external storage (e.g., Downloads)
-        const filePath = await moveToExternalStorage(file.filePath, PDFOptions.fileName);
-        Alert.alert('Receipt file path', filePath);
+        filePath = await moveToExternalStorage(file.filePath, PDFOptions.fileName);
+
+        showFadeAlert(`Saved to: ${filePath}`)
+        // Alert.alert('Receipt file path', filePath);
       } else {
-        Alert.alert('Receipt file path', file.filePath);
+        // Alert.alert('Receipt file path', file.filePath);
+        showFadeAlert(`Saved to: ${file.filePath}`)
       }
+
+      navigation.navigate('ReceiptScreen', { pdfPath: filePath });
     } catch (error: any) {
       console.log('Failed to generate pdf: ', error.message);
     }
