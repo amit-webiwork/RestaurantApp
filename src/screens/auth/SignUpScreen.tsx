@@ -13,7 +13,7 @@ import { removeStorage, saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
 import { globalStyle } from '../../utils/GlobalStyle';
 import CustomTextInput from '../../components/CustomTextInput';
-import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, STD_CODE } from '../../utils/Constants';
 import { signup, validateResource } from '../../utils/ValidateResource';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
@@ -26,7 +26,7 @@ const errorObj = { name: { status: false, text: "" }, email: { status: false, te
 
 const { width, height } = Dimensions.get('window');
 
-const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
+const SignUpScreen: React.FunctionComponent<any> = ({
     navigation,
 }) => {
     const dispatch = useDispatch();
@@ -80,7 +80,9 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
                         responseData['user']['password'] = dataPayload.password;
                         saveStorage(responseData, "userDetails");
 
-                        navigation.navigate(`LoginScreen`)
+                        navigation.navigate(`SignupVerifyCodeScreen`, {
+                            username: mobile
+                        });
                     } else {
                         dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.commonMessage }));
                     }
@@ -152,7 +154,8 @@ const SignUpScreen: React.FunctionComponent<NavigationProp> = ({
                                         placeholder='Mobile Number'
                                         formProps={{ text: mobile, setText: handleMobileChange, error: error.mobile }}
                                         keyboardType='numeric'
-                                        maxLength={20}
+                                        maxLength={10}
+                                        prefix={STD_CODE}
                                         styleInput={{
                                             height: "auto",
                                             marginTop: VP(13)

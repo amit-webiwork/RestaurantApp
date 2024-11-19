@@ -13,7 +13,7 @@ import { saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
 import { globalStyle } from '../../utils/GlobalStyle';
 import CustomTextInput from '../../components/CustomTextInput';
-import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, STD_CODE } from '../../utils/Constants';
 import { forgotPassword, validateResource } from '../../utils/ValidateResource';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
@@ -95,15 +95,19 @@ const ForgotScreen: React.FunctionComponent<NavigationProp> = ({
 
                                 <View style={{ marginTop: VP(36) }}>
                                     <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, textTransform: "capitalize", textAlign: "center", lineHeight: VP(22) }}>
-                                        please enter your email address or mobile number to recieve a verification code.
+                                        {/* please enter your email address or mobile number to recieve a verification code. */}
+                                        please enter your mobile number to recieve a verification code.
                                     </Text>
                                 </View>
 
                                 <View style={{ marginTop: VP(53) }}>
                                     <CustomTextInput
-                                        placeholder='Email Address Or Phone Number'
+                                        // placeholder='Email Address Or Phone Number'
+                                        placeholder='Mobile Number'
                                         formProps={{ text: username, setText: setUsername, error: error.username }}
-                                        maxLength={100}
+                                        maxLength={10}
+                                        prefix={STD_CODE}
+                                        keyboardType='numeric'
                                         styleInput={{
                                             height: "auto",
                                             marginTop: VP(13)

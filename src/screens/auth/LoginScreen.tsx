@@ -12,7 +12,7 @@ import { saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
 import { globalStyle } from '../../utils/GlobalStyle';
 import CustomTextInput from '../../components/CustomTextInput';
-import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, STD_CODE } from '../../utils/Constants';
 import { login, validateResource } from '../../utils/ValidateResource';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
@@ -26,7 +26,7 @@ type NavigationProp = NativeStackScreenProps<MainStackParamList>;
 
 const errorObj = { username: { status: false, text: "" }, password: { status: false, text: "" } };
 
-const LoginScreen: React.FunctionComponent<NavigationProp> = ({
+const LoginScreen: React.FunctionComponent<any> = ({
     navigation,
 }) => {
     const dispatch = useDispatch();
@@ -40,6 +40,8 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
     const [error, setError] = useState(errorObj);
     const [loading, setLoading] = useState(false);
 
+    const [showResendOTPLink, setShowResendOTPLink] = useState(false);
+
     const handlePasswordHide = useCallback(() => {
         Keyboard.dismiss();
         setPasswordHide((prev) => !prev);
@@ -47,8 +49,6 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
 
     const handleOnPress = async () => {
         try {
-            // navigation.navigate(`MainTabNavigator`)
-            // return;
             setError(errorObj);
 
             const resource = { username, password }
@@ -85,7 +85,12 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                 })
                 .catch(error => {
                     setLoading(false);
+
                     dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
+
+                    if (error?.response?.data?.statusCode === 406) {
+                        setShowResendOTPLink(true);
+                    }
                     console.log("Error sending data: ", error.message);
                 });
         } catch (err: any) {
@@ -99,7 +104,35 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
     };
 
     const handleUsernameChange = (text: string) => {
+        setShowResendOTPLink(false);
         setUsername(text.replace(/\s/g, '')); // Remove spaces
+    };
+
+    const handleOnResend = async () => {
+        try {
+            const dataPayload = { username };
+
+            setLoading(true);
+
+            axios.post(BACKEND_URL + apiEndpoints.signupOtpResend, dataPayload)
+                .then(response => {
+                    setLoading(false);
+
+                    navigation.navigate(`SignupVerifyCodeScreen`, {
+                        username
+                    });
+                })
+                .catch(error => {
+                    setLoading(false);
+
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage?.commonMessage }));
+
+                    console.log("Error sending data: ", error);
+                });
+        } catch (err: any) {
+            setLoading(false);
+            console.log(err, '---err');
+        }
     };
 
     return (
@@ -114,11 +147,15 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                         <ScrollView showsVerticalScrollIndicator={false}>
                             <View style={{ flex: 1, marginVertical: VP(50) }}>
                                 <Text style={styles.headingText}>log in</Text>
+
                                 <View style={{ marginTop: VP(14) }}>
                                     <CustomTextInput
-                                        placeholder='Email / Mobile Number'
+                                        // placeholder='Email / Mobile Number'
+                                        placeholder='Mobile Number'
                                         formProps={{ text: username, setText: handleUsernameChange, error: error.username }}
-                                        maxLength={100}
+                                        maxLength={10}
+                                        prefix={STD_CODE}
+                                        keyboardType='numeric'
                                         styleInput={{
                                             height: "auto",
                                             marginTop: VP(13)
@@ -139,12 +176,22 @@ const LoginScreen: React.FunctionComponent<NavigationProp> = ({
                                         }}
                                     />
                                 </View>
-                                <TouchableOpacity
-                                    onPress={() => navigation.navigate(`ForgotScreen`)}
-                                    style={{ alignSelf: "flex-end" }}
-                                >
-                                    <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-                                </TouchableOpacity>
+
+                                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                    {(showResendOTPLink) && (
+                                        <TouchableOpacity
+                                            onPress={handleOnResend}
+                                        >
+                                            <Text style={styles.forgotPasswordText}>Resend Verify OTP</Text>
+                                        </TouchableOpacity>
+                                    )}
+                                    <TouchableOpacity
+                                        onPress={() => navigation.navigate(`ForgotScreen`)}
+                                        style={{ flex: 1 }}
+                                    >
+                                        <Text style={[styles.forgotPasswordText, { textAlign: "right" }]}>Forgot Password?</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
 
                             <View style={{ flex: 1, marginVertical: VP(50) }}>

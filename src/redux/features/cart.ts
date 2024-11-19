@@ -134,4 +134,21 @@ export const getCartTotal = (state: { cart: CartState }) =>
         return total + baseTotal + (optionsTotal * item.qty);
     }, 0);
 
+export const getCartOptionsTotal = (state: { cart: CartState }) =>
+    state.cart.items.reduce((total: number, item: CartItemDetails) => {
+        // Calculate the base total for the item (final price * quantity)
+        const baseTotal = 0;
+
+        // Calculate the sum of all checked options' prices
+        const optionsTotal = item?.options?.reduce((optTotal, variant) => {
+            const checkedOptionsPrice = variant.variantAttributes
+                .filter((opt: { checked: any; }) => opt.checked)
+                .reduce((sum: number, opt: { price: string | number; }) => sum + (+opt.price || 0), 0);
+            return optTotal + checkedOptionsPrice;
+        }, 0);
+
+        // Add the options total multiplied by item quantity to the base total
+        return total + baseTotal + (optionsTotal * item.qty);
+    }, 0);
+
 export default cartSlice.reducer;

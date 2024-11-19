@@ -23,22 +23,22 @@ type NavigationProp = NativeStackScreenProps<AuthStackParamList>;
 
 const pinCheck = /^[0-9]{4}$/;
 
-const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
-    navigation,
-}) => {
+function SignupVerifyCodeScreen({ navigation, route }: { navigation: any, route: any; }): React.JSX.Element {
+    const { username } = route.params;
+
     const dispatch = useDispatch();
 
     const [value, setValue] = useState('');
     const [error, setError] = useState({ status: false, text: "" });
 
     const [loading, setLoading] = useState(false);
-    const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+    const [mobile, setMobile] = useState("");
     const [resendStatus, setResendStatus] = useState(false);
     const [timer, setTimer] = useState(OTP_SEND_WAIT_TIME);
 
     const handleOnPress = async () => {
         try {
-            const email = await loadStorage("forgotPasswordEmail");
+            const username = mobile;
 
             const otp = value.trim();
 
@@ -48,16 +48,15 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
 
             setError({ status: false, text: "" });
 
-            const dataPayload = { email, otp: +otp };
+            const dataPayload = { username, otp: +otp };
 
             setLoading(true);
 
-            axios.post(BACKEND_URL + apiEndpoints.otpVerify, dataPayload)
+            axios.post(BACKEND_URL + apiEndpoints.signupOtpVerify, dataPayload)
                 .then((response) => {
                     setLoading(false);
 
-                    saveStorage(dataPayload.otp, "forgotPasswordOTP");
-                    navigation.navigate(`CreatePasswordScreen`);
+                    navigation.navigate(`LoginScreen`);
                 })
                 .catch(error => {
                     setLoading(false);
@@ -72,14 +71,12 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
     };
 
     const handleOnResend = async () => {
+        setLoading(true);
         try {
-            const email = await loadStorage("forgotPasswordEmail");
+            const dataPayload = { username };
 
-            const dataPayload = { email };
 
-            setLoading(true);
-
-            axios.post(BACKEND_URL + apiEndpoints.forgot, dataPayload)
+            axios.post(BACKEND_URL + apiEndpoints.signupOtpResend, dataPayload)
                 .then(response => {
                     setLoading(false);
 
@@ -100,20 +97,8 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
     };
 
     useEffect(() => {
-        (async () => {
-            try {
-                const email = await loadStorage("forgotPasswordEmail");
-
-                if (!email) {
-                    throw new Error("Mobile no. is empty");
-                }
-
-                setForgotPasswordEmail(email);
-            } catch (err) {
-                navigation.navigate(`LoginScreen`);
-            }
-        })()
-    }, [])
+        setMobile(username);
+    }, [username])
 
     useEffect(() => {
         if (timer > 0) {
@@ -162,7 +147,7 @@ const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
                                 <View style={{ marginTop: VP(36) }}>
                                     <Text style={styles.helperText}>
                                         please enter the 4 digit code sent to <Text style={{ fontWeight: "bold" }}>
-                                            {forgotPasswordEmail}
+                                            {mobile}
                                         </Text>
                                     </Text>
                                 </View>
@@ -259,4 +244,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default VerifyCodeScreen;
+export default SignupVerifyCodeScreen;

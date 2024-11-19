@@ -15,7 +15,7 @@ import CartItemSection from '../../../components/cart/CartItem';
 import ItemBoxSection from '../../../components/home-sections/ItemBox';
 import CookingRequestSection from '../../../components/product-sections/CookingRequest';
 import { ButtonSection as Button } from '../../../components/Button';
-import { cartItemList, cartLoading, getCartTotal, setInstructionText } from '../../../redux/features/cart';
+import { cartItemList, cartLoading, getCartOptionsTotal, getCartTotal, setInstructionText } from '../../../redux/features/cart';
 import { fetchPopularItems, papularItemLoaded, papularItems } from '../../../redux/features/items';
 import { AppDispatch } from '../../../redux/store';
 import NormalLoader from '../../../components/NormalLoader';
@@ -32,6 +32,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const PapularItemLoaded = useSelector(papularItemLoaded);
     const PapularItems = useSelector(papularItems);
     const GetCartTotal = useSelector(getCartTotal);
+    const GetCartOptionsTotal = useSelector(getCartOptionsTotal);
     const CartLoading = useSelector(cartLoading);
     const CouponList = useSelector(couponList);
     const CouponLoaded = useSelector(couponLoaded);
@@ -216,7 +217,13 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", }}>
                                                 <Text style={[styles.link, { color: "#767676" }]}>order amount</Text>
 
-                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${GetCartTotal.toFixed(2)}</Text>
+                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${(GetCartTotal - GetCartOptionsTotal).toFixed(2)}</Text>
+                                            </View>
+
+                                            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", }}>
+                                                <Text style={[styles.link, { color: "#767676" }]}>Extra add on</Text>
+
+                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${GetCartOptionsTotal.toFixed(2)}</Text>
                                             </View>
 
                                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
