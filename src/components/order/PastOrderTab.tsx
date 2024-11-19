@@ -107,7 +107,13 @@ function PastOrderTab({ HeaderComponent, switchTab, activeTab, navigation }: Pro
                 refreshing={isRefreshing}
                 showsVerticalScrollIndicator={false}
                 data={pastOrders}
-                renderItem={({ item, index }) => <PastOrderItemSection item={item} index={index} navigation={navigation} deleteHandler={deleteOrderHandler} setLoader={setLoader} />}
+                renderItem={({ item, index }) => <PastOrderItemSection
+                    item={item}
+                    index={index}
+                    navigation={navigation}
+                    deleteHandler={deleteOrderHandler}
+                    setLoader={setLoader}
+                />}
                 contentContainerStyle={{
                     gap: HP(18)
                 }}
