@@ -33,8 +33,13 @@ const { width, height } = Dimensions.get('window');
 const FooterComponent = ({ dataLoaded, hasMoreData }: { dataLoaded: boolean, hasMoreData: boolean }) => {
     return (
         <>
-            {(dataLoaded) ? <View style={{ flex: 1, height: height * .5, justifyContent: "center" }}>
-                <ActivityIndicator size="large" color={COLORS.BUTTON} /></View> : null}
+            {(dataLoaded) ?
+                <View style={{ flex: 1, height: height * .5, justifyContent: "center" }}>
+                    <ActivityIndicator
+                        size="large"
+                        color={COLORS.BUTTON}
+                    />
+                </View> : null}
             {!hasMoreData && (
                 <View style={{ marginTop: VP(41), marginBottom: VP(151) }}>
                     <Text style={styles.highlightedText}>"Indulge your cravings."</Text>
@@ -95,14 +100,15 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
                             )}
 
                         </View>
-                        {isAvailable && (
-                            <TouchableOpacity
-                                onPress={() => addToCart(item, 1, dispatch, `add`)}
-                                style={styles.buttonBox}
-                            >
-                                <Text style={styles.cartText}>add to cart</Text>
-                            </TouchableOpacity>
-                        )}
+                        {/* {isAvailable && ( */}
+                        <TouchableOpacity
+                            onPress={() => addToCart(item, 1, dispatch, `add`)}
+                            style={styles.buttonBox}
+                            disabled={!isAvailable}
+                        >
+                            <Text style={styles.cartText}>add to cart</Text>
+                        </TouchableOpacity>
+                        {/* )} */}
                     </View>
                 </View>
             </View>
@@ -115,7 +121,12 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
                 data={data}
-                renderItem={({ item, index }) => <BoxItems itemData={item} index={index} />}
+                renderItem={({ item, index }) =>
+                    <BoxItems
+                        itemData={item}
+                        index={index}
+                    />
+                }
                 contentContainerStyle={{
                     paddingHorizontal: HP(1.5),
                     marginTop: VP(27),
@@ -133,7 +144,12 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
                         name={name}
                     />
                 }
-                ListFooterComponent={<FooterComponent dataLoaded={dataLoaded} hasMoreData={hasMoreData} />}
+                ListFooterComponent={
+                    <FooterComponent
+                        dataLoaded={dataLoaded}
+                        hasMoreData={hasMoreData}
+                    />
+                }
             />
         </View>
     );

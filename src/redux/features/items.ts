@@ -12,6 +12,8 @@ interface FiltersState {
     topicLoaded: boolean;
     papularItems: any[],
     papularItemLoaded: boolean;
+    discountedItems: any[];
+    discountedItemLoaded: boolean;
     dietaries: any[],
     dietaryLoaded: boolean;
     cuisine: any[],
@@ -39,6 +41,8 @@ const initialState: FiltersState = {
     topicLoaded: false,
     papularItems: [],
     papularItemLoaded: false,
+    discountedItems: [],
+    discountedItemLoaded: false,
     dietaries: [],
     dietaryLoaded: false,
     cuisine: [],
