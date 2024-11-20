@@ -157,7 +157,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
 
     return (
         <OuterLayout containerStyle={styles.containerStyle}>
-            <NormalLoader visible={loading || cardLoading} />
+            <NormalLoader visible={loading || cardLoading || loader} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
                     <View style={{ paddingVertical: HP(20) }}>
@@ -289,7 +289,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                                 text={'Close'}
                                                 onPress={handleAddCardPress}
                                                 textStyle={styles.closeButtonStyle}
-                                                disabled={loading || loader}
+                                                disabled={false}
                                                 activeButtonText={{ opacity: .65 }}
                                                 mainContainerStyle={{ flex: 1, borderColor: COLORS.BUTTON, borderWidth: 1, borderRadius: HP(8) }}
                                                 LinearGradienrColor={["#F5F5F5", "#F5F5F5"]}
@@ -300,7 +300,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                                 text={'pay now'}
                                                 onPress={handleClick}
                                                 textStyle={styles.buttonStyle}
-                                                isLoading={loading || loader}
+                                                isLoading={false}
                                                 activeButtonText={{ opacity: .65 }}
                                                 mainContainerStyle={{ borderRadius: HP(8), flex: 1 }}
                                                 LinearGradienrColor={["#FF00E2", "#FF00E2"]}
@@ -316,7 +316,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                             text={'pay now'}
                                             onPress={handleClick}
                                             textStyle={styles.buttonStyle}
-                                            isLoading={loading || loader}
+                                            isLoading={false}
                                             activeButtonText={{ opacity: .65 }}
                                             mainContainerStyle={{ borderRadius: HP(8), flex: 1 }}
                                             LinearGradienrColor={["#FF00E2", "#FF00E2"]}
