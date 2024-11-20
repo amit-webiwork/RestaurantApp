@@ -217,9 +217,7 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 14,
         color: COLORS.BUTTON,
-        textAlign: "center",
-        // textDecorationStyle: "solid",
-        // textDecorationLine: "underline"
+        textAlign: "center"
     },
     imageBox: {
         justifyContent: "center",
