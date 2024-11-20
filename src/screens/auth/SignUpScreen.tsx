@@ -197,28 +197,6 @@ const SignUpScreen: React.FunctionComponent<any> = ({
                                         contentContainerStyle={{ top: -2 }}
                                     />
                                 </View>
-
-                                {/* <View style={{ flexDirection: "row", marginTop: VP(11), justifyContent: "center", alignItems: "center", gap: HP(7) }}>
-                                <View style={styles.line}></View>
-                                <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12 }}>Or</Text>
-                                <View style={styles.line}></View>
-                            </View> */}
-
-                                {/* <View style={{ flexDirection: "row", marginTop: VP(24.5), justifyContent: "center", gap: HP(14) }}>
-                                <TouchableOpacity
-                                    onPress={() => void (0)}
-                                    style={{}}
-                                >
-                                    <Image source={require('../../assets/icons/facebook.png')} style={styles.icon} />
-                                </TouchableOpacity>
-
-                                <TouchableOpacity
-                                    onPress={() => void (0)}
-                                    style={{}}
-                                >
-                                    <Image source={require('../../assets/icons/google.png')} style={styles.icon} />
-                                </TouchableOpacity>
-                            </View> */}
                             </View>
                         </ScrollView>
                         <View style={[styles.bottomSection, { display: isKeyboardVisible ? "none" : "flex" }]}>
@@ -260,16 +238,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: COLORS.WHITE,
         textTransform: "capitalize",
-    },
-    line: {
-        height: 1,
-        backgroundColor: "#929292",
-        width: "20%",
-    },
-    icon: {
-        width: FS(24),
-        height: VP(24),
-        resizeMode: "contain"
     },
     bg: {
         width: "100%",

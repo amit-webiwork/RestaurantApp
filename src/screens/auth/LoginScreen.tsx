@@ -19,6 +19,7 @@ import Warning from '../../assets/svgs/warning.svg';
 import { MainStackParamList } from '../../navigations/MainStackNavigator';
 import { setProflieDetails } from '../../redux/features/profile';
 import { useKeyboardListener } from '../../utils/customHooks/useKeyboardListener';
+import SocialLogin from '../../components/auth/SocialLogin';
 
 const { width, height } = Dimensions.get('window');
 
@@ -194,7 +195,7 @@ const LoginScreen: React.FunctionComponent<any> = ({
                                 </View>
                             </View>
 
-                            <View style={{ flex: 1, marginVertical: VP(50) }}>
+                            <View style={styles.buttonContainer}>
                                 <Button
                                     text={'log in'}
                                     onPress={handleOnPress}
@@ -205,6 +206,8 @@ const LoginScreen: React.FunctionComponent<any> = ({
                                     LinearGradienrColor={["#FF00E2", "#FF00E2"]}
                                     contentContainerStyle={{ top: -2 }}
                                 />
+
+                                <SocialLogin />
                             </View>
                         </ScrollView>
 
@@ -285,6 +288,11 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 12,
         color: COLORS.THEME
+    },
+    buttonContainer: {
+        flex: 1,
+        // marginVertical: VP(50),
+        marginVertical: VP(30)
     }
 });
 

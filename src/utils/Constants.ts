@@ -73,4 +73,11 @@ export const errorMessage = {
     commonMessage: "Something went wrong. Please try again later.",
     notificationAccessError: "Allow notification permission for get incoming message",
     cartUpdate: "Your cart options have been updated! Please review your cart before proceeding."
+};
+
+export const googleKeys = {
+    webClientId: "910822640980-5fqvkakg7jes1vk4opf74trfkusohq1i.apps.googleusercontent.com",
+	androidClientId: "910822640980-5fqvkakg7jes1vk4opf74trfkusohq1i.apps.googleusercontent.com",
+	iosClientId: "",
+	scopes: ['profile', 'email'],
 }
