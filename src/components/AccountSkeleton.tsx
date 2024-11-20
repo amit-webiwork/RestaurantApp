@@ -36,8 +36,9 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
                                     <TouchableOpacity
                                         onPress={() => navigation.goBack()}
                                         style={
-                                            [globalStyle.navigationIconBox,
-                                            { backgroundColor: "#00000080" }
+                                            [
+                                                globalStyle.navigationIconBox,
+                                                { backgroundColor: "#00000080" }
                                             ]
                                         }
                                     >
@@ -48,7 +49,6 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
                                             color={COLORS.WHITE}
                                         />
                                     </TouchableOpacity>
-                                    {/* <Text style={styles.topHeading}>0.0.2</Text> */}
                                 </View>
 
                                 <View style={{ marginTop: VP(6), alignItems: "center" }}>
@@ -86,15 +86,6 @@ const styles = StyleSheet.create({
         // height: height * 1,
         marginBottom: VP(-40),
         flex: 1
-    },
-    topHeading: {
-        ...TextStyles.LEXEND_SEMI_BOLD,
-        color: COLORS.WHITE,
-        fontSize: 16,
-        textAlign: "right",
-        flex: 1,
-        textDecorationLine: "underline",
-        textDecorationStyle: "solid",
     }
 });
 

@@ -170,7 +170,8 @@ const styles = StyleSheet.create({
     main: {
         flex: 1,
         paddingHorizontal: HP(34),
-        paddingVertical: HP(150),
+        paddingVertical: HP(120),
+        // paddingVertical: HP(150),
         gap: HP(17.97)
     },
     label: {
