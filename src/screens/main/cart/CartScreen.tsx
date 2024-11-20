@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
+import { useIsFocused } from '@react-navigation/native';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
@@ -14,21 +15,25 @@ import CartItemSection from '../../../components/cart/CartItem';
 import ItemBoxSection from '../../../components/home-sections/ItemBox';
 import CookingRequestSection from '../../../components/product-sections/CookingRequest';
 import { ButtonSection as Button } from '../../../components/Button';
-import { cartItemList, cartLoading, getCartTotal, resetCart, setInstructionText } from '../../../redux/features/cart';
+import { cartItemList, cartLoading, getCartOptionsTotal, getCartTotal, setInstructionText } from '../../../redux/features/cart';
 import { fetchPopularItems, papularItemLoaded, papularItems } from '../../../redux/features/items';
 import { AppDispatch } from '../../../redux/store';
 import NormalLoader from '../../../components/NormalLoader';
 import { appliedCouponId, couponDiscount, couponList, couponLoaded, fetchCoupons } from '../../../redux/features/coupon';
 import { couponCalculationHandler } from '../../../utils/helper/CouponHelper';
+import { globalStyle } from '../../../utils/GlobalStyle';
 import { proflieDetails } from '../../../redux/features/profile';
 
 function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
 
+    const isFocused = useIsFocused();
+
     const CartItemList = useSelector(cartItemList);
     const PapularItemLoaded = useSelector(papularItemLoaded);
     const PapularItems = useSelector(papularItems);
     const GetCartTotal = useSelector(getCartTotal);
+    const GetCartOptionsTotal = useSelector(getCartOptionsTotal);
     const CartLoading = useSelector(cartLoading);
     const CouponList = useSelector(couponList);
     const CouponLoaded = useSelector(couponLoaded);
@@ -42,6 +47,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [instructionText, setInstructionTextState] = useState<string>("");
     const [couponChangesLoading, setCouponChangesLoading] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [itemRerender, setItemRerender] = useState(0);
 
     const setInstructionTextHandler = useCallback((e: string) => {
         setInstructionTextState(e);
@@ -84,6 +90,12 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
         couponCalculationHandler(GetCartTotal, setCouponChangesLoading, dispatch);
     }, [GetCartTotal, dispatch, setCouponChangesLoading])
 
+    useEffect(() => {
+        if (isFocused) {
+            setItemRerender(pre => ++pre)
+        }
+    }, [isFocused])
+
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
             <NormalLoader visible={CartLoading || couponChangesLoading || loading} />
@@ -91,20 +103,25 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20) }}>
                         {/* Navigation section */}
-                        <View style={{ paddingHorizontal: HP(21) }}>
+                        <View style={{ paddingHorizontal: HP(18) }}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`HomeScreen`)}
-                                    style={{ alignSelf: "center", }}
+                                    style={globalStyle.navigationIconBox}
                                 >
-                                    <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                                    <Icon
+                                        type={Icons.Feather}
+                                        size={FS(18)}
+                                        name={`chevron-left`}
+                                        color={COLORS.BLACK}
+                                    />
                                 </TouchableOpacity>
                                 <Text style={styles.topHeading}>Cart</Text>
                             </View>
                         </View>
 
                         {/* Body section */}
-                        <View style={{}}>
+                        <View>
                             {/* First section including cart, add more item, coocking request */}
                             <View style={{ marginTop: VP(34), backgroundColor: COLORS.WHITE, borderRadius: HP(21), marginHorizontal: HP(20) }}>
                                 {/* Cart Items Loop */}
@@ -112,7 +129,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                     <>
                                         {(CartItemList || []).map((d, i) => (
                                             <View key={`cart-item-${i}`}>
-                                                <CartItemSection data={d} />
+                                                <CartItemSection data={d} render={itemRerender} />
                                             </View>
                                         ))}
                                     </>
@@ -206,7 +223,13 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", }}>
                                                 <Text style={[styles.link, { color: "#767676" }]}>order amount</Text>
 
-                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${GetCartTotal.toFixed(2)}</Text>
+                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${(GetCartTotal - GetCartOptionsTotal).toFixed(2)}</Text>
+                                            </View>
+
+                                            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", }}>
+                                                <Text style={[styles.link, { color: "#767676" }]}>Extra add on</Text>
+
+                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${GetCartOptionsTotal.toFixed(2)}</Text>
                                             </View>
 
                                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -286,11 +309,11 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 const styles = StyleSheet.create({
     topHeading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",
-        flex: 1
+        flex: 1,
+        alignSelf: "center"
     },
     couponText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

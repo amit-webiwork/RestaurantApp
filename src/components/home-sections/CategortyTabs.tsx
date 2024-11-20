@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         borderTopStartRadius: HP(20),
         borderBottomStartRadius: HP(20),
         borderBottomEndRadius: HP(20),
-    },
+    }
 });
 
 const CategortyTabsSection = memo(CategortyTabs);

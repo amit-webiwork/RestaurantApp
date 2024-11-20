@@ -49,6 +49,16 @@ export const getOrderTrackSteps = () => {
     return steps;
 }
 
+export const getOrderRefundTrackSteps = () => {
+    const steps = [
+        { key: "refund", orderStatus: "pending", status: 'refund initiated', icon: require(`../../assets/icons/order-placed.png`), subText: "" },
+        { key: "refund", orderStatus: "available", status: 'refund is being processed.', icon: require(`../../assets/icons/order-placed.png`), subText: "" },
+        { key: "charge", orderStatus: "", status: 'refunded amount sent to your bank.', icon: require(`../../assets/icons/order-placed.png`), subText: "" }
+    ];
+
+    return steps;
+}
+
 export const getOrderComponents = (data: any) => {
     const orderData = { ...data };
 
@@ -87,7 +97,8 @@ export const getReorderItems = async (orderData: OrderData): Promise<any[]> => {
                 itemPrice,
                 discountPercent,
                 itemId: d.id,
-                qty: (orderData?.orderItems?.find((item: { itemId: number; }) => item.itemId === d.id)?.qty) || 1
+                qty: (orderData?.orderItems?.find((item: { itemId: number; }) => item.itemId === d.id)?.qty) || 1,
+                options: []
             };
         })
 

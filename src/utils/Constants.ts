@@ -12,10 +12,18 @@ export const COLORS = {
     BACKGROUND_DEFAULT: "#F8F8F8",
     SUCCESS: "#27AE60",
     FAILED: "#D93A3A",
+    NAV_ICON_BG: "#DADADA"
 };
 
-export const BACKEND_URL = "https://deloungecafe.com/api/v1";
+export const APP_VERSION = '0.0.6';
+export const OTP_SEND_WAIT_TIME = 60; // in seconds
+export const STD_CODE = "+61";
+
+// export const BACKEND_URL = "https://api.deloungecafe.com/api/v1";
+export const BACKEND_URL = "https://5f16-125-99-173-186.ngrok-free.app/api/v1";
 // export const BACKEND_URL = "http://192.168.0.101:4000/api/v1";
+// export const BACKEND_URL = "https://4844-125-99-173-186.ngrok-free.app/api/v1";
+
 export const CDN_URL = "https://cdn.deloungecafe.com/";
 
 // local key
@@ -24,6 +32,45 @@ export const CDN_URL = "https://cdn.deloungecafe.com/";
 // server key
 export const STRIPE_PUBLIC_KEY = "pk_test_51QEJaCEQOrAyyyQ3QvZhdpdWJ0QfJKOb5YBRLjeQ4PNNxNoveBiPf2AS5tqA3Fih2sauafz3sz9CawNcNYcXpxen00NJBglpsa";
 
-export const apiEndpoints = { signup: "/auth/user/sign-up", login: "/auth/user/sign-in", forgot: "/auth/user/forgot-password", otpVerify: "/auth/user/otp-verify", resetPassword: "/auth/user/reset-password", categoryList: "/user/item-category/list", itemList: "/user/item/list", updateProfile: "/user/profile", profileUpload: "/user/profile-upload", changePassword: "/user/change-password", deleteAccount: "/user/account", topicList: "/user/feedback-topics", feedback: "/user/feedback", dietaryList: "/user/dietary/list", cuisineList: "/user/cuisine/list", priceRange: "/user/item/price-range", deviceToken: "/user/save-device-token", order: "/user/order", cartConfirm: "/user/item/cart-confirm", orderList: "/user/order", orderFeedback: "/user/order/feedback", deleteOrder: "/user/order", couponList: "/user/coupon", cartConfirmV1: "/user/item/cart-confirmV2", createPaymentIntent: "/stripe/create-payment-intent", cardList: "/stripe/card-list", deleteCard: "/stripe/delete-card", orderTrack: "/user/order/track-order", orderDetails: "/user/order" };
+export const apiEndpoints = {
+    signup: "/auth/user/sign-up",
+    login: "/auth/user/sign-in",
+    forgot: "/auth/user/forgot-password",
+    otpVerify: "/auth/user/otp-verify",
+    resetPassword: "/auth/user/reset-password",
+    categoryList: "/user/item-category/list",
+    itemList: "/user/item/list",
+    updateProfile: "/user/profile",
+    profileUpload: "/user/profile-upload",
+    changePassword: "/user/change-password",
+    deleteAccount: "/user/account",
+    topicList: "/user/feedback-topics",
+    feedback: "/user/feedback",
+    dietaryList: "/user/dietary/list",
+    cuisineList: "/user/cuisine/list",
+    priceRange: "/user/item/price-range",
+    deviceToken: "/user/save-device-token",
+    order: "/user/order",
+    cartConfirm: "/user/item/cart-confirm",
+    orderList: "/user/order",
+    orderFeedback: "/user/order/feedback",
+    deleteOrder: "/user/order",
+    couponList: "/user/coupon",
+    createPaymentIntent: "/stripe/create-payment-intent",
+    cardList: "/stripe/card-list",
+    deleteCard: "/stripe/delete-card",
+    orderTrack: "/user/order/track-order",
+    orderDetails: "/user/order",
+    refundOrders: "/user/order/refund-orders",
+    itemDetails: "/user/item",
+    signupOtpResend: "/auth/user/signup-otp-resend",
+    signupOtpVerify: "/auth/user/signup-otp-verify"
+};
 
-export const errorMessage = { commonError: "Failed to process!", otp: "Invalid OTP entered.", commonMessage: "Something went wrong. Please try again later.", notificationAccessError: "Allow notification permission for get incoming message", cartUpdate: "Your cart options have been updated! Please review your cart before proceeding." }
+export const errorMessage = {
+    commonError: "Failed to process!",
+    otp: "Invalid OTP entered.",
+    commonMessage: "Something went wrong. Please try again later.",
+    notificationAccessError: "Allow notification permission for get incoming message",
+    cartUpdate: "Your cart options have been updated! Please review your cart before proceeding."
+}

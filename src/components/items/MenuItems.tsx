@@ -159,13 +159,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: HP(0.75),
         width: (width / 2) - HP(23.25),
         marginHorizontal: HP(3)
-
     },
     boxSubContainer: {
         borderRadius: FS(16.42),
         shadowOpacity: 0.2,
         backgroundColor: COLORS.WHITE,
-        shadowColor: "#000",
+        shadowColor: COLORS.BLACK,
         shadowOffset: {
             width: -2,
             height: 4,

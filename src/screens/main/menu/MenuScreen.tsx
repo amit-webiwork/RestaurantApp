@@ -31,19 +31,22 @@ const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading
     return (
         <>
             {/* Top Navigation */}
-            <View style={{ paddingHorizontal: HP(21), paddingVertical: HP(20), }}>
+            <View style={{ paddingHorizontal: HP(18), paddingVertical: HP(20) }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}
-                        style={{ alignSelf: "center" }}
+                        style={globalStyle.navigationIconBox}
                     >
-                        <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                        <View>
+                            <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                        </View>
                     </TouchableOpacity>
                     <Text style={styles.topHeading}>Menu</Text>
                 </View>
             </View>
+
             {/* Category box tab */}
-            <View style={{ marginTop: VP(7), paddingLeft: HP(21) }}>
+            <View style={{ marginTop: VP(7), paddingLeft: HP(18) }}>
                 <CategortyTabsSection setSelectedCategory={setSelectedCategoryhandler} selectedCategory={selectedCategory} loading={loading} />
             </View>
 
@@ -105,7 +108,7 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
             const popularItemParams = { itemIds: filterList['popularItems'].length > 0 ? filterList['popularItems'] : '' }
 
             const params = { ...categoryParams, ...dietaryParams, ...cuisineParams, ...priceParams, ...popularItemParams };
-            
+
             const offset = (page - 1) * limit;
 
             const response = await getItemList(params, limit, offset);
@@ -170,7 +173,7 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
 const styles = StyleSheet.create({
     topHeading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
+        color: COLORS.BLACK,
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",

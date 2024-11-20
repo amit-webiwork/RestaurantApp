@@ -33,8 +33,13 @@ const { width, height } = Dimensions.get('window');
 const FooterComponent = ({ dataLoaded, hasMoreData }: { dataLoaded: boolean, hasMoreData: boolean }) => {
     return (
         <>
-            {(dataLoaded) ? <View style={{ flex: 1, height: height * .5, justifyContent: "center" }}>
-                <ActivityIndicator size="large" color={COLORS.BUTTON} /></View> : null}
+            {(dataLoaded) ?
+                <View style={{ flex: 1, height: height * .5, justifyContent: "center" }}>
+                    <ActivityIndicator
+                        size="large"
+                        color={COLORS.BUTTON}
+                    />
+                </View> : null}
             {!hasMoreData && (
                 <View style={{ marginTop: VP(41), marginBottom: VP(151) }}>
                     <Text style={styles.highlightedText}>"Indulge your cravings."</Text>
@@ -95,14 +100,15 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
                             )}
 
                         </View>
-                        {isAvailable && (
-                            <TouchableOpacity
-                                onPress={() => addToCart(item, 1, dispatch, `add`)}
-                                style={styles.buttonBox}
-                            >
-                                <Text style={styles.cartText}>add to cart</Text>
-                            </TouchableOpacity>
-                        )}
+                        {/* {isAvailable && ( */}
+                        <TouchableOpacity
+                            onPress={() => addToCart(item, 1, dispatch, `add`)}
+                            style={styles.buttonBox}
+                            disabled={!isAvailable}
+                        >
+                            <Text style={styles.cartText}>add to cart</Text>
+                        </TouchableOpacity>
+                        {/* )} */}
                     </View>
                 </View>
             </View>
@@ -115,7 +121,12 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
                 data={data}
-                renderItem={({ item, index }) => <BoxItems itemData={item} index={index} />}
+                renderItem={({ item, index }) =>
+                    <BoxItems
+                        itemData={item}
+                        index={index}
+                    />
+                }
                 contentContainerStyle={{
                     paddingHorizontal: HP(1.5),
                     marginTop: VP(27),
@@ -133,7 +144,12 @@ const PopularMenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, na
                         name={name}
                     />
                 }
-                ListFooterComponent={<FooterComponent dataLoaded={dataLoaded} hasMoreData={hasMoreData} />}
+                ListFooterComponent={
+                    <FooterComponent
+                        dataLoaded={dataLoaded}
+                        hasMoreData={hasMoreData}
+                    />
+                }
             />
         </View>
     );
@@ -144,14 +160,13 @@ const styles = StyleSheet.create({
         marginBottom: HP(10),
         paddingHorizontal: HP(0.75),
         width: (width / 2) - (width >= 360 ? HP(24) : HP(23.25)),
-        marginHorizontal: HP(3), // Space between items horizontally
-
+        marginHorizontal: HP(3)
     },
     boxSubContainer: {
         borderRadius: FS(16.42),
         shadowOpacity: 0.2,
         backgroundColor: COLORS.WHITE,
-        shadowColor: "#000",
+        shadowColor: COLORS.BLACK,
         shadowOffset: {
             width: -2,
             height: 4,
@@ -160,7 +175,7 @@ const styles = StyleSheet.create({
         elevation: 4,
         flexDirection: "column",
         flexWrap: "wrap",
-        width: '100%',
+        width: '100%'
     },
     contentBox: {
         paddingHorizontal: HP(10),
@@ -182,7 +197,7 @@ const styles = StyleSheet.create({
         height: VP(160.16),
         resizeMode: "cover",
         borderRadius: FS(16.42),
-        overflow: 'hidden',
+        overflow: 'hidden'
     },
     priceBox: {
         paddingTop: HP(12),
@@ -196,25 +211,25 @@ const styles = StyleSheet.create({
         color: "#939393",
         textDecorationLine: "line-through",
         textDecorationStyle: "solid",
-        fontSize: 14,
+        fontSize: 14
     },
     priceText: {
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 14,
-        flexShrink: 1,
+        flexShrink: 1
     },
     discountedPercentText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 10.52,
         color: COLORS.BUTTON,
         textTransform: "uppercase",
-        flexShrink: 1,
+        flexShrink: 1
     },
     buttonBox: {
         padding: HP(6),
         alignItems: "center",
         borderTopColor: "#D3D3D3",
-        borderTopWidth: 1,
+        borderTopWidth: 1
     },
     cartText: {
         ...TextStyles.LEXEND_MEDIUM,

@@ -14,8 +14,8 @@ import { ButtonSection as Button } from '../../../components/Button';
 import { AppDispatch } from '../../../redux/store';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
-import { cartConfirmV1 } from '../../../utils/ApiCall';
-import { cartItemList, getCartTotal, instructionText, resetCart } from '../../../redux/features/cart';
+import { cartConfirm } from '../../../utils/ApiCall';
+import { cartItemList, resetCart } from '../../../redux/features/cart';
 import { appliedCouponId } from '../../../redux/features/coupon';
 import { getItemPriceComponents } from '../../../utils/helper/ItemHelper';
 import { addToCart } from '../../../utils/helper/CartHelper';
@@ -30,7 +30,8 @@ interface confirmOrderDataType {
     itemTotal: number,
     packagingCost: number,
     taxAmount: number,
-    totalWithOutTax: number
+    totalWithOutTax: number,
+    variantTotalPrice: number
 }
 
 const confirmOrderDataInitial = {
@@ -39,15 +40,14 @@ const confirmOrderDataInitial = {
     itemTotal: 0,
     packagingCost: 0,
     taxAmount: 0,
-    totalWithOutTax: 0
+    totalWithOutTax: 0,
+    variantTotalPrice: 0
 }
 
 function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
 
     const CartItemList = useSelector(cartItemList);
-    const GetCartTotal = useSelector(getCartTotal);
-    const InstructionText = useSelector(instructionText);
     const AppliedCouponId = useSelector(appliedCouponId);
 
     const [loading, setLoading] = useState<boolean>(true);
@@ -68,7 +68,8 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                     const itemDetails = getItemPriceComponents(item);
                     itemDetails.id = itemDetails.itemId || 0;
                     const qty = item.qty || 1;
-                    addToCart(itemDetails, qty, dispatch, undefined, false);
+                    const options = item.variants || [];
+                    addToCart(itemDetails, qty, dispatch, undefined, false, options);
                 }
                 resolve(1);
             }, 100);
@@ -95,7 +96,14 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
         try {
             const dataPayload = [...CartItemList]
 
-            const response: any = await cartConfirmV1({ items: dataPayload, couponId: AppliedCouponId });
+            const dataPayloadV1 = [
+                ...dataPayload.map((d) => {
+                    const { options, ...rest } = d;
+                    return { ...rest, variants: d.options };
+                })
+            ];
+
+            const response: any = await cartConfirm({ items: dataPayloadV1, couponId: AppliedCouponId });
 
             dispatch(resetCart());
 
@@ -119,7 +127,17 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                 dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.cartUpdate, buttonAction: true, buttonText2: "Back to cart", onAction: 'Cart' }));
             }
 
-            setConfirmOrderData({ couponDiscount: response?.data?.couponDiscount || 0, finalAmount: response?.data?.finalAmount || 0, itemTotal: response?.data?.itemTotal || 0, packagingCost: response?.data?.packagingCost || 0, taxAmount: response?.data?.taxAmount || 0, totalWithOutTax: response?.data?.totalWithOutTax || 0 });
+            // console.log(JSON.stringify(response?.data), '---response?.data')
+
+            setConfirmOrderData({
+                couponDiscount: response?.data?.couponDiscount || 0,
+                finalAmount: response?.data?.finalAmount || 0,
+                itemTotal: response?.data?.itemTotal || 0,
+                packagingCost: response?.data?.packagingCost || 0,
+                taxAmount: response?.data?.taxAmount || 0,
+                totalWithOutTax: response?.data?.totalWithOutTax || 0,
+                variantTotalPrice: response?.data?.variantTotalPrice || 0
+            });
 
             setLoading(false);
             setProceed(true);
@@ -138,6 +156,8 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
         return <OrderSummaryScreenLoaderSection />
     }
 
+    // console.log(JSON.stringify(CartItemList), '-----CartItemList')
+
     return (
         <>
             <OuterLayout containerStyle={globalStyle.containerStyle}>
@@ -145,13 +165,18 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
                             {/* Navigation section */}
-                            <View style={{ paddingHorizontal: HP(20) }}>
+                            <View style={{ paddingHorizontal: HP(18) }}>
                                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                                     <TouchableOpacity
                                         onPress={() => navigation.goBack()}
-                                        style={{ alignSelf: "center", }}
+                                        style={globalStyle.navigationIconBox}
                                     >
-                                        <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BLACK} />
+                                        <Icon
+                                            type={Icons.Feather}
+                                            size={FS(20)}
+                                            name={`chevron-left`}
+                                            color={COLORS.BLACK}
+                                        />
                                     </TouchableOpacity>
                                     <Text style={styles.topHeading}>order summary</Text>
                                 </View>
@@ -175,19 +200,66 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
 
                                     <View style={styles.line}></View>
                                     {/* Cart Item List */}
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: HP(10) }}>
+                                    <View style={{
+                                        flexDirection: "column",
+                                        justifyContent: "space-between",
+                                        paddingHorizontal: HP(10)
+                                    }}>
                                         <View style={{ gap: HP(8) }}>
                                             {(CartItemList && Array.isArray(CartItemList) && CartItemList?.length > 0) ? (
                                                 CartItemList?.map((d: any, i: number) => (
-                                                    <Text key={`cart-order-item-${i}`} style={styles.itemText}>
-                                                        • {d?.qty} x {d?.name}
-                                                    </Text>
+                                                    <View key={`cart-order-item-${i}`}>
+                                                        <Text
+                                                            style={styles.itemText}
+                                                        >
+                                                            • {d?.qty} x {d?.name}
+                                                        </Text>
+
+                                                        <View
+                                                            style={styles.variantMain}>
+                                                            {d?.options?.map((k: any, j: number) => (
+                                                                <View
+                                                                    key={`item-variants-${i}-${j}`}
+                                                                    style={styles.variantSub}
+                                                                >
+                                                                    <Icon
+                                                                        type={Icons.FontAwesome5}
+                                                                        size={FS(11)}
+                                                                        name={`long-arrow-alt-right`}
+                                                                        color={`#787878`}
+                                                                    />
+
+                                                                    <Text
+                                                                        style={styles.variantName}
+                                                                    >
+                                                                        {k?.customizeOption?.name}:
+                                                                    </Text>
+                                                                    <View>
+                                                                        <Text
+                                                                            style={styles.atrributeName}
+                                                                        >
+                                                                            {k?.variantAttributes?.map((attr: any) => attr?.customizeAttribute?.name).join(', ')}
+                                                                        </Text>
+                                                                    </View>
+                                                                </View>
+                                                            ))}
+                                                        </View>
+                                                    </View>
                                                 ))
                                             ) : (
                                                 <Text style={styles.itemText}>No items ordered</Text>
                                             )}
                                         </View>
-                                        {CartItemList?.length > 1 && (<Text style={styles.qtyText}>qty {CartItemList?.reduce((acc, item) => acc + item.qty, 0)}</Text>)}
+                                        {CartItemList?.length > 1 &&
+                                            (
+                                                <View>
+                                                    <Text
+                                                        style={styles.qtyText}
+                                                    >
+                                                        qty {CartItemList?.reduce((acc, item) => acc + item.qty, 0)}
+                                                    </Text>
+                                                </View>
+                                            )}
                                     </View>
 
                                     <View style={styles.line}></View>
@@ -197,6 +269,11 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>item:</Text>
                                             <Text style={styles.orderEntityPrice}>${confirmOrderData.itemTotal.toFixed(2)}</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderEntityText}>Extra Add On:</Text>
+                                            <Text style={styles.orderEntityPrice}>${confirmOrderData.variantTotalPrice.toFixed(2)}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -232,7 +309,7 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                                 </View>
 
                                 {/* Reorder button */}
-                                {proceed && (
+                                {(proceed && CartItemList.length > 0) && (
                                     <Button
                                         text={'Place order'}
                                         onPress={handleClick}
@@ -257,7 +334,7 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
 const styles = StyleSheet.create({
     topHeading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
+        color: COLORS.BLACK,
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",
@@ -288,7 +365,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 4,
         elevation: 5,
-        backgroundColor: "#fff",
+        backgroundColor: COLORS.WHITE,
         borderRadius: HP(10),
         padding: HP(14),
         gap: HP(14.69),
@@ -297,10 +374,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: VP(18),
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.WHITE,
         borderRadius: 5,
         padding: 10,
-        shadowColor: '#000',
+        shadowColor: COLORS.BLACK,
         shadowOpacity: 0.1,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 5,
@@ -443,6 +520,31 @@ const styles = StyleSheet.create({
         textTransform: "capitalize",
         width: width * .90
     },
+    variantMain: {
+        flexDirection: "row",
+        gap: HP(5),
+        start: HP(10),
+        flexWrap: "wrap",
+        marginTop: VP(3)
+    },
+    variantSub: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: HP(5),
+        width: "100%"
+    },
+    variantName: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 12,
+        textTransform: "capitalize",
+        color: "#787878"
+    },
+    atrributeName: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 10,
+        textTransform: "capitalize",
+        color: "#787878"
+    }
 });
 
 export default OrderSummaryScreen;

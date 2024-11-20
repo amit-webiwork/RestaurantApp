@@ -7,6 +7,7 @@ import LoginScreen from '../screens/auth/LoginScreen';
 import ForgotScreen from '../screens/auth/ForgotScreen';
 import VerifyCodeScreen from '../screens/auth/VerifyCodeScreen';
 import CreatePasswordScreen from '../screens/auth/CreatePasswordScreen';
+import SignupVerifyCodeScreen from '../screens/auth/SignupVerifyCodeScreen';
 
 export type AuthStackParamList = {
     SignUpScreen: undefined;
@@ -15,6 +16,7 @@ export type AuthStackParamList = {
     ForgotScreen: undefined;
     VerifyCodeScreen: undefined;
     CreatePasswordScreen: undefined;
+    SignupVerifyCodeScreen: undefined;
 };
 
 const AuthStackNavigator: React.FunctionComponent = () => {
@@ -28,6 +30,10 @@ const AuthStackNavigator: React.FunctionComponent = () => {
             <Stack.Screen
                 name={`SignUpScreen`}
                 component={SignUpScreen as React.FunctionComponent}
+            />
+            <Stack.Screen
+                name={`SignupVerifyCodeScreen`}
+                component={SignupVerifyCodeScreen as React.FunctionComponent}
             />
             <Stack.Screen
                 name={`LoginScreen`}

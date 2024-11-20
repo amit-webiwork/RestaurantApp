@@ -18,46 +18,53 @@ function Support({ navigation }: { navigation: any }): React.JSX.Element {
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{ paddingHorizontal: HP(20), paddingVertical: HP(27.79) }}>
+                    <View style={{ paddingVertical: HP(27.79) }}>
                         {/* Top Navigation */}
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: HP(18) }}>
                             <TouchableOpacity
                                 onPress={() => navigation.goBack()}
-                                style={{ alignSelf: "center" }}
+                                style={globalStyle.navigationIconBox}
                             >
-                                <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                                <Icon
+                                    type={Icons.Feather}
+                                    size={FS(18)}
+                                    name={`chevron-left`}
+                                    color={COLORS.BLACK}
+                                />
                             </TouchableOpacity>
                             <Text style={styles.topHeading}>support / help</Text>
                         </View>
 
-                        <View style={{ marginTop: VP(69) }}>
-                            <View style={{ width: FS(293.23), height: VP(128.23), paddingHorizontal: HP(38) }}>
-                                <Image source={require(`../../../assets/images/support.png`)} style={styles.img} />
-                            </View>
-
-                            <View style={{ marginTop: VP(40.77), gap: HP(16) }}>
-                                <Text style={styles.heading}>how can we help?</Text>
-                                <Text style={styles.info}>welcome to our app support. ask anything. support community can help you find answers to all your queries.</Text>
-                            </View>
-                        </View>
-
-                        <View style={{ flexDirection: "row", marginTop: VP(49), gap: HP(13.11), justifyContent: "center" }}>
-                            <View style={styles.mainBox}>
-                                <View style={styles.box}>
-                                    <Image source={require(`../../../assets/icons/phone.png`)} style={styles.boxImg1} />
+                        <View style={{ paddingHorizontal: HP(20) }}>
+                            <View style={{ marginTop: VP(69) }}>
+                                <View style={{ width: FS(293.23), height: VP(128.23), paddingHorizontal: HP(38) }}>
+                                    <Image source={require(`../../../assets/images/support.png`)} style={styles.img} />
                                 </View>
 
-                                <Text style={styles.label}>call us</Text>
-                                <Text style={styles.subLabel}>+61390880378</Text>
+                                <View style={{ marginTop: VP(40.77), gap: HP(16) }}>
+                                    <Text style={styles.heading}>how can we help?</Text>
+                                    <Text style={styles.info}>welcome to our app support. ask anything. support community can help you find answers to all your queries.</Text>
+                                </View>
                             </View>
 
-                            <View style={styles.mainBox}>
-                                <View style={styles.box}>
-                                    <Image source={require(`../../../assets/icons/mail.png`)} style={styles.boxImg2} />
+                            <View style={{ flexDirection: "row", marginTop: VP(49), gap: HP(13.11), justifyContent: "center" }}>
+                                <View style={styles.mainBox}>
+                                    <View style={styles.box}>
+                                        <Image source={require(`../../../assets/icons/phone.png`)} style={styles.boxImg1} />
+                                    </View>
+
+                                    <Text style={styles.label}>call us</Text>
+                                    <Text style={styles.subLabel}>+61390880378</Text>
                                 </View>
 
-                                <Text style={styles.label}>mail us</Text>
-                                <Text style={styles.subLabel}>delounge22@gmail.com</Text>
+                                <View style={styles.mainBox}>
+                                    <View style={styles.box}>
+                                        <Image source={require(`../../../assets/icons/mail.png`)} style={styles.boxImg2} />
+                                    </View>
+
+                                    <Text style={styles.label}>mail us</Text>
+                                    <Text style={styles.subLabel}>delounge22@gmail.com</Text>
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -135,7 +142,7 @@ const styles = StyleSheet.create({
         gap: HP(12),
         padding: FS(10),
         shadowOpacity: 0.2,
-        shadowColor: "#000",
+        shadowColor: COLORS.BLACK,
         shadowOffset: {
             width: -2,
             height: 4,

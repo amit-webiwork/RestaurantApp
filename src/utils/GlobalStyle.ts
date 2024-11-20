@@ -6,7 +6,7 @@ import { FS, HP, VP } from './Responsive';
 
 export const globalStyle = StyleSheet.create({
     containerStyle: {
-        backgroundColor: COLORS.BACKGROUND,
+        backgroundColor: COLORS.BACKGROUND
     },
     error: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
@@ -29,10 +29,10 @@ export const globalStyle = StyleSheet.create({
         resizeMode: 'contain'
     },
     outOfStockBg: {
-        opacity: 0.8,
+        opacity: 0.8
     },
     outOfStockContainer: {
-        opacity: 0.5,
+        opacity: 0.5
     },
     outOfStockLabel: {
         position: 'absolute',
@@ -43,12 +43,12 @@ export const globalStyle = StyleSheet.create({
         padding: HP(6),
         alignItems: 'center',
         borderBottomLeftRadius: FS(16.42),
-        borderBottomRightRadius: FS(16.42),
+        borderBottomRightRadius: FS(16.42)
     },
     outOfStockText: {
         ...TextStyles.RALEWAY_BOLD,
         color: COLORS.WHITE,
-        fontSize: 14,
+        fontSize: 14
     },
     dialogTitleStyle: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
@@ -61,5 +61,13 @@ export const globalStyle = StyleSheet.create({
         fontSize: 16.88,
         lineHeight: 24.1,
         color: "#878787"
+    },
+    navigationIconBox: {
+        width: FS(25),
+        height: FS(25),
+        borderRadius: FS(25 / 2),
+        backgroundColor: COLORS.NAV_ICON_BG,
+        alignItems: "center",
+        justifyContent: "center"
     }
 });

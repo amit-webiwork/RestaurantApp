@@ -11,6 +11,7 @@ import { COLORS } from '../../../utils/Constants';
 import PopularMenuItemsSection from '../../../components/items/PopularMenuItems';
 import CartLayout from '../../../components/cart/CartLayout';
 import { getItemList } from '../../../utils/ApiCall';
+import PageHeading from '../../../components/PageHeading';
 
 const limit = 10;
 
@@ -77,17 +78,7 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
             <InnerBlock>
                 <View style={{ paddingVertical: HP(20), marginBottom: VP(0) }}>
                     {/* Top navigation */}
-                    <View style={{ paddingHorizontal: HP(21), paddingBottom: HP(20) }}>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <TouchableOpacity
-                                onPress={() => navigation.goBack()}
-                                style={{ alignSelf: "center" }}
-                            >
-                                <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
-                            </TouchableOpacity>
-                            <Text style={styles.topHeading}>popular {name}</Text>
-                        </View>
-                    </View>
+                    <PageHeading title={`popular ${name}`} navigation={navigation} />
 
                     <View style={{}}>
                         <PopularMenuItemsSection
@@ -108,17 +99,9 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
 }
 
 const styles = StyleSheet.create({
-    topHeading: {
-        ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
-        fontSize: 18,
-        textTransform: "capitalize",
-        textAlign: "center",
-        flex: 1
-    },
     heading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
+        color: COLORS.BLACK,
         fontSize: 18,
         textTransform: "capitalize"
     }

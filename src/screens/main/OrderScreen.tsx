@@ -76,13 +76,18 @@ function OrderScreen({ route, navigation }: { route: any; navigation: any }): Re
             <InnerBlock>
                 <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
                     {/* Navigation section */}
-                    <View style={{ paddingHorizontal: HP(20) }}>
+                    <View style={{ paddingHorizontal: HP(18) }}>
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(`HomeScreen`)}
-                                style={{ alignSelf: "center", }}
+                                style={globalStyle.navigationIconBox}
                             >
-                                <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BLACK} />
+                                <Icon
+                                    type={Icons.Feather}
+                                    size={FS(20)}
+                                    name={`chevron-left`}
+                                    color={COLORS.BLACK}
+                                />
                             </TouchableOpacity>
                             <Text style={styles.topHeading}>order history</Text>
                         </View>

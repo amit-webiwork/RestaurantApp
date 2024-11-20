@@ -1,0 +1,247 @@
+import React, { useEffect, useState } from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet } from 'react-native';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+
+import OuterLayout from '../../components/OuterLayout';
+import { AuthStackParamList } from '../../navigations/AuthStackNavigator';
+import InnerBlock from '../../components/InnerBlock';
+import { ButtonSection as Button } from '../../components/Button';
+import { FS, HP, VP } from '../../utils/Responsive';
+import { loadStorage, saveStorage } from '../../utils/Storage';
+import { TextStyles } from '../../utils/TextStyles';
+import { globalStyle } from '../../utils/GlobalStyle';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, OTP_SEND_WAIT_TIME } from '../../utils/Constants';
+import OTPInput from '../../components/OTPInput';
+import { setDialogContent } from '../../redux/features/customDialog';
+import Warning from '../../assets/svgs/warning.svg';
+import Success from '../../assets/svgs/success.svg';
+import Icon, { Icons } from '../../components/Icons';
+
+type NavigationProp = NativeStackScreenProps<AuthStackParamList>;
+
+const pinCheck = /^[0-9]{4}$/;
+
+function SignupVerifyCodeScreen({ navigation, route }: { navigation: any, route: any; }): React.JSX.Element {
+    const { username } = route.params;
+
+    const dispatch = useDispatch();
+
+    const [value, setValue] = useState('');
+    const [error, setError] = useState({ status: false, text: "" });
+
+    const [loading, setLoading] = useState(false);
+    const [mobile, setMobile] = useState("");
+    const [resendStatus, setResendStatus] = useState(false);
+    const [timer, setTimer] = useState(OTP_SEND_WAIT_TIME);
+
+    const handleOnPress = async () => {
+        try {
+            const username = mobile;
+
+            const otp = value.trim();
+
+            if (pinCheck.test(otp) == false) {
+                throw new Error(errorMessage.otp);
+            }
+
+            setError({ status: false, text: "" });
+
+            const dataPayload = { username, otp: +otp };
+
+            setLoading(true);
+
+            axios.post(BACKEND_URL + apiEndpoints.signupOtpVerify, dataPayload)
+                .then((response) => {
+                    setLoading(false);
+
+                    navigation.navigate(`LoginScreen`);
+                })
+                .catch(error => {
+                    setLoading(false);
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage.commonMessage }));
+                    console.log("Error sending data: ", error.message);
+                });
+        } catch (err: any) {
+            setLoading(false);
+            setError({ status: true, text: err.message });
+            console.log(err.message, '---err');
+        }
+    };
+
+    const handleOnResend = async () => {
+        setLoading(true);
+        try {
+            const dataPayload = { username };
+
+
+            axios.post(BACKEND_URL + apiEndpoints.signupOtpResend, dataPayload)
+                .then(response => {
+                    setLoading(false);
+
+                    dispatch(setDialogContent({ title: <Success width={FS(40)} height={VP(40)} />, message: response?.data?.message || "" }));
+
+                    setResendStatus(false);
+                    setTimer(OTP_SEND_WAIT_TIME);
+                })
+                .catch(error => {
+                    setLoading(false);
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: error?.response?.data?.message || errorMessage?.commonMessage }));
+                    console.log("Error sending data: ", error);
+                });
+        } catch (err: any) {
+            setLoading(false);
+            console.log(err, '---err');
+        }
+    };
+
+    useEffect(() => {
+        setMobile(username);
+    }, [username])
+
+    useEffect(() => {
+        if (timer > 0) {
+            const interval = setInterval(() => {
+                setTimer(prev => prev - 1);
+            }, 1000);
+            return () => clearInterval(interval);
+        } else {
+            setResendStatus(true);
+        }
+    }, [timer]);
+
+    return (
+        <OuterLayout containerStyle={globalStyle.containerStyle}>
+            <InnerBlock>
+                <View style={styles.main}>
+                    {/* Top Navigation */}
+                    <View style={{ flexDirection: "row", marginHorizontal: HP(18) }}>
+                        <TouchableOpacity
+                            onPress={() => navigation.goBack()}
+                            style={globalStyle.navigationIconBox}
+                        >
+                            <Icon
+                                type={Icons.Feather}
+                                size={FS(18)}
+                                name={`chevron-left`}
+                                color={COLORS.BLACK}
+                            />
+                        </TouchableOpacity>
+                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textTransform: "capitalize", textAlign: "center", flex: 1 }}>verify your mobile</Text>
+                    </View>
+
+                    <View
+                        style={{
+                            marginHorizontal: HP(30),
+                            flex: 1
+                        }}>
+                        <View style={{ flex: 4 }}>
+                            <ScrollView showsVerticalScrollIndicator={false}>
+                                <View style={{ marginTop: VP(50) }}>
+                                    <View style={styles.imageBox}>
+                                        <Image source={require('../../assets/images/letter.png')} style={styles.icon} />
+                                    </View>
+                                </View>
+
+                                <View style={{ marginTop: VP(36) }}>
+                                    <Text style={styles.helperText}>
+                                        please enter the 4 digit code sent to <Text style={{ fontWeight: "bold" }}>
+                                            {mobile}
+                                        </Text>
+                                    </Text>
+                                </View>
+
+                                <View style={{ marginTop: VP(56) }}>
+                                    <OTPInput formProps={{ value, setValue, error }} />
+                                </View>
+                            </ScrollView>
+                        </View>
+
+                        <View style={{ flex: 1 }}>
+                            <View style={{ marginTop: VP(17) }}>
+                                <TouchableOpacity
+                                    onPress={handleOnResend}
+                                    disabled={!resendStatus || loading}
+                                >
+                                    <Text style={[styles.resendText]}>
+                                        {resendStatus ? "Resend Code" : `You can resend the OTP in ${timer} seconds`}
+                                    </Text>
+                                </TouchableOpacity>
+
+                                <Button
+                                    text={'verify'}
+                                    onPress={handleOnPress}
+                                    textStyle={styles.buttonStyle}
+                                    isLoading={loading}
+                                    activeButtonText={{ opacity: .65 }}
+                                    mainContainerStyle={{ marginTop: VP(37) }}
+                                    LinearGradienrColor={["#FF00E2", "#FF00E2"]}
+                                    contentContainerStyle={{ top: -2 }}
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </InnerBlock>
+        </OuterLayout>
+    );
+};
+
+const styles = StyleSheet.create({
+    main: {
+        marginVertical: VP(20),
+        flex: 1,
+        flexDirection: 'column'
+    },
+    textInputStyle: {
+        width: "100%"
+    },
+    buttonStyle: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 20,
+        color: COLORS.WHITE,
+        textTransform: "capitalize"
+    },
+    line: {
+        height: 1,
+        backgroundColor: "#929292",
+        width: "20%"
+    },
+    icon: {
+        width: FS(86.61),
+        height: VP(87.58),
+        resizeMode: "contain"
+    },
+    resendText: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 14,
+        color: COLORS.BUTTON,
+        textAlign: "center",
+        // textDecorationStyle: "solid",
+        // textDecorationLine: "underline"
+    },
+    imageBox: {
+        justifyContent: "center",
+        flexDirection: "row",
+        paddingBottom: FS(54.70),
+        paddingLeft: FS(54.70),
+        paddingRight: FS(54.70),
+        paddingTop: FS(54.70),
+        backgroundColor: "#FFEAFD",
+        width: FS(195),
+        height: FS(195),
+        borderRadius: FS(97.5),
+        alignSelf: "center"
+    },
+    helperText: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 14,
+        textTransform: "capitalize",
+        textAlign: "center",
+        width: FS(290),
+        lineHeight: VP(22)
+    }
+});
+
+export default SignupVerifyCodeScreen;

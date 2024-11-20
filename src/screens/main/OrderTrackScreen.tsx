@@ -13,13 +13,15 @@ import NormalLoader from '../../components/NormalLoader';
 import { AppDispatch } from '../../redux/store';
 import { getOrderTrack } from '../../utils/ApiCall';
 import { formatEstimatedTime, getOrderTrackSteps } from '../../utils/helper/OrderHelper';
+import { globalStyle } from '../../utils/GlobalStyle';
 
 const { width, height } = Dimensions.get('window');
 
-const steps = getOrderTrackSteps();
 
 function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
     const { orderData } = route.params;
+
+    const steps = getOrderTrackSteps();
 
     const dispatch: AppDispatch = useDispatch();
 
@@ -100,9 +102,9 @@ function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }
                         showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl
-                                refreshing={loading} // Bind refreshing state
-                                onRefresh={onRefresh} // Trigger refresh on pull
-                                tintColor={COLORS.BUTTON} // Customize indicator color
+                                refreshing={loading}
+                                onRefresh={onRefresh}
+                                tintColor={COLORS.BUTTON}
                             />
                         }
                     >
@@ -112,9 +114,14 @@ function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }
                                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                                     <TouchableOpacity
                                         onPress={() => navigation.goBack()}
-                                        style={{ alignSelf: "center", }}
+                                        style={globalStyle.navigationIconBox}
                                     >
-                                        <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BLACK} />
+                                        <Icon
+                                            type={Icons.Feather}
+                                            size={FS(20)}
+                                            name={`chevron-left`}
+                                            color={COLORS.BLACK}
+                                        />
                                     </TouchableOpacity>
                                     <Text style={styles.topHeading}>track order</Text>
                                 </View>
@@ -124,15 +131,14 @@ function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }
                                 <Text style={styles.text1}>{estimatedTime}</Text>
 
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                    <Text style={styles.text2}>order ID : #{orderData?.id || ""}</Text>
+                                    <Text style={styles.text2}>order ID : #{orderData?.orderId || ""}</Text>
                                     <Text style={styles.text3}>order total : ${orderData?.finalAmount}</Text>
                                 </View>
 
                                 <View style={{
                                     flex: 1,
                                     justifyContent: 'center',
-                                    marginTop: VP(40),
-                                    //  margin: "auto", 
+                                    marginTop: VP(40)
                                 }}>
                                     <FlatList
                                         data={orderSteps}
@@ -181,7 +187,7 @@ function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }
 const styles = StyleSheet.create({
     topHeading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
+        color: COLORS.BLACK,
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",
@@ -207,8 +213,7 @@ const styles = StyleSheet.create({
     img: {
         resizeMode: "contain",
         width: FS(18),
-        height: VP(18),
-        // flexBasis: '10%'
+        height: VP(18)
     },
     container: {
     },
@@ -235,7 +240,7 @@ const styles = StyleSheet.create({
         width: FS(2),
         height: VP(60),
         backgroundColor: '#ccc',
-        marginTop: VP(4),
+        marginTop: VP(4)
     },
     activeLine: {
         backgroundColor: '#4CAF50',
@@ -256,8 +261,7 @@ const styles = StyleSheet.create({
         color: '#676767',
         flexShrink: 1,
         textTransform: "capitalize",
-        fontSize: FS(13),
-        // width: FS(200)
+        fontSize: FS(13)
     },
     time: {
         ...TextStyles.RALEWAY_MEDIUM,

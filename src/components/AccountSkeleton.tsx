@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ImageBackground, Dimensions, 
 import LinearGradient from 'react-native-linear-gradient';
 
 import Icon, { Icons } from '../components/Icons';
-import { COLORS } from '../utils/Constants';
+import { APP_VERSION, COLORS } from '../utils/Constants';
 import { FS, HP, VP } from '../utils/Responsive';
 import { TextStyles } from '../utils/TextStyles';
 import ProfileImageContainer from './account/ProfileImageContainer';
@@ -28,14 +28,27 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
                             {/* Top container */}
                             <View style={{ marginTop: VP(25), flex: 1 }}>
                                 {/* Top Navigation */}
-                                <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: HP(18) }}>
+                                <View style={{
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    paddingHorizontal: HP(18)
+                                }}>
                                     <TouchableOpacity
-                                        onPress={() => navigation.navigate(`HomeScreen`)}
-                                        style={{ alignSelf: "center"}}
+                                        onPress={() => navigation.goBack()}
+                                        style={
+                                            [globalStyle.navigationIconBox,
+                                            { backgroundColor: "#00000080" }
+                                            ]
+                                        }
                                     >
-                                        <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.WHITE} />
+                                        <Icon
+                                            type={Icons.Feather}
+                                            size={FS(18)}
+                                            name={`chevron-left`}
+                                            color={COLORS.WHITE}
+                                        />
                                     </TouchableOpacity>
-                                    <Text style={styles.topHeading}>0.0.1</Text>
+                                    {/* <Text style={styles.topHeading}>0.0.2</Text> */}
                                 </View>
 
                                 <View style={{ marginTop: VP(6), alignItems: "center" }}>
@@ -51,9 +64,15 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
 
                             {/* Bottom container */}
                             <View style={{ flex: 1 }}>
-                                <ImageBackground source={require(`../assets/images/white-bg.png`)} style={[styles.bg]} resizeMode='stretch'>
+                                <ImageBackground
+                                    source={require(`../assets/images/white-bg.png`)}
+                                    style={[styles.bg]}
+                                    resizeMode='stretch'
+                                >
                                     {children}
                                 </ImageBackground>
+
+                                <Text style={styles.bottomHeading}>App Version {APP_VERSION}</Text>
                             </View>
                         </ScrollView>
                     </LinearGradient>
@@ -79,6 +98,14 @@ const styles = StyleSheet.create({
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
     },
+    bottomHeading: {
+        ...TextStyles.LEXEND_REGULAR,
+        fontSize: 16,
+        textAlign: "center",
+        flex: 1,
+        textDecorationLine: "underline",
+        textDecorationStyle: "solid",
+    }
 });
 
 const AccountSkeletonSection = memo(AccountSkeleton);

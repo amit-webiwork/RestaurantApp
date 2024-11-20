@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_BOLD,
         fontSize: 18,
         marginBottom: HP(10),
-        color: "#000000",
+        color: COLORS.BLACK,
         textAlign: 'center',
         flex: 1,
         start: 20
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_REGULAR,
         textAlign: 'center',
         marginBottom: 20,
-        color: "#000000",
+        color: COLORS.BLACK,
         fontSize: 16.88,
         lineHeight: 24.1,
     },

@@ -8,46 +8,47 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* RestaurantAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RestaurantAppTests.m */; };
+		02DEEA9241CE4048A00BD1AC /* RalewayBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2E1FFD68BAA434CA140A5D8 /* RalewayBlack.ttf */; };
+		0869385D5DB64E548D9270D1 /* PoppinsRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FC56B5DEB9A43B0A8486A94 /* PoppinsRegular.ttf */; };
+		0AA09A4134C44A9191B10CF0 /* PoppinsLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08167D74EDC14B9186E11D39 /* PoppinsLight.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-RestaurantApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-RestaurantApp.a */; };
+		0EE24AE66C224BB0B99DBE24 /* InterRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 30F5F527DA8B4513ACD1AF23 /* InterRegular.ttf */; };
+		12B5C534F9EF44EABE060151 /* ChewyRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90C46157DC0641BAB3C3893F /* ChewyRegular.ttf */; };
+		130A031E584C488EB33D1AE9 /* InterSemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5CF31EE31CF44F9FA7F80902 /* InterSemiBold.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7699B88040F8A987B510C191 /* libPods-RestaurantApp-RestaurantAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-RestaurantApp-RestaurantAppTests.a */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		3A23845552C84B19AF733CE4 /* RalewayBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F5A3016C7A749B281AF3CB8 /* RalewayBold.ttf */; };
-		8B576E341AD04C6486BC0C32 /* RalewayMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE908A790A694C1C8B0E9C4D /* RalewayMedium.ttf */; };
-		A4FF8715C0684FB89159DF8C /* RalewayRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2AD680E525774A4996822FE2 /* RalewayRegular.ttf */; };
-		7BD82BD176D24F9B9D3D3C1C /* RalewaySemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B0F72C6B3A97495E98CCCF56 /* RalewaySemiBold.ttf */; };
-		02DEEA9241CE4048A00BD1AC /* RalewayBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2E1FFD68BAA434CA140A5D8 /* RalewayBlack.ttf */; };
-		B9D49C0220294E24A54ECA5F /* RalewayBlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7824234A048346129B0374C1 /* RalewayBlackItalic.ttf */; };
-		1EB41652E852433B97D77E7A /* RalewayBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 67B4E876EE9247378649BBC7 /* RalewayBoldItalic.ttf */; };
-		8B2AD71E24AD46BDA35E3C09 /* RalewayExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 853C13BA1935450A88613082 /* RalewayExtraBold.ttf */; };
-		8132219F5DDC4F439F4DAF8B /* RalewayExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F66DA5AA84A5D8EA7121D /* RalewayExtraBoldItalic.ttf */; };
-		AB55283BF9154AFAAB2C2A8C /* RalewayExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C2500251D894E8EA33ACCFF /* RalewayExtraLight.ttf */; };
-		F40272BA968B4848AEF65F95 /* RalewayExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049BD1AA7A7048A688E72914 /* RalewayExtraLightItalic.ttf */; };
 		17C30CCA436D4FC69D4866C3 /* RalewayItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8124E996E1374ADA95B027EE /* RalewayItalic.ttf */; };
-		8BC019FD993B45BA90A5D038 /* RalewayLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4331271DC844ACF95EE1CC8 /* RalewayLight.ttf */; };
-		4C02D70D92534E079A2065F6 /* RalewayLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0646B9D64A5648FCB3C6CE8A /* RalewayLightItalic.ttf */; };
-		A6EFA90193EE4A8A95C85E45 /* RalewayMediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC3443B3EF38493BBEB93AE4 /* RalewayMediumItalic.ttf */; };
-		2E4E42951E764D739A31FDE3 /* RalewaySemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 617BB5203EAC41429DE61C71 /* RalewaySemiBoldItalic.ttf */; };
-		1BBC6E09133E44B6AF61A111 /* RalewayThin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E0341D9F9A3494DAF33672A /* RalewayThin.ttf */; };
-		BCF9392F88154C708C0A844D /* RalewayThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EC53CC589B0C4664A7A90ECE /* RalewayThinItalic.ttf */; };
-		B622DD5360434405911C6C55 /* ArchitectsDaughterRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77B45E3AF9644BF58F751D3C /* ArchitectsDaughterRegular.ttf */; };
-		560735FFD6544EFCA1B85D7A /* LexendRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7751B43870B402BAAE90B11 /* LexendRegular.ttf */; };
-		2B7AB70B47C34D2D80C1B33E /* RobotoRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 551890816A0344B38B6329A7 /* RobotoRegular.ttf */; };
-		92B11082165143C2A92597FF /* KanitRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC54A33D178A49A7BAF1B4C0 /* KanitRegular.ttf */; };
-		12B5C534F9EF44EABE060151 /* ChewyRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90C46157DC0641BAB3C3893F /* ChewyRegular.ttf */; };
 		198BCC84BFFE4B0E8FFD54D1 /* LexendBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11084294410A461DBF691756 /* LexendBold.ttf */; };
-		0869385D5DB64E548D9270D1 /* PoppinsRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FC56B5DEB9A43B0A8486A94 /* PoppinsRegular.ttf */; };
 		1B766C132093407A8E0E99F0 /* PoppinsBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C00592EDAC04A10A2C5DBB2 /* PoppinsBold.ttf */; };
+		1BBC6E09133E44B6AF61A111 /* RalewayThin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E0341D9F9A3494DAF33672A /* RalewayThin.ttf */; };
+		1EB41652E852433B97D77E7A /* RalewayBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 67B4E876EE9247378649BBC7 /* RalewayBoldItalic.ttf */; };
+		29A71961B6FD4E4EAA07E333 /* LatoRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB0E757912044372B147B10E /* LatoRegular.ttf */; };
+		2B7AB70B47C34D2D80C1B33E /* RobotoRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 551890816A0344B38B6329A7 /* RobotoRegular.ttf */; };
+		2E4E42951E764D739A31FDE3 /* RalewaySemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 617BB5203EAC41429DE61C71 /* RalewaySemiBoldItalic.ttf */; };
+		3A23845552C84B19AF733CE4 /* RalewayBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F5A3016C7A749B281AF3CB8 /* RalewayBold.ttf */; };
 		3DF581E94A0E416FA193E6CB /* InterMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9014BDB839C4629A4873B3F /* InterMedium.ttf */; };
 		41BDAB093C5B4E75B53FB8AE /* LexendSemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1D14E3039604997B2FFEE03 /* LexendSemiBold.ttf */; };
-		130A031E584C488EB33D1AE9 /* InterSemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5CF31EE31CF44F9FA7F80902 /* InterSemiBold.ttf */; };
-		29A71961B6FD4E4EAA07E333 /* LatoRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB0E757912044372B147B10E /* LatoRegular.ttf */; };
+		4C02D70D92534E079A2065F6 /* RalewayLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0646B9D64A5648FCB3C6CE8A /* RalewayLightItalic.ttf */; };
+		560735FFD6544EFCA1B85D7A /* LexendRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7751B43870B402BAAE90B11 /* LexendRegular.ttf */; };
+		7699B88040F8A987B510C191 /* libPods-RestaurantApp-RestaurantAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-RestaurantApp-RestaurantAppTests.a */; };
+		7BD82BD176D24F9B9D3D3C1C /* RalewaySemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B0F72C6B3A97495E98CCCF56 /* RalewaySemiBold.ttf */; };
 		802CBF530BF54C1892A61B1F /* LexendMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E1B79DE8ACE4B17BD7F89FC /* LexendMedium.ttf */; };
+		8132219F5DDC4F439F4DAF8B /* RalewayExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F66DA5AA84A5D8EA7121D /* RalewayExtraBoldItalic.ttf */; };
+		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		828F78E9F86041218B8DF895 /* PoppinsMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 61F6BF53A06C4BAD988EC33F /* PoppinsMedium.ttf */; };
-		0AA09A4134C44A9191B10CF0 /* PoppinsLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08167D74EDC14B9186E11D39 /* PoppinsLight.ttf */; };
-		0EE24AE66C224BB0B99DBE24 /* InterRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 30F5F527DA8B4513ACD1AF23 /* InterRegular.ttf */; };
+		8B2AD71E24AD46BDA35E3C09 /* RalewayExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 853C13BA1935450A88613082 /* RalewayExtraBold.ttf */; };
+		8B576E341AD04C6486BC0C32 /* RalewayMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE908A790A694C1C8B0E9C4D /* RalewayMedium.ttf */; };
+		8BC019FD993B45BA90A5D038 /* RalewayLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4331271DC844ACF95EE1CC8 /* RalewayLight.ttf */; };
+		92B11082165143C2A92597FF /* KanitRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC54A33D178A49A7BAF1B4C0 /* KanitRegular.ttf */; };
+		A4FF8715C0684FB89159DF8C /* RalewayRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2AD680E525774A4996822FE2 /* RalewayRegular.ttf */; };
+		A6EFA90193EE4A8A95C85E45 /* RalewayMediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC3443B3EF38493BBEB93AE4 /* RalewayMediumItalic.ttf */; };
+		AB55283BF9154AFAAB2C2A8C /* RalewayExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C2500251D894E8EA33ACCFF /* RalewayExtraLight.ttf */; };
+		B622DD5360434405911C6C55 /* ArchitectsDaughterRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77B45E3AF9644BF58F751D3C /* ArchitectsDaughterRegular.ttf */; };
+		B9D49C0220294E24A54ECA5F /* RalewayBlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7824234A048346129B0374C1 /* RalewayBlackItalic.ttf */; };
+		BCF9392F88154C708C0A844D /* RalewayThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EC53CC589B0C4664A7A90ECE /* RalewayThinItalic.ttf */; };
+		E941A3BA16E2329864FDC228 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C8912D72B814A12D7F60CA75 /* PrivacyInfo.xcprivacy */; };
+		F40272BA968B4848AEF65F95 /* RalewayExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049BD1AA7A7048A688E72914 /* RalewayExtraLightItalic.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,10 @@
 		00E356EE1AD99517003FC87E /* RestaurantAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RestaurantAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* RestaurantAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RestaurantAppTests.m; sourceTree = "<group>"; };
+		049BD1AA7A7048A688E72914 /* RalewayExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayExtraLightItalic.ttf; path = ../assets/fonts/RalewayExtraLightItalic.ttf; sourceTree = "<group>"; };
+		0646B9D64A5648FCB3C6CE8A /* RalewayLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayLightItalic.ttf; path = ../assets/fonts/RalewayLightItalic.ttf; sourceTree = "<group>"; };
+		08167D74EDC14B9186E11D39 /* PoppinsLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsLight.ttf; path = ../assets/fonts/PoppinsLight.ttf; sourceTree = "<group>"; };
+		11084294410A461DBF691756 /* LexendBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = LexendBold.ttf; path = ../assets/fonts/LexendBold.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* RestaurantApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RestaurantApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RestaurantApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = RestaurantApp/AppDelegate.mm; sourceTree = "<group>"; };
@@ -72,47 +77,44 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RestaurantApp/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = RestaurantApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-RestaurantApp-RestaurantAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RestaurantApp-RestaurantAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C2500251D894E8EA33ACCFF /* RalewayExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayExtraLight.ttf; path = ../assets/fonts/RalewayExtraLight.ttf; sourceTree = "<group>"; };
+		2AD680E525774A4996822FE2 /* RalewayRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayRegular.ttf; path = ../assets/fonts/RalewayRegular.ttf; sourceTree = "<group>"; };
+		2FC56B5DEB9A43B0A8486A94 /* PoppinsRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsRegular.ttf; path = ../assets/fonts/PoppinsRegular.ttf; sourceTree = "<group>"; };
+		30F5F527DA8B4513ACD1AF23 /* InterRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = InterRegular.ttf; path = ../assets/fonts/InterRegular.ttf; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-RestaurantApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RestaurantApp.debug.xcconfig"; path = "Target Support Files/Pods-RestaurantApp/Pods-RestaurantApp.debug.xcconfig"; sourceTree = "<group>"; };
+		3C7F66DA5AA84A5D8EA7121D /* RalewayExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayExtraBoldItalic.ttf; path = ../assets/fonts/RalewayExtraBoldItalic.ttf; sourceTree = "<group>"; };
+		551890816A0344B38B6329A7 /* RobotoRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RobotoRegular.ttf; path = ../assets/fonts/RobotoRegular.ttf; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-RestaurantApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RestaurantApp.release.xcconfig"; path = "Target Support Files/Pods-RestaurantApp/Pods-RestaurantApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-RestaurantApp-RestaurantAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RestaurantApp-RestaurantAppTests.debug.xcconfig"; path = "Target Support Files/Pods-RestaurantApp-RestaurantAppTests/Pods-RestaurantApp-RestaurantAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5C00592EDAC04A10A2C5DBB2 /* PoppinsBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsBold.ttf; path = ../assets/fonts/PoppinsBold.ttf; sourceTree = "<group>"; };
+		5CF31EE31CF44F9FA7F80902 /* InterSemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = InterSemiBold.ttf; path = ../assets/fonts/InterSemiBold.ttf; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-RestaurantApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RestaurantApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E1B79DE8ACE4B17BD7F89FC /* LexendMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = LexendMedium.ttf; path = ../assets/fonts/LexendMedium.ttf; sourceTree = "<group>"; };
+		617BB5203EAC41429DE61C71 /* RalewaySemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewaySemiBoldItalic.ttf; path = ../assets/fonts/RalewaySemiBoldItalic.ttf; sourceTree = "<group>"; };
+		61F6BF53A06C4BAD988EC33F /* PoppinsMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsMedium.ttf; path = ../assets/fonts/PoppinsMedium.ttf; sourceTree = "<group>"; };
+		67B4E876EE9247378649BBC7 /* RalewayBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayBoldItalic.ttf; path = ../assets/fonts/RalewayBoldItalic.ttf; sourceTree = "<group>"; };
+		77B45E3AF9644BF58F751D3C /* ArchitectsDaughterRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = ArchitectsDaughterRegular.ttf; path = ../assets/fonts/ArchitectsDaughterRegular.ttf; sourceTree = "<group>"; };
+		7824234A048346129B0374C1 /* RalewayBlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayBlackItalic.ttf; path = ../assets/fonts/RalewayBlackItalic.ttf; sourceTree = "<group>"; };
+		7F5A3016C7A749B281AF3CB8 /* RalewayBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayBold.ttf; path = ../assets/fonts/RalewayBold.ttf; sourceTree = "<group>"; };
+		8124E996E1374ADA95B027EE /* RalewayItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayItalic.ttf; path = ../assets/fonts/RalewayItalic.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RestaurantApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		853C13BA1935450A88613082 /* RalewayExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayExtraBold.ttf; path = ../assets/fonts/RalewayExtraBold.ttf; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-RestaurantApp-RestaurantAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RestaurantApp-RestaurantAppTests.release.xcconfig"; path = "Target Support Files/Pods-RestaurantApp-RestaurantAppTests/Pods-RestaurantApp-RestaurantAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		90C46157DC0641BAB3C3893F /* ChewyRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = ChewyRegular.ttf; path = ../assets/fonts/ChewyRegular.ttf; sourceTree = "<group>"; };
+		9E0341D9F9A3494DAF33672A /* RalewayThin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayThin.ttf; path = ../assets/fonts/RalewayThin.ttf; sourceTree = "<group>"; };
+		A1D14E3039604997B2FFEE03 /* LexendSemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = LexendSemiBold.ttf; path = ../assets/fonts/LexendSemiBold.ttf; sourceTree = "<group>"; };
+		A2E1FFD68BAA434CA140A5D8 /* RalewayBlack.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayBlack.ttf; path = ../assets/fonts/RalewayBlack.ttf; sourceTree = "<group>"; };
+		A4331271DC844ACF95EE1CC8 /* RalewayLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayLight.ttf; path = ../assets/fonts/RalewayLight.ttf; sourceTree = "<group>"; };
+		B0F72C6B3A97495E98CCCF56 /* RalewaySemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewaySemiBold.ttf; path = ../assets/fonts/RalewaySemiBold.ttf; sourceTree = "<group>"; };
+		BB0E757912044372B147B10E /* LatoRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = LatoRegular.ttf; path = ../assets/fonts/LatoRegular.ttf; sourceTree = "<group>"; };
+		BC54A33D178A49A7BAF1B4C0 /* KanitRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = KanitRegular.ttf; path = ../assets/fonts/KanitRegular.ttf; sourceTree = "<group>"; };
+		C8912D72B814A12D7F60CA75 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = RestaurantApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		CC3443B3EF38493BBEB93AE4 /* RalewayMediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayMediumItalic.ttf; path = ../assets/fonts/RalewayMediumItalic.ttf; sourceTree = "<group>"; };
+		DE908A790A694C1C8B0E9C4D /* RalewayMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayMedium.ttf; path = ../assets/fonts/RalewayMedium.ttf; sourceTree = "<group>"; };
+		E7751B43870B402BAAE90B11 /* LexendRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = LexendRegular.ttf; path = ../assets/fonts/LexendRegular.ttf; sourceTree = "<group>"; };
+		E9014BDB839C4629A4873B3F /* InterMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = InterMedium.ttf; path = ../assets/fonts/InterMedium.ttf; sourceTree = "<group>"; };
+		EC53CC589B0C4664A7A90ECE /* RalewayThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = RalewayThinItalic.ttf; path = ../assets/fonts/RalewayThinItalic.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		7F5A3016C7A749B281AF3CB8 /* RalewayBold.ttf */ = {isa = PBXFileReference; name = "RalewayBold.ttf"; path = "../assets/fonts/RalewayBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		DE908A790A694C1C8B0E9C4D /* RalewayMedium.ttf */ = {isa = PBXFileReference; name = "RalewayMedium.ttf"; path = "../assets/fonts/RalewayMedium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		2AD680E525774A4996822FE2 /* RalewayRegular.ttf */ = {isa = PBXFileReference; name = "RalewayRegular.ttf"; path = "../assets/fonts/RalewayRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		B0F72C6B3A97495E98CCCF56 /* RalewaySemiBold.ttf */ = {isa = PBXFileReference; name = "RalewaySemiBold.ttf"; path = "../assets/fonts/RalewaySemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A2E1FFD68BAA434CA140A5D8 /* RalewayBlack.ttf */ = {isa = PBXFileReference; name = "RalewayBlack.ttf"; path = "../assets/fonts/RalewayBlack.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		7824234A048346129B0374C1 /* RalewayBlackItalic.ttf */ = {isa = PBXFileReference; name = "RalewayBlackItalic.ttf"; path = "../assets/fonts/RalewayBlackItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		67B4E876EE9247378649BBC7 /* RalewayBoldItalic.ttf */ = {isa = PBXFileReference; name = "RalewayBoldItalic.ttf"; path = "../assets/fonts/RalewayBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		853C13BA1935450A88613082 /* RalewayExtraBold.ttf */ = {isa = PBXFileReference; name = "RalewayExtraBold.ttf"; path = "../assets/fonts/RalewayExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		3C7F66DA5AA84A5D8EA7121D /* RalewayExtraBoldItalic.ttf */ = {isa = PBXFileReference; name = "RalewayExtraBoldItalic.ttf"; path = "../assets/fonts/RalewayExtraBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		1C2500251D894E8EA33ACCFF /* RalewayExtraLight.ttf */ = {isa = PBXFileReference; name = "RalewayExtraLight.ttf"; path = "../assets/fonts/RalewayExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		049BD1AA7A7048A688E72914 /* RalewayExtraLightItalic.ttf */ = {isa = PBXFileReference; name = "RalewayExtraLightItalic.ttf"; path = "../assets/fonts/RalewayExtraLightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		8124E996E1374ADA95B027EE /* RalewayItalic.ttf */ = {isa = PBXFileReference; name = "RalewayItalic.ttf"; path = "../assets/fonts/RalewayItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A4331271DC844ACF95EE1CC8 /* RalewayLight.ttf */ = {isa = PBXFileReference; name = "RalewayLight.ttf"; path = "../assets/fonts/RalewayLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		0646B9D64A5648FCB3C6CE8A /* RalewayLightItalic.ttf */ = {isa = PBXFileReference; name = "RalewayLightItalic.ttf"; path = "../assets/fonts/RalewayLightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		CC3443B3EF38493BBEB93AE4 /* RalewayMediumItalic.ttf */ = {isa = PBXFileReference; name = "RalewayMediumItalic.ttf"; path = "../assets/fonts/RalewayMediumItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		617BB5203EAC41429DE61C71 /* RalewaySemiBoldItalic.ttf */ = {isa = PBXFileReference; name = "RalewaySemiBoldItalic.ttf"; path = "../assets/fonts/RalewaySemiBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		9E0341D9F9A3494DAF33672A /* RalewayThin.ttf */ = {isa = PBXFileReference; name = "RalewayThin.ttf"; path = "../assets/fonts/RalewayThin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		EC53CC589B0C4664A7A90ECE /* RalewayThinItalic.ttf */ = {isa = PBXFileReference; name = "RalewayThinItalic.ttf"; path = "../assets/fonts/RalewayThinItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		77B45E3AF9644BF58F751D3C /* ArchitectsDaughterRegular.ttf */ = {isa = PBXFileReference; name = "ArchitectsDaughterRegular.ttf"; path = "../assets/fonts/ArchitectsDaughterRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E7751B43870B402BAAE90B11 /* LexendRegular.ttf */ = {isa = PBXFileReference; name = "LexendRegular.ttf"; path = "../assets/fonts/LexendRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		551890816A0344B38B6329A7 /* RobotoRegular.ttf */ = {isa = PBXFileReference; name = "RobotoRegular.ttf"; path = "../assets/fonts/RobotoRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		BC54A33D178A49A7BAF1B4C0 /* KanitRegular.ttf */ = {isa = PBXFileReference; name = "KanitRegular.ttf"; path = "../assets/fonts/KanitRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		90C46157DC0641BAB3C3893F /* ChewyRegular.ttf */ = {isa = PBXFileReference; name = "ChewyRegular.ttf"; path = "../assets/fonts/ChewyRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		11084294410A461DBF691756 /* LexendBold.ttf */ = {isa = PBXFileReference; name = "LexendBold.ttf"; path = "../assets/fonts/LexendBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		2FC56B5DEB9A43B0A8486A94 /* PoppinsRegular.ttf */ = {isa = PBXFileReference; name = "PoppinsRegular.ttf"; path = "../assets/fonts/PoppinsRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5C00592EDAC04A10A2C5DBB2 /* PoppinsBold.ttf */ = {isa = PBXFileReference; name = "PoppinsBold.ttf"; path = "../assets/fonts/PoppinsBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E9014BDB839C4629A4873B3F /* InterMedium.ttf */ = {isa = PBXFileReference; name = "InterMedium.ttf"; path = "../assets/fonts/InterMedium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A1D14E3039604997B2FFEE03 /* LexendSemiBold.ttf */ = {isa = PBXFileReference; name = "LexendSemiBold.ttf"; path = "../assets/fonts/LexendSemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5CF31EE31CF44F9FA7F80902 /* InterSemiBold.ttf */ = {isa = PBXFileReference; name = "InterSemiBold.ttf"; path = "../assets/fonts/InterSemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		BB0E757912044372B147B10E /* LatoRegular.ttf */ = {isa = PBXFileReference; name = "LatoRegular.ttf"; path = "../assets/fonts/LatoRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5E1B79DE8ACE4B17BD7F89FC /* LexendMedium.ttf */ = {isa = PBXFileReference; name = "LexendMedium.ttf"; path = "../assets/fonts/LexendMedium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		61F6BF53A06C4BAD988EC33F /* PoppinsMedium.ttf */ = {isa = PBXFileReference; name = "PoppinsMedium.ttf"; path = "../assets/fonts/PoppinsMedium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		08167D74EDC14B9186E11D39 /* PoppinsLight.ttf */ = {isa = PBXFileReference; name = "PoppinsLight.ttf"; path = "../assets/fonts/PoppinsLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		30F5F527DA8B4513ACD1AF23 /* InterRegular.ttf */ = {isa = PBXFileReference; name = "InterRegular.ttf"; path = "../assets/fonts/InterRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				C8912D72B814A12D7F60CA75 /* PrivacyInfo.xcprivacy */,
 			);
 			name = RestaurantApp;
 			sourceTree = "<group>";
@@ -208,19 +211,8 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3B4392A12AC88292D35C810B /* Pods-RestaurantApp.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-RestaurantApp.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-RestaurantApp-RestaurantAppTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-RestaurantApp-RestaurantAppTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		AF2BEB5E98BA45A8BE0C6E67 /* Resources */ = {
-			isa = "PBXGroup";
+			isa = PBXGroup;
 			children = (
 				7F5A3016C7A749B281AF3CB8 /* RalewayBold.ttf */,
 				DE908A790A694C1C8B0E9C4D /* RalewayMedium.ttf */,
@@ -258,8 +250,19 @@
 				30F5F527DA8B4513ACD1AF23 /* InterRegular.ttf */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
 			path = "";
+			sourceTree = "<group>";
+		};
+		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3B4392A12AC88292D35C810B /* Pods-RestaurantApp.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-RestaurantApp.release.xcconfig */,
+				5B7EB9410499542E8C5724F5 /* Pods-RestaurantApp-RestaurantAppTests.debug.xcconfig */,
+				89C6BE57DB24E9ADA2F236DE /* Pods-RestaurantApp-RestaurantAppTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -296,6 +299,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				A08C6525816FC1026DDD9087 /* [CP-User] [RNFB] Core Configuration */,
 			);
 			buildRules = (
 			);
@@ -390,6 +394,7 @@
 				828F78E9F86041218B8DF895 /* PoppinsMedium.ttf in Resources */,
 				0AA09A4134C44A9191B10CF0 /* PoppinsLight.ttf in Resources */,
 				0EE24AE66C224BB0B99DBE24 /* InterRegular.ttf in Resources */,
+				E941A3BA16E2329864FDC228 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +433,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RestaurantApp/Pods-RestaurantApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		A08C6525816FC1026DDD9087 /* [CP-User] [RNFB] Core Configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "[CP-User] [RNFB] Core Configuration";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/usr/bin/env bash\n#\n# Copyright (c) 2016-present Invertase Limited & Contributors\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this library except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#   http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\n\n##########################################################################\n##########################################################################\n#\n#  NOTE THAT IF YOU CHANGE THIS FILE YOU MUST RUN pod install AFTERWARDS\n#\n#  This file is installed as an Xcode build script in the project file\n#  by cocoapods, and you will not see your changes until you pod install\n#\n##########################################################################\n##########################################################################\n\nset -e\n\n_MAX_LOOKUPS=2;\n_SEARCH_RESULT=''\n_RN_ROOT_EXISTS=''\n_CURRENT_LOOKUPS=1\n_JSON_ROOT=\"'react-native'\"\n_JSON_FILE_NAME='firebase.json'\n_JSON_OUTPUT_BASE64='e30=' # { }\n_CURRENT_SEARCH_DIR=${PROJECT_DIR}\n_PLIST_BUDDY=/usr/libexec/PlistBuddy\n_TARGET_PLIST=\"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}\"\n_DSYM_PLIST=\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist\"\n\n# plist arrays\n_PLIST_ENTRY_KEYS=()\n_PLIST_ENTRY_TYPES=()\n_PLIST_ENTRY_VALUES=()\n\nfunction setPlistValue {\n  echo \"info:      setting plist entry '$1' of type '$2' in file '$4'\"\n  ${_PLIST_BUDDY} -c \"Add :$1 $2 '$3'\" $4 || echo \"info:      '$1' already exists\"\n}\n\nfunction getFirebaseJsonKeyValue () {\n  if [[ ${_RN_ROOT_EXISTS} ]]; then\n    ruby -Ku -e \"require 'rubygems';require 'json'; output=JSON.parse('$1'); puts output[$_JSON_ROOT]['$2']\"\n  else\n    echo \"\"\n  fi;\n}\n\nfunction jsonBoolToYesNo () {\n  if [[ $1 == \"false\" ]]; then\n    echo \"NO\"\n  elif [[ $1 == \"true\" ]]; then\n    echo \"YES\"\n  else echo \"NO\"\n  fi\n}\n\necho \"info: -> RNFB build script started\"\necho \"info: 1) Locating ${_JSON_FILE_NAME} file:\"\n\nif [[ -z ${_CURRENT_SEARCH_DIR} ]]; then\n  _CURRENT_SEARCH_DIR=$(pwd)\nfi;\n\nwhile true; do\n  _CURRENT_SEARCH_DIR=$(dirname \"$_CURRENT_SEARCH_DIR\")\n  if [[ \"$_CURRENT_SEARCH_DIR\" == \"/\" ]] || [[ ${_CURRENT_LOOKUPS} -gt ${_MAX_LOOKUPS} ]]; then break; fi;\n  echo \"info:      ($_CURRENT_LOOKUPS of $_MAX_LOOKUPS) Searching in '$_CURRENT_SEARCH_DIR' for a ${_JSON_FILE_NAME} file.\"\n  _SEARCH_RESULT=$(find \"$_CURRENT_SEARCH_DIR\" -maxdepth 2 -name ${_JSON_FILE_NAME} -print | /usr/bin/head -n 1)\n  if [[ ${_SEARCH_RESULT} ]]; then\n    echo \"info:      ${_JSON_FILE_NAME} found at $_SEARCH_RESULT\"\n    break;\n  fi;\n  _CURRENT_LOOKUPS=$((_CURRENT_LOOKUPS+1))\ndone\n\nif [[ ${_SEARCH_RESULT} ]]; then\n  _JSON_OUTPUT_RAW=$(cat \"${_SEARCH_RESULT}\")\n  _RN_ROOT_EXISTS=$(ruby -Ku -e \"require 'rubygems';require 'json'; output=JSON.parse('$_JSON_OUTPUT_RAW'); puts output[$_JSON_ROOT]\" || echo '')\n\n  if [[ ${_RN_ROOT_EXISTS} ]]; then\n    if ! python3 --version >/dev/null 2>&1; then echo \"python3 not found, firebase.json file processing error.\" && exit 1; fi\n    _JSON_OUTPUT_BASE64=$(python3 -c 'import json,sys,base64;print(base64.b64encode(bytes(json.dumps(json.loads(open('\"'${_SEARCH_RESULT}'\"', '\"'rb'\"').read())['${_JSON_ROOT}']), '\"'utf-8'\"')).decode())' || echo \"e30=\")\n  fi\n\n  _PLIST_ENTRY_KEYS+=(\"firebase_json_raw\")\n  _PLIST_ENTRY_TYPES+=(\"string\")\n  _PLIST_ENTRY_VALUES+=(\"$_JSON_OUTPUT_BASE64\")\n\n  # config.app_data_collection_default_enabled\n  _APP_DATA_COLLECTION_ENABLED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"app_data_collection_default_enabled\")\n  if [[ $_APP_DATA_COLLECTION_ENABLED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseDataCollectionDefaultEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_APP_DATA_COLLECTION_ENABLED\")\")\n  fi\n\n  # config.analytics_auto_collection_enabled\n  _ANALYTICS_AUTO_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_auto_collection_enabled\")\n  if [[ $_ANALYTICS_AUTO_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FIREBASE_ANALYTICS_COLLECTION_ENABLED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_AUTO_COLLECTION\")\")\n  fi\n\n  # config.analytics_collection_deactivated\n  _ANALYTICS_DEACTIVATED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_collection_deactivated\")\n  if [[ $_ANALYTICS_DEACTIVATED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_DEACTIVATED\")\")\n  fi\n\n  # config.analytics_idfv_collection_enabled\n  _ANALYTICS_IDFV_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_idfv_collection_enabled\")\n  if [[ $_ANALYTICS_IDFV_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_IDFV_COLLECTION_ENABLED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_IDFV_COLLECTION\")\")\n  fi\n\n  # config.analytics_default_allow_analytics_storage\n  _ANALYTICS_STORAGE=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_default_allow_analytics_storage\")\n  if [[ $_ANALYTICS_STORAGE ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_DEFAULT_ALLOW_ANALYTICS_STORAGE\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_STORAGE\")\")\n  fi\n\n  # config.analytics_default_allow_ad_storage\n  _ANALYTICS_AD_STORAGE=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_default_allow_ad_storage\")\n  if [[ $_ANALYTICS_AD_STORAGE ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_STORAGE\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_AD_STORAGE\")\")\n  fi\n\n  # config.analytics_default_allow_ad_user_data\n  _ANALYTICS_AD_USER_DATA=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_default_allow_ad_user_data\")\n  if [[ $_ANALYTICS_AD_USER_DATA ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_USER_DATA\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_AD_USER_DATA\")\")\n  fi\n\n  # config.analytics_default_allow_ad_personalization_signals\n  _ANALYTICS_PERSONALIZATION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_default_allow_ad_personalization_signals\")\n  if [[ $_ANALYTICS_PERSONALIZATION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_PERSONALIZATION\")\")\n  fi\n\n  # config.analytics_registration_with_ad_network_enabled\n  _ANALYTICS_REGISTRATION_WITH_AD_NETWORK=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"google_analytics_registration_with_ad_network_enabled\")\n  if [[ $_ANALYTICS_REGISTRATION_WITH_AD_NETWORK ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_REGISTRATION_WITH_AD_NETWORK_ENABLED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_REGISTRATION_WITH_AD_NETWORK\")\")\n  fi\n\n  # config.google_analytics_automatic_screen_reporting_enabled\n  _ANALYTICS_AUTO_SCREEN_REPORTING=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"google_analytics_automatic_screen_reporting_enabled\")\n  if [[ $_ANALYTICS_AUTO_SCREEN_REPORTING ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseAutomaticScreenReportingEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_AUTO_SCREEN_REPORTING\")\")\n  fi\n\n  # config.perf_auto_collection_enabled\n  _PERF_AUTO_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"perf_auto_collection_enabled\")\n  if [[ $_PERF_AUTO_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"firebase_performance_collection_enabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_PERF_AUTO_COLLECTION\")\")\n  fi\n\n  # config.perf_collection_deactivated\n  _PERF_DEACTIVATED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"perf_collection_deactivated\")\n  if [[ $_PERF_DEACTIVATED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"firebase_performance_collection_deactivated\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_PERF_DEACTIVATED\")\")\n  fi\n\n  # config.messaging_auto_init_enabled\n  _MESSAGING_AUTO_INIT=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"messaging_auto_init_enabled\")\n  if [[ $_MESSAGING_AUTO_INIT ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseMessagingAutoInitEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_MESSAGING_AUTO_INIT\")\")\n  fi\n\n  # config.in_app_messaging_auto_colllection_enabled\n  _FIAM_AUTO_INIT=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"in_app_messaging_auto_collection_enabled\")\n  if [[ $_FIAM_AUTO_INIT ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseInAppMessagingAutomaticDataCollectionEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_FIAM_AUTO_INIT\")\")\n  fi\n\n  # config.app_check_token_auto_refresh\n  _APP_CHECK_TOKEN_AUTO_REFRESH=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"app_check_token_auto_refresh\")\n  if [[ $_APP_CHECK_TOKEN_AUTO_REFRESH ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseAppCheckTokenAutoRefreshEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_APP_CHECK_TOKEN_AUTO_REFRESH\")\")\n  fi\n\n  # config.crashlytics_disable_auto_disabler - undocumented for now - mainly for debugging, document if becomes useful\n  _CRASHLYTICS_AUTO_DISABLE_ENABLED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"crashlytics_disable_auto_disabler\")\n  if [[ $_CRASHLYTICS_AUTO_DISABLE_ENABLED == \"true\" ]]; then\n    echo \"Disabled Crashlytics auto disabler.\" # do nothing\n  else\n    _PLIST_ENTRY_KEYS+=(\"FirebaseCrashlyticsCollectionEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"NO\")\n  fi\nelse\n  _PLIST_ENTRY_KEYS+=(\"firebase_json_raw\")\n  _PLIST_ENTRY_TYPES+=(\"string\")\n  _PLIST_ENTRY_VALUES+=(\"$_JSON_OUTPUT_BASE64\")\n  echo \"warning:   A firebase.json file was not found, whilst this file is optional it is recommended to include it to configure firebase services in React Native Firebase.\"\nfi;\n\necho \"info: 2) Injecting Info.plist entries: \"\n\n# Log out the keys we're adding\nfor i in \"${!_PLIST_ENTRY_KEYS[@]}\"; do\n  echo \"    ->  $i) ${_PLIST_ENTRY_KEYS[$i]}\" \"${_PLIST_ENTRY_TYPES[$i]}\" \"${_PLIST_ENTRY_VALUES[$i]}\"\ndone\n\nfor plist in \"${_TARGET_PLIST}\" \"${_DSYM_PLIST}\" ; do\n  if [[ -f \"${plist}\" ]]; then\n\n    # paths with spaces break the call to setPlistValue. temporarily modify\n    # the shell internal field separator variable (IFS), which normally\n    # includes spaces, to consist only of line breaks\n    oldifs=$IFS\n    IFS=\"\n\"\n\n    for i in \"${!_PLIST_ENTRY_KEYS[@]}\"; do\n      setPlistValue \"${_PLIST_ENTRY_KEYS[$i]}\" \"${_PLIST_ENTRY_TYPES[$i]}\" \"${_PLIST_ENTRY_VALUES[$i]}\" \"${plist}\"\n    done\n\n    # restore the original internal field separator value\n    IFS=$oldifs\n  else\n    echo \"warning:   A Info.plist build output file was not found (${plist})\"\n  fi\ndone\n\necho \"info: <- RNFB build script finished\"\n";
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -662,6 +680,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -689,6 +708,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CXX = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -708,6 +728,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD = "";
+				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -727,7 +749,14 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				USE_HERMES = true;
 			};
 			name = Debug;
 		};
@@ -735,6 +764,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -762,6 +792,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				CXX = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -774,6 +805,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD = "";
+				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -792,7 +825,13 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

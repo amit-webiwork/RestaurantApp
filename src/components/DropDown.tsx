@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         // borderWidth: 1,
         borderColor: '#C0C0C0',
         borderRadius: 7,
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.WHITE,
         flexDirection: "row",
         alignItems: "center",
 
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     dropdownList: {
         width: '80%',
         maxHeight: 300,
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.WHITE,
         borderRadius: 8,
         padding: 10,
     },

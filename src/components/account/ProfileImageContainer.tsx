@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
-import { apiEndpoints, BACKEND_URL, CDN_URL, errorMessage } from '../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, CDN_URL, COLORS, errorMessage } from '../../utils/Constants';
 import { loadStorage, saveStorage } from '../../utils/Storage';
 import { setProflieDetails } from '../../redux/features/profile';
 import { showFadeAlert } from '../../utils/Alert';
 import { setDialogContent } from '../../redux/features/customDialog';
-import { FS, HP, VP } from '../../utils/Responsive';
+import { FS, VP } from '../../utils/Responsive';
 import Warning from '../../assets/svgs/warning.svg';
 import NormalLoader from '../NormalLoader';
 import { AppDispatch } from '../../redux/store';
@@ -100,7 +100,7 @@ function ProfileImageContainer(props: any) {
             <TouchableOpacity
                 onPress={handleChoosePhoto}
                 style={{
-                    backgroundColor: "#FFFFFF",
+                    backgroundColor: COLORS.WHITE,
                     width: FS(25.33),
                     height: FS(25.33),
                     borderRadius: FS(25.33) / 2,

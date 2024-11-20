@@ -9,7 +9,7 @@ import {
     Dimensions
 } from 'react-native';
 
-import { FS, HP, VP } from '../../utils/Responsive';
+import { FS, HP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { cuisineList, cuisineLoaded, fetchCuisine, setCuisineList } from '../../redux/features/items';

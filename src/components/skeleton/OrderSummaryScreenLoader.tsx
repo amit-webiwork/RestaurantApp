@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 4,
         elevation: 5,
-        backgroundColor: "#fff",
+        backgroundColor: COLORS.WHITE,
         borderRadius: HP(10),
         padding: HP(14),
         gap: HP(14.69),

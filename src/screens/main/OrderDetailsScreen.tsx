@@ -25,6 +25,8 @@ import CustomActionDialogComp from '../../components/dialogs/CustomActionDialog'
 import { deleteOrder, fetchOrderDetails } from '../../utils/ApiCall';
 import { getOrderComponents, getReorderItems } from '../../utils/helper/OrderHelper';
 import { recoverCart } from '../../redux/features/cart';
+import { showFadeAlert } from '../../utils/Alert';
+import { useReceiptDownload } from '../../utils/customHooks/useReceiptDownload';
 
 const titleDelete = `Confirm Delete`;
 const messageDelete = `Are you sure you want to delete this order?`;
@@ -42,6 +44,9 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
     const TopicList = useSelector(topicList);
 
     const [orderData, setOrderData] = useState<any>({});
+
+    const { createPDF } = useReceiptDownload(orderData, navigation);
+
     const [loading, setLoading] = useState<boolean>(false);
     const [buttonLoading, setButtonLoading] = useState<boolean>(false);
     const [rating, setRating] = useState(5);
@@ -130,8 +135,11 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                 setTimeout(() => {
                     navigation.navigate(`CartScreen`);
                 }, 100)
+            } else {
+                showFadeAlert('Currently unavailable for reorder.');
             }
         } catch (err) {
+        } finally {
             setLoading(false);
         }
     }
@@ -191,13 +199,18 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={{ paddingVertical: HP(20), marginBottom: VP(79) }}>
                             {/* Navigation section */}
-                            <View style={{ paddingHorizontal: HP(20) }}>
+                            <View style={{ paddingHorizontal: width * .05 }}>
                                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                                     <TouchableOpacity
                                         onPress={() => navigation.goBack()}
-                                        style={{ alignSelf: "center", }}
+                                        style={globalStyle.navigationIconBox}
                                     >
-                                        <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BLACK} />
+                                        <Icon
+                                            type={Icons.Feather}
+                                            size={FS(20)}
+                                            name={`chevron-left`}
+                                            color={COLORS.BLACK}
+                                        />
                                     </TouchableOpacity>
                                     <Text style={styles.topHeading}>order detail</Text>
                                 </View>
@@ -237,10 +250,26 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                                             toggleMenu();
                                                             setOrderDeleteDialogVisible(true)
                                                         }}
-                                                        style={{ flexDirection: "row", alignItems: "center", gap: HP(7.25) }}
+                                                        style={styles.actionLink}
                                                     >
                                                         <Icon type={Icons.Feather} size={FS(12)} name={`trash-2`} color={`#FF3434`} />
                                                         <Text style={styles.menuItem}>delete</Text>
+                                                    </TouchableOpacity>
+
+                                                    <TouchableOpacity
+                                                        onPress={() => {
+                                                            toggleMenu();
+                                                            createPDF();
+                                                        }}
+                                                        style={[styles.actionLink, { start: HP(2) }]}
+                                                    >
+                                                        <Icon
+                                                            type={Icons.FontAwesome5}
+                                                            size={FS(11)}
+                                                            name={`file-invoice`}
+                                                            color={`#404040`}
+                                                        />
+                                                        <Text style={styles.menuItem}>Download receipt</Text>
                                                     </TouchableOpacity>
                                                 </View>
                                             )}
@@ -250,22 +279,64 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                     <View style={styles.line}></View>
 
                                     {/* Order Item List */}
-                                    <View style={{ flexDirection: "column", justifyContent: "space-between", paddingHorizontal: HP(10) }}>
+                                    <View style={{
+                                        flexDirection: "column",
+                                        justifyContent: "space-between",
+                                        paddingHorizontal: HP(10)
+                                    }}>
                                         <View style={{ gap: HP(8) }}>
-                                            {(orderData?.orderItems && Array.isArray(orderData?.orderItems) && orderData?.orderItems.length > 0) ? (
-                                                orderData?.orderItems.map((d: any, i: number) => (
-                                                    <View key={`item-list-${i}`} style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                                        <Text style={styles.itemText}>
-                                                            • {d?.qty} x {d?.itemName}
-                                                        </Text>
-                                                        <Text style={styles.orderEntityPrice}>
-                                                            ${d?.price}
-                                                        </Text>
-                                                    </View>
-                                                ))
-                                            ) : (
-                                                <Text style={styles.itemText}>No items ordered</Text>
-                                            )}
+                                            {(orderData?.orderItems &&
+                                                Array.isArray(orderData?.orderItems) &&
+                                                orderData?.orderItems.length > 0) ?
+                                                (
+                                                    orderData?.orderItems.map((d: any, i: number) => (
+                                                        <View
+                                                            key={`item-list-${i}`}
+                                                            style={{
+                                                                flexDirection: "row",
+                                                                justifyContent: "space-between"
+                                                            }}
+                                                        >
+                                                            <View style={{ flexBasis: "70%" }}>
+                                                                <Text style={styles.itemText}>
+                                                                    • {d?.qty} x {d?.itemName}
+                                                                </Text>
+
+                                                                <View
+                                                                    style={styles.variantMain}>
+                                                                    {d?.variants?.map((k: any, j: number) => (
+                                                                        <View
+                                                                            key={`item-variants-${i}-${j}`}
+                                                                            style={styles.variantSub}
+                                                                        >
+                                                                            <Icon
+                                                                                type={Icons.FontAwesome5}
+                                                                                size={FS(11)}
+                                                                                name={`long-arrow-alt-right`}
+                                                                                color={`#787878`}
+                                                                            />
+
+                                                                            <Text style={styles.variantName}>{k?.name}:</Text>
+                                                                            <View>
+                                                                                <Text style={styles.atrributeName}>
+                                                                                    {k?.variantAttributes
+                                                                                        .map((attr: { name: string; }) => attr.name)
+                                                                                        .join(', ')}
+                                                                                </Text>
+                                                                            </View>
+                                                                        </View>
+                                                                    ))}
+                                                                </View>
+                                                            </View>
+
+                                                            <Text style={styles.orderEntityPrice}>
+                                                                ${d?.price}
+                                                            </Text>
+                                                        </View>
+                                                    ))
+                                                ) : (
+                                                    <Text style={styles.itemText}>No items ordered</Text>
+                                                )}
                                         </View>
                                         {orderData?.orderItems?.length > 1 && (<Text style={styles.qtyText}>qty {orderData?.totalQty}</Text>)}
                                     </View>
@@ -277,6 +348,11 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderEntityText}>item:</Text>
                                             <Text style={styles.orderEntityPrice}>${orderData?.itemTotal}</Text>
+                                        </View>
+
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={styles.orderEntityText}>Extra Add On:</Text>
+                                            <Text style={styles.orderEntityPrice}>${orderData?.variantTotalPrice}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -294,11 +370,6 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                             <Text style={styles.orderEntityPrice}>${orderData?.taxAmount}</Text>
                                         </View>
 
-                                        {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                            <Text style={styles.orderEntityText}>total:</Text>
-                                            <Text style={styles.orderEntityPrice}>${orderData?.finalAmount}</Text>
-                                        </View> */}
-
                                         <View style={styles.line}></View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -313,11 +384,11 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                     <View style={{ paddingHorizontal: HP(20), gap: HP(10), marginVertical: HP(24) }}>
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                             <Text style={styles.orderDetailRightText}>order number</Text>
-                                            <Text style={styles.orderDetailLeftText}>#{orderData?.id}</Text>
+                                            <Text style={styles.orderDetailLeftText}>#{orderData?.orderId}</Text>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                            <Text style={styles.orderDetailRightText}>order sttaus</Text>
+                                            <Text style={styles.orderDetailRightText}>order status</Text>
                                             <Text style={[styles.orderDetailLeftText, { flexBasis: "50%", textAlign: "right" }]}>{orderData?.orderStatus}</Text>
                                         </View>
 
@@ -455,7 +526,7 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
 const styles = StyleSheet.create({
     topHeading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
+        color: COLORS.BLACK,
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",
@@ -486,7 +557,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 4,
         elevation: 5,
-        backgroundColor: "#fff",
+        backgroundColor: COLORS.WHITE,
         borderRadius: HP(10),
         padding: HP(14),
         gap: HP(14.69),
@@ -495,16 +566,17 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 0,
         top: VP(18),
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.WHITE,
         borderRadius: 5,
         padding: 10,
-        shadowColor: '#000',
+        shadowColor: COLORS.BLACK,
         shadowOpacity: 0.1,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 5,
         elevation: 5,
         zIndex: 1000,
-        minWidth: FS(80)
+        minWidth: FS(80),
+        gap: HP(7.25)
     },
     menuItem: {
         ...TextStyles.RALEWAY_REGULAR,
@@ -642,6 +714,35 @@ const styles = StyleSheet.create({
         textTransform: "capitalize",
         width: width * .90
     },
+    actionLink: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: HP(7.25)
+    },
+    variantMain: {
+        flexDirection: "row",
+        gap: HP(5),
+        start: HP(10),
+        flexWrap: "wrap"
+    },
+    variantSub: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: HP(5),
+        width: "100%"
+    },
+    variantName: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 12,
+        textTransform: "capitalize",
+        color: "#787878"
+    },
+    atrributeName: {
+        ...TextStyles.RALEWAY_SEMI_BOLD,
+        fontSize: 10,
+        textTransform: "capitalize",
+        color: "#787878"
+    }
 });
 
 export default OrderDetailsScreen;

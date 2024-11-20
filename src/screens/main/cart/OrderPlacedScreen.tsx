@@ -30,20 +30,25 @@ function OrderPlacedScreen({ route, navigation }: { route: any; navigation: any 
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(20), marginBottom: VP(87) }}>
                         {/* Navigation section */}
-                        <View style={{ paddingHorizontal: HP(21) }}>
+                        <View>
                             {/* Top Navigation */}
-                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: HP(18) }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate(`HomeScreen`)}
-                                    style={{ alignSelf: "center" }}
+                                    style={globalStyle.navigationIconBox}
                                 >
-                                    <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                                    <Icon
+                                        type={Icons.Feather}
+                                        size={FS(18)}
+                                        name={`chevron-left`}
+                                        color={COLORS.BLACK}
+                                    />
                                 </TouchableOpacity>
                                 <Text style={styles.topHeading}>order tracking</Text>
                             </View>
                             <Text style={styles.orderNo}>#{orderId}</Text>
 
-                            <View style={{ justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ justifyContent: "center", alignItems: "center", paddingHorizontal: HP(21) }}>
                                 <View style={styles.popUpImg}>
                                     <CheckmarkWithConfetti />
                                 </View>
@@ -72,7 +77,7 @@ const styles = StyleSheet.create({
     },
     topHeading: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
-        color: "#000000",
+        color: COLORS.BLACK,
         fontSize: 18,
         textTransform: "capitalize",
         textAlign: "center",

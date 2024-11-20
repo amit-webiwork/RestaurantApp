@@ -5,7 +5,6 @@ import { FS, HP, VP } from '../../utils/Responsive';
 import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import { getOrderList } from '../../utils/ApiCall';
-import ActiveOrderItem from '../../components/order/ActiveOrderItem';
 import ActiveOrderItemSection from '../../components/order/ActiveOrderItem';
 
 const { width, height } = Dimensions.get('window');

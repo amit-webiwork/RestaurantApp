@@ -24,6 +24,8 @@ import OrderDetailsScreen from '../screens/main/OrderDetailsScreen';
 import OrderTrackScreen from '../screens/main/OrderTrackScreen';
 import SignUpScreen from '../screens/auth/SignUpScreen';
 import LoginScreen from '../screens/auth/LoginScreen';
+import RefundScreen from '../screens/main/account/RefundScreen';
+import ReceiptScreen from '../screens/main/ReceiptScreen';
 
 export type MainTabParamList = {
     HomeScreen: undefined;
@@ -50,6 +52,8 @@ export type MainTabParamList = {
     OrderTrackScreen: undefined;
     SignUpScreen: undefined;
     LoginScreen: undefined;
+    RefundScreen: undefined;
+    ReceiptScreen: undefined;
 };
 
 const MainTabNavigator: React.FunctionComponent = () => {
@@ -143,7 +147,14 @@ const MainTabNavigator: React.FunctionComponent = () => {
                 name={`LoginScreen`}
                 component={LoginScreen}
             />
-
+            <Stack.Screen
+                name={`RefundScreen`}
+                component={RefundScreen}
+            />
+            <Stack.Screen
+                name={`ReceiptScreen`}
+                component={ReceiptScreen}
+            />
             <Stack.Group screenOptions={{
                 presentation: 'transparentModal',
                 animation: 'slide_from_bottom',   // Slide from bottom animation

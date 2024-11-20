@@ -102,7 +102,7 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                 buttonText1={`No, I won’t`}
                 buttonText2='Yes, Of course'
             />
-            <View style={{ flex: 1, paddingBottom: VP(80), backgroundColor: "#FFF" }}>
+            <View style={{ flex: 1, paddingBottom: VP(80), backgroundColor: COLORS.WHITE }}>
                 <AccountSkeletonSection navigation={navigation} user={user}>
                     <View style={{ paddingHorizontal: HP(39), paddingVertical: HP(120), gap: HP(15) }}>
                         {/* edit profile */}
@@ -175,7 +175,7 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             {isPaymentMenuOpen && (
                                 <View style={{ marginTop: VP(11), paddingLeft: HP(20), gap: HP(15) }}>
                                     <TouchableOpacity
-                                        onPress={() => console.log("Refund Status clicked")}
+                                        onPress={() => navigation.navigate(`RefundScreen`)}
                                         style={{ flexDirection: "row", gap: HP(16), alignItems: "center" }}
                                     >
                                         <Image source={require(`../../assets/icons/refund.png`)} style={{ width: FS(24), height: VP(24) }} />

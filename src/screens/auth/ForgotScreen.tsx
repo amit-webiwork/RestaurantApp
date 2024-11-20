@@ -13,7 +13,7 @@ import { saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
 import { globalStyle } from '../../utils/GlobalStyle';
 import CustomTextInput from '../../components/CustomTextInput';
-import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, STD_CODE } from '../../utils/Constants';
 import { forgotPassword, validateResource } from '../../utils/ValidateResource';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
@@ -35,8 +35,6 @@ const ForgotScreen: React.FunctionComponent<NavigationProp> = ({
 
     const handleOnPress = async () => {
         try {
-            // navigation.navigate(`VerifyCodeScreen`);
-            // return;
             setError(errorObj);
 
             const resource = { username };
@@ -73,43 +71,54 @@ const ForgotScreen: React.FunctionComponent<NavigationProp> = ({
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={{ flex: 5 }}>
                             {/* Top Navigation */}
-                            <View style={{ flexDirection: "row" }}>
+                            <View style={{ flexDirection: "row", marginHorizontal: HP(18) }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
-                                    style={{ alignSelf: "center", top: VP(2) }}
+                                    style={globalStyle.navigationIconBox}
                                 >
-                                    <Icon type={Icons.Feather} size={FS(18)} name={`chevron-left`} color={COLORS.BLACK} />
+                                    <Icon
+                                        type={Icons.Feather}
+                                        size={FS(18)}
+                                        name={`chevron-left`}
+                                        color={COLORS.BLACK}
+                                    />
                                 </TouchableOpacity>
                                 <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, color: "#424242", textAlign: "center", flex: 1 }}>Forgot Password</Text>
                             </View>
 
-                            <View style={{ marginTop: VP(50) }}>
-                                <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: FS(52.83), paddingLeft: FS(65.69), paddingRight: FS(63.9), paddingTop: FS(52.62), backgroundColor: "#FFEAFD", width: FS(202), height: FS(202), borderRadius: FS(101), alignSelf: "center" }}>
-                                    <Image source={require('../../assets/images/lock.png')} style={styles.icon} />
+                            <View style={{ marginHorizontal: HP(30) }}>
+                                <View style={{ marginTop: VP(50) }}>
+                                    <View style={{ justifyContent: "center", flexDirection: "row", paddingBottom: FS(52.83), paddingLeft: FS(65.69), paddingRight: FS(63.9), paddingTop: FS(52.62), backgroundColor: "#FFEAFD", width: FS(202), height: FS(202), borderRadius: FS(101), alignSelf: "center" }}>
+                                        <Image source={require('../../assets/images/lock.png')} style={styles.icon} />
+                                    </View>
                                 </View>
-                            </View>
 
-                            <View style={{ marginTop: VP(36) }}>
-                                <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, textTransform: "capitalize", textAlign: "center", lineHeight: VP(22) }}>
-                                    please enter your email address or mobile number to recieve a verification code.
-                                </Text>
-                            </View>
+                                <View style={{ marginTop: VP(36) }}>
+                                    <Text style={{ ...TextStyles.RALEWAY_MEDIUM, fontSize: 14, textTransform: "capitalize", textAlign: "center", lineHeight: VP(22) }}>
+                                        {/* please enter your email address or mobile number to recieve a verification code. */}
+                                        please enter your mobile number to recieve a verification code.
+                                    </Text>
+                                </View>
 
-                            <View style={{ marginTop: VP(53) }}>
-                                <CustomTextInput
-                                    placeholder='Email Address Or Phone Number'
-                                    formProps={{ text: username, setText: setUsername, error: error.username }}
-                                    maxLength={100}
-                                    styleInput={{
-                                        height: "auto",
-                                        marginTop: VP(13)
-                                    }}
-                                />
+                                <View style={{ marginTop: VP(53) }}>
+                                    <CustomTextInput
+                                        // placeholder='Email Address Or Phone Number'
+                                        placeholder='Mobile Number'
+                                        formProps={{ text: username, setText: setUsername, error: error.username }}
+                                        maxLength={10}
+                                        prefix={STD_CODE}
+                                        keyboardType='numeric'
+                                        styleInput={{
+                                            height: "auto",
+                                            marginTop: VP(13)
+                                        }}
+                                    />
+                                </View>
                             </View>
                         </View>
 
 
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1, marginHorizontal: HP(30) }}>
                             <Button
                                 text={'send'}
                                 onPress={handleOnPress}
@@ -130,7 +139,6 @@ const ForgotScreen: React.FunctionComponent<NavigationProp> = ({
 
 const styles = StyleSheet.create({
     main: {
-        marginHorizontal: HP(30),
         marginVertical: VP(20),
         flex: 1
     },
@@ -138,12 +146,12 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 20,
         color: COLORS.WHITE,
-        textTransform: "capitalize",
+        textTransform: "capitalize"
     },
     line: {
         height: 1,
         backgroundColor: "#929292",
-        width: "20%",
+        width: "20%"
     },
     icon: {
         width: FS(72.41),

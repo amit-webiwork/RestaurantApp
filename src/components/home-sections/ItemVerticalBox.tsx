@@ -15,9 +15,6 @@ import { FS, HP, VP } from '../../utils/Responsive';
 import { CDN_URL, COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import { getItemPriceComponents } from '../../utils/helper/ItemHelper';
-import ItemBoxLoaderSection from '../skeleton/ItemBoxLoader';
-import MenuItemLoaderSection from '../skeleton/MenuItemLoader';
-import MenuVerticalItemLoader from '../skeleton/MenuVerticalItemLoader';
 import { addToCart } from '../../utils/helper/CartHelper';
 import { AppDispatch } from '../../redux/store';
 import { useDispatch } from 'react-redux';
@@ -159,7 +156,7 @@ const styles = StyleSheet.create({
         borderRadius: FS(25.35),
         shadowOpacity: 0.2,
         backgroundColor: COLORS.WHITE,
-        shadowColor: "#000",
+        shadowColor: COLORS.BLACK,
         shadowOffset: {
             width: -2,
             height: 4,

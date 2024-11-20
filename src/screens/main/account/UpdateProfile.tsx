@@ -116,7 +116,8 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                                 placeholder="Enter Phone Number"
                                 maxLength={20}
                                 keyboardType='numeric'
-                                styleInput={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 14, paddingVertical: HP(8) }}
+                                styleInput={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 14, paddingVertical: HP(8), color: '#5D5959' }}
+                                editable={false}
                             />
                         </View>
 

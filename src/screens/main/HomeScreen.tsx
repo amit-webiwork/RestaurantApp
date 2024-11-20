@@ -27,6 +27,9 @@ import Icon, { Icons } from '../../components/Icons';
 import ItemBoxSection from '../../components/home-sections/ItemBox.tsx';
 import HeadingSection from '../../components/Heading.tsx';
 import {
+  discountedItemLoaded,
+  discountedItems,
+  fetchDiscountedItems,
   fetchPopularItems,
   getFeaturedCategory,
   papularItemLoaded,
@@ -53,8 +56,12 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
   const { user } = ProflieDetails;
 
-  const PapularItemLoaded = useSelector(papularItemLoaded);
   const PapularItems = useSelector(papularItems);
+  const PapularItemLoaded = useSelector(papularItemLoaded);
+
+  const DiscountedItems = useSelector(discountedItems);
+  const DiscountedItemLoaded = useSelector(discountedItemLoaded);
+
   const featuredCategory = useSelector(getFeaturedCategory);
 
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
@@ -84,6 +91,12 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     }
   }, [PapularItemLoaded]);
 
+  useEffect(() => {
+    if (!DiscountedItemLoaded) {
+      dispatch(fetchDiscountedItems());
+    }
+  }, [DiscountedItemLoaded]);
+
   // location update on initial load
   useEffect(() => {
     (async () => {
@@ -109,6 +122,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     if (isFocused) {
       (async () => {
         const notificationList = await loadStorage('notificationList');
+
         const count = notificationList.length
           ? notificationList.filter((d: { read: any }) => !d?.read).length
           : 0;
@@ -131,7 +145,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
   const handleNotifications = async () => {
     const notificationList = await loadStorage('notificationList');
     if (Array.isArray(notificationList)) {
-      const updatedData = notificationList?.map((item: []) => ({
+      const updatedData = notificationList?.filter(item => Object.keys(item).length > 0)?.map((item: []) => ({
         ...item,
         read: true,
       }));
@@ -158,7 +172,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                   style={styles.notificationBox}>
                   <Icon
                     type={Icons.Feather}
-                    size={20}
+                    size={FS(20)}
                     name={`bell`}
                     color={COLORS.WHITE}
                   />
@@ -191,7 +205,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                       textStyle={styles.buttonStyle}
                       activeButtonText={{ opacity: 0.65 }}
                       mainContainerStyle={{ borderRadius: FS(16) }}
-                      LinearGradienrColor={['#FFFFFF', '#FFFFFF']}
+                      LinearGradienrColor={[COLORS.WHITE, COLORS.WHITE]}
                       contentContainerStyle={{ top: -2 }}
                       style={{ width: FS(104), height: FS(30) }}
                     />
@@ -254,7 +268,11 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         <Right width={FS(12)} height={VP(12)} />
                       </TouchableOpacity>
                     </View>
-                    <PromotionalBoxSection navigation={navigation} />
+                    <PromotionalBoxSection
+                      data={DiscountedItems}
+                      dataLoaded={DiscountedItemLoaded}
+                      navigation={navigation}
+                    />
                   </View>
 
                   {/* Heading Menu */}
@@ -419,7 +437,7 @@ const styles = StyleSheet.create({
   },
   notificationCountBox: {
     width: FS(15),
-    height: VP(15),
+    height: FS(15),
     borderRadius: FS(7.5),
     backgroundColor: COLORS.THEME,
     justifyContent: 'center',

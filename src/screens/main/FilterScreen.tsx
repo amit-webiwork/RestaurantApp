@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { cuisineList, cuisineLoaded, dietaryList, dietaryLoaded, fetchCuisine, fetchDietaries, fetchPopularItems, getFilters, papularItemLoaded, papularItems, priceRangeFilter, resetFilter, setFilters, setPriceRangeFilter } from '../../redux/features/items.ts';
 import { AppDispatch } from '../../redux/store.ts';
 import { ButtonSection as Button } from '../../components/Button';
+import { globalStyle } from '../../utils/GlobalStyle.ts';
 
 function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
 
@@ -139,9 +140,14 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
                             <View style={styles.top}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
-                                    style={{}}
+                                    style={globalStyle.navigationIconBox}
                                 >
-                                    <Icon type={Icons.Feather} size={FS(18)} name="chevron-left" color={COLORS.BLACK} />
+                                    <Icon
+                                        type={Icons.Feather}
+                                        size={FS(18)}
+                                        name="chevron-left"
+                                        color={COLORS.BLACK}
+                                    />
                                 </TouchableOpacity>
 
                                 <Text style={styles.headingText}>filters</Text>
@@ -253,7 +259,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF9F9',
         borderTopLeftRadius: HP(30),
         borderTopRightRadius: HP(30),
-        shadowColor: '#000',
+        shadowColor: COLORS.BLACK,
         shadowOffset: {
             width: 0,
             height: 4,

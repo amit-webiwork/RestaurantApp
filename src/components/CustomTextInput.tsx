@@ -26,6 +26,7 @@ interface OutlinedTextInputProps extends TextInputProps {
     styleContainer?: TextStyle;
     iconClick?: boolean;
     iconAction?: () => void;
+    prefix?: string;
 }
 
 const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
@@ -37,6 +38,7 @@ const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
     styleContainer,
     iconClick,
     iconAction,
+    prefix,
     ...rest
 }) => {
     const { text, setText, error } = formProps;
@@ -74,15 +76,22 @@ const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
             <Animated.Text style={[styles.placeholder, labelStyle]}>
                 {placeholder}
             </Animated.Text>
-            <TextInput
-                style={[styles.input, styleInput, { borderBottomColor: error.status ? COLORS.RED : "#A0A0A0" }]}
-                value={text}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                onChangeText={setText}
-                placeholder=""
-                {...rest}
-            />
+            <View style={styles.inputWrapper}>
+                {(isFocused || text) && prefix && <Text style={styles.prefix}>{prefix}</Text>}
+                <TextInput
+                    style={[
+                        styles.input,
+                        styleInput,
+                        { borderBottomColor: error.status ? COLORS.RED : "#A0A0A0" },
+                    ]}
+                    value={text}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    onChangeText={setText}
+                    placeholder=""
+                    {...rest}
+                />
+            </View>
             {iconName && (
                 <>
                     {iconClick ? (
@@ -94,7 +103,7 @@ const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
                         </TouchableOpacity>
                     ) : (
                         <TouchableOpacity
-                            onPress={() => void (0)}
+                            onPress={() => void 0}
                             style={{ bottom: HP(30), right: FS(-130) }}
                         >
                             <Image source={iconName} style={[styles.icon, iconStyle]} />
@@ -102,9 +111,7 @@ const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
                     )}
                 </>
             )}
-            {error.status && (
-                <Text style={styles.error}>{error.text}</Text>
-            )}
+            {error.status && <Text style={styles.error}>{error.text}</Text>}
         </View>
     );
 };
@@ -113,35 +120,45 @@ const styles = StyleSheet.create({
     icon: {
         width: FS(18),
         height: VP(18),
-        // position: 'absolute',
-        // right: HP(0),
-        // bottom: HP(20)
+    },
+    inputWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: "#9C9C9C",
+        width: '100%',
+    },
+    prefix: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        color: COLORS.BLACK,
+        fontSize: 12,
+        marginRight: 8,
+        top: VP(7)
     },
     input: {
         ...TextStyles.RALEWAY_MEDIUM,
         color: COLORS.BLACK,
         fontSize: 12,
         paddingVertical: HP(15),
-        borderBottomWidth: 1,
-        width: "100%"
+        flex: 1
     },
     inputContainer: {
         justifyContent: 'center',
-        alignContent: "center",
-        alignItems: "center"
+        alignContent: 'center',
+        alignItems: 'center',
     },
     error: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
         color: COLORS.RED,
         fontSize: 10,
-        alignSelf: "flex-start",
+        alignSelf: 'flex-start',
         top: VP(2),
-        textTransform: "capitalize"
+        textTransform: 'capitalize',
     },
     placeholder: {
         position: 'absolute',
         left: 0,
-    }
+    },
 });
 
 export default CustomTextInput;

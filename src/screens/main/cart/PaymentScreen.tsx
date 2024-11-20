@@ -18,7 +18,7 @@ import { AppDispatch } from '../../../redux/store';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import NormalLoader from '../../../components/NormalLoader';
-import { CommonActions } from '@react-navigation/native';
+import { globalStyle } from '../../../utils/GlobalStyle';
 
 const { width, height } = Dimensions.get('window');
 
@@ -26,9 +26,9 @@ const { width, height } = Dimensions.get('window');
 const isDarkMode1 = Appearance.getColorScheme() === 'dark';
 const isDarkMode = false;
 
-const iconColor = isDarkMode ? "#FFFFFF" : "#6C6C70";
+const iconColor = isDarkMode ? COLORS.WHITE : "#6C6C70";
 
-const creditCardColor = isDarkMode ? "#FFFFFF" : "#101010";
+const creditCardColor = isDarkMode ? COLORS.WHITE : "#101010";
 
 function PaymentScreen({ route, navigation }: { route: any; navigation: any }): React.JSX.Element {
     const { total } = route.params;
@@ -86,7 +86,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
         try {
             const dataPayload = {
                 extraNote: InstructionText,
-                items: CartItemList.map((d: { itemId: number; qty: number; }) => { return { itemId: d.itemId, qty: d.qty, customizations: {} } }),
+                items: CartItemList.map((d: { itemId: number; qty: number; options: any[]; }) => { return { itemId: d.itemId, qty: d.qty, variants: d.options } }),
                 couponId: AppliedCouponId,
                 savePaymentMethod
             };
@@ -157,17 +157,23 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
 
     return (
         <OuterLayout containerStyle={styles.containerStyle}>
-            <NormalLoader visible={loading || cardLoading} />
+            <NormalLoader visible={loading || cardLoading || loader} />
             <InnerBlock>
                 <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
                     <View style={{ paddingVertical: HP(20) }}>
                         {/* Navigation section */}
-                        <View style={{ paddingHorizontal: HP(16) }}>
+                        <View style={{ paddingHorizontal: HP(18) }}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
+                                    style={globalStyle.navigationIconBox}
                                 >
-                                    <Icon type={Icons.Feather} size={FS(24)} name={`chevron-left`} color={iconColor} />
+                                    <Icon
+                                        type={Icons.Feather}
+                                        size={FS(22)}
+                                        name={`chevron-left`}
+                                        color={iconColor}
+                                    />
                                 </TouchableOpacity>
                                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", gap: HP(5) }}>
                                     <Text style={styles.topHeading1}>bill total:</Text>
@@ -283,7 +289,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                                 text={'Close'}
                                                 onPress={handleAddCardPress}
                                                 textStyle={styles.closeButtonStyle}
-                                                disabled={loading || loader}
+                                                disabled={false}
                                                 activeButtonText={{ opacity: .65 }}
                                                 mainContainerStyle={{ flex: 1, borderColor: COLORS.BUTTON, borderWidth: 1, borderRadius: HP(8) }}
                                                 LinearGradienrColor={["#F5F5F5", "#F5F5F5"]}
@@ -294,7 +300,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                                 text={'pay now'}
                                                 onPress={handleClick}
                                                 textStyle={styles.buttonStyle}
-                                                isLoading={loading || loader}
+                                                isLoading={false}
                                                 activeButtonText={{ opacity: .65 }}
                                                 mainContainerStyle={{ borderRadius: HP(8), flex: 1 }}
                                                 LinearGradienrColor={["#FF00E2", "#FF00E2"]}
@@ -310,7 +316,7 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
                                             text={'pay now'}
                                             onPress={handleClick}
                                             textStyle={styles.buttonStyle}
-                                            isLoading={loading || loader}
+                                            isLoading={false}
                                             activeButtonText={{ opacity: .65 }}
                                             mainContainerStyle={{ borderRadius: HP(8), flex: 1 }}
                                             LinearGradienrColor={["#FF00E2", "#FF00E2"]}
@@ -497,7 +503,7 @@ const styles = StyleSheet.create({
         backgroundColor: isDarkMode ? COLORS.BLACK : COLORS.WHITE,
     },
     containerStyle: {
-        backgroundColor: isDarkMode ? "#000000" : "#FFF9F9"
+        backgroundColor: isDarkMode ? COLORS.BLACK : "#FFF9F9"
     }
 });
 

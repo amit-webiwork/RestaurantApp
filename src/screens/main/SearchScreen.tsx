@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
         marginVertical: HP(20),
         borderRadius: HP(10),
         backgroundColor: COLORS.WHITE,
-        shadowColor: '#000',
+        shadowColor: COLORS.BLACK,
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.2,
         shadowRadius: 2,

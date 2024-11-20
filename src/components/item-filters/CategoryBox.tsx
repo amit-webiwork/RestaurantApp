@@ -109,23 +109,6 @@ const CategoryBox: React.FunctionComponent<Props> = ({ selectHandler, loading = 
 };
 
 const styles = StyleSheet.create({
-    heading: {
-        ...TextStyles.RALEWAY_SEMI_BOLD,
-        fontSize: 18,
-        textTransform: "capitalize"
-    },
-    iconMainContainer: {
-        flexDirection: "row",
-        gap: HP(5)
-    },
-    iconContainer: {
-        width: FS(20),
-        height: FS(20),
-        backgroundColor: COLORS.HOME_ICONS,
-        borderRadius: FS(10),
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     categoryText: {
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 12,
