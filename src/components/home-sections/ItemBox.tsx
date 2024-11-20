@@ -105,7 +105,7 @@ const ItemBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation 
 
     return (
         <View>
-            {(dataLoaded) ? (
+            {dataLoaded ? (
                 <FlatList
                     data={data}
                     renderItem={({ item, index }) => <BoxItems itemData={item} index={index} />}
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         elevation: 4,
         flexDirection: "column",
         flexWrap: "wrap",
-        width: FS(183),
+        width: FS(183)
     },
     contentBox: {
         paddingHorizontal: HP(10),
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     bg: {
         width: FS(183),
         height: VP(194),
-        resizeMode: "contain",
+        resizeMode: "contain"
     },
     priceBox: {
         paddingTop: HP(12),

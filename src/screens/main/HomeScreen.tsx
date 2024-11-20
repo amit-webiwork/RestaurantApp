@@ -27,6 +27,9 @@ import Icon, { Icons } from '../../components/Icons';
 import ItemBoxSection from '../../components/home-sections/ItemBox.tsx';
 import HeadingSection from '../../components/Heading.tsx';
 import {
+  discountedItemLoaded,
+  discountedItems,
+  fetchDiscountedItems,
   fetchPopularItems,
   getFeaturedCategory,
   papularItemLoaded,
@@ -53,8 +56,12 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
   const { user } = ProflieDetails;
 
-  const PapularItemLoaded = useSelector(papularItemLoaded);
   const PapularItems = useSelector(papularItems);
+  const PapularItemLoaded = useSelector(papularItemLoaded);
+
+  const DiscountedItems = useSelector(discountedItems);
+  const DiscountedItemLoaded = useSelector(discountedItemLoaded);
+
   const featuredCategory = useSelector(getFeaturedCategory);
 
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
@@ -84,6 +91,12 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     }
   }, [PapularItemLoaded]);
 
+  useEffect(() => {
+    if (!DiscountedItemLoaded) {
+      dispatch(fetchDiscountedItems());
+    }
+  }, [DiscountedItemLoaded]);
+
   // location update on initial load
   useEffect(() => {
     (async () => {
@@ -109,7 +122,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     if (isFocused) {
       (async () => {
         const notificationList = await loadStorage('notificationList');
-        
+
         const count = notificationList.length
           ? notificationList.filter((d: { read: any }) => !d?.read).length
           : 0;
@@ -255,7 +268,11 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                         <Right width={FS(12)} height={VP(12)} />
                       </TouchableOpacity>
                     </View>
-                    <PromotionalBoxSection navigation={navigation} />
+                    <PromotionalBoxSection
+                      data={DiscountedItems}
+                      dataLoaded={DiscountedItemLoaded}
+                      navigation={navigation}
+                    />
                   </View>
 
                   {/* Heading Menu */}

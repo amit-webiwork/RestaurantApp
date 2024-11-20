@@ -74,6 +74,10 @@ export const itemSlice = createSlice({
             state.papularItems = action?.payload?.data || []
             state.papularItemLoaded = true
         },
+        setDiscountedItemList: (state, action) => {
+            state.discountedItems = action?.payload?.data || []
+            state.discountedItemLoaded = true
+        },
         setDietaryList: (state, action) => {
             state.dietaries = action?.payload || []
             state.dietaryLoaded = true
@@ -167,6 +171,15 @@ export const fetchPopularItems = () => async (dispatch: AppDispatch) => {
     }
 };
 
+export const fetchDiscountedItems = () => async (dispatch: AppDispatch) => {
+    try {
+        const data = await getItemList({ onlyDiscounted: 1 });
+        dispatch(setDiscountedItemList(data));
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const fetchTopics = (setLoader: ((arg0: boolean) => void)) => async (dispatch: AppDispatch) => {
     try {
         const data = await getTopicList();
@@ -228,7 +241,6 @@ export const getAppliedFilterArray = createSelector(
     }
 )
 
-export const { setCategoryList, setItemList, setTopicList, setPapularItemList, setDietaryList, setFilters, setCuisineList, removeFilter, resetFilter, setPriceRange, setPriceRangeFilter, removeFromRangeFilter, setRecentSearchItems, mergeRecentSearchItems, removeRecentSearchItems } = itemSlice.actions
 
 export const categoryList = (state: { items: FiltersState }) => state.items.categories;
 export const categoryLoaded = (state: { items: FiltersState }) => state.items.categoryLoaded;
@@ -238,6 +250,9 @@ export const itemLoaded = (state: { items: FiltersState }) => state.items.itemLo
 
 export const papularItems = (state: { items: FiltersState }) => state.items.papularItems;
 export const papularItemLoaded = (state: { items: FiltersState }) => state.items.papularItemLoaded;
+
+export const discountedItems = (state: { items: FiltersState }) => state.items.discountedItems;
+export const discountedItemLoaded = (state: { items: FiltersState }) => state.items.discountedItemLoaded;
 
 export const topicList = (state: { items: FiltersState }) => state.items.topics;
 export const topicLoaded = (state: { items: FiltersState }) => state.items.topicLoaded;
@@ -258,5 +273,24 @@ export const priceRangeLoaded = (state: { items: FiltersState }) => state.items.
 export const priceRangeFilter = (state: { items: FiltersState }) => state.items.priceRangeFilter;
 
 export const getRecentSearchItems = (state: { items: FiltersState }) => state.items.recentSearchItems;
+
+export const {
+    setCategoryList,
+    setItemList,
+    setTopicList,
+    setPapularItemList,
+    setDiscountedItemList,
+    setDietaryList,
+    setFilters,
+    setCuisineList,
+    removeFilter,
+    resetFilter,
+    setPriceRange,
+    setPriceRangeFilter,
+    removeFromRangeFilter,
+    setRecentSearchItems,
+    mergeRecentSearchItems,
+    removeRecentSearchItems
+} = itemSlice.actions
 
 export default itemSlice.reducer;

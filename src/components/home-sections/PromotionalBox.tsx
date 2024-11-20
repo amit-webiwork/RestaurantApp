@@ -9,58 +9,49 @@ import {
 } from 'react-native';
 
 import { FS, HP, VP } from '../../utils/Responsive';
-import { COLORS } from '../../utils/Constants';
+import { CDN_URL, COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
-
-const data = [
-    {
-        "title": "Brown Sugar Milk..",
-        "firstText": "20% OFF",
-        "secondText": "Up to $12.00",
-        "bg": require(`../../assets/icons/promotional/1.png`)
-    },
-    {
-        "title": "Brown Sugar Milk..",
-        "firstText": "20% OFF",
-        "secondText": "Up to $12.00",
-        "bg": require(`../../assets/icons/promotional/2.png`)
-    },
-    {
-        "title": "Brown Sugar Milk..",
-        "firstText": "20% OFF",
-        "secondText": "Up to $12.00",
-        "bg": require(`../../assets/icons/promotional/3.png`)
-    }
-]
-
-const BoxItems = ({ item, index }: { item: any, index: number }) => {
-
-    return (
-        <View style={{ marginRight: HP(11.56), flexGrow: 1, width: "30%", gap: HP(5) }}>
-            <TouchableOpacity
-                onPress={() => void (0)}
-                style={{}}
-            >
-                <ImageBackground source={item.bg} style={styles.bg} imageStyle={{ borderRadius: FS(8.67) }}>
-                    <View style={{ paddingHorizontal: HP(15), paddingBottom: HP(15) }}>
-                        <Text style={styles.boxInsideFirstText}>{item.firstText}</Text>
-                        <Text style={styles.boxInsideSecondText}>{item.secondText}</Text>
-                    </View>
-                </ImageBackground>
-            </TouchableOpacity>
-            <Text style={styles.boxText}>{item.title}</Text>
-        </View>
-    )
-}
+import { getItemPriceComponents } from '../../utils/helper/ItemHelper';
+import PromotionalBoxLoader from '../skeleton/PromotionalBoxLoader';
 
 interface Props {
+    data: any[];
+    dataLoaded: boolean;
     navigation: any;
 }
 
-const PromotionalBox: React.FunctionComponent<Props> = ({ navigation }) => {
+const PromotionalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, navigation }) => {
+
+    const BoxItems = ({ item, index }: { item: any, index: number }) => {
+        const itemData = getItemPriceComponents(item);
+
+        return (
+            <View style={styles.main}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate(`ProductScreen`, {
+                        id: itemData?.id,
+                        item: itemData
+                    })}
+                >
+                    <ImageBackground
+                        source={{ 'uri': `${CDN_URL}${itemData?.imgUrl}` }}
+                        style={styles.bg}
+                        imageStyle={{ borderRadius: FS(8.67) }}
+                    >
+                        <View style={styles.contentBox}>
+                            <Text style={styles.boxInsideFirstText}>{itemData?.discountPercent}% OFF</Text>
+                            <Text style={styles.boxInsideSecondText}>Up to ${itemData?.totalDiscounted}</Text>
+                        </View>
+                    </ImageBackground>
+                </TouchableOpacity>
+                <Text numberOfLines={1} style={styles.boxText}>{itemData.name}</Text>
+            </View>
+        )
+    }
+
     return (
-        <View style={{}}>
-            <View>
+        <View>
+            {dataLoaded ? (
                 <FlatList
                     data={data}
                     renderItem={({ item, index }) => <BoxItems item={item} index={index} />}
@@ -68,17 +59,25 @@ const PromotionalBox: React.FunctionComponent<Props> = ({ navigation }) => {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                 />
-            </View>
+            ) : (
+                <PromotionalBoxLoader />
+            )}
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    main: {
+        marginRight: HP(11.56),
+        flexGrow: 1,
+        // width: "30%",
+        gap: HP(5)
+    },
     boxText: {
         ...TextStyles.ROBOTO_REGULAR,
         fontSize: HP(12),
         textTransform: "capitalize",
-        textAlign: "center",
+        textAlign: "center"
     },
     listContainer: {
         marginTop: VP(9)
@@ -89,11 +88,15 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         resizeMode: "contain"
     },
+    contentBox: {
+        paddingHorizontal: HP(15),
+        paddingBottom: HP(15)
+    },
     boxInsideFirstText: {
         ...TextStyles.RALEWAY_EXTRA_BOLD,
         color: COLORS.WHITE,
         fontSize: 10.52,
-        textAlign: "left",
+        textAlign: "left"
     },
     boxInsideSecondText: {
         ...TextStyles.KANIT_REGULAR,
