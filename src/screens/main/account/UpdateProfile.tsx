@@ -95,8 +95,11 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <InnerBlock>
-                <AccountSkeletonSection navigation={navigation} user={user}>
-                    <View style={{ flex: 1, paddingHorizontal: HP(34), paddingVertical: HP(150), gap: HP(17.97) }}>
+                <AccountSkeletonSection
+                    navigation={navigation}
+                    user={user}
+                >
+                    <View style={styles.main}>
                         <View>
                             <Text style={styles.label}>full name</Text>
 
@@ -164,6 +167,12 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
+    main: {
+        flex: 1,
+        paddingHorizontal: HP(34),
+        paddingVertical: HP(150),
+        gap: HP(17.97)
+    },
     label: {
         ...TextStyles.RALEWAY_MEDIUM,
         fontSize: 12,

@@ -71,8 +71,6 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
                                 >
                                     {children}
                                 </ImageBackground>
-
-                                <Text style={styles.bottomHeading}>App Version {APP_VERSION}</Text>
                             </View>
                         </ScrollView>
                     </LinearGradient>
@@ -85,7 +83,7 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
 const styles = StyleSheet.create({
     bg: {
         width: "100%",
-        height: height * 1,
+        // height: height * 1,
         marginBottom: VP(-40),
         flex: 1
     },
@@ -94,14 +92,6 @@ const styles = StyleSheet.create({
         color: COLORS.WHITE,
         fontSize: 16,
         textAlign: "right",
-        flex: 1,
-        textDecorationLine: "underline",
-        textDecorationStyle: "solid",
-    },
-    bottomHeading: {
-        ...TextStyles.LEXEND_REGULAR,
-        fontSize: 16,
-        textAlign: "center",
         flex: 1,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
