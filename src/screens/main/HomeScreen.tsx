@@ -299,13 +299,19 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                   {/* Banner One */}
                   <View
-                    style={{ marginTop: VP(31.66), marginHorizontal: HP(16) }}>
+                    style={{
+                      marginTop: VP(31.66),
+                      marginHorizontal: HP(16)
+                    }}>
                     <BannerOneSection />
                   </View>
 
                   {/* Heading Section */}
                   <View
-                    style={{ marginTop: VP(32.87), marginHorizontal: HP(21) }}>
+                    style={{
+                      marginTop: VP(32.87),
+                      marginHorizontal: HP(21)
+                    }}>
                     <HeadingSection
                       textStyle={{ textTransform: 'uppercase' }}
                       title={`${user?.name}, what’s on your mind?`}

@@ -14,7 +14,7 @@ import { ButtonSection as Button } from '../Button';
 
 const BannerOne: React.FunctionComponent = () => {
     return (
-        <View style={{}}>
+        <View>
             <ImageBackground source={require(`../../assets/images/banner.png`)} style={styles.bg} imageStyle={{ borderRadius: FS(17) }}>
                 <View style={styles.bannerBox}>
                     <Text style={styles.bannerTitle}>de lounge</Text>
