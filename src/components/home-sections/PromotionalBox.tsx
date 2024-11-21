@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
     main: {
         marginRight: HP(11.56),
         flexGrow: 1,
-        // width: "30%",
         gap: HP(5)
     },
     boxText: {
@@ -90,19 +89,27 @@ const styles = StyleSheet.create({
     },
     contentBox: {
         paddingHorizontal: HP(15),
-        paddingBottom: HP(15)
+        paddingVertical: HP(10),
+        backgroundColor: "#00000080",
+        borderRadius: HP(4)
     },
     boxInsideFirstText: {
         ...TextStyles.RALEWAY_EXTRA_BOLD,
         color: COLORS.WHITE,
         fontSize: 10.52,
-        textAlign: "left"
+        textAlign: "left",
+        textShadowColor: "#000000",
+        textShadowOffset: { width: 0, height: 1 },
+        textShadowRadius: 2
     },
     boxInsideSecondText: {
         ...TextStyles.KANIT_REGULAR,
         color: COLORS.WHITE,
         fontSize: 11.18,
-        textAlign: "left"
+        textAlign: "left",
+        textShadowColor: "#000000",
+        textShadowOffset: { width: 0, height: 1 },
+        textShadowRadius: 2,
     }
 });
 

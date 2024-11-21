@@ -40,7 +40,7 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
                 if (userDetails && userDetails.hasOwnProperty("token") && userDetails.hasOwnProperty("user")) {
                     // get user details
                     const dataPayload = {
-                        "email": userDetails?.user?.email ?? "",
+                        "email": userDetails?.user?.phoneNo ?? "",
                         "password": userDetails?.user?.password ?? ""
                     };
 

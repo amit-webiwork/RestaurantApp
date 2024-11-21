@@ -36,8 +36,9 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
                                     <TouchableOpacity
                                         onPress={() => navigation.goBack()}
                                         style={
-                                            [globalStyle.navigationIconBox,
-                                            { backgroundColor: "#00000080" }
+                                            [
+                                                globalStyle.navigationIconBox,
+                                                { backgroundColor: "#00000080" }
                                             ]
                                         }
                                     >
@@ -48,7 +49,6 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
                                             color={COLORS.WHITE}
                                         />
                                     </TouchableOpacity>
-                                    {/* <Text style={styles.topHeading}>0.0.2</Text> */}
                                 </View>
 
                                 <View style={{ marginTop: VP(6), alignItems: "center" }}>
@@ -71,8 +71,6 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
                                 >
                                     {children}
                                 </ImageBackground>
-
-                                <Text style={styles.bottomHeading}>App Version {APP_VERSION}</Text>
                             </View>
                         </ScrollView>
                     </LinearGradient>
@@ -85,26 +83,9 @@ function AccountSkeleton({ user, children, navigation }: { user: any; children: 
 const styles = StyleSheet.create({
     bg: {
         width: "100%",
-        height: height * 1,
+        // height: height * 1,
         marginBottom: VP(-40),
         flex: 1
-    },
-    topHeading: {
-        ...TextStyles.LEXEND_SEMI_BOLD,
-        color: COLORS.WHITE,
-        fontSize: 16,
-        textAlign: "right",
-        flex: 1,
-        textDecorationLine: "underline",
-        textDecorationStyle: "solid",
-    },
-    bottomHeading: {
-        ...TextStyles.LEXEND_REGULAR,
-        fontSize: 16,
-        textAlign: "center",
-        flex: 1,
-        textDecorationLine: "underline",
-        textDecorationStyle: "solid",
     }
 });
 

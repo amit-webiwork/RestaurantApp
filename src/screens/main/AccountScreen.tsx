@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Icon, { Icons } from '../../components/Icons';
-import { COLORS, errorMessage } from '../../utils/Constants';
+import { APP_VERSION, COLORS, errorMessage } from '../../utils/Constants';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
 import CustomActionDialogComp from '../../components/dialogs/CustomActionDialog';
@@ -102,16 +102,22 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                 buttonText1={`No, I won’t`}
                 buttonText2='Yes, Of course'
             />
-            <View style={{ flex: 1, paddingBottom: VP(80), backgroundColor: COLORS.WHITE }}>
+            <View style={styles.main}>
                 <AccountSkeletonSection navigation={navigation} user={user}>
-                    <View style={{ paddingHorizontal: HP(39), paddingVertical: HP(120), gap: HP(15) }}>
+                    <View style={styles.sub}>
                         {/* edit profile */}
                         <View style={{ flexDirection: "row", gap: HP(15), alignItems: "center" }}>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate(`UpdateProfile`)}
                                 style={styles.iconContainer}
                             >
-                                <Image source={require(`../../assets/icons/pencil.png`)} style={{ width: FS(16.91), height: FS(16.91) }} />
+                                <Image
+                                    source={require(`../../assets/icons/pencil.png`)}
+                                    style={{
+                                        width: FS(16.91),
+                                        height: FS(16.91)
+                                    }}
+                                />
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -297,7 +303,10 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             >
                                 <Text style={styles.accountLabel}>feedback</Text>
                             </TouchableOpacity>
+                        </View>
 
+                        <View>
+                            <Text style={styles.bottomHeading}>App Version {APP_VERSION}</Text>
                         </View>
                     </View>
                 </AccountSkeletonSection>
@@ -307,6 +316,24 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
+    bottomHeading: {
+        ...TextStyles.LEXEND_REGULAR,
+        fontSize: 16,
+        textAlign: "center",
+        flex: 1,
+        textDecorationLine: "underline",
+        textDecorationStyle: "solid"
+    },
+    main: {
+        flex: 1,
+        // paddingBottom: VP(80),
+        backgroundColor: COLORS.WHITE
+    },
+    sub: {
+        paddingHorizontal: HP(39),
+        paddingVertical: HP(150),
+        gap: HP(15)
+    },
     iconContainer: {
         backgroundColor: "#FFECC3",
         width: FS(39),

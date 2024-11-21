@@ -217,7 +217,7 @@ const SignUpScreen: React.FunctionComponent<any> = ({
 
 const styles = StyleSheet.create({
     containerStyle: {
-        maxHeight: height * .85,
+        maxHeight: height > 700 ? height * .85 : height * .95,
         margin: "auto",
         width: width * .9,
         borderRadius: HP(46)
