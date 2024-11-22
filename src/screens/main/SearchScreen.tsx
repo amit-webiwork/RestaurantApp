@@ -24,7 +24,7 @@ import { AppDispatch } from '../../redux/store';
 import { proflieDetails } from '../../redux/features/profile';
 import CuisineBox from '../../components/home-sections/CuisineBox';
 import { getItemList } from '../../utils/ApiCall';
-import VoiceSearchModalComp from '../../components/dialogs/VoiceSearchModal';
+// import VoiceSearchModalComp from '../../components/dialogs/VoiceSearchModal';
 
 const SearchScreen = ({ navigation }: { navigation: any }) => {
     const dispatch: AppDispatch = useDispatch();
@@ -115,14 +115,22 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
 
     return (
         <View style={styles.container}>
-            <VoiceSearchModalComp visible={visible} onClose={() => setVisible(false)} />
+            {/* <VoiceSearchModalComp
+                visible={visible}
+                onClose={() => setVisible(false)}
+            /> */}
             {/* Search Input */}
             <View style={styles.searchBarContainer}>
                 <TouchableOpacity
                     onPress={handleBackPress}
                     style={styles.backIcon}
                 >
-                    <Icon type={Icons.Feather} size={FS(20)} name={`chevron-left`} color={COLORS.BUTTON} />
+                    <Icon
+                        type={Icons.Feather}
+                        size={FS(20)}
+                        name={`chevron-left`}
+                        color={COLORS.BUTTON}
+                    />
                 </TouchableOpacity>
                 <TextInput
                     value={searchQuery}
@@ -133,8 +141,16 @@ const SearchScreen = ({ navigation }: { navigation: any }) => {
                     autoFocus={true}
                 />
                 {searchQuery.length > 0 && (
-                    <TouchableOpacity onPress={clearSearch} style={styles.clearIcon}>
-                        <Icon type={Icons.Feather} size={HP(12)} name={`x`} color={COLORS.WHITE} />
+                    <TouchableOpacity
+                        onPress={clearSearch}
+                        style={styles.clearIcon}
+                    >
+                        <Icon
+                            type={Icons.Feather}
+                            size={FS(12)}
+                            name={`x`}
+                            color={COLORS.WHITE}
+                        />
                     </TouchableOpacity>
                 )}
                 {loader ? (
@@ -279,7 +295,7 @@ const styles = StyleSheet.create({
     searchBarContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginVertical: HP(20),
+        marginVertical: VP(20),
         borderRadius: HP(10),
         backgroundColor: COLORS.WHITE,
         shadowColor: COLORS.BLACK,
@@ -303,10 +319,10 @@ const styles = StyleSheet.create({
     },
     clearIcon: {
         position: 'absolute',
-        right: HP(55),
-        borderRadius: HP(8),
+        right: HP(20),
+        borderRadius: FS(8),
         backgroundColor: "#CBCBCB",
-        height: VP(16),
+        height: FS(16),
         width: FS(16),
         alignItems: "center",
         justifyContent: "center"
