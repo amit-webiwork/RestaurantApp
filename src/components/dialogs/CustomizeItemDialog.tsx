@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
         right: 0,
         height: height * .8,
         backgroundColor: COLORS.WHITE,
-        borderTopLeftRadius: HP(15),
-        borderTopRightRadius: HP(15),
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
         paddingHorizontal: HP(15),
         paddingVertical: HP(15)
     },
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     imageStyle: {
-        borderRadius: HP(15)
+        borderRadius: 15
     }
 });
 

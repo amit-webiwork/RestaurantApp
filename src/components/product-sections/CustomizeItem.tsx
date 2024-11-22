@@ -92,7 +92,6 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
                                     <Text style={styles.customizeOptionText}>{d?.customizeAttribute?.name || ``}</Text>
                                 </View>
 
-
                                 <View style={styles.tabRight}>
                                     <Text style={styles.optionPrice}>
                                         {(d?.price && +d?.price > 0) ? `+$${d.price}` : ""}

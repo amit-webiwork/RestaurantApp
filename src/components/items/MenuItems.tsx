@@ -81,11 +81,11 @@ const MenuItems: React.FunctionComponent<Props> = ({ data, dataLoaded, loadMore,
                                 </View>
                             )}
                         </ImageBackground>
-                        <Image source={require(`../../assets/images/label.png`)} style={{ width: FS(80), height: VP(16), top: VP(16), left: HP(-8), position: "absolute" }} />
+                        {/* <Image source={require(`../../assets/images/label.png`)} style={{ width: FS(80), height: VP(16), top: VP(16), left: HP(-8), position: "absolute" }} />
 
                         <Image source={require(`../../assets/images/label-side.png`)} style={{ width: FS(7.67), height: VP(6.39), top: VP(31), left: HP(-8.5), position: "absolute" }} />
 
-                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12, textTransform: "capitalize", color: COLORS.WHITE, position: "absolute", top: FS(14), left: HP(10) }}>popular</Text>
+                        <Text style={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 12, textTransform: "capitalize", color: COLORS.WHITE, position: "absolute", top: FS(14), left: HP(10) }}>popular</Text> */}
 
                     </TouchableOpacity>
 
