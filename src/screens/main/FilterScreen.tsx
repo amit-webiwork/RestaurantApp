@@ -257,8 +257,8 @@ const styles = StyleSheet.create({
         height: '80%',
         width: '100%',
         backgroundColor: '#FFF9F9',
-        borderTopLeftRadius: HP(30),
-        borderTopRightRadius: HP(30),
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
         shadowColor: COLORS.BLACK,
         shadowOffset: {
             width: 0,
@@ -323,8 +323,8 @@ const styles = StyleSheet.create({
     },
     bottomButtonContainer: {
         backgroundColor: COLORS.WHITE,
-        borderTopLeftRadius: HP(20),
-        borderTopRightRadius: HP(20),
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
     },
     bottomButtonSubContainer: {
         flexDirection: "row",

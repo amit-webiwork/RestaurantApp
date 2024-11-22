@@ -300,10 +300,10 @@ const styles = StyleSheet.create({
         right: 0,
         height: VP(100),
         backgroundColor: COLORS.WHITE,
-        borderTopLeftRadius: HP(20),
-        borderTopRightRadius: HP(20),
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         paddingHorizontal: HP(20),
-        paddingVertical: HP(15),
+        paddingVertical: HP(15)
     },
     handle: {
         width: FS(40),

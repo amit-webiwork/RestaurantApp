@@ -268,8 +268,8 @@ const styles = StyleSheet.create({
     main: {
         position: "relative",
         top: VP(-40),
-        borderTopLeftRadius: HP(50),
-        borderTopRightRadius: HP(50),
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50,
         backgroundColor: "#FDF6F5"
     },
     descText: {

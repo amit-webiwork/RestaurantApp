@@ -363,18 +363,18 @@ const styles = StyleSheet.create({
         ...TextStyles.LEXEND_REGULAR,
         fontSize: 18,
         color: COLORS.BLACK,
-        textTransform: "capitalize",
+        textTransform: "capitalize"
     },
     buttonStyle2: {
         ...TextStyles.LEXEND_SEMI_BOLD,
         fontSize: 20,
         color: COLORS.WHITE,
-        textTransform: "capitalize",
+        textTransform: "capitalize"
     },
     bottomButtonContainer: {
         backgroundColor: COLORS.WHITE,
-        borderTopLeftRadius: HP(20),
-        borderTopRightRadius: HP(20),
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20
     }
 });
 

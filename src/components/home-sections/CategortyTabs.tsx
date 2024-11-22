@@ -122,8 +122,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: HP(20),
         borderTopEndRadius: HP(20),
-        borderTopStartRadius: HP(20),
-        borderBottomStartRadius: HP(20),
+        borderTopStartRadius: 20,
+        borderBottomStartRadius: 20,
         borderBottomEndRadius: HP(20),
     }
 });
