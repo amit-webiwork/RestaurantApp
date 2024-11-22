@@ -142,18 +142,18 @@ const MainTabNavigator: React.FunctionComponent = () => {
                 name={`ReceiptScreen`}
                 component={ReceiptScreen}
             />
+            <Stack.Screen
+                name={`SearchScreen`}
+                component={SearchScreen}
+            />
             <Stack.Group screenOptions={{
                 presentation: 'transparentModal',
-                animation: 'slide_from_bottom',   // Slide from bottom animation
+                animation: 'slide_from_bottom'
             }}>
-                <Stack.Screen name="FilterScreen" component={FilterScreen} />
-            </Stack.Group>
-
-            <Stack.Group screenOptions={{
-                presentation: 'transparentModal',
-                animation: 'slide_from_right',   // Slide from right animation
-            }}>
-                <Stack.Screen name={`SearchScreen`} component={SearchScreen} />
+                <Stack.Screen
+                    name="FilterScreen"
+                    component={FilterScreen}
+                />
             </Stack.Group>
         </Stack.Navigator>
     );
