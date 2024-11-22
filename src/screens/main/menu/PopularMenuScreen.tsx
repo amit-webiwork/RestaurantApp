@@ -78,7 +78,10 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
             <InnerBlock>
                 <View style={{ paddingVertical: HP(20), marginBottom: VP(0) }}>
                     {/* Top navigation */}
-                    <PageHeading title={`popular ${name}`} navigation={navigation} />
+                    <PageHeading
+                        title={`popular ${name}`}
+                        navigation={navigation}
+                    />
 
                     <View style={{}}>
                         <PopularMenuItemsSection
