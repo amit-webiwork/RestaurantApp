@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
     View,
     StyleSheet,
@@ -8,7 +8,9 @@ import {
 } from 'react-native';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
-import { GoogleLogin } from '../../utils/google/GoogleService';
+import { configureGoogleSignIn, GoogleLogin } from '../../utils/google/GoogleService';
+import { showFadeAlert } from '../../utils/Alert';
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 
 interface Props {
 }
@@ -21,9 +23,9 @@ const SocialLogin: React.FunctionComponent<Props> = () => {
         setLoading(true);
         try {
             const response: any = await GoogleLogin();
+            console.log(response, '-----------response')
             const { idToken, user } = response;
 
-            console.log(response, '-----------response')
 
             // if (idToken) {
             // 	const resp = await authAPI.validateToken({
@@ -34,6 +36,7 @@ const SocialLogin: React.FunctionComponent<Props> = () => {
             // }
         } catch (apiError: any) {
             console.log(apiError, '-----apiError')
+            // showFadeAlert(`${apiError}`);
             setError(
                 apiError?.response?.data?.error?.message || 'Something went wrong'
             );
@@ -41,6 +44,10 @@ const SocialLogin: React.FunctionComponent<Props> = () => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        configureGoogleSignIn();
+    }, [])
 
     return (
         <View style={styles.main}>

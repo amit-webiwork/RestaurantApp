@@ -20,7 +20,7 @@ export const OTP_SEND_WAIT_TIME = 60; // in seconds
 export const STD_CODE = "+61";
 
 // export const BACKEND_URL = "https://api.deloungecafe.com/api/v1";
-export const BACKEND_URL = "https://aebc-125-99-173-186.ngrok-free.app/api/v1";
+export const BACKEND_URL = "https://b350-125-99-173-186.ngrok-free.app/api/v1";
 // export const BACKEND_URL = "http://192.168.0.101:4000/api/v1";
 // export const BACKEND_URL = "https://4844-125-99-173-186.ngrok-free.app/api/v1";
 
@@ -76,8 +76,8 @@ export const errorMessage = {
 };
 
 export const googleKeys = {
-    webClientId: "910822640980-5fqvkakg7jes1vk4opf74trfkusohq1i.apps.googleusercontent.com",
-	androidClientId: "910822640980-5fqvkakg7jes1vk4opf74trfkusohq1i.apps.googleusercontent.com",
-	iosClientId: "",
-	scopes: ['profile', 'email'],
+    webClientId: "910822640980-cbg4g0fjecpr16l92mo10rsmkqdpnnvr.apps.googleusercontent.com"
 }
+
+// SHA1: 5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25
+// SHA256: FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C
