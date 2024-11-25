@@ -8,6 +8,7 @@ import { TextStyles } from '../../../utils/TextStyles';
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
+import PageHeading from '../../../components/PageHeading';
 
 const { width, height } = Dimensions.get('window');
 
@@ -20,20 +21,10 @@ function Support({ navigation }: { navigation: any }): React.JSX.Element {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ paddingVertical: HP(27.79) }}>
                         {/* Top Navigation */}
-                        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: HP(18) }}>
-                            <TouchableOpacity
-                                onPress={() => navigation.goBack()}
-                                style={globalStyle.navigationIconBox}
-                            >
-                                <Icon
-                                    type={Icons.Feather}
-                                    size={FS(18)}
-                                    name={`chevron-left`}
-                                    color={COLORS.BLACK}
-                                />
-                            </TouchableOpacity>
-                            <Text style={styles.topHeading}>support / help</Text>
-                        </View>
+                        <PageHeading
+                            title={`support / help`}
+                            navigation={navigation} mainStyle={{ paddingBottom: 0 }}
+                        />
 
                         <View style={{ paddingHorizontal: HP(20) }}>
                             <View style={{ marginTop: VP(69) }}>
@@ -128,8 +119,8 @@ const styles = StyleSheet.create({
     box: {
         backgroundColor: "#FFD6FA",
         width: FS(51),
-        height: VP(51),
-        borderRadius: HP(51) / 2,
+        height: FS(51),
+        borderRadius: FS(51 / 2),
         alignItems: "center",
         justifyContent: "center",
         marginTop: VP(12)
@@ -141,6 +132,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: HP(12),
         padding: FS(10),
+        backgroundColor: COLORS.WHITE,
         shadowOpacity: 0.2,
         shadowColor: COLORS.BLACK,
         shadowOffset: {
@@ -148,7 +140,7 @@ const styles = StyleSheet.create({
             height: 4,
         },
         shadowRadius: 1,
-        elevation: 2
+        elevation: 20
     }
 });
 

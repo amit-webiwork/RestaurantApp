@@ -148,7 +148,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                 {/* Review count box and heart icon */}
                                 <View style={{ flexDirection: "row", justifyContent: "space-evenly", top: VP(-20) }}>
 
-                                    <View style={{ flexDirection: "row", backgroundColor: COLORS.WHITE, padding: 10, borderRadius: FS(32), justifyContent: "space-between", gap: HP(47), alignItems: "center" }}>
+                                    <View style={styles.reviewBox}>
                                         <View style={{ flexDirection: "row" }}>
                                             <Image
                                                 source={require('../../assets/images/person-1.png')}
@@ -164,7 +164,12 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
 
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                                             <Text style={{ ...TextStyles.INTER_MEDIUM, }}>4.5</Text>
-                                            <Icon type={Icons.MaterialIcons} size={25.66} name={`star`} color={`#FF785B`} />
+                                            <Icon
+                                                type={Icons.MaterialIcons}
+                                                size={25.66}
+                                                name={`star`}
+                                                color={`#FF785B`}
+                                            />
                                         </View>
                                     </View>
                                 </View>
@@ -268,8 +273,8 @@ const styles = StyleSheet.create({
     main: {
         position: "relative",
         top: VP(-40),
-        borderTopLeftRadius: HP(50),
-        borderTopRightRadius: HP(50),
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50,
         backgroundColor: "#FDF6F5"
     },
     descText: {
@@ -348,6 +353,15 @@ const styles = StyleSheet.create({
         padding: HP(10),
         borderRadius: FS(32),
         minWidth: FS(100)
+    },
+    reviewBox: {
+        flexDirection: "row",
+        backgroundColor: COLORS.WHITE,
+        padding: 10,
+        borderRadius: FS(32),
+        justifyContent: "space-between",
+        gap: HP(47),
+        alignItems: "center"
     }
 });
 

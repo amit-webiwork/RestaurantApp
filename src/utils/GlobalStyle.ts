@@ -42,8 +42,8 @@ export const globalStyle = StyleSheet.create({
         backgroundColor: 'rgba(255, 0, 0, 1)', // Red label background
         padding: HP(6),
         alignItems: 'center',
-        borderBottomLeftRadius: FS(16.42),
-        borderBottomRightRadius: FS(16.42)
+        borderBottomLeftRadius: 16.42,
+        borderBottomRightRadius: 16.42
     },
     outOfStockText: {
         ...TextStyles.RALEWAY_BOLD,

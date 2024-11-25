@@ -285,8 +285,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 20,
-        borderTopLeftRadius: HP(25),
-        borderTopRightRadius: HP(25)
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25
     },
     popUpHeading: {
         ...TextStyles.RALEWAY_BOLD,

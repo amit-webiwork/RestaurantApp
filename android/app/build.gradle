@@ -72,6 +72,7 @@ def enableProguardInReleaseBuilds = false
  * allowing to use e.g. `Date.toLocaleString` and `String.localeCompare` that
  * give correct results when using with locales other than en-US. Note that
  * this variant is about 6MiB larger per architecture than default.
+ * com.restaurantapp
  */
 def jscFlavor = 'org.webkit:android-jsc:+'
 
@@ -82,7 +83,7 @@ android {
 
     namespace "com.restaurantapp"
     defaultConfig {
-        applicationId "com.restaurantapp"
+        applicationId "com.deloungecafe"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

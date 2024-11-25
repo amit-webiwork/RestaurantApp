@@ -208,7 +208,7 @@ export function useReceiptDownload(orderData: any, navigation: any) {
 
   const moveToExternalStorage = async (sourcePath: string, fileName: string) => {
     try {
-      const destinationPath = `${RNFS.ExternalStorageDirectoryPath}/Download/${fileName}.pdf`;
+      const destinationPath = `${RNFS.ExternalStorageDirectoryPath}/Download/${fileName}-${new Date().getTime()}.pdf`;
       await RNFS.copyFile(sourcePath, destinationPath);
       return destinationPath;
     } catch (error) {

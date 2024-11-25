@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
         paddingVertical: HP(15),
         paddingHorizontal: HP(20),
         flex: 1,
-        borderTopRightRadius: HP(20),
-        borderBottomRightRadius: HP(20)
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20
     },
     cardBG: {
         width: FS(47.79),

@@ -36,15 +36,20 @@ const SearchBoxItems: React.FunctionComponent<Props> = ({ inputContainerStyle, n
     return (
         <View style={styles.mainContainer}>
             <View style={[styles.inputContainer, inputContainerStyle]}>
-                <Pressable onPress={openSearchScreen} style={{ width: "100%" }}>
-                    <TextInput
-                        style={[styles.input, { borderBottomColor: error.status ? COLORS.RED : "#A0A0A0" }]}
-                        value={text}
-                        onChangeText={setTextHandler}
-                        placeholder="Search like bubble tea"
-                        placeholderTextColor={`#A0A0A0`}
-                        editable={false}
-                    />
+                <Pressable
+                    onPress={openSearchScreen}
+                    style={{ width: "100%" }}
+                >
+                    <View pointerEvents="none">
+                        <TextInput
+                            style={[styles.input, { borderBottomColor: error.status ? COLORS.RED : "#A0A0A0" }]}
+                            value={text}
+                            onChangeText={setTextHandler}
+                            placeholder="Search like bubble tea"
+                            placeholderTextColor={`#A0A0A0`}
+                            editable={false}
+                        />
+                    </View>
                 </Pressable>
                 <Image source={require(`../../assets/icons/search.png`)} style={[styles.inputIconLeft]} />
 

@@ -11,8 +11,8 @@ const ReceiptScreen = ({ navigation, route }: { navigation: any, route: any }) =
     const { pdfPath } = route.params;
 
     return (
-        <View style={{flex: 1}}>
-            <View style={{ paddingHorizontal: HP(18), paddingVertical: HP(20) }}>
+        <View style={{ flex: 1, paddingHorizontal: HP(18), paddingVertical: HP(80) }}>
+            <View>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}

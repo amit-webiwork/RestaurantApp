@@ -3,7 +3,9 @@ import {
     View,
     StyleSheet,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    StyleProp,
+    ViewStyle
 } from 'react-native';
 
 import { TextStyles } from '../utils/TextStyles';
@@ -15,11 +17,12 @@ import { COLORS } from '../utils/Constants';
 interface Props {
     title: string;
     navigation: any;
+    mainStyle?: StyleProp<ViewStyle>;
 }
 
-const PageHeading: React.FunctionComponent<Props> = ({ title, navigation }) => {
+const PageHeading: React.FunctionComponent<Props> = ({ title, navigation, mainStyle }) => {
     return (
-        <View style={styles.main}>
+        <View style={[styles.main, mainStyle]}>
             <View style={styles.sub}>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}

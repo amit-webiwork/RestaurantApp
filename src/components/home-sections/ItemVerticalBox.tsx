@@ -70,7 +70,16 @@ const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, nav
                                 </TouchableOpacity> */}
                             </View>
                             {!isAvailable && (
-                                <View style={[globalStyle.outOfStockLabel, { borderBottomLeftRadius: FS(24.42), borderBottomRightRadius: FS(24.42), }]}>
+                                <View style={
+                                    [
+                                        globalStyle.outOfStockLabel,
+                                        {
+                                            borderBottomLeftRadius: 24.42,
+                                            borderBottomRightRadius: 24.42
+                                        }
+                                    ]
+                                }
+                                >
                                     <Text style={[globalStyle.outOfStockText, { fontSize: 20 }]}>Out of Stock</Text>
                                 </View>
                             )}

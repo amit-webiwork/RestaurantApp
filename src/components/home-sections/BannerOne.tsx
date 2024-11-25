@@ -14,8 +14,12 @@ import { ButtonSection as Button } from '../Button';
 
 const BannerOne: React.FunctionComponent = () => {
     return (
-        <View style={{}}>
-            <ImageBackground source={require(`../../assets/images/banner.png`)} style={styles.bg} imageStyle={{ borderRadius: FS(17) }}>
+        <View>
+            <ImageBackground
+                source={require(`../../assets/images/banner.png`)}
+                style={styles.bg}
+                imageStyle={{ borderRadius: FS(17) }}
+            >
                 <View style={styles.bannerBox}>
                     <Text style={styles.bannerTitle}>de lounge</Text>
 
@@ -31,7 +35,15 @@ const BannerOne: React.FunctionComponent = () => {
                     />
 
                     <View style={styles.contactBox}>
-                        <Text style={styles.contactText}><Icon type={Icons.FontAwesome5} size={8} name={`globe`} color={COLORS.WHITE} /> @delounge</Text>
+                        <Text style={styles.contactText}>
+                            <Icon
+                                type={Icons.FontAwesome5}
+                                size={8}
+                                name={`globe`}
+                                color={COLORS.WHITE}
+                            />
+                            @delounge
+                        </Text>
                         <Text style={styles.contactText}><Icon type={Icons.FontAwesome5} size={8} name={`whatsapp`} color={COLORS.WHITE} /> 1144551222</Text>
                     </View>
                 </View>
