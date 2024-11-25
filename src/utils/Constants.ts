@@ -15,12 +15,12 @@ export const COLORS = {
     NAV_ICON_BG: "#DADADA"
 };
 
-export const APP_VERSION = '0.0.6';
+export const APP_VERSION = '0.0.7';
 export const OTP_SEND_WAIT_TIME = 60; // in seconds
 export const STD_CODE = "+61";
 
 // export const BACKEND_URL = "https://api.deloungecafe.com/api/v1";
-export const BACKEND_URL = "https://b350-125-99-173-186.ngrok-free.app/api/v1";
+export const BACKEND_URL = "https://40b9-125-99-173-186.ngrok-free.app/api/v1";
 // export const BACKEND_URL = "http://192.168.0.101:4000/api/v1";
 // export const BACKEND_URL = "https://4844-125-99-173-186.ngrok-free.app/api/v1";
 
