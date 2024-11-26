@@ -14,6 +14,7 @@ import { removeStorage } from '../../utils/Storage';
 import { proflieDetails, setProflieDetails } from '../../redux/features/profile';
 import { deleteAccount } from '../../utils/ApiCall';
 import NormalLoader from '../../components/NormalLoader';
+import { GoogleSignOut } from '../../utils/google/GoogleService';
 
 const titleDelete = `Confirm Delete`;
 const messageDelete = `Are you sure you want to delete this account?`;
@@ -49,6 +50,8 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
         dispatch(setProflieDetails({}));
 
         setAccountLogoutDialogVisible(false);
+
+        await GoogleSignOut();
 
         navigation.reset({
             index: 0,

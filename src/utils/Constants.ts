@@ -20,17 +20,17 @@ export const OTP_SEND_WAIT_TIME = 60; // in seconds
 export const STD_CODE = "+61";
 
 // export const BACKEND_URL = "https://api.deloungecafe.com/api/v1";
-export const BACKEND_URL = "https://40b9-125-99-173-186.ngrok-free.app/api/v1";
-// export const BACKEND_URL = "http://192.168.0.101:4000/api/v1";
+// export const BACKEND_URL = "https://40b9-125-99-173-186.ngrok-free.app/api/v1";
+export const BACKEND_URL = "https://current-fish-manually.ngrok-free.app/api/v1";
 // export const BACKEND_URL = "https://4844-125-99-173-186.ngrok-free.app/api/v1";
 
 export const CDN_URL = "https://cdn.deloungecafe.com/";
 
 // local key
-// export const STRIPE_PUBLIC_KEY = "pk_test_51QCxBJHliBFhQl5Sfxyactla0vrLw2IO7t4pUFBwHywPjeap3iBS7sEe7bncI6NBdCoetAhdfIUxWGjuajVkJ6F4004SKA6sQ9";
+export const STRIPE_PUBLIC_KEY = "pk_test_51QCxBJHliBFhQl5Sfxyactla0vrLw2IO7t4pUFBwHywPjeap3iBS7sEe7bncI6NBdCoetAhdfIUxWGjuajVkJ6F4004SKA6sQ9";
 
 // server key
-export const STRIPE_PUBLIC_KEY = "pk_test_51QEJaCEQOrAyyyQ3QvZhdpdWJ0QfJKOb5YBRLjeQ4PNNxNoveBiPf2AS5tqA3Fih2sauafz3sz9CawNcNYcXpxen00NJBglpsa";
+// export const STRIPE_PUBLIC_KEY = "pk_test_51QEJaCEQOrAyyyQ3QvZhdpdWJ0QfJKOb5YBRLjeQ4PNNxNoveBiPf2AS5tqA3Fih2sauafz3sz9CawNcNYcXpxen00NJBglpsa";
 
 export const apiEndpoints = {
     signup: "/auth/user/sign-up",
@@ -64,7 +64,8 @@ export const apiEndpoints = {
     refundOrders: "/user/order/refund-orders",
     itemDetails: "/user/item",
     signupOtpResend: "/auth/user/signup-otp-resend",
-    signupOtpVerify: "/auth/user/signup-otp-verify"
+    signupOtpVerify: "/auth/user/signup-otp-verify",
+    googleLogin: "/auth/user/google-sign-in",
 };
 
 export const errorMessage = {
@@ -76,7 +77,7 @@ export const errorMessage = {
 };
 
 export const googleKeys = {
-    webClientId: "910822640980-cbg4g0fjecpr16l92mo10rsmkqdpnnvr.apps.googleusercontent.com"
+    webClientId: "910822640980-ltr2n7c7p69cgvu3sbksgm4oaptonmar.apps.googleusercontent.com"
 }
 
 // SHA1: 5E:8F:16:06:2E:A3:CD:2C:4A:0D:54:78:76:BA:A6:F3:8C:AB:F6:25

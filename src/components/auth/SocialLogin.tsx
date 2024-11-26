@@ -4,42 +4,88 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    Image
+    Image,
+    Alert
 } from 'react-native';
 import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
-import { configureGoogleSignIn, GoogleLogin } from '../../utils/google/GoogleService';
+import { configureGoogleSignIn, GoogleLogin, GoogleSignOut } from '../../utils/google/GoogleService';
 import { showFadeAlert } from '../../utils/Alert';
-import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import { GoogleSigninButton, isErrorWithCode, statusCodes } from '@react-native-google-signin/google-signin';
+import { submitGoogleLogin, submitLogin } from '../../utils/ApiCall';
+import { saveStorage } from '../../utils/Storage';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { setProflieDetails } from '../../redux/features/profile';
+import { setInCartState } from '../../utils/helper/CartHelper';
+import { setInRecentSearchState } from '../../utils/helper/SearchHelper';
+import { errorMessage } from '../../utils/Constants';
+import NormalLoader from '../NormalLoader';
 
 interface Props {
+    navigation: any;
 }
 
-const SocialLogin: React.FunctionComponent<Props> = () => {
-    const [error, setError] = useState('');
+const SocialLogin: React.FunctionComponent<Props> = ({ navigation }) => {
+    const dispatch: AppDispatch = useDispatch();
+
     const [loading, setLoading] = useState(false);
 
     const handleGoogleLogin = async () => {
         setLoading(true);
         try {
             const response: any = await GoogleLogin();
-            console.log(response, '-----------response')
-            const { idToken, user } = response;
 
+            const { idToken, user } = response?.data;
 
-            // if (idToken) {
-            // 	const resp = await authAPI.validateToken({
-            // 		token: idToken,
-            // 		email: user.email,
-            // 	});
-            // 	await handlePostLoginData(resp.data);
-            // }
-        } catch (apiError: any) {
-            console.log(apiError, '-----apiError')
-            // showFadeAlert(`${apiError}`);
-            setError(
-                apiError?.response?.data?.error?.message || 'Something went wrong'
-            );
+            if (idToken) {
+                const dataPayload = {
+                    token: idToken,
+                    user: user
+                }
+
+                console.log(dataPayload, '---------dataPayload')
+
+                const response: any = await submitGoogleLogin(dataPayload);
+                const responseData = { ...response.data };
+
+                if (responseData.user && responseData.token) {
+                    saveStorage(responseData, "userDetails");
+                    dispatch(setProflieDetails(responseData));
+
+                    navigation.reset({
+                        index: 0,
+                        routes: [
+                            {
+                                name: 'MainTabNavigator',
+                            },
+                        ],
+                    });
+                } else {
+                    throw new Error(errorMessage.commonMessage);
+                }
+            }
+        } catch (error: any) {
+            if (isErrorWithCode(error)) {
+                console.log('error', error.message);
+                switch (error.code) {
+                    case statusCodes.IN_PROGRESS:
+                        // operation (eg. sign in) already in progress
+                        Alert.alert(
+                            'in progress',
+                            'operation (eg. sign in) already in progress',
+                        );
+                        break;
+                    case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+                        // android only
+                        Alert.alert('play services not available or outdated');
+                        break;
+                    default:
+                        Alert.alert('Something went wrong: ', error.toString());
+                }
+            } else {
+                Alert.alert('Something went wrong: ', `${error?.message || errorMessage.commonMessage}`);
+            }
         } finally {
             setLoading(false);
         }
@@ -51,6 +97,7 @@ const SocialLogin: React.FunctionComponent<Props> = () => {
 
     return (
         <View style={styles.main}>
+            <NormalLoader visible={loading} />
             <View style={styles.top}>
                 <View style={styles.line}></View>
                 <Text style={styles.text1}>Or</Text>
@@ -84,6 +131,20 @@ const SocialLogin: React.FunctionComponent<Props> = () => {
                         }
                     />
                 </TouchableOpacity>
+
+                {/* <TouchableOpacity
+                    onPress={GoogleSignOut}
+                    disabled={loading}
+                >
+                    <Image
+                        source={require('../../assets/icons/google.png')}
+                        style={
+                            [styles.icon,
+                            { width: FS(24), height: VP(24) }
+                            ]
+                        }
+                    />
+                </TouchableOpacity> */}
             </View>
         </View>
     );

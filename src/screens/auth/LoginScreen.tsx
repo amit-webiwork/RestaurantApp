@@ -207,7 +207,7 @@ const LoginScreen: React.FunctionComponent<any> = ({
                                     contentContainerStyle={{ top: -2 }}
                                 />
 
-                                <SocialLogin />
+                                <SocialLogin navigation={navigation} />
                             </View>
                         </ScrollView>
 

@@ -264,4 +264,16 @@ const getItemDetails = async (itemId: number) => {
     }
 };
 
-export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder, getCouponList, createPaymentIntent, fetchCardList, deleteCard, getOrderTrack, fetchOrderDetails, getRefundOrderList, getItemDetails };
+const submitGoogleLogin = async (dataPayload: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.post(BACKEND_URL + apiEndpoints.googleLogin, dataPayload);
+            resolve(res);
+        } catch (error: any) {
+            console.log('API ERROR (submitGoogleLogin)', (error?.response?.data?.message || error?.message));
+            reject(error);
+        }
+    });
+}
+
+export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder, getCouponList, createPaymentIntent, fetchCardList, deleteCard, getOrderTrack, fetchOrderDetails, getRefundOrderList, getItemDetails, submitGoogleLogin };
