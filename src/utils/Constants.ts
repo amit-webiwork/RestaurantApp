@@ -19,18 +19,18 @@ export const APP_VERSION = '0.0.7';
 export const OTP_SEND_WAIT_TIME = 60; // in seconds
 export const STD_CODE = "+61";
 
-// export const BACKEND_URL = "https://api.deloungecafe.com/api/v1";
+export const BACKEND_URL = "https://api.deloungecafe.com/api/v1";
 // export const BACKEND_URL = "https://40b9-125-99-173-186.ngrok-free.app/api/v1";
-export const BACKEND_URL = "https://current-fish-manually.ngrok-free.app/api/v1";
+// export const BACKEND_URL = "https://current-fish-manually.ngrok-free.app/api/v1";
 // export const BACKEND_URL = "https://4844-125-99-173-186.ngrok-free.app/api/v1";
 
 export const CDN_URL = "https://cdn.deloungecafe.com/";
 
 // local key
-export const STRIPE_PUBLIC_KEY = "pk_test_51QCxBJHliBFhQl5Sfxyactla0vrLw2IO7t4pUFBwHywPjeap3iBS7sEe7bncI6NBdCoetAhdfIUxWGjuajVkJ6F4004SKA6sQ9";
+// export const STRIPE_PUBLIC_KEY = "pk_test_51QCxBJHliBFhQl5Sfxyactla0vrLw2IO7t4pUFBwHywPjeap3iBS7sEe7bncI6NBdCoetAhdfIUxWGjuajVkJ6F4004SKA6sQ9";
 
 // server key
-// export const STRIPE_PUBLIC_KEY = "pk_test_51QEJaCEQOrAyyyQ3QvZhdpdWJ0QfJKOb5YBRLjeQ4PNNxNoveBiPf2AS5tqA3Fih2sauafz3sz9CawNcNYcXpxen00NJBglpsa";
+export const STRIPE_PUBLIC_KEY = "pk_test_51QEJaCEQOrAyyyQ3QvZhdpdWJ0QfJKOb5YBRLjeQ4PNNxNoveBiPf2AS5tqA3Fih2sauafz3sz9CawNcNYcXpxen00NJBglpsa";
 
 export const apiEndpoints = {
     signup: "/auth/user/sign-up",
@@ -66,6 +66,8 @@ export const apiEndpoints = {
     signupOtpResend: "/auth/user/signup-otp-resend",
     signupOtpVerify: "/auth/user/signup-otp-verify",
     googleLogin: "/auth/user/google-sign-in",
+    updateProfileName: "/user/profile-name",
+    updateProfilePhone: "/user/profile-phone",
 };
 
 export const errorMessage = {
@@ -73,7 +75,12 @@ export const errorMessage = {
     otp: "Invalid OTP entered.",
     commonMessage: "Something went wrong. Please try again later.",
     notificationAccessError: "Allow notification permission for get incoming message",
-    cartUpdate: "Your cart options have been updated! Please review your cart before proceeding."
+    cartUpdate: "Your cart options have been updated! Please review your cart before proceeding.",
+    unknownError: "An unknown error occurred",
+};
+
+export const responseMessage = {
+    profileNameUpdate: "Name updated successfully"
 };
 
 export const googleKeys = {

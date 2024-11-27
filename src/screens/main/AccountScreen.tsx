@@ -237,14 +237,16 @@ function AccountScreen({ navigation }: { navigation: any }): React.JSX.Element {
                             {/* Conditional Child Menu */}
                             {isSettingMenuOpen && (
                                 <View style={{ marginTop: VP(11), paddingLeft: HP(20), gap: HP(15) }}>
-                                    <TouchableOpacity
-                                        onPress={() => navigation.navigate(`ChangePassword`)}
-                                        style={{ flexDirection: "row", gap: HP(16), alignItems: "center" }}
-                                    >
-                                        <Image source={require(`../../assets/icons/change-password.png`)} style={{ width: FS(19), height: FS(19) }} />
+                                    {user?.user_type === "app" && (
+                                        <TouchableOpacity
+                                            onPress={() => navigation.navigate(`ChangePassword`)}
+                                            style={{ flexDirection: "row", gap: HP(16), alignItems: "center" }}
+                                        >
+                                            <Image source={require(`../../assets/icons/change-password.png`)} style={{ width: FS(19), height: FS(19) }} />
 
-                                        <Text style={styles.childMenuItem}>change password</Text>
-                                    </TouchableOpacity>
+                                            <Text style={styles.childMenuItem}>change password</Text>
+                                        </TouchableOpacity>
+                                    )}
 
                                     <TouchableOpacity
                                         onPress={deleteAccountAction}

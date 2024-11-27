@@ -75,8 +75,8 @@ const updateProfile = Yup.object({
         .trim()
         .required("Email is required"),
     phone: Yup.number()
-        .typeError("Only number allowed")
         .required("Phone is required")
+        .typeError("Only number allowed")
 });
 
 const changePassword = Yup.object({
@@ -118,4 +118,16 @@ const validateCard = Yup.object({
         .required("Name is required"),
 });
 
-export { validateResource, signup, login, forgotPassword, resetPassword, updateProfile, changePassword, feedbackForm, validateCard };
+const updateProfileName = Yup.object({
+    name: Yup.string()
+        .trim()
+        .required("Name is required")
+});
+
+const updateProfilePhone = Yup.object({
+    phone: Yup.number()
+        .required("Phone is required")
+        .typeError("Only number allowed")
+});
+
+export { validateResource, signup, login, forgotPassword, resetPassword, updateProfile, changePassword, feedbackForm, validateCard, updateProfileName, updateProfilePhone };

@@ -219,7 +219,7 @@ const deleteCard = async (dataPayload: any) => {
 const getOrderTrack = async (orderId: number) => {
     try {
         const res = await axios.get(`${BACKEND_URL}${apiEndpoints.orderTrack}/${orderId}`);
-        
+
         return res.data;
     } catch (error: any) {
         const { response } = error;
@@ -231,7 +231,7 @@ const getOrderTrack = async (orderId: number) => {
 const fetchOrderDetails = async (orderId: number) => {
     try {
         const res = await axios.get(`${BACKEND_URL}${apiEndpoints.orderDetails}/${orderId}`);
-        
+
         return res.data;
     } catch (error: any) {
         const { response } = error;
@@ -276,4 +276,53 @@ const submitGoogleLogin = async (dataPayload: any) => {
     });
 }
 
-export { submitLogin, getCategoryList, getItemList, deleteAccount, getTopicList, getDietaryList, getCuisineList, getPriceRange, getItemListWithSignal, orderSubmit, cartConfirm, getOrderList, deleteOrder, getCouponList, createPaymentIntent, fetchCardList, deleteCard, getOrderTrack, fetchOrderDetails, getRefundOrderList, getItemDetails, submitGoogleLogin };
+const submitProfileName = async (dataPayload: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.put(BACKEND_URL + apiEndpoints.updateProfileName, dataPayload);
+            resolve(res);
+        } catch (error: any) {
+            console.log('API ERROR (submitProfileName)', (error?.response?.data?.message || error?.message));
+            reject(error);
+        }
+    });
+}
+
+const submitProfilePhone = async (dataPayload: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.put(BACKEND_URL + apiEndpoints.updateProfilePhone, dataPayload);
+            resolve(res);
+        } catch (error: any) {
+            console.log('API ERROR (submitProfilePhone)', (error?.response?.data?.message || error?.message));
+            reject(error);
+        }
+    });
+}
+
+export {
+    submitLogin,
+    getCategoryList,
+    getItemList,
+    deleteAccount,
+    getTopicList,
+    getDietaryList,
+    getCuisineList,
+    getPriceRange,
+    getItemListWithSignal,
+    orderSubmit,
+    cartConfirm,
+    getOrderList,
+    deleteOrder,
+    getCouponList,
+    createPaymentIntent,
+    fetchCardList,
+    deleteCard,
+    getOrderTrack,
+    fetchOrderDetails,
+    getRefundOrderList,
+    getItemDetails,
+    submitGoogleLogin,
+    submitProfileName,
+    submitProfilePhone
+};

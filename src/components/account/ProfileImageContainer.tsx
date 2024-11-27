@@ -81,7 +81,14 @@ function ProfileImageContainer(props: any) {
     };
 
     useEffect(() => {
-        const profile_img = profile?.profileImg ? { uri: `${CDN_URL}${profile?.profileImg}` } : null;
+        const img = profile?.profileImg;
+
+        const profile_img = img
+            ? img.startsWith("http")
+                ? { uri: img }
+                : { uri: `${CDN_URL}${img}` }
+            : null;
+
         setPhoto(profile_img);
     }, [profile])
 

@@ -1,22 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Alert } from 'react-native';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { apiEndpoints, BACKEND_URL, COLORS, errorMessage } from '../../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, responseMessage, STD_CODE } from '../../../utils/Constants';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import { TextStyles } from '../../../utils/TextStyles';
 import AccountSkeletonSection from '../../../components/AccountSkeleton';
 import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect';
 import { ButtonSection as Button } from '../../../components/Button';
 import { proflieDetails, setProflieDetails } from '../../../redux/features/profile';
-import { updateProfile, validateResource } from '../../../utils/ValidateResource';
+import { updateProfile, updateProfileName, updateProfilePhone, validateResource } from '../../../utils/ValidateResource';
 import { loadStorage, saveStorage } from '../../../utils/Storage';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import OuterLayout from '../../../components/OuterLayout';
 import { globalStyle } from '../../../utils/GlobalStyle';
 import InnerBlock from '../../../components/InnerBlock';
+import { submitLogin, submitProfileName, submitProfilePhone } from '../../../utils/ApiCall';
+import NormalLoader from '../../../components/NormalLoader';
+import { showFadeAlert } from '../../../utils/Alert';
+import OTPVerifyDialog from '../../../components/dialogs/OTPVerifyDialog';
 
 const errorObj = { "name": { "error": false, "text": "" }, "phone": { "error": false, "text": "" }, "email": { "error": false, "text": "" } }
 
@@ -32,6 +36,11 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
     const [email, setEmail] = useState("");
     const [error, setError] = useState(errorObj);
     const [loading, setLoading] = useState(false);
+    const [editName, setEditName] = useState(false);
+    const [editPhone, setEditPhone] = useState(false);
+    const [editEmail, setEditEmail] = useState(false);
+
+    const [verifyDialogVisible, setVerifyDialogVisible] = useState(false);
 
     useEffect(() => {
         setName(user?.name || "")
@@ -43,6 +52,7 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
         navigation.goBack();
     }, [navigation]);
 
+    // not workable now
     const handleOnPress = async () => {
         try {
             setError(errorObj);
@@ -92,46 +102,174 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
         setEmail(text.replace(/\s/g, '')); // Remove spaces
     };
 
+    const handleNameUpdate = async () => {
+        try {
+            setError(errorObj);
+
+            const resource = { name }
+
+            const dataPayloads = await validateResource(updateProfileName, setError)(resource);
+
+            setLoading(true);
+
+            try {
+                const dataPayload = {
+                    "name": dataPayloads.name
+                };
+
+                const response: any = await submitProfileName(dataPayload);
+
+                const responseData = { ...response.data };
+
+                const userDetails = await loadStorage('userDetails');
+
+                userDetails['user']['name'] = responseData?.name || "";
+
+                saveStorage(userDetails, "userDetails");
+
+                dispatch(setProflieDetails(userDetails));
+
+                setEditName(false);
+                showFadeAlert(responseMessage.profileNameUpdate);
+            } catch (error: any) {
+                dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: `${error?.response?.data?.message}` || errorMessage.commonMessage }));
+            } finally {
+                setLoading(false);
+            }
+        } catch (error: any) {
+            console.log(error?.message, '---error');
+        }
+    }
+
+    const handlePhoneUpdate = async () => {
+        try {
+            setError(errorObj);
+
+            const resource = { phone }
+
+            const dataPayloads = await validateResource(updateProfilePhone, setError)(resource);
+
+            setLoading(true);
+
+            try {
+                const dataPayload = {
+                    "phoneNo": phone,
+                    "step": "change"
+                };
+
+                const response: any = await submitProfilePhone(dataPayload);
+
+                const responseData = { ...response.data };
+
+                showFadeAlert(responseData?.message);
+
+                setEditPhone(false);
+                setVerifyDialogVisible(true);
+            } catch (error: any) {
+                dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: `${error?.response?.data?.message}` || errorMessage.commonMessage }));
+            } finally {
+                setLoading(false);
+            }
+        } catch (error: any) {
+            console.log(error?.message, '---error');
+        }
+    }
+
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
+            <NormalLoader visible={loading} />
+            <OTPVerifyDialog
+                visible={verifyDialogVisible}
+                onClose={() => setVerifyDialogVisible(false)}
+            />
             <InnerBlock>
                 <AccountSkeletonSection
                     navigation={navigation}
                     user={user}
                 >
                     <View style={styles.main}>
+                        {/* full name */}
                         <View>
                             <Text style={styles.label}>full name</Text>
 
                             <CustomTextInputNoEffect
-                                formProps={{ text: name, setText: setName, error: error.name }}
+                                formProps={{
+                                    text: name,
+                                    setText: setName,
+                                    error: error.name
+                                }}
                                 placeholder="Enter Full Name"
                                 maxLength={100}
-                                styleInput={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 14, paddingVertical: HP(8) }}
+                                styleInput={{
+                                    ...TextStyles.RALEWAY_SEMI_BOLD,
+                                    fontSize: 14,
+                                    paddingVertical: HP(8),
+                                    color: editName ? COLORS.BLACK : '#5D5959'
+                                }}
+                                editable={editName}
+                                iconClick={true}
+                                iconName={editName ? require(`../../../assets/icons/tick.png`) : require(`../../../assets/icons/edit.png`)}
+                                iconStyle={styles.iconStyle}
+                                iconContainerStyle={{ bottom: HP(30) }}
+                                iconAction={() => editName ? handleNameUpdate() : setEditName(true)}
+                                errorStyle={styles.errorStyle}
                             />
                         </View>
-
+                        {/* phone number */}
                         <View>
                             <Text style={styles.label}>phone number</Text>
 
                             <CustomTextInputNoEffect
-                                formProps={{ text: phone, setText: handlePhoneChange, error: error.phone }}
+                                formProps={{
+                                    text: phone,
+                                    setText: handlePhoneChange,
+                                    error: error.phone
+                                }}
                                 placeholder="Enter Phone Number"
-                                maxLength={20}
+                                maxLength={10}
                                 keyboardType='numeric'
-                                styleInput={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 14, paddingVertical: HP(8), color: '#5D5959' }}
-                                editable={false}
+                                styleInput={{
+                                    ...TextStyles.RALEWAY_SEMI_BOLD,
+                                    fontSize: 14,
+                                    paddingVertical: HP(8),
+                                    color: editPhone ? COLORS.BLACK : '#5D5959'
+                                }}
+                                prefix={STD_CODE}
+                                editable={editPhone}
+                                iconClick={true}
+                                iconName={editPhone ? require(`../../../assets/icons/tick.png`) : require(`../../../assets/icons/edit.png`)}
+                                iconStyle={styles.iconStyle}
+                                iconContainerStyle={{ bottom: HP(30) }}
+                                iconAction={() => editPhone ? handlePhoneUpdate() : setEditPhone(false)}
+                                errorStyle={styles.errorStyle}
+                            // editable={user?.user_type === 'social' ? true : false}
                             />
                         </View>
 
+                        {/* email */}
                         <View>
                             <Text style={styles.label}>email</Text>
 
                             <CustomTextInputNoEffect
-                                formProps={{ text: email, setText: handleEmailChange, error: error.email }}
+                                formProps={{
+                                    text: email,
+                                    setText: handleEmailChange,
+                                    error: error.email
+                                }}
                                 placeholder="Enter Email"
                                 maxLength={100}
-                                styleInput={{ ...TextStyles.RALEWAY_SEMI_BOLD, fontSize: 14, paddingVertical: HP(8) }}
+                                styleInput={{
+                                    ...TextStyles.RALEWAY_SEMI_BOLD,
+                                    fontSize: 14,
+                                    paddingVertical: HP(8),
+                                    color: editEmail && user?.user_type === 'app' ? COLORS.BLACK : '#5D5959'
+                                }}
+                                editable={user?.user_type === 'app' && editEmail ? true : false}
+                                iconClick={user?.user_type === 'app' ? true : false}
+                                iconName={user?.user_type === 'app' ? editEmail ? require(`../../../assets/icons/tick.png`) : require(`../../../assets/icons/edit.png`) : null}
+                                iconStyle={styles.iconStyle}
+                                iconContainerStyle={{ bottom: HP(30) }}
+                                iconAction={() => editPhone ? setEditPhone(false) : setEditPhone(false)}
                             />
                         </View>
 
@@ -148,7 +286,7 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                                 contentContainerStyle={{ top: -2 }}
                             />
 
-                            <Button
+                            {/* <Button
                                 text={'save'}
                                 onPress={handleOnPress}
                                 textStyle={styles.saveButtonStyle}
@@ -157,7 +295,7 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                                 mainContainerStyle={{ flex: 1, borderRadius: HP(8) }}
                                 LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
                                 contentContainerStyle={{ top: -2 }}
-                            />
+                            /> */}
                         </View>
                     </View>
                 </AccountSkeletonSection>
@@ -193,6 +331,18 @@ const styles = StyleSheet.create({
         color: COLORS.BLACK,
         textTransform: "uppercase",
     },
+    iconStyle: {
+        width: FS(22),
+        height: FS(22)
+    },
+    errorStyle: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 12,
+        textTransform: "capitalize",
+        lineHeight: 20,
+        color: COLORS.RED,
+        marginTop: VP(-10)
+    }
 });
 
 export default UpdateProfile;

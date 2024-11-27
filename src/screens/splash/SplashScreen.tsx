@@ -5,13 +5,14 @@ import { useDispatch } from 'react-redux';
 
 import { FS, HP, VP } from '../../utils/Responsive.ts';
 import { loadStorage, saveStorage } from '../../utils/Storage.ts';
-import { COLORS } from '../../utils/Constants.ts';
+import { COLORS, errorMessage } from '../../utils/Constants.ts';
 import { TextStyles } from '../../utils/TextStyles.ts';
-import { submitLogin } from '../../utils/ApiCall.ts';
+import { submitGoogleLogin, submitLogin } from '../../utils/ApiCall.ts';
 import { ButtonSwipe } from '../../components/ButtonSwipe.tsx';
 import { setProflieDetails } from '../../redux/features/profile.ts';
 import { setInRecentSearchState } from '../../utils/helper/SearchHelper.ts';
 import { setInCartState } from '../../utils/helper/CartHelper.ts';
+import { configureGoogleSignIn, GetCurrentGoogleUser } from '../../utils/google/GoogleService.ts';
 
 function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch = useDispatch();
@@ -19,8 +20,6 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const [showButton, setShowButton] = useState(false);
 
     const getStarted = async () => {
-        // navigation.navigate('SignUpScreen');
-        // return;
         navigation.reset({
             index: 0,
             routes: [
@@ -32,42 +31,83 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
     }
 
     useEffect(() => {
-        // return;
         setTimeout(async () => {
             try {
                 const userDetails = await loadStorage("userDetails");
 
-                if (userDetails && userDetails.hasOwnProperty("token") && userDetails.hasOwnProperty("user")) {
-                    // get user details
-                    const dataPayload = {
-                        "email": userDetails?.user?.phoneNo ?? "",
-                        "password": userDetails?.user?.password ?? ""
-                    };
+                if (
+                    userDetails &&
+                    userDetails.hasOwnProperty("token") &&
+                    userDetails.hasOwnProperty("user")
+                ) {
+                    if (userDetails?.user?.user_type === "app") {
+                        // get user details
+                        const dataPayload = {
+                            "email": userDetails?.user?.phoneNo ?? "",
+                            "password": userDetails?.user?.password ?? ""
+                        };
 
-                    const response: any = await submitLogin(dataPayload);
+                        const response: any = await submitLogin(dataPayload);
 
-                    const responseData = { ...response.data };
+                        const responseData = { ...response.data };
 
-                    if (responseData.user && responseData.token) {
-                        responseData['user']['password'] = dataPayload.password;
-                        saveStorage(responseData, "userDetails");
+                        if (responseData.user && responseData.token) {
+                            responseData['user']['password'] = dataPayload.password;
+                            saveStorage(responseData, "userDetails");
 
-                        dispatch(setProflieDetails(responseData));
+                            dispatch(setProflieDetails(responseData));
 
-                        // set cart items from storage to state
-                        setInCartState(dispatch);
+                            // set cart items from storage to state
+                            setInCartState(dispatch);
 
-                        // set searched items from storage to state
-                        setInRecentSearchState(dispatch)
+                            // set searched items from storage to state
+                            setInRecentSearchState(dispatch)
 
-                        navigation.reset({
-                            index: 0,
-                            routes: [
-                                {
-                                    name: 'MainTabNavigator',
-                                },
-                            ],
-                        });
+                            navigation.reset({
+                                index: 0,
+                                routes: [
+                                    {
+                                        name: 'MainTabNavigator',
+                                    },
+                                ],
+                            });
+                        } else {
+                            throw new Error('Logged Out User');
+                        }
+                    } else if (userDetails?.user?.user_type === "social") {
+                        if (userDetails?.user?.googleId && userDetails?.user?.googleId !== "") {
+                            const getUser = await GetCurrentGoogleUser();
+
+                            const dataPayload = {
+                                token: getUser?.idToken,
+                                user: getUser?.user
+                            }
+
+                            const response: any = await submitGoogleLogin(dataPayload);
+                            const responseData = { ...response.data };
+
+                            if (responseData.user && responseData.token) {
+                                saveStorage(responseData, "userDetails");
+                                dispatch(setProflieDetails(responseData));
+
+                                // set cart items from storage to state
+                                setInCartState(dispatch);
+
+                                // set searched items from storage to state
+                                setInRecentSearchState(dispatch)
+
+                                navigation.reset({
+                                    index: 0,
+                                    routes: [
+                                        {
+                                            name: 'MainTabNavigator',
+                                        },
+                                    ],
+                                });
+                            } else {
+                                throw new Error(errorMessage.unknownError);
+                            }
+                        }
                     } else {
                         throw new Error('Logged Out User');
                     }
@@ -79,6 +119,10 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
                 setShowButton(true);
             }
         }, 1000)
+    }, [])
+
+    useEffect(() => {
+        configureGoogleSignIn();
     }, [])
 
     return (

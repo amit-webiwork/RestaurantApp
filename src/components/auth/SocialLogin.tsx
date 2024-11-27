@@ -44,8 +44,6 @@ const SocialLogin: React.FunctionComponent<Props> = ({ navigation }) => {
                     user: user
                 }
 
-                console.log(dataPayload, '---------dataPayload')
-
                 const response: any = await submitGoogleLogin(dataPayload);
                 const responseData = { ...response.data };
 
