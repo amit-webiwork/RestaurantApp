@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Alert } from 'react-native';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, responseMessage, STD_CODE } from '../../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, OTP_SEND_WAIT_TIME, responseMessage, STD_CODE } from '../../../utils/Constants';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import { TextStyles } from '../../../utils/TextStyles';
 import AccountSkeletonSection from '../../../components/AccountSkeleton';
@@ -17,15 +17,16 @@ import Warning from '../../../assets/svgs/warning.svg';
 import OuterLayout from '../../../components/OuterLayout';
 import { globalStyle } from '../../../utils/GlobalStyle';
 import InnerBlock from '../../../components/InnerBlock';
-import { submitLogin, submitProfileName, submitProfilePhone } from '../../../utils/ApiCall';
+import { submitProfileName, submitProfilePhone } from '../../../utils/ApiCall';
 import NormalLoader from '../../../components/NormalLoader';
 import { showFadeAlert } from '../../../utils/Alert';
 import OTPVerifyDialog from '../../../components/dialogs/OTPVerifyDialog';
+import { AppDispatch } from '../../../redux/store';
 
 const errorObj = { "name": { "error": false, "text": "" }, "phone": { "error": false, "text": "" }, "email": { "error": false, "text": "" } }
 
 function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
 
     const ProflieDetails = useSelector(proflieDetails);
 
@@ -39,6 +40,10 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
     const [editName, setEditName] = useState(false);
     const [editPhone, setEditPhone] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
+
+    const [resendStatus, setResendStatus] = useState(true);
+    const [timer, setTimer] = useState(0);
+    const [showTimerMessage, setShowTimerMessage] = useState(true);
 
     const [verifyDialogVisible, setVerifyDialogVisible] = useState(false);
 
@@ -110,6 +115,12 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
 
             const dataPayloads = await validateResource(updateProfileName, setError)(resource);
 
+            if (user?.name === dataPayloads?.name) {
+                showFadeAlert(responseMessage.profileNameUpdate);
+                setEditName(false);
+                return;
+            }
+
             setLoading(true);
 
             try {
@@ -143,11 +154,18 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
 
     const handlePhoneUpdate = async () => {
         try {
+            setShowTimerMessage(true);
+
             setError(errorObj);
 
             const resource = { phone }
 
             const dataPayloads = await validateResource(updateProfilePhone, setError)(resource);
+
+            if (user?.phoneNo === phone) {
+                setEditPhone(false);
+                return;
+            }
 
             setLoading(true);
 
@@ -165,6 +183,9 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
 
                 setEditPhone(false);
                 setVerifyDialogVisible(true);
+
+                setResendStatus(false);
+                setTimer(OTP_SEND_WAIT_TIME);
             } catch (error: any) {
                 dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: `${error?.response?.data?.message}` || errorMessage.commonMessage }));
             } finally {
@@ -175,12 +196,26 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
         }
     }
 
+    useEffect(() => {
+        if (timer > 0) {
+            const interval = setInterval(() => {
+                setTimer(prev => prev - 1);
+            }, 1000);
+            return () => clearInterval(interval);
+        } else {
+            setResendStatus(true);
+        }
+    }, [timer]);
+
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <NormalLoader visible={loading} />
             <OTPVerifyDialog
                 visible={verifyDialogVisible}
                 onClose={() => setVerifyDialogVisible(false)}
+                phone={phone}
+                setLoading={setLoading}
+                setShowTimerMessage={setShowTimerMessage}
             />
             <InnerBlock>
                 <AccountSkeletonSection
@@ -215,6 +250,7 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                                 errorStyle={styles.errorStyle}
                             />
                         </View>
+
                         {/* phone number */}
                         <View>
                             <Text style={styles.label}>phone number</Text>
@@ -235,15 +271,18 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                                     color: editPhone ? COLORS.BLACK : '#5D5959'
                                 }}
                                 prefix={STD_CODE}
-                                editable={editPhone}
-                                iconClick={true}
-                                iconName={editPhone ? require(`../../../assets/icons/tick.png`) : require(`../../../assets/icons/edit.png`)}
+                                editable={resendStatus && editPhone ? true : false}
+                                iconClick={resendStatus ? true : false}
+                                iconName={resendStatus ? editPhone ? require(`../../../assets/icons/tick.png`) : require(`../../../assets/icons/edit.png`) : null}
                                 iconStyle={styles.iconStyle}
                                 iconContainerStyle={{ bottom: HP(30) }}
-                                iconAction={() => editPhone ? handlePhoneUpdate() : setEditPhone(false)}
+                                iconAction={() => editPhone ? handlePhoneUpdate() : setEditPhone(true)}
                                 errorStyle={styles.errorStyle}
-                            // editable={user?.user_type === 'social' ? true : false}
                             />
+
+                            <Text style={styles.resendText}>
+                                {(!resendStatus && showTimerMessage) ? `You can update phone number again in ${timer} seconds` : ``}
+                            </Text>
                         </View>
 
                         {/* email */}
@@ -269,7 +308,7 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                                 iconName={user?.user_type === 'app' ? editEmail ? require(`../../../assets/icons/tick.png`) : require(`../../../assets/icons/edit.png`) : null}
                                 iconStyle={styles.iconStyle}
                                 iconContainerStyle={{ bottom: HP(30) }}
-                                iconAction={() => editPhone ? setEditPhone(false) : setEditPhone(false)}
+                                iconAction={() => editEmail ? setEditEmail(false) : setEditEmail(false)}
                             />
                         </View>
 
@@ -342,6 +381,12 @@ const styles = StyleSheet.create({
         lineHeight: 20,
         color: COLORS.RED,
         marginTop: VP(-10)
+    },
+    resendText: {
+        ...TextStyles.RALEWAY_MEDIUM,
+        fontSize: 14,
+        color: COLORS.BUTTON,
+        textAlign: "center"
     }
 });
 

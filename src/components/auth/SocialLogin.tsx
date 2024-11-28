@@ -102,7 +102,7 @@ const SocialLogin: React.FunctionComponent<Props> = ({ navigation }) => {
                 <View style={styles.line}></View>
             </View>
             <View style={styles.bottom}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     onPress={() => void (0)}
                     style={{}}
                 >
@@ -114,7 +114,7 @@ const SocialLogin: React.FunctionComponent<Props> = ({ navigation }) => {
                             ]
                         }
                     />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity
                     onPress={handleGoogleLogin}

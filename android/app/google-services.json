@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "910822640980-p85oemeai4sgn7i98hmlpus1ep4nbci0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deloungecafe",
+            "certificate_hash": "5ced113a84d550955bdf3c694b7936fba390cb96"
+          }
+        },
+        {
           "client_id": "910822640980-trq525d3mrtop0vnj54iupggbv77otvk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -22,7 +30,7 @@
           }
         },
         {
-          "client_id": "910822640980-cbg4g0fjecpr16l92mo10rsmkqdpnnvr.apps.googleusercontent.com",
+          "client_id": "910822640980-ltr2n7c7p69cgvu3sbksgm4oaptonmar.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

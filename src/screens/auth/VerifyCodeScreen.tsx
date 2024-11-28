@@ -12,7 +12,7 @@ import { FS, HP, VP } from '../../utils/Responsive';
 import { loadStorage, saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
 import { globalStyle } from '../../utils/GlobalStyle';
-import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, OTP_SEND_WAIT_TIME } from '../../utils/Constants';
+import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, OTP_SEND_WAIT_TIME, pinCheck } from '../../utils/Constants';
 import OTPInput from '../../components/OTPInput';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
@@ -20,8 +20,6 @@ import Success from '../../assets/svgs/success.svg';
 import Icon, { Icons } from '../../components/Icons';
 
 type NavigationProp = NativeStackScreenProps<AuthStackParamList>;
-
-const pinCheck = /^[0-9]{4}$/;
 
 const VerifyCodeScreen: React.FunctionComponent<NavigationProp> = ({
     navigation,
