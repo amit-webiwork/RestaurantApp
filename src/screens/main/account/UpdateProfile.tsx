@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Alert } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,18 +10,19 @@ import AccountSkeletonSection from '../../../components/AccountSkeleton';
 import CustomTextInputNoEffect from '../../../components/CustomTextInputNoEffect';
 import { ButtonSection as Button } from '../../../components/Button';
 import { proflieDetails, setProflieDetails } from '../../../redux/features/profile';
-import { updateProfile, updateProfileName, updateProfilePhone, validateResource } from '../../../utils/ValidateResource';
+import { updateProfile, updateProfileEmail, updateProfileName, updateProfilePhone, validateResource } from '../../../utils/ValidateResource';
 import { loadStorage, saveStorage } from '../../../utils/Storage';
 import { setDialogContent } from '../../../redux/features/customDialog';
 import Warning from '../../../assets/svgs/warning.svg';
 import OuterLayout from '../../../components/OuterLayout';
 import { globalStyle } from '../../../utils/GlobalStyle';
 import InnerBlock from '../../../components/InnerBlock';
-import { submitProfileName, submitProfilePhone } from '../../../utils/ApiCall';
+import { submitProfileEmail, submitProfileName, submitProfilePhone } from '../../../utils/ApiCall';
 import NormalLoader from '../../../components/NormalLoader';
 import { showFadeAlert } from '../../../utils/Alert';
-import OTPVerifyDialog from '../../../components/dialogs/OTPVerifyDialog';
 import { AppDispatch } from '../../../redux/store';
+import OTPVerifyPhoneDialog from '../../../components/dialogs/OTPVerifyPhoneDialog';
+import OTPVerifyEmailDialog from '../../../components/dialogs/OTPVerifyEmailDialog';
 
 const errorObj = { "name": { "error": false, "text": "" }, "phone": { "error": false, "text": "" }, "email": { "error": false, "text": "" } }
 
@@ -45,7 +46,8 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
     const [timer, setTimer] = useState(0);
     const [showTimerMessage, setShowTimerMessage] = useState(true);
 
-    const [verifyDialogVisible, setVerifyDialogVisible] = useState(false);
+    const [verifyPhoneDialogVisible, setVerifyPhoneDialogVisible] = useState(false);
+    const [verifyEmailDialogVisible, setVerifyEmailDialogVisible] = useState(false);
 
     useEffect(() => {
         setName(user?.name || "")
@@ -182,10 +184,50 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                 showFadeAlert(responseData?.message);
 
                 setEditPhone(false);
-                setVerifyDialogVisible(true);
+                setVerifyPhoneDialogVisible(true);
 
                 setResendStatus(false);
                 setTimer(OTP_SEND_WAIT_TIME);
+            } catch (error: any) {
+                dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: `${error?.response?.data?.message}` || errorMessage.commonMessage }));
+            } finally {
+                setLoading(false);
+            }
+        } catch (error: any) {
+            console.log(error?.message, '---error');
+        }
+    }
+
+    const handleEmailUpdate = async () => {
+        try {
+            setError(errorObj);
+
+            const resource = { email }
+
+            const dataPayloads = await validateResource(updateProfileEmail, setError)(resource);
+
+            if (user?.email === dataPayloads?.email) {
+                showFadeAlert(responseMessage.profileEmailUpdate);
+                setEditEmail(false);
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                const dataPayload = {
+                    "email": dataPayloads.email,
+                    "step": "change"
+                };
+
+                const response: any = await submitProfileEmail(dataPayload);
+
+                const responseData = { ...response.data };
+
+                showFadeAlert(responseData?.message);
+
+                setEditEmail(false);
+                setVerifyEmailDialogVisible(true);
             } catch (error: any) {
                 dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: `${error?.response?.data?.message}` || errorMessage.commonMessage }));
             } finally {
@@ -210,12 +252,19 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
     return (
         <OuterLayout containerStyle={globalStyle.containerStyle}>
             <NormalLoader visible={loading} />
-            <OTPVerifyDialog
-                visible={verifyDialogVisible}
-                onClose={() => setVerifyDialogVisible(false)}
+            <OTPVerifyPhoneDialog
+                visible={verifyPhoneDialogVisible}
+                onClose={() => setVerifyPhoneDialogVisible(false)}
                 phone={phone}
                 setLoading={setLoading}
                 setShowTimerMessage={setShowTimerMessage}
+            />
+
+            <OTPVerifyEmailDialog
+                visible={verifyEmailDialogVisible}
+                onClose={() => setVerifyEmailDialogVisible(false)}
+                email={email}
+                setLoading={setLoading}
             />
             <InnerBlock>
                 <AccountSkeletonSection
@@ -280,9 +329,12 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                                 errorStyle={styles.errorStyle}
                             />
 
-                            <Text style={styles.resendText}>
-                                {(!resendStatus && showTimerMessage) ? `You can update phone number again in ${timer} seconds` : ``}
-                            </Text>
+                            {((!resendStatus && showTimerMessage) && (
+                                <Text style={styles.resendText}>
+                                    {`You can update phone number again in ${timer} seconds`}
+                                </Text>
+                            ))
+                            }
                         </View>
 
                         {/* email */}
@@ -308,7 +360,7 @@ function UpdateProfile({ navigation }: { navigation: any }): React.JSX.Element {
                                 iconName={user?.user_type === 'app' ? editEmail ? require(`../../../assets/icons/tick.png`) : require(`../../../assets/icons/edit.png`) : null}
                                 iconStyle={styles.iconStyle}
                                 iconContainerStyle={{ bottom: HP(30) }}
-                                iconAction={() => editEmail ? setEditEmail(false) : setEditEmail(false)}
+                                iconAction={() => editEmail ? handleEmailUpdate() : setEditEmail(true)}
                             />
                         </View>
 

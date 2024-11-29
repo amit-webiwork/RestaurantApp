@@ -36,6 +36,10 @@ const SocialLogin: React.FunctionComponent<Props> = ({ navigation }) => {
         try {
             const response: any = await GoogleLogin();
 
+            if (!response?.data || !response?.data?.idToken) {
+                throw new Error(errorMessage.canNotProceed);
+            }
+
             const { idToken, user } = response?.data;
 
             if (idToken) {

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ScrollView, TouchableOpacity, View, Image, Text, StyleSheet, ImageBackground, Dimensions } from 'react-native';
+import { ScrollView, TouchableOpacity, View, Text, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
@@ -19,6 +19,7 @@ import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useKeyboardListener } from '../../utils/customHooks/useKeyboardListener';
+import SocialLogin from '../../components/auth/SocialLogin';
 
 type NavigationProp = NativeStackScreenProps<AuthStackParamList>;
 
@@ -133,9 +134,9 @@ const SignUpScreen: React.FunctionComponent<any> = ({
                 <InnerBlock>
                     <View style={styles.main}>
                         <ScrollView showsVerticalScrollIndicator={false}>
-                            <View style={{ flex: 2, marginVertical: VP(50) }}>
+                            <View style={styles.topContainer}>
                                 <Text style={styles.headingText}>sign up</Text>
-                                <View style={{ marginTop: VP(14), }}>
+                                <View style={{ marginTop: height > 700 ? VP(14) : 0 }}>
                                     <CustomTextInput
                                         placeholder='Full Name'
                                         formProps={{ text: name, setText: setName, error: error.name }}
@@ -196,6 +197,8 @@ const SignUpScreen: React.FunctionComponent<any> = ({
                                         LinearGradienrColor={["#FF00E2", "#FF00E2"]}
                                         contentContainerStyle={{ top: -2 }}
                                     />
+
+                                    <SocialLogin navigation={navigation} />
                                 </View>
                             </View>
                         </ScrollView>
@@ -217,10 +220,14 @@ const SignUpScreen: React.FunctionComponent<any> = ({
 
 const styles = StyleSheet.create({
     containerStyle: {
-        maxHeight: height > 700 ? height * .85 : height * .95,
+        maxHeight: height * .95,
         margin: "auto",
         width: width * .9,
         borderRadius: HP(46)
+    },
+    topContainer: {
+        flex: 2,
+        marginVertical: height > 700 ? VP(50) : VP(20)
     },
     main: {
         marginHorizontal: HP(30),

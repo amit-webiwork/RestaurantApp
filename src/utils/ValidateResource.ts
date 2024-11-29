@@ -130,4 +130,11 @@ const updateProfilePhone = Yup.object({
         .typeError("Only number allowed")
 });
 
-export { validateResource, signup, login, forgotPassword, resetPassword, updateProfile, changePassword, feedbackForm, validateCard, updateProfileName, updateProfilePhone };
+const updateProfileEmail = Yup.object({
+    email: Yup.string()
+        .email()
+        .trim()
+        .required("Email is required"),
+});
+
+export { validateResource, signup, login, forgotPassword, resetPassword, updateProfile, changePassword, feedbackForm, validateCard, updateProfileName, updateProfilePhone, updateProfileEmail };

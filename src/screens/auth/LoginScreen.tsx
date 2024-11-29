@@ -146,7 +146,7 @@ const LoginScreen: React.FunctionComponent<any> = ({
                 <InnerBlock>
                     <View style={styles.main}>
                         <ScrollView showsVerticalScrollIndicator={false}>
-                            <View style={{ flex: 1, marginVertical: VP(50) }}>
+                            <View style={styles.topContainer}>
                                 <Text style={styles.headingText}>log in</Text>
 
                                 <View style={{ marginTop: VP(14) }}>
@@ -232,6 +232,10 @@ const styles = StyleSheet.create({
         margin: "auto",
         width: width * .9,
         borderRadius: HP(46)
+    },
+    topContainer: {
+        flex: 1,
+        marginVertical: height > 700 ? VP(50) : VP(20)
     },
     main: {
         marginHorizontal: HP(30),

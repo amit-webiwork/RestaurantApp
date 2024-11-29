@@ -300,6 +300,18 @@ const submitProfilePhone = async (dataPayload: any) => {
     });
 }
 
+const submitProfileEmail = async (dataPayload: any) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await axios.put(BACKEND_URL + apiEndpoints.updateProfileEmail, dataPayload);
+            resolve(res);
+        } catch (error: any) {
+            console.log('API ERROR (submitProfileEmail)', (error?.response?.data?.message || error?.message));
+            reject(error);
+        }
+    });
+}
+
 export {
     submitLogin,
     getCategoryList,
@@ -324,5 +336,6 @@ export {
     getItemDetails,
     submitGoogleLogin,
     submitProfileName,
-    submitProfilePhone
+    submitProfilePhone,
+    submitProfileEmail
 };

@@ -69,7 +69,8 @@ export const apiEndpoints = {
     signupOtpVerify: "/auth/user/signup-otp-verify",
     googleLogin: "/auth/user/google-sign-in",
     updateProfileName: "/user/profile-name",
-    updateProfilePhone: "/user/profile-phone"
+    updateProfilePhone: "/user/profile-phone",
+    updateProfileEmail: "/user/profile-email"
 };
 
 export const errorMessage = {
@@ -79,11 +80,13 @@ export const errorMessage = {
     notificationAccessError: "Allow notification permission for get incoming message",
     cartUpdate: "Your cart options have been updated! Please review your cart before proceeding.",
     unknownError: "An unknown error occurred",
-};
+    canNotProceed: 'We can not procced your request'
+}
 
 export const responseMessage = {
     profileNameUpdate: "Name updated successfully",
-    phoneChanged: "Phone number changed successfully"
+    phoneChanged: "Phone number changed successfully",
+    profileEmailUpdate: "Email updated successfully",
 };
 
 export const googleKeys = {

@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet, StyleProp, TextStyle, Dimensions } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { TextStyles } from '../../utils/TextStyles';
@@ -26,7 +26,7 @@ interface Props {
 
 const { width, height } = Dimensions.get('window');
 
-const OTPVerifyDialog = ({ visible, onClose, phone, setLoading, setShowTimerMessage }: Props) => {
+const OTPVerifyPhoneDialog = ({ visible, onClose, phone, setLoading, setShowTimerMessage }: Props) => {
     const dispatch: AppDispatch = useDispatch();
 
     const [value, setValue] = useState('');
@@ -41,7 +41,6 @@ const OTPVerifyDialog = ({ visible, onClose, phone, setLoading, setShowTimerMess
             }
 
             setError({ status: false, text: "" });
-
 
             setLoading(true);
 
@@ -192,5 +191,5 @@ const styles = StyleSheet.create({
     }
 });
 
-const OTPVerifyDialogComp = memo(OTPVerifyDialog);
-export default OTPVerifyDialogComp;
+const OTPVerifyPhoneDialogComp = memo(OTPVerifyPhoneDialog);
+export default OTPVerifyPhoneDialogComp;
