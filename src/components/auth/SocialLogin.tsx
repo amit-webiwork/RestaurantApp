@@ -21,6 +21,8 @@ import { setInCartState } from '../../utils/helper/CartHelper';
 import { setInRecentSearchState } from '../../utils/helper/SearchHelper';
 import { errorMessage } from '../../utils/Constants';
 import NormalLoader from '../NormalLoader';
+import { setDialogContent } from '../../redux/features/customDialog';
+import Warning from '../../assets/svgs/warning.svg';
 
 interface Props {
     navigation: any;
@@ -43,33 +45,36 @@ const SocialLogin: React.FunctionComponent<Props> = ({ navigation }) => {
             const { idToken, user } = response?.data;
 
             if (idToken) {
-                const dataPayload = {
-                    token: idToken,
-                    user: user
-                }
+                try {
+                    const dataPayload = {
+                        token: idToken,
+                        user: user
+                    }
 
-                const response: any = await submitGoogleLogin(dataPayload);
-                const responseData = { ...response.data };
+                    const response: any = await submitGoogleLogin(dataPayload);
+                    const responseData = { ...response.data };
 
-                if (responseData.user && responseData.token) {
-                    saveStorage(responseData, "userDetails");
-                    dispatch(setProflieDetails(responseData));
+                    if (responseData.user && responseData.token) {
+                        saveStorage(responseData, "userDetails");
+                        dispatch(setProflieDetails(responseData));
 
-                    navigation.reset({
-                        index: 0,
-                        routes: [
-                            {
-                                name: 'MainTabNavigator',
-                            },
-                        ],
-                    });
-                } else {
-                    throw new Error(errorMessage.commonMessage);
+                        navigation.reset({
+                            index: 0,
+                            routes: [
+                                {
+                                    name: 'MainTabNavigator',
+                                },
+                            ],
+                        });
+                    } else {
+                        throw new Error(errorMessage.commonMessage);
+                    }
+                } catch (err: any) {
+                    dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: err?.response?.data?.message || errorMessage.commonMessage }));
                 }
             }
         } catch (error: any) {
             if (isErrorWithCode(error)) {
-                console.log('error', error.message);
                 switch (error.code) {
                     case statusCodes.IN_PROGRESS:
                         // operation (eg. sign in) already in progress
