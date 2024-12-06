@@ -73,7 +73,8 @@ const CategoryBox: React.FunctionComponent<Props> = ({ navigation }) => {
                         <View style={{ alignItems: "center" }}>
                             <Image
                                 source={{ uri: `${CDN_URL}${item?.imgUrl}` }}
-                                style={styles.categoryIcon} />
+                                style={styles.categoryIcon}
+                            />
                         </View>
                     </LinearGradient>
                 </TouchableOpacity>
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     categoryIcon: {
         width: FS(45),
         height: VP(45),
-        resizeMode: "contain"
+        resizeMode: "cover"
     }
 });
 

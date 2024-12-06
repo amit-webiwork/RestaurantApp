@@ -14,3 +14,14 @@ export const getItemPriceComponents = (item: ItemDetails) => {
 
     return itemData;
 }
+
+export const filterDeletedAttributes = (data: any[]) => {
+    return data.map(option => {
+        return {
+            ...option,
+            variantAttributes: option.variantAttributes.filter(
+                (attribute: { customizeAttribute: { isDeleted: boolean; }; }) => !attribute.customizeAttribute.isDeleted
+            )
+        };
+    });
+}
