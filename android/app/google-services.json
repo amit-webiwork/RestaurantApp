@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "910822640980-tvpr48ir88dbkd2iakihkaqnub8ups0d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deloungecafe",
+            "certificate_hash": "b37d4dd652c851018df278b4de2bb99fa1e530b9"
+          }
+        },
+        {
           "client_id": "910822640980-ltr2n7c7p69cgvu3sbksgm4oaptonmar.apps.googleusercontent.com",
           "client_type": 3
         }
