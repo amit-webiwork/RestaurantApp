@@ -5,7 +5,8 @@ import {
     Text,
     TouchableOpacity,
     LayoutChangeEvent,
-    Image
+    Image,
+    ScrollView
 } from 'react-native';
 
 import { FS, HP, VP } from '../../utils/Responsive';
@@ -50,10 +51,12 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
     return (
         <View>
             <Text style={styles.customizeHeading}>customize items</Text>
-
             {/* Tabs section */}
-            <View style={styles.tabTitleSection}>
-
+            <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.tabTitleSection}
+            >
                 {customizeTabs.map((d: any, i: number) => (
                     <TouchableOpacity
                         onPress={() => switchTab((i + 1))}
@@ -73,7 +76,7 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
                         )}
                     </TouchableOpacity>
                 ))}
-            </View>
+            </ScrollView>
 
             <View style={styles.lineTab}></View>
 

@@ -17,8 +17,6 @@ import { saveStorage } from '../../utils/Storage';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { setProflieDetails } from '../../redux/features/profile';
-import { setInCartState } from '../../utils/helper/CartHelper';
-import { setInRecentSearchState } from '../../utils/helper/SearchHelper';
 import { errorMessage } from '../../utils/Constants';
 import NormalLoader from '../NormalLoader';
 
@@ -86,7 +84,8 @@ const SocialLogin: React.FunctionComponent<Props> = ({ navigation }) => {
                         Alert.alert('Something went wrong: ', error.toString());
                 }
             } else {
-                Alert.alert('Something went wrong: ', `${error?.message || errorMessage.commonMessage}`);
+                // Alert.alert('Something went wrong: ', `${error?.message || errorMessage.commonMessage}`);
+                showFadeAlert(`${error?.message || errorMessage.commonMessage}`);
             }
         } finally {
             setLoading(false);

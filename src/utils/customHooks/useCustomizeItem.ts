@@ -13,7 +13,7 @@ export function useCustomizeItem(item: any, render: number) {
     const CartItemList = useSelector(cartItemList);
     const CartItemIds = useSelector(cartItemIds);
 
-    const customizeOptionsGet = JSON.parse(JSON.stringify(item?.variants || []));
+    const customizeOptionsGet = JSON.parse(JSON.stringify(item?.variants?.sort((a: { id: number; }, b: { id: number; }) => a.id - b.id) || []));
 
     const [activeTab, setActiveTab] = useState(1);
     const [textWidths, setTextWidths] = useState<any>({});
