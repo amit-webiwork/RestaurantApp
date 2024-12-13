@@ -13,11 +13,11 @@ export function useCustomizeItem(item: any, render: number) {
     const CartItemList = useSelector(cartItemList);
     const CartItemIds = useSelector(cartItemIds);
 
-    const sortedData = item?.variants
+    const sortedData = [...(item?.variants ?? [])]
         ?.sort((a: { id: number; }, b: { id: number; }) => a.id - b.id)
         .map((variant: { variantAttributes: any[]; }) => ({
             ...variant,
-            variantAttributes: variant.variantAttributes.sort((a, b) => a.customize_attribute_id - b.customize_attribute_id)
+            variantAttributes: [...(variant.variantAttributes ?? [])].sort((a, b) => a.customize_attribute_id - b.customize_attribute_id)
         })) || [];
 
     const customizeOptionsGet = JSON.parse(JSON.stringify(sortedData));
