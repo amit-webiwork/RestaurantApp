@@ -21,9 +21,12 @@ interface Props {
     switchTabHandler: (arg: number) => void;
     handleTextLayoutHandler: (arg1: LayoutChangeEvent, arg2: number) => void;
     clickOptionHandlerProp: (arg: number) => void;
+    sizeTab?: any[];
+    sizeSwitchTab?: () => void;
+    clickSizeHandler?: (arg: number) => void;
 }
 
-const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidthsProp, customizeTabs, switchTabHandler, handleTextLayoutHandler, clickOptionHandlerProp }) => {
+const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidthsProp, customizeTabs, switchTabHandler, handleTextLayoutHandler, clickOptionHandlerProp, sizeTab = [], sizeSwitchTab = () => void (0), clickSizeHandler = () => void (0) }) => {
 
     const [activeTab, setActiveTab] = useState(1);
     const [textWidths, setTextWidths] = useState<any>({});
@@ -48,6 +51,12 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
         setTextWidths(textWidthsProp);
     }, [textWidthsProp])
 
+    useEffect(() => {
+        if (sizeTab.length === 0) {
+            switchTab(1);
+        }
+    }, [sizeTab.length])
+
     return (
         <View>
             <Text style={styles.customizeHeading}>customize items</Text>
@@ -57,6 +66,25 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.tabTitleSection}
             >
+                {sizeTab.length > 0 && (
+                    <TouchableOpacity
+                        onPress={() => { switchTab(0); sizeSwitchTab() }}
+                        key={`size-tab`}
+                    >
+                        <Text
+                            style={styles.menuText}
+                        >
+                            Size
+                        </Text>
+                        {activeTab === 0 && (
+                            <Image
+                                source={require('../../assets/images/active.png')}
+                                style={[styles.activeLine, { width: FS(45) }]}
+                            />
+                        )}
+                    </TouchableOpacity>
+                )}
+
                 {customizeTabs.map((d: any, i: number) => (
                     <TouchableOpacity
                         onPress={() => switchTab((i + 1))}
@@ -80,47 +108,94 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
 
             <View style={styles.lineTab}></View>
 
-            {/* Tab options section */}
-            {customizeTabs[(activeTab - 1)]?.variantAttributes && (
-                <View style={{ marginTop: VP(6) }}>
-                    {customizeTabs[(activeTab - 1)].variantAttributes.map((d: any, i: number) => (
-                        <View key={`tab-options-${i}`} style={styles.tabMain}>
-                            <View style={styles.tabSub}>
+            <View style={{ marginTop: VP(6) }}>
+                {/* size options section */}
+                {
+                    (sizeTab && activeTab === 0) && (
+                        <View>
+                            {sizeTab?.map((d, i) => (
+                                <View key={`size-tab-options-${i}`} style={styles.tabMain}>
+                                    <View style={styles.tabSub}>
+                                        <View style={styles.tabLeft}>
+                                            <Text
+                                                style={styles.customizeOptionText}>
+                                                {d?.size?.name || ``}</Text>
+                                        </View>
 
-                                <View style={styles.tabLeft}>
-                                    {/* {d?.image ? (
+                                        <View style={styles.tabRight}>
+                                            <Text style={[styles.optionPrice, styles.optionPriceWithoutDiscount]}>
+                                                {(d?.discountPrice > 0) ? `$${d?.itemPrice}` : ""}
+                                            </Text>
+
+                                            <Text style={styles.optionPrice}>
+                                                {(d?.finalPrice && +d?.finalPrice > 0) ? `$${d.finalPrice}` : ""}
+                                            </Text>
+
+                                            <TouchableOpacity
+                                                onPress={() => clickSizeHandler(i)}
+                                            >
+                                                <View style={[styles.checkbox, styles.radiobox]}>
+                                                    {(d?.checked && d.checked === true) && (
+                                                        <View
+                                                            style={[styles.checkedBox, styles.radiobox]}
+                                                        >
+                                                            <Icon type={Icons.Feather} size={FS(12)} name={`check`} color={COLORS.WHITE} />
+                                                        </View>
+                                                    )}
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                </View>
+                            ))}
+                        </View>
+                    )
+                }
+
+                {/* Tab options section */}
+                {
+                    customizeTabs[(activeTab - 1)]?.variantAttributes && (
+                        <View style={{ marginTop: VP(0) }}>
+                            {customizeTabs[(activeTab - 1)].variantAttributes.map((d: any, i: number) => (
+                                <View key={`tab-options-${i}`} style={styles.tabMain}>
+                                    <View style={styles.tabSub}>
+
+                                        <View style={styles.tabLeft}>
+                                            {/* {d?.image ? (
                                         <Image source={d?.image} style={styles.optionImg} />
                                     ) : <></>} */}
 
-                                    <Text style={styles.customizeOptionText}>{d?.customizeAttribute?.name || ``}</Text>
-                                </View>
-
-                                <View style={styles.tabRight}>
-                                    <Text style={styles.optionPrice}>
-                                        {(d?.price && +d?.price > 0) ? `+$${d.price}` : ""}
-                                    </Text>
-
-                                    <TouchableOpacity
-                                        onPress={() => clickOptionHandler(i)}
-                                    >
-                                        <View style={[styles.checkbox, !customizeTabs[(activeTab - 1)]?.isMultiple && styles.radiobox]}>
-                                            {(d?.checked && d.checked === true) && (
-                                                <View
-                                                    style={[styles.checkedBox, !customizeTabs[(activeTab - 1)]?.isMultiple && styles.radiobox]}
-                                                >
-                                                    <Icon type={Icons.Feather} size={FS(12)} name={`check`} color={COLORS.WHITE} />
-                                                </View>
-                                            )}
+                                            <Text style={styles.customizeOptionText}>{d?.customizeAttribute?.name || ``}</Text>
                                         </View>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
 
-                            <View style={styles.lineTab}></View>
+                                        <View style={styles.tabRight}>
+                                            <Text style={styles.optionPrice}>
+                                                {(d?.price && +d?.price > 0) ? `+$${d.price}` : ""}
+                                            </Text>
+
+                                            <TouchableOpacity
+                                                onPress={() => clickOptionHandler(i)}
+                                            >
+                                                <View style={[styles.checkbox, !customizeTabs[(activeTab - 1)]?.isMultiple && styles.radiobox]}>
+                                                    {(d?.checked && d.checked === true) && (
+                                                        <View
+                                                            style={[styles.checkedBox, !customizeTabs[(activeTab - 1)]?.isMultiple && styles.radiobox]}
+                                                        >
+                                                            <Icon type={Icons.Feather} size={FS(12)} name={`check`} color={COLORS.WHITE} />
+                                                        </View>
+                                                    )}
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.lineTab}></View>
+                                </View>
+                            ))}
                         </View>
-                    ))}
-                </View>
-            )}
+                    )
+                }
+            </View>
         </View>
     );
 };
@@ -173,6 +248,11 @@ const styles = StyleSheet.create({
         ...TextStyles.RALEWAY_SEMI_BOLD,
         fontSize: 12,
         color: "#383838"
+    },
+    optionPriceWithoutDiscount: {
+        textDecorationLine: "line-through",
+        textDecorationStyle: "solid",
+        color: COLORS.RED
     },
     checkbox: {
         width: FS(15.11),

@@ -25,3 +25,12 @@ export const filterDeletedAttributes = (data: any[]) => {
         };
     });
 }
+
+export const filterDeletedAndInactiveSizes = (data: any[]) => {
+    const filteredData = data.filter(item => item.size.isDeleted === false && item.size.isActive === true)
+        .map(item => ({
+            ...getItemPriceComponents(item)
+        }));
+
+    return filteredData;
+}

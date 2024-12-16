@@ -9,6 +9,7 @@ import CustomizeItemSection from '../product-sections/CustomizeItem';
 import { useCustomizeItem } from '../../utils/customHooks/useCustomizeItem';
 import CustomizeItemDialogLoader from '../skeleton/CustomizeItemDialogLoader';
 import { getItemDetails } from '../../utils/ApiCall';
+import { useItemSizes } from '../../utils/customHooks/useItemSizes';
 
 interface Props {
     visible: boolean;
@@ -53,6 +54,8 @@ const CustomizeItemDialog = ({ visible, slideAnim, itemId, closeHandler, render 
     }, [visible])
 
     const { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler } = useCustomizeItem(itemData, render);
+
+    const { sizeTab, switchTab: sizeSwitchTab, clickSizeHandler } = useItemSizes(itemData, render);
 
     return (
         <Modal
@@ -103,6 +106,9 @@ const CustomizeItemDialog = ({ visible, slideAnim, itemId, closeHandler, render 
                                     switchTabHandler={switchTab}
                                     handleTextLayoutHandler={handleTextLayout}
                                     clickOptionHandlerProp={clickOptionHandler}
+                                    sizeTab={sizeTab}
+                                    sizeSwitchTab={sizeSwitchTab}
+                                    clickSizeHandler={clickSizeHandler}
                                 />
                             </View>
                         </View>

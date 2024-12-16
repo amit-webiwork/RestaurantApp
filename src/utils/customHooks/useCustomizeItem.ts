@@ -24,7 +24,7 @@ export function useCustomizeItem(item: any, render: number) {
 
     // const customizeOptionsGet = JSON.parse(JSON.stringify(item?.variants?.sort((a: { id: number; }, b: { id: number; }) => a.id - b.id) || []));
 
-    const [activeTab, setActiveTab] = useState(1);
+    const [activeTab, setActiveTab] = useState(0);
     const [textWidths, setTextWidths] = useState<any>({});
     const [customizeTabs, setCustomizeTabs] = useState<any[]>([]);
 

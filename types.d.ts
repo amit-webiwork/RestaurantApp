@@ -10,6 +10,7 @@ interface CartItemDetails {
     itemPrice: number;
     discountPercent: number;
     options: any[];
+    size?: any[];
 }
 
 interface ItemDetails {

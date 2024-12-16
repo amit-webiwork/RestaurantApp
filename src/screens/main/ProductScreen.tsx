@@ -27,6 +27,7 @@ import { useCartQuantity } from '../../utils/customHooks/useCartQuantity.ts';
 import { useScrollToTop } from '../../utils/customHooks/useScrollToTop.ts';
 import CustomizeItemSection from '../../components/product-sections/CustomizeItem.tsx';
 import { useCustomizeItem } from '../../utils/customHooks/useCustomizeItem.ts';
+import { useItemSizes } from '../../utils/customHooks/useItemSizes.ts';
 
 const { width, height } = Dimensions.get('window');
 
@@ -44,6 +45,8 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
     const { quantity: cartQuantity, setQuantity: setCartQuantity, increment: incrementCart, decrement: decrementCart } = useCartQuantity(1);
 
     const { activeTab, textWidths, customizeTabs, switchTab, handleTextLayout, clickOptionHandler } = useCustomizeItem(item, 1);
+
+    const { sizeTab, switchTab: sizeSwitchTab, clickSizeHandler, selectedSizePrice } = useItemSizes(item, 1);
 
     useScrollToTop(id, scrollViewRef);
 
@@ -208,6 +211,9 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                                 switchTabHandler={switchTab}
                                                 handleTextLayoutHandler={handleTextLayout}
                                                 clickOptionHandlerProp={clickOptionHandler}
+                                                sizeTab={sizeTab}
+                                                sizeSwitchTab={sizeSwitchTab}
+                                                clickSizeHandler={clickSizeHandler}
                                             />
                                         </View>
                                     )}
@@ -217,7 +223,16 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                         <View style={{ paddingHorizontal: HP(30) }}>
                                             <View style={{ flexDirection: "row", marginTop: VP(44), backgroundColor: COLORS.BUTTON, borderRadius: HP(40), padding: HP(17), justifyContent: "space-between", alignItems: "center", }}>
                                                 <View>
-                                                    <Text style={styles.priceText}>${itemDetails?.finalPrice.toFixed(2)}</Text>
+                                                    {/* <Text style={styles.priceText}>${itemDetails?.finalPrice.toFixed(2)}</Text> */}
+
+                                                    <Text style={styles.priceText}>
+                                                        {
+                                                            selectedSizePrice.enable ?
+                                                                `$${selectedSizePrice?.price.toFixed(2)}` :
+                                                                `$${itemDetails?.finalPrice.toFixed(2)}`
+
+                                                        }
+                                                    </Text>
                                                 </View>
 
                                                 <CartQtyButtonV1Section
@@ -228,7 +243,7 @@ function ProductScreen({ route, navigation }: { navigation: any, route: any }): 
                                                 />
 
                                                 <TouchableOpacity
-                                                    onPress={() => addToCart(itemDetails, cartQuantity, dispatch, undefined, undefined, customizeTabs)}
+                                                    onPress={() => addToCart(itemDetails, cartQuantity, dispatch, undefined, undefined, customizeTabs, sizeTab)}
                                                     style={{ width: FS(31), height: FS(31), borderRadius: FS(15.5), backgroundColor: COLORS.WHITE, alignItems: "center", justifyContent: "center" }}
                                                 >
                                                     <Image

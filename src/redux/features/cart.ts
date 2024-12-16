@@ -60,6 +60,24 @@ export const cartSlice = createSlice({
                 saveStorage(state.items, "cartItems");
             }
         },
+        updateItemSize: (state: any, action: PayloadAction<{ data: any[]; itemId: number; }>) => {
+            const sizeData = action.payload.data;
+            const itemId = action.payload.itemId;
+
+            const existingItemIndex = state.items.findIndex(
+                (i: any) => i.itemId === itemId
+            );
+
+            if (existingItemIndex !== -1) {
+                // If item exists, update the options
+                state.items[existingItemIndex] = {
+                    ...state.items[existingItemIndex],
+                    size: sizeData
+                };
+
+                saveStorage(state.items, "cartItems");
+            }
+        },
         removeFromCart: (state, action: PayloadAction<number>) => {
             state.loading = true;
             state.items = state.items.filter((d) => d.itemId !== action.payload)
@@ -96,6 +114,11 @@ export const getCartCustomizeOptions = (itemId: number, cartList: CartItemDetail
     return getOptions?.options || [];
 };
 
+export const getCartSize = (itemId: number, cartList: CartItemDetails[]) => {
+    const getSize = cartList.find((d) => d.itemId === itemId);
+    return getSize?.size || [];
+};
+
 export const getItemInCart = (itemId: number, cartItemIds: number[]) => {
     return cartItemIds.includes(itemId)
 };
@@ -110,7 +133,7 @@ export const cartItemIds = createSelector(
     }
 )
 
-export const { setItems, updateItemOptions, hideCartNotification, recoverCart, removeFromCart, resetCart, setInstructionText, setCartLoading } = cartSlice.actions
+export const { setItems, updateItemOptions, hideCartNotification, recoverCart, removeFromCart, resetCart, setInstructionText, setCartLoading, updateItemSize } = cartSlice.actions
 
 export const cartItemList = (state: { cart: CartState }) => state.cart.items;
 export const itemAdded = (state: { cart: CartState }) => state.cart.itemAdded;

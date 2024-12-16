@@ -1,9 +1,10 @@
-import { recoverCart, setCartLoading, setItems, updateItemOptions } from "../../redux/features/cart"
+import { recoverCart, setCartLoading, setItems, updateItemOptions, updateItemSize } from "../../redux/features/cart"
 import { AppDispatch } from "../../redux/store"
 import { loadStorage } from "../Storage";
 
-export const addToCart = (item: ItemDetails, qty: number, dispatch: AppDispatch, actionType = 'update', notify = true, customizeOptions: null | any[] = null) => {
+export const addToCart = (item: ItemDetails, qty: number, dispatch: AppDispatch, actionType = 'update', notify = true, customizeOptions: null | any[] = null, sizeOption: null | any[] = null) => {
 
+    // code for customizeOptions
     let options: any[] = customizeOptions && Array.isArray(customizeOptions) ? customizeOptions : [];
 
     options = options?.map(variant => {
@@ -11,9 +12,16 @@ export const addToCart = (item: ItemDetails, qty: number, dispatch: AppDispatch,
         return checkedOptions.length > 0 ? { ...variant, variantAttributes: checkedOptions } : null;
     }).filter(Boolean);
 
+    // code for size options
+    let size: any[] = sizeOption && Array.isArray(sizeOption) ? sizeOption : [];
+
+    size = size?.filter(item => item.checked);
+
+    // common code
+
     const { name, imgUrl, id, price, finalPrice, discountPrice, itemPrice, discountPercent } = item;
 
-    const itemDetails = { data: { name, imgUrl, itemId: id, price, qty, finalPrice, discountPrice, itemPrice, discountPercent, options }, actionType: actionType, notify };
+    const itemDetails = { data: { name, imgUrl, itemId: id, price, qty, finalPrice, discountPrice, itemPrice, discountPercent, options, size }, actionType: actionType, notify };
 
     dispatch(setCartLoading(true));
 
@@ -39,6 +47,16 @@ export const updateItemOptionsHelper = (itemId: number, customizeOptions: any[],
     dispatch(updateItemOptions(optionSet));
 }
 
+export const updateItemSizeHelper = (itemId: number, sizeOption: any[], dispatch: AppDispatch) => {
+
+    let options: any[] = sizeOption && Array.isArray(sizeOption) ? sizeOption : [];
+
+    options = options?.filter(item => item.checked);
+
+    const optionSet = { data: options, itemId };
+    dispatch(updateItemSize(optionSet));
+}
+
 export const setInCartState = async (dispatch: AppDispatch) => {
     const cartItems = await loadStorage("cartItems");
 
@@ -58,6 +76,16 @@ export function updateCheckedOptions(mainOptions: any[], newCheckedOptions: any[
                     mainOption.checked = newOption.checked;
                 }
             });
+        }
+    });
+}
+
+// Function to update checked size in main array
+export function updateCheckedSize(mainOptions: any[], newCheckedOptions: any[]) {
+    newCheckedOptions.forEach(newItem => {
+        const mainItem = mainOptions.find(v => v.id === newItem.id);
+        if (mainItem) {
+            mainItem.checked = newItem.checked;
         }
     });
 }
