@@ -95,16 +95,37 @@ const CartItem: React.FunctionComponent<Props> = ({ data, render }) => {
                     <View style={styles.itemInfoContainer}>
                         <View style={{ flex: 1 }}>
                             <Text style={styles.itemTitle}>{data?.name || ""}</Text>
-                            <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.itemPrice, data.discountPrice > 0 && styles.discountedPriceText]}>${data?.itemPrice?.toFixed(2) || 0.00}</Text>
+                            <Text
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                                style={
+                                    [
+                                        styles.itemPrice,
+                                        data.discountPrice > 0 && styles.discountedPriceText
+                                    ]
+                                }
+                            >
+                                ${data?.itemPrice?.toFixed(2) || 0.00}
+                            </Text>
 
                             {data.discountPrice > 0 && (
                                 <>
-                                    <Text numberOfLines={1} ellipsizeMode="tail" style={styles.itemPrice}>${data.discountPrice.toFixed(2)}</Text>
+                                    <Text
+                                        numberOfLines={1}
+                                        ellipsizeMode="tail"
+                                        style={styles.itemPrice}
+                                    >
+                                        ${data.finalPrice.toFixed(2)}
+                                    </Text>
                                 </>
                             )}
                         </View>
 
-                        <CartQtyButtonV2Section decrement={decrementCart} qty={cartQuantity} increment={incrementCart} />
+                        <CartQtyButtonV2Section
+                            decrement={decrementCart}
+                            qty={cartQuantity}
+                            increment={incrementCart}
+                        />
 
                         {/* Remove button */}
                         <TouchableOpacity onPress={removeItemFromCart}>

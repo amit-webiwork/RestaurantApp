@@ -53,7 +53,7 @@ export function useItemSizes(item: any, render: number) {
             const status = getItemInCart(item?.id, CartItemIds);
 
             if (status) {
-                updateItemSizeHelper(item?.id, sizeTab, dispatch);
+                updateItemSizeHelper(item, sizeTab, dispatch);
             }
             setSelectedSizePrice({ enable: sizeTab?.find(d => d.checked), price: sizeTab?.find(d => d.checked)?.finalPrice || 0 });
         }

@@ -33,6 +33,7 @@ interface ItemDetails {
     itemId?: number;
     options?: any[];
     variants?: any[];
+    size?: any[];
 }
 
 interface CouponDetails {

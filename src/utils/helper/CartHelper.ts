@@ -1,6 +1,7 @@
-import { recoverCart, setCartLoading, setItems, updateItemOptions, updateItemSize } from "../../redux/features/cart"
+import { recoverCart, setCartLoading, setItems, updateItemOptions, updateItemPrice, updateItemSize } from "../../redux/features/cart"
 import { AppDispatch } from "../../redux/store"
 import { loadStorage } from "../Storage";
+import { getItemPriceComponents } from "./ItemHelper";
 
 export const addToCart = (item: ItemDetails, qty: number, dispatch: AppDispatch, actionType = 'update', notify = true, customizeOptions: null | any[] = null, sizeOption: null | any[] = null) => {
 
@@ -21,7 +22,11 @@ export const addToCart = (item: ItemDetails, qty: number, dispatch: AppDispatch,
 
     const { name, imgUrl, id, price, finalPrice, discountPrice, itemPrice, discountPercent } = item;
 
-    const itemDetails = { data: { name, imgUrl, itemId: id, price, qty, finalPrice, discountPrice, itemPrice, discountPercent, options, size }, actionType: actionType, notify };
+    const finalPriceMain = size.length > 0 ? size[0]?.finalPrice || 0 : finalPrice;
+    const discountPriceMain = size.length > 0 ? size[0]?.discountPrice || 0 : discountPrice;
+    const itemPriceMain = size.length > 0 ? size[0]?.itemPrice || 0 : itemPrice;
+
+    const itemDetails = { data: { name, imgUrl, itemId: id, price, qty, finalPrice: finalPriceMain, discountPrice: discountPriceMain, itemPrice: itemPriceMain, discountPercent, options, size }, actionType: actionType, notify };
 
     dispatch(setCartLoading(true));
 
@@ -47,7 +52,9 @@ export const updateItemOptionsHelper = (itemId: number, customizeOptions: any[],
     dispatch(updateItemOptions(optionSet));
 }
 
-export const updateItemSizeHelper = (itemId: number, sizeOption: any[], dispatch: AppDispatch) => {
+export const updateItemSizeHelper = (item: ItemDetails, sizeOption: any[], dispatch: AppDispatch) => {
+    const itemData = getItemPriceComponents(item);
+    const itemId = itemData?.id;
 
     let options: any[] = sizeOption && Array.isArray(sizeOption) ? sizeOption : [];
 
@@ -55,6 +62,30 @@ export const updateItemSizeHelper = (itemId: number, sizeOption: any[], dispatch
 
     const optionSet = { data: options, itemId };
     dispatch(updateItemSize(optionSet));
+
+    if (options.length > 0) {
+        const priceSet = {
+            data: {
+                discountPrice: options[0]?.discountPrice || 0,
+                finalPrice: options[0]?.finalPrice || 0,
+                itemPrice: options[0]?.itemPrice || 0
+            },
+            itemId
+        };
+
+        dispatch(updateItemPrice(priceSet));
+    } else {
+        const priceSet = {
+            data: {
+                discountPrice: itemData?.discountPrice || 0,
+                finalPrice: itemData?.finalPrice || 0,
+                itemPrice: itemData?.itemPrice || 0,
+            },
+            itemId
+        };
+
+        dispatch(updateItemPrice(priceSet));
+    }
 }
 
 export const setInCartState = async (dispatch: AppDispatch) => {

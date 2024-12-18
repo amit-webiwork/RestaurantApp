@@ -68,8 +68,9 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                     const itemDetails = getItemPriceComponents(item);
                     itemDetails.id = itemDetails.itemId || 0;
                     const qty = item.qty || 1;
-                    const options = item.variants || [];
-                    addToCart(itemDetails, qty, dispatch, undefined, false, options);
+                    const options = item?.variants || [];
+                    const size = item?.size || [];
+                    addToCart(itemDetails, qty, dispatch, undefined, false, options, size);
                 }
                 resolve(1);
             }, 100);
@@ -103,7 +104,11 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                 })
             ];
 
+            // console.log(JSON.stringify(dataPayloadV1), '----dataPayloadV1')
+
             const response: any = await cartConfirm({ items: dataPayloadV1, couponId: AppliedCouponId });
+
+            // console.log(JSON.stringify(response?.data), '----response?.data')
 
             dispatch(resetCart());
 
@@ -126,8 +131,6 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
             if (!areArraysEqual) {
                 dispatch(setDialogContent({ title: <Warning width={FS(40)} height={VP(40)} />, message: errorMessage.cartUpdate, buttonAction: true, buttonText2: "Back to cart", onAction: 'Cart' }));
             }
-
-            // console.log(JSON.stringify(response?.data), '---response?.data')
 
             setConfirmOrderData({
                 couponDiscount: response?.data?.couponDiscount || 0,
@@ -531,7 +534,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: HP(5),
-        width: "100%"
+        width: "100%",
+        flexWrap: "wrap"
     },
     variantName: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

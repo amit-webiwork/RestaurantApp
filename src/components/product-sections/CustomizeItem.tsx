@@ -119,7 +119,7 @@ const CustomizeItem: React.FunctionComponent<Props> = ({ activeTabProp, textWidt
                                         <View style={styles.tabLeft}>
                                             <Text
                                                 style={styles.customizeOptionText}>
-                                                {d?.size?.name || ``}</Text>
+                                                {d?.name || ``}</Text>
                                         </View>
 
                                         <View style={styles.tabRight}>

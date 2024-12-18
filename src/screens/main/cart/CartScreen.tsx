@@ -59,7 +59,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
         setItemListFiltered(filtered);
     }, [PapularItems]);
 
-    const handleClick = async (type: string) => {
+    const handleClick = async () => {
         dispatch(setInstructionText(instructionText));
         navigation.navigate(`OrderSummaryScreen`);
     }
@@ -89,6 +89,8 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
             setItemRerender(pre => ++pre)
         }
     }, [isFocused])
+
+    // console.log(JSON.stringify(CartItemList), '----CartItemList')
 
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
@@ -209,24 +211,33 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                             {/* Third section order summary */}
                             {CartItemList.length > 0 && (
-                                <View style={{ marginTop: VP(28), marginHorizontal: HP(20) }}>
+                                <View style={styles.orderSummaryMain}>
                                     <Text style={styles.heading}>order summary</Text>
 
-                                    <View style={{ marginTop: VP(14), backgroundColor: COLORS.WHITE, borderRadius: HP(21) }}>
-                                        <View style={{ padding: HP(26), gap: HP(11) }}>
-                                            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", }}>
+                                    <View style={styles.orderSummarySub}>
+                                        <View style={styles.orderSummaryTop}>
+                                            <View style={styles.orderSummaryChildren}>
                                                 <Text style={[styles.link, { color: "#767676" }]}>order amount</Text>
 
-                                                <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${(GetCartTotal - GetCartOptionsTotal).toFixed(2)}</Text>
+                                                <Text
+                                                    style={
+                                                        [
+                                                            styles.linkText,
+                                                            { color: COLORS.BLACK, fontSize: 14 }
+                                                        ]
+                                                    }
+                                                >
+                                                    ${(GetCartTotal - GetCartOptionsTotal).toFixed(2)}
+                                                </Text>
                                             </View>
 
-                                            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", }}>
+                                            <View style={styles.orderSummaryChildren}>
                                                 <Text style={[styles.link, { color: "#767676" }]}>Extra add on</Text>
 
                                                 <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${GetCartOptionsTotal.toFixed(2)}</Text>
                                             </View>
 
-                                            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                                            <View style={styles.orderSummaryChildren}>
                                                 <Text style={[styles.link, { color: "#767676" }]}>discount</Text>
 
                                                 <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${CouponDiscount.toFixed(2)}</Text>
@@ -234,7 +245,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                                             <View style={styles.line}></View>
 
-                                            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: VP(3.91) }}>
+                                            <View style={{ ...styles.orderSummaryChildren, marginTop: VP(3.91) }}>
                                                 <Text style={[styles.link, { color: COLORS.BLACK }]}>total</Text>
 
                                                 <Text style={[styles.linkText, { color: COLORS.BLACK, fontSize: 14 }]}>${(GetCartTotal - CouponDiscount).toFixed(2)}</Text>
@@ -269,14 +280,14 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                 {/* Button For Process */}
                 {CartItemList.length > 0 && (
                     <View style={styles.bottomButtonContainer}>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", gap: HP(7), paddingHorizontal: HP(20), paddingVertical: VP(19) }}>
+                        <View style={styles.bottomButtonSubContainer}>
                             <Button
                                 text={'continue'}
-                                onPress={() => handleClick(`CartMenuScreen`)}
+                                onPress={() => handleClick()}
                                 textStyle={[styles.buttonStyle2]}
                                 isLoading={false}
                                 activeButtonText={{ opacity: .65 }}
-                                mainContainerStyle={{ flex: 1, borderColor: COLORS.BUTTON, borderWidth: 1, borderRadius: HP(8) }}
+                                mainContainerStyle={styles.bottomButtonMainContainerStyle}
                                 // LinearGradienrColor={["#F5F5F5", "#F5F5F5"]}
                                 LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
                                 contentContainerStyle={{ top: -2 }}
@@ -375,6 +386,38 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.WHITE,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20
+    },
+    bottomButtonSubContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: "100%",
+        gap: HP(7),
+        paddingHorizontal: HP(20),
+        paddingVertical: VP(19)
+    },
+    bottomButtonMainContainerStyle: {
+        flex: 1,
+        borderColor: COLORS.BUTTON,
+        borderWidth: 1,
+        borderRadius: HP(8)
+    },
+    orderSummaryMain: {
+        marginTop: VP(28),
+        marginHorizontal: HP(20)
+    },
+    orderSummarySub: {
+        marginTop: VP(14),
+        backgroundColor: COLORS.WHITE,
+        borderRadius: HP(21)
+    },
+    orderSummaryTop: {
+        padding: HP(26),
+        gap: HP(11)
+    },
+    orderSummaryChildren: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
     }
 });
 

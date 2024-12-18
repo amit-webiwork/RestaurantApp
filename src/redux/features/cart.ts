@@ -78,6 +78,27 @@ export const cartSlice = createSlice({
                 saveStorage(state.items, "cartItems");
             }
         },
+        updateItemPrice: (state: any, action: PayloadAction<{ data: { discountPrice: number, finalPrice: number, itemPrice: number }; itemId: number; }>) => {
+
+            const { discountPrice, finalPrice, itemPrice } = action.payload.data;
+            const itemId = action.payload.itemId;
+
+            const existingItemIndex = state.items.findIndex(
+                (i: any) => i.itemId === itemId
+            );
+
+            if (existingItemIndex !== -1) {
+                // If item exists, update the price options
+                state.items[existingItemIndex] = {
+                    ...state.items[existingItemIndex],
+                    finalPrice,
+                    discountPrice,
+                    itemPrice
+                };
+
+                saveStorage(state.items, "cartItems");
+            }
+        },
         removeFromCart: (state, action: PayloadAction<number>) => {
             state.loading = true;
             state.items = state.items.filter((d) => d.itemId !== action.payload)
@@ -133,7 +154,7 @@ export const cartItemIds = createSelector(
     }
 )
 
-export const { setItems, updateItemOptions, hideCartNotification, recoverCart, removeFromCart, resetCart, setInstructionText, setCartLoading, updateItemSize } = cartSlice.actions
+export const { setItems, updateItemOptions, hideCartNotification, recoverCart, removeFromCart, resetCart, setInstructionText, setCartLoading, updateItemSize, updateItemPrice } = cartSlice.actions
 
 export const cartItemList = (state: { cart: CartState }) => state.cart.items;
 export const itemAdded = (state: { cart: CartState }) => state.cart.itemAdded;
