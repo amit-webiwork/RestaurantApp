@@ -179,6 +179,8 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
         }
     }, [orderId])
 
+    // console.log(JSON.stringify(orderData), '----orderData')
+
     return (
         <>
             <NormalLoader visible={loading} />
@@ -302,8 +304,8 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                                                     • {d?.qty} x {d?.itemName}
                                                                 </Text>
 
-                                                                <View
-                                                                    style={styles.variantMain}>
+                                                                <View style={styles.variantMain}>
+                                                                    {/* loop for Customize options */}
                                                                     {d?.variants?.map((k: any, j: number) => (
                                                                         <View
                                                                             key={`item-variants-${i}-${j}`}
@@ -322,6 +324,30 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
                                                                                     {k?.variantAttributes
                                                                                         .map((attr: { name: string; }) => attr.name)
                                                                                         .join(', ')}
+                                                                                </Text>
+                                                                            </View>
+                                                                        </View>
+                                                                    ))}
+
+                                                                    {/* loop for Size options */}
+                                                                    {d?.size?.map((k: any, j: number) => (
+                                                                        <View
+                                                                            key={`item-size-${i}-${j}`}
+                                                                            style={styles.variantSub}
+                                                                        >
+                                                                            <Icon
+                                                                                type={Icons.FontAwesome5}
+                                                                                size={FS(11)}
+                                                                                name={`long-arrow-alt-right`}
+                                                                                color={`#787878`}
+                                                                            />
+
+                                                                            <Text style={styles.variantName}>
+                                                                                Size:
+                                                                            </Text>
+                                                                            <View>
+                                                                                <Text style={styles.atrributeName}>
+                                                                                    {k?.name}
                                                                                 </Text>
                                                                             </View>
                                                                         </View>

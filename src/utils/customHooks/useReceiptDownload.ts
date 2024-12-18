@@ -125,25 +125,42 @@ export function useReceiptDownload(orderData: any, navigation: any) {
             ${orderData?.orderItems && orderData?.orderItems?.length > 0
       ? orderData?.orderItems
         .map(
-          (item: { qty: any; itemName: any; variants: any[]; price: any; }) => `
+          (item: { qty: any; itemName: any; variants: any[]; price: any; size: any[]; }) => `
                 <div class="item">
                   <span>
                     • ${item?.qty} x ${item?.itemName}
                     <div class="variant-main">
+                      <!-- loop for Customize options -->
+                      
                       ${(item?.variants || []).map((k) =>
-            `<div class="variant-sub">
+                       `<div class="variant-sub">
                           <span>-</span>
                           <span class="variant-name">
                             <span> ${k?.name}: </span> 
                             <div>
                               <span class="atrribute-name">
-                              ${(k?.variantAttributes || []).map((attr: { name: string; }) => attr.name)
-              .join(', ')}
-                                </span>
+                              ${(k?.variantAttributes || []).map((attr: { name: string; }) => attr.name).join(', ')}
+                              </span>
                             </div>
                           </span>
-                         </div>`
-          ).join("")}
+                        </div>`
+                      ).join("")}
+
+                      <!-- loop for Size options -->
+
+                      ${(item?.size || []).map((k) =>
+                       `<div class="variant-sub">
+                          <span>-</span>
+                          <span class="variant-name">
+                            <span> Size: </span> 
+                            <div>
+                              <span class="atrribute-name">
+                              ${k?.name}
+                              </span>
+                            </div>
+                          </span>
+                        </div>`
+                      ).join("")}
                     </div>
                     </span>
                   <span>$${item.price}</span>
@@ -203,8 +220,7 @@ export function useReceiptDownload(orderData: any, navigation: any) {
         </div>
       </div>
 </body>
-</html>
-`;
+</html>`;
 
   const moveToExternalStorage = async (sourcePath: string, fileName: string) => {
     try {
