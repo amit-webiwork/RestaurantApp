@@ -107,12 +107,14 @@ export function useReceiptDownload(orderData: any, navigation: any) {
       color: #271919;
       flex-direction: row;
       display: flex;
+      align-items: center;
     }
 
     .atrribute-name {
       font-size: 15px;
       text-transform: capitalize;
       color: #271919;
+      padding-left: 6px;
     }
     </style>
 </head>
@@ -131,7 +133,7 @@ export function useReceiptDownload(orderData: any, navigation: any) {
                     • ${item?.qty} x ${item?.itemName}
                     <div class="variant-main">
                       <!-- loop for Customize options -->
-                      
+
                       ${(item?.variants || []).map((k) =>
                        `<div class="variant-sub">
                           <span>-</span>
