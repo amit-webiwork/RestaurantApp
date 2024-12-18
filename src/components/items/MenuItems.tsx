@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     contentBox: {
-        paddingHorizontal: HP(10),
-        paddingVertical: HP(10)
+        paddingHorizontal: 10,
+        paddingVertical: 10
     },
     boxTitle: {
         ...TextStyles.RALEWAY_MEDIUM,
