@@ -220,6 +220,7 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
 
                                                         <View
                                                             style={styles.variantMain}>
+                                                            {/* loop for Customize options */}
                                                             {d?.options?.map((k: any, j: number) => (
                                                                 <View
                                                                     key={`item-variants-${i}-${j}`}
@@ -242,6 +243,29 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                                                                             style={styles.atrributeName}
                                                                         >
                                                                             {k?.variantAttributes?.map((attr: any) => attr?.customizeAttribute?.name).join(', ')}
+                                                                        </Text>
+                                                                    </View>
+                                                                </View>
+                                                            ))}
+                                                            {/* loop for Size options */}
+                                                            {d?.size?.map((k: any, j: number) => (
+                                                                <View
+                                                                    key={`item-size-${i}-${j}`}
+                                                                    style={styles.variantSub}
+                                                                >
+                                                                    <Icon
+                                                                        type={Icons.FontAwesome5}
+                                                                        size={FS(11)}
+                                                                        name={`long-arrow-alt-right`}
+                                                                        color={`#787878`}
+                                                                    />
+
+                                                                    <Text style={styles.variantName}>
+                                                                        Size:
+                                                                    </Text>
+                                                                    <View>
+                                                                        <Text style={styles.atrributeName}>
+                                                                            {k?.name}
                                                                         </Text>
                                                                     </View>
                                                                 </View>

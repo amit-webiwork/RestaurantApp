@@ -86,7 +86,14 @@ function PaymentScreen({ route, navigation }: { route: any; navigation: any }): 
         try {
             const dataPayload = {
                 extraNote: InstructionText,
-                items: CartItemList.map((d: { itemId: number; qty: number; options: any[]; }) => { return { itemId: d.itemId, qty: d.qty, variants: d.options } }),
+                items: CartItemList.map((d: { itemId: number; qty: number; options: any[]; size?: any[] }) => {
+                    return {
+                        itemId: d.itemId,
+                        qty: d.qty,
+                        variants: d.options,
+                        size: d?.size || []
+                    }
+                }),
                 couponId: AppliedCouponId,
                 savePaymentMethod
             };
