@@ -15,7 +15,7 @@ export const COLORS = {
     NAV_ICON_BG: "#DADADA"
 };
 
-export const APP_VERSION = '0.0.4';
+export const APP_VERSION = '0.0.5';
 export const OTP_SEND_WAIT_TIME = 60; // in seconds
 export const STD_CODE = "+61";
 
