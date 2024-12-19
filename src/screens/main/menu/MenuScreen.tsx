@@ -47,7 +47,11 @@ const HeaderComponent = ({ setSelectedCategoryhandler, selectedCategory, loading
 
             {/* Category box tab */}
             <View style={{ marginTop: VP(7), paddingLeft: HP(18) }}>
-                <CategortyTabsSection setSelectedCategory={setSelectedCategoryhandler} selectedCategory={selectedCategory} loading={loading} />
+                <CategortyTabsSection
+                    setSelectedCategory={setSelectedCategoryhandler}
+                    selectedCategory={selectedCategory}
+                    loading={loading}
+                />
             </View>
 
             {/* Search and filter Box */}
