@@ -5,6 +5,7 @@ import dialogSlice from './features/customDialog'
 import itemSlice from './features/items'
 import cartSlice from './features/cart'
 import couponSlice from './features/coupon'
+import commonSettingsSlice from './features/common-settings'
 
 const store = configureStore({
     reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
         customDialog: dialogSlice,
         items: itemSlice,
         cart: cartSlice,
-        coupon: couponSlice
+        coupon: couponSlice,
+        commonsettings: commonSettingsSlice
     }
 })
 

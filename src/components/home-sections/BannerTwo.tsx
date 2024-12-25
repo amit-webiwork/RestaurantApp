@@ -7,7 +7,11 @@ import {
 
 import { VP } from '../../utils/Responsive';
 
-const BannerTwo: React.FunctionComponent = () => {
+interface Props {
+    data: string[];
+}
+
+const BannerTwo: React.FunctionComponent<Props> = ({ data }) => {
     return (
         <TouchableOpacity
             onPress={() => void (0)}

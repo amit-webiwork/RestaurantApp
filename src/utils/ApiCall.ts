@@ -312,6 +312,17 @@ const submitProfileEmail = async (dataPayload: any) => {
     });
 }
 
+const getCommonSettingList = async (limit = 10, offset = 0) => {
+    try {
+        const res = await axios.get(`${BACKEND_URL}${apiEndpoints.commonSettingList}`);
+        return res.data;
+    } catch (error: any) {
+        const { response } = error;
+        const message = response?.data?.message || error?.message || "Unknown error";
+        throw new Error(message);
+    }
+};
+
 export {
     submitLogin,
     getCategoryList,
@@ -337,5 +348,6 @@ export {
     submitGoogleLogin,
     submitProfileName,
     submitProfilePhone,
-    submitProfileEmail
+    submitProfileEmail,
+    getCommonSettingList
 };

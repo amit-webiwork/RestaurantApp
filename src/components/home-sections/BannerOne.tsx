@@ -12,7 +12,11 @@ import { COLORS } from '../../utils/Constants';
 import { TextStyles } from '../../utils/TextStyles';
 import { ButtonSection as Button } from '../Button';
 
-const BannerOne: React.FunctionComponent = () => {
+interface Props {
+    data: any;
+}
+
+const BannerOne: React.FunctionComponent<Props> = ({ data }) => {
     return (
         <View>
             <ImageBackground
@@ -21,12 +25,12 @@ const BannerOne: React.FunctionComponent = () => {
                 imageStyle={{ borderRadius: FS(17) }}
             >
                 <View style={styles.bannerBox}>
-                    <Text style={styles.bannerTitle}>de lounge</Text>
+                    <Text style={styles.bannerTitle}>{data?.heading}</Text>
 
-                    <Text style={styles.bannerText}>"Refresh & Recharge – Sip on Our Freshly Squeezed Juices!"</Text>
+                    <Text style={styles.bannerText}>{data?.introLine}</Text>
 
                     <Button
-                        text={'BUY NOW'}
+                        text={data?.buttonText}
                         onPress={() => void (0)}
                         textStyle={styles.buttonStyle}
                         mainContainerStyle={styles.buttonContainerStyle}
@@ -39,12 +43,20 @@ const BannerOne: React.FunctionComponent = () => {
                             <Icon
                                 type={Icons.FontAwesome5}
                                 size={8}
-                                name={`globe`}
+                                name={data?.iconName1 || `globe`}
                                 color={COLORS.WHITE}
                             />
-                            @delounge
+                            {data?.text1}
                         </Text>
-                        <Text style={styles.contactText}><Icon type={Icons.FontAwesome5} size={8} name={`whatsapp`} color={COLORS.WHITE} /> 1144551222</Text>
+                        <Text style={styles.contactText}>
+                            <Icon
+                                type={Icons.FontAwesome5}
+                                size={8}
+                                name={data?.iconName2 || `whatsapp`}
+                                color={COLORS.WHITE}
+                            />
+                            {data?.text2}
+                        </Text>
                     </View>
                 </View>
             </ImageBackground>

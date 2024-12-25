@@ -44,6 +44,7 @@ import { askInitialPermission } from '../../utils/Permissions.ts';
 import { setDialogContent } from '../../redux/features/customDialog.ts';
 import Warning from '../../assets/svgs/warning.svg';
 import { loadStorage, saveNotification, saveStorage } from '../../utils/Storage.ts';
+import { commonSettingData, commonSettingLoaded, fetchCommonSettingData } from '../../redux/features/common-settings.ts';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -64,10 +65,15 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
   const featuredCategory = useSelector(getFeaturedCategory);
 
+  const CommonSettingData = useSelector(commonSettingData);
+  const CommonSettingLoaded = useSelector(commonSettingLoaded);
+
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
   const [notificationCount, setNotificationCount] = useState<number>(0);
   const [notificationTrigger, setNotificationTrigger] = useState<number>(0);
+  const [banner1, setBanner1] = useState<any>({});
+  const [banner2, setBanner2] = useState<any[]>([]);
 
   const selectCategoryHandler = useCallback(
     (id: number) => {
@@ -96,6 +102,12 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
       dispatch(fetchDiscountedItems());
     }
   }, [DiscountedItemLoaded]);
+
+  useEffect(() => {
+    if (!CommonSettingLoaded) {
+      dispatch(fetchCommonSettingData());
+    }
+  }, [CommonSettingLoaded]);
 
   // location update on initial load
   useEffect(() => {
@@ -141,6 +153,13 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     // Clean up listener on unmount
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    if (CommonSettingData.length > 0) {
+      setBanner1(CommonSettingData?.find(d => d?.metaKey === 'banner_1')?.metaValue || {});
+      setBanner2(CommonSettingData?.find(d => d?.metaKey === 'banner_2')?.metaValue || {});
+    }
+  }, [CommonSettingData?.length])
 
   const handleNotifications = async () => {
     const notificationList = await loadStorage('notificationList');
@@ -303,7 +322,9 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                       marginTop: VP(31.66),
                       marginHorizontal: HP(16)
                     }}>
-                    <BannerOneSection />
+                    <BannerOneSection
+                      data={banner1}
+                    />
                   </View>
 
                   {/* Heading Section */}
@@ -326,7 +347,9 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                   {/* Banner Two */}
                   <View style={{ marginTop: VP(20) }}>
-                    <BannerTwoSection />
+                    <BannerTwoSection
+                      data={banner2}
+                    />
                   </View>
 
                   {/* Heading Section */}
