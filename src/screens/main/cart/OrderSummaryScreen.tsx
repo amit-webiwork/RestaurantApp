@@ -104,11 +104,7 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
                 })
             ];
 
-            // console.log(JSON.stringify(dataPayloadV1), '----dataPayloadV1')
-
             const response: any = await cartConfirm({ items: dataPayloadV1, couponId: AppliedCouponId });
-
-            // console.log(JSON.stringify(response?.data), '----response?.data')
 
             dispatch(resetCart());
 
@@ -122,9 +118,6 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
             await Promise.all(promises);
 
             const savedCartItems = await loadStorage('cartItems');
-
-            // console.log(JSON.stringify(dataPayload), '-----dataPayload');
-            // console.log(JSON.stringify(savedCartItems), '-----savedCartItems');
 
             const areArraysEqual = cartComparison(dataPayload, savedCartItems);
 
@@ -158,8 +151,6 @@ function OrderSummaryScreen({ route, navigation }: { route: any, navigation: any
     if (loading) {
         return <OrderSummaryScreenLoaderSection />
     }
-
-    // console.log(JSON.stringify(CartItemList), '-----CartItemList')
 
     return (
         <>

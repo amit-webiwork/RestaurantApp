@@ -13,7 +13,7 @@ import { TextStyles } from '../utils/TextStyles';
 
 const CELL_COUNT = 4;
 
-const OTPInput = ({ formProps }: { formProps: any }) => {
+const OTPInput = ({ formProps }: { formProps: OTPFormProps }) => {
     const { value, setValue, error } = formProps;
 
     const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });

@@ -112,9 +112,6 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
   // location update on initial load
   useEffect(() => {
     (async () => {
-      // const token = await loadStorage(`fcmToken`);
-      // console.log(token, '----token');
-
       const granted = await askInitialPermission();
 
       if (!granted) {
@@ -210,7 +207,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                       style={{
                         ...TextStyles.ARCHITECTS_DAUGHTER_REGULAR,
                         color: COLORS.WHITE,
-                        fontSize: HP(30),
+                        fontSize: FS(30),
                       }}>
                       not your average bubble tea.
                     </Text>

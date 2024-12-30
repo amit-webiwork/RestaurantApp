@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BottomTabNavigationProp, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useEffect, useRef } from 'react'
 import { SafeAreaView, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native'
 import * as Animatable from 'react-native-animatable';
@@ -19,6 +19,8 @@ import MenuScreen from '../screens/main/menu/MenuScreen';
 import CartNotificationBarSection from '../components/cart/CartNotificationBar';
 import { itemAdded } from '../redux/features/cart';
 import OrderDetailsScreen from '../screens/main/OrderDetailsScreen';
+
+export type BottomTabNavigatorProp = BottomTabNavigationProp<MenuStackParamList | OrderStackParamList>;
 
 export type MenuStackParamList = {
     CategoryScreen: undefined;

@@ -66,7 +66,6 @@ const PastOrderItem = ({ item, index, navigation, deleteHandler, setLoader }: Pr
                 showFadeAlert('Currently unavailable for reorder.');
             }
         } catch (err) {
-            console.log(err, '--------------err');
             setLoader(false);
         } finally {
             setLoader(false);

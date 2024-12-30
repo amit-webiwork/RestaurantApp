@@ -11,9 +11,13 @@ import OuterLayout from './OuterLayout';
 import { globalStyle } from '../utils/GlobalStyle';
 import InnerBlock from './InnerBlock';
 
-const { width, height } = Dimensions.get('window');
+type AccountSkeletonProps = {
+    user: User;
+    children: React.ReactNode;
+    navigation: any;
+};
 
-function AccountSkeleton({ user, children, navigation }: { user: any; children: any, navigation: any }): React.JSX.Element {
+function AccountSkeleton({ user, children, navigation }: AccountSkeletonProps): React.JSX.Element {
     return (
         <>
             <OuterLayout containerStyle={globalStyle.containerStyle}>

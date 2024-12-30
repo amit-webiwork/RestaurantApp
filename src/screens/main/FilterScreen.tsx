@@ -46,7 +46,6 @@ function FilterScreen({ navigation }: { navigation: any; }): React.JSX.Element {
     };
 
     const handleStateChange = (event: { nativeEvent: { translationY: number; }; }) => {
-        // console.log(event.nativeEvent.translationY, '---translationY')
         if (event.nativeEvent.translationY > 100) {
             navigation.goBack();  // Close the modal if the swipe is significant
         }

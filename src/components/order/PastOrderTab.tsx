@@ -36,8 +36,6 @@ function PastOrderTab({ HeaderComponent, switchTab, activeTab, navigation }: Pro
     const fetchPastOrders = async (page: number) => {
         if (loading || !hasMoreData || page === 0) return;
 
-        console.log('-PastOrderTab run')
-
         setLoading(true);
 
         try {

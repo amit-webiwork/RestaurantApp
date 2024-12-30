@@ -160,7 +160,6 @@ function MenuScreenV2({ route, navigation }: { route: any, navigation: any }): R
     }, [cuisineId, CuisineLoaded])
 
     useEffect(() => {
-        console.log('run v1');
         const controller = new AbortController(); // Create an AbortController
         fetchItem(page, controller?.signal); // Pass the signal to the fetch function
 

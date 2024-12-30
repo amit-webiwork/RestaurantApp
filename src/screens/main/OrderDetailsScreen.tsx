@@ -179,8 +179,6 @@ function OrderDetailsScreen({ route, navigation }: { route: any, navigation: any
         }
     }, [orderId])
 
-    // console.log(JSON.stringify(orderData), '----orderData')
-
     return (
         <>
             <NormalLoader visible={loading} />

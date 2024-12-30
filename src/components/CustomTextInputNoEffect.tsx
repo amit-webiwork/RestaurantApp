@@ -22,7 +22,7 @@ import { globalStyle } from '../utils/GlobalStyle';
 interface OutlinedTextInputProps extends TextInputProps {
     placeholder: string;
     styleInput?: TextStyle;
-    formProps: any;
+    formProps: FormProps;
     iconName?: ImageSourcePropType;
     iconStyle?: ImageStyle;
     styleContainer?: TextStyle;

@@ -90,8 +90,6 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
         }
     }, [isFocused])
 
-    // console.log(JSON.stringify(CartItemList), '----CartItemList')
-
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
             <NormalLoader visible={CartLoading || couponChangesLoading || loading} />

@@ -14,8 +14,8 @@ import Warning from '../../assets/svgs/warning.svg';
 import NormalLoader from '../NormalLoader';
 import { AppDispatch } from '../../redux/store';
 
-const createFormData = (photo: { fileName: any; type: any; uri: string; }, body: any = {}) => {
-    const data: any = new FormData();
+const createFormData = (photo: Photo, body: any = {}) => {
+    const data = new FormData();
 
     data.append('file', {
         name: photo.fileName,
@@ -30,7 +30,7 @@ const createFormData = (photo: { fileName: any; type: any; uri: string; }, body:
     return data;
 };
 
-function ProfileImageContainer(props: any) {
+function ProfileImageContainer(props: { profile: User }) {
     const dispatch: AppDispatch = useDispatch();
 
     const { profile } = props;
@@ -43,14 +43,14 @@ function ProfileImageContainer(props: any) {
 
             if (response?.assets && response?.assets[0] && response?.assets[0]['uri']) {
                 setPhoto(response?.assets[0]);
-                handleUploadPhoto(response?.assets[0]);
+                handleUploadPhoto(response.assets[0] as Photo);
             } else {
                 // setPhoto(null);
             }
         });
     };
 
-    const handleUploadPhoto = async (photo: any) => {
+    const handleUploadPhoto = async (photo: Photo) => {
         try {
             const formData = createFormData(photo);
 

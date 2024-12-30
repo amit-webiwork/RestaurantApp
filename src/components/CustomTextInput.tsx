@@ -20,7 +20,7 @@ import { TextStyles } from '../utils/TextStyles';
 interface OutlinedTextInputProps extends TextInputProps {
     placeholder: string;
     styleInput?: TextStyle;
-    formProps: any;
+    formProps: FormProps;
     iconName?: ImageSourcePropType;
     iconStyle?: ImageStyle;
     styleContainer?: TextStyle;
@@ -55,7 +55,7 @@ const CustomTextInput: React.FC<OutlinedTextInputProps> = ({
     }, [isFocused, text]);
 
     const labelStyle = {
-        position: 'absolute',
+        position: 'absolute' as const,
         left: 0,
         top: animatedLabel.interpolate({
             inputRange: [0, 1],

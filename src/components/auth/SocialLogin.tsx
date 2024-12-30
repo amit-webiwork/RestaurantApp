@@ -11,7 +11,7 @@ import { FS, HP, VP } from '../../utils/Responsive';
 import { TextStyles } from '../../utils/TextStyles';
 import { configureGoogleSignIn, GoogleLogin, GoogleSignOut } from '../../utils/google/GoogleService';
 import { showFadeAlert } from '../../utils/Alert';
-import { GoogleSigninButton, isErrorWithCode, statusCodes } from '@react-native-google-signin/google-signin';
+import { GoogleSigninButton, isErrorWithCode, SignInResponse, statusCodes } from '@react-native-google-signin/google-signin';
 import { submitGoogleLogin, submitLogin } from '../../utils/ApiCall';
 import { saveStorage } from '../../utils/Storage';
 import { useDispatch } from 'react-redux';
@@ -32,7 +32,7 @@ const SocialLogin: React.FunctionComponent<Props> = ({ navigation }) => {
     const handleGoogleLogin = async () => {
         setLoading(true);
         try {
-            const response: any = await GoogleLogin();
+            const response: SignInResponse = await GoogleLogin();
 
             if (!response?.data || !response?.data?.idToken) {
                 throw new Error(errorMessage.canNotProceed);

@@ -31,12 +31,9 @@ const CustomizeItemDialog = ({ visible, slideAnim, itemId, closeHandler, render 
         setLoading(true);
 
         try {
-
             const response = await getItemDetails(itemId);
-
             setItemData(response);
         } catch (err) {
-            console.log(err, '----err');
             setItemCall(false);
         } finally {
             setLoading(false);

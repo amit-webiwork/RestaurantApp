@@ -51,3 +51,41 @@ interface CouponDetails {
     moreRequireForApply?: number;
     calculateApplyDiscount?: number;
 }
+
+interface User {
+    name: string;
+    phoneNo: string;
+    profileImg: string;
+}
+
+interface ErrorObject {
+    status: boolean;
+    text: string;
+}
+
+interface FormProps {
+    text: string;
+    setText: (text: string) => void;
+    error: ErrorObject
+}
+
+interface OTPFormProps {
+    value: string;
+    setValue: React.Dispatch<React.SetStateAction<string>>
+    error: ErrorObject
+}
+
+interface FeedbackTopics {
+    id: number;
+    text: string;
+}
+
+interface Photo {
+    fileName: string;
+    type: string;
+    uri: string;
+    originalPath: string;
+    height: number;
+    width: number;
+    fileSize: number;
+}

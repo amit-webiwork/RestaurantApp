@@ -94,7 +94,6 @@ function MenuScreen({ route, navigation }: { route: any, navigation: any }): Rea
     }, [setLoading, setPage, setItemList, setHasMoreData, setSelectedCategory]);
 
     useEffect(() => {
-        console.log('run');
         fetchItem(page);
     }, [page, selectedCategory, JSON.stringify(filterState), JSON.stringify(priceRangeFilterState)])
 

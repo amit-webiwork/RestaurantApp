@@ -7,25 +7,25 @@ import { COLORS } from '../utils/Constants';
 
 interface Props {
     label: string;
-    data: any[];
-    onSelect: any;
+    data: FeedbackTopics[];
+    onSelect: (item: { id: number }) => void;
 }
 
 const DropDown = ({ label, data, onSelect }: Props) => {
     const [visible, setVisible] = useState(false);
-    const [selected, setSelected] = useState(null);
+    const [selected, setSelected] = useState<null | string>(null);
 
     const toggleDropdown = () => {
         setVisible(!visible);
     };
 
-    const handleSelect = (item: any) => {
+    const handleSelect = (item: FeedbackTopics) => {
         setSelected(item.text);
         onSelect(item);
         setVisible(false);
     };
 
-    const renderItem = ({ item }: { item: any }) => (
+    const renderItem = ({ item }: { item: FeedbackTopics }) => (
         <TouchableOpacity style={styles.item} onPress={() => handleSelect(item)}>
             <Text style={styles.itemText}>{item.text}</Text>
         </TouchableOpacity>

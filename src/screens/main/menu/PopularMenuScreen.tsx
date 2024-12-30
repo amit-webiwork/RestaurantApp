@@ -69,7 +69,6 @@ function PopularMenuScreen({ route, navigation }: { route: any; navigation: any 
     }, [loader, hasMoreData, setPage]);
 
     useEffect(() => {
-        console.log('-----run');
         fetchItem(page);
     }, [categoryId, page])
 
