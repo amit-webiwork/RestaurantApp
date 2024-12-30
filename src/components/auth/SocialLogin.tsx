@@ -46,31 +46,35 @@ const SocialLogin: React.FunctionComponent<Props> = ({ navigation }) => {
                     user: user
                 }
 
-                const response: any = await submitGoogleLogin(dataPayload);
-                const responseData = { ...response.data };
+                try {
+                    const response: any = await submitGoogleLogin(dataPayload);
+                    const responseData = { ...response.data };
 
-                if (responseData.user && responseData.token) {
-                    saveStorage(responseData, "userDetails");
-                    dispatch(setProflieDetails(responseData));
+                    if (responseData.user && responseData.token) {
+                        saveStorage(responseData, "userDetails");
+                        dispatch(setProflieDetails(responseData));
 
-                    navigation.reset({
-                        index: 0,
-                        routes: [
-                            {
-                                name: 'MainTabNavigator',
-                            },
-                        ],
-                    });
-                } else {
-                    throw new Error(errorMessage.commonMessage);
+                        navigation.reset({
+                            index: 0,
+                            routes: [
+                                {
+                                    name: 'MainTabNavigator',
+                                },
+                            ],
+                        });
+                    } else {
+                        throw new Error(errorMessage.commonMessage);
+                    }
+                } catch (error: any) {
+                    Alert.alert('Something went wrong: ', error?.response?.data?.message || errorMessage.commonMessage);
+                } finally {
+                    setLoading(false);
                 }
             }
         } catch (error: any) {
             if (isErrorWithCode(error)) {
-                console.log('error', error.message);
                 switch (error.code) {
                     case statusCodes.IN_PROGRESS:
-                        // operation (eg. sign in) already in progress
                         Alert.alert(
                             'in progress',
                             'operation (eg. sign in) already in progress',
