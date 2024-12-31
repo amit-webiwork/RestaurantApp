@@ -115,7 +115,8 @@ const TabButton = (props: { item: any; onPress: any; accessibilityState: any; })
                     <View style={[styles.btn, { borderColor: bgColor, backgroundColor: bgColor }]}>
                         <Animatable.View
                             ref={circleRef}
-                            style={styles.circle} />
+                            style={styles.circle}
+                        />
                         <Icon type={item.type} size={FS(31)} name={item.icon} color={focused ? COLORS.WHITE : COLORS.ICON_DEFAULT} />
                     </View>
                     <Animatable.Text

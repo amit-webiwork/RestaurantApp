@@ -214,7 +214,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                   </View>
                   <View style={{ left: HP(17), marginTop: VP(13) }}>
                     <Button
-                      text={'BUY NOW >'}
+                      text={`BUY NOW`}
                       onPress={() => navigation.navigate(`MenuScreen`, {
                         categoryId: 0
                       })}
@@ -222,8 +222,17 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                       activeButtonText={{ opacity: 0.65 }}
                       mainContainerStyle={{ borderRadius: FS(16) }}
                       LinearGradienrColor={[COLORS.WHITE, COLORS.WHITE]}
-                      contentContainerStyle={{ top: -2 }}
+                      contentContainerStyle={{ top: -1, alignItems: "center" }}
                       style={{ width: FS(104), height: FS(30) }}
+                      Icon={
+                        <Icon
+                          type={Icons.Feather}
+                          size={FS(15)}
+                          name={`chevron-right`}
+                          color={COLORS.BLACK}
+                        />
+                      }
+                      iconPosition={`right`}
                     />
                   </View>
                 </View>

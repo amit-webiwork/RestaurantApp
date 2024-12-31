@@ -23,6 +23,7 @@ type Props = {
     isLoading?: boolean;
     disabled?: boolean;
     Icon?: JSX.Element;
+    iconPosition?: 'left' | 'right';
     contentContainerStyle?: StyleProp<ViewStyle>;
     activityIndicatorColor?: string;
     textStyle?: StyleProp<TextStyle>;
@@ -39,6 +40,7 @@ const Button: React.FunctionComponent<Props> = ({
     textStyle,
     disabled,
     Icon,
+    iconPosition = 'left', // Default position is left
     contentContainerStyle,
     activityIndicatorColor,
     activeButtonText,
@@ -87,7 +89,7 @@ const Button: React.FunctionComponent<Props> = ({
                             contentContainerStyle,
                         ]}
                     >
-                        {Icon ? Icon : null}
+                        {iconPosition === 'left' && Icon}
                         <Text
                             style={[
                                 disabled || isLoading
@@ -98,6 +100,7 @@ const Button: React.FunctionComponent<Props> = ({
                         >
                             {text}
                         </Text>
+                        {iconPosition === 'right' && Icon}
                     </View>
                 </>
             );

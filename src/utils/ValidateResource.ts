@@ -42,7 +42,7 @@ const signup = Yup.object({
 const login = Yup.object({
     username: Yup.string()
         .trim()
-        .required("Email or mobile number is required"),
+        .required("Mobile number is required"),
     password: Yup.string()
         .trim()
         .required("Password is required")
@@ -52,7 +52,7 @@ const login = Yup.object({
 const forgotPassword = Yup.object({
     username: Yup.string()
         .trim()
-        .required("Email or mobile number is required"),
+        .required("Mobile number is required"),
 });
 
 const resetPassword = Yup.object({

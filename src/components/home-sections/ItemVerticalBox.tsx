@@ -94,7 +94,7 @@ const ItemVerticalBox: React.FunctionComponent<Props> = ({ data, dataLoaded, nav
                             })}
                         >
                             <Text style={styles.boxTitle}>{item?.name}</Text>
-                            <Text style={styles.boxText}>{`1 piece`}</Text>
+                            <Text style={styles.boxText}>{item?.category?.name || ``}</Text>
                         </TouchableOpacity>
 
                         <View style={styles.line}>
