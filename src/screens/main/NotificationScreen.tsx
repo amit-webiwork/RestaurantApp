@@ -111,7 +111,7 @@ function NotificationScreen({ navigation, route }: { navigation: any; route: any
                     <View style={styles.handle} />
                     <TouchableOpacity
                         onPress={deleteNotification}
-                        style={{ flexDirection: "row", gap: HP(8), margin: "auto" }}
+                        style={{ flexDirection: "row", gap: HP(8), margin: "auto", alignItems: "center" }}
                     >
                         <Icon type={Icons.Feather} name="trash" size={FS(20)} color={COLORS.RED} />
                         <Text style={styles.deleteText}>Delete notification</Text>

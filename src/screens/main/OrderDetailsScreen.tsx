@@ -753,7 +753,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: HP(5),
-        width: "100%"
+        width: "100%",
+        flexWrap: "wrap"
     },
     variantName: {
         ...TextStyles.RALEWAY_SEMI_BOLD,
