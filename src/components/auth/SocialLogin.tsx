@@ -17,7 +17,7 @@ import { saveStorage } from '../../utils/Storage';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { setProflieDetails } from '../../redux/features/profile';
-import { errorMessage } from '../../utils/Constants';
+import { COLORS, errorMessage } from '../../utils/Constants';
 import NormalLoader from '../NormalLoader';
 
 interface Props {
@@ -126,6 +126,10 @@ const SocialLogin: React.FunctionComponent<Props> = ({ navigation }) => {
                 <TouchableOpacity
                     onPress={handleGoogleLogin}
                     disabled={loading}
+                    style={[
+                        styles.button,
+                        loading && styles.disabledButton,
+                    ]}
                 >
                     <Image
                         source={require('../../assets/icons/google.png')}
@@ -182,6 +186,21 @@ const styles = StyleSheet.create({
     },
     icon: {
         resizeMode: "contain"
+    },
+    button: {
+        backgroundColor: COLORS.WHITE,
+        padding: HP(10),
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: COLORS.BLACK,
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 5
+    },
+    disabledButton: {
+        opacity: 0.6
     },
 });
 
