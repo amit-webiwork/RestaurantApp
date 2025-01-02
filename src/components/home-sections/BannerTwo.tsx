@@ -9,7 +9,12 @@ import Carousel from 'react-native-reanimated-carousel';
 
 import { VP } from '../../utils/Responsive';
 import { CDN_URL } from '../../utils/Constants';
-import { useSharedValue } from 'react-native-reanimated';
+import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
+
+configureReanimatedLogger({
+    level: ReanimatedLogLevel.warn,
+    strict: false
+});
 
 interface Props {
     data: string[];
