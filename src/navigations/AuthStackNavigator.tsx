@@ -51,11 +51,6 @@ const AuthStackNavigator: React.FunctionComponent = () => {
                 name={`CreatePasswordScreen`}
                 component={CreatePasswordScreen as React.FunctionComponent}
             />
-            
-            {/* 
-            <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
-                <Stack.Screen name="EntryDrawer" component={EntryDrawer} />
-            </Stack.Group> */}
         </Stack.Navigator>
     );
 };

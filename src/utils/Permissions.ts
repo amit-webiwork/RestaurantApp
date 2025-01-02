@@ -4,7 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Permissions from 'react-native-permissions'
 import { apiEndpoints, BACKEND_URL } from './Constants';
-import { saveStorage } from './Storage';
+import { loadStorage, saveStorage } from './Storage';
 
 const getFcmToken = async () => {
     let fcmToken = await AsyncStorage.getItem('fcmToken');
@@ -67,7 +67,11 @@ const notificationPermission = async () => {
 const askInitialPermission = async () => {
     const grantedNotification = await notificationPermission();
 
-    if (grantedNotification) {
+    const userDetails = await loadStorage("userDetails");
+
+    const jwtToken = userDetails?.token?.accessToken || "";
+
+    if (grantedNotification && jwtToken) {
         getFcmToken();
     }
 

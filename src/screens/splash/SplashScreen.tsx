@@ -24,7 +24,7 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
             index: 0,
             routes: [
                 {
-                    name: 'SignUpScreen',
+                    name: 'MainTabNavigator',
                 },
             ],
         });
@@ -57,12 +57,6 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
 
                             dispatch(setProflieDetails(responseData));
 
-                            // set cart items from storage to state
-                            setInCartState(dispatch);
-
-                            // set searched items from storage to state
-                            setInRecentSearchState(dispatch)
-
                             navigation.reset({
                                 index: 0,
                                 routes: [
@@ -90,12 +84,6 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 saveStorage(responseData, "userDetails");
                                 dispatch(setProflieDetails(responseData));
 
-                                // set cart items from storage to state
-                                setInCartState(dispatch);
-
-                                // set searched items from storage to state
-                                setInRecentSearchState(dispatch)
-
                                 navigation.reset({
                                     index: 0,
                                     routes: [
@@ -117,6 +105,12 @@ function SplashScreen({ navigation }: { navigation: any }): React.JSX.Element {
             } catch (err) {
                 console.log(err, 'err');
                 setShowButton(true);
+            } finally {
+                // set cart items from storage to state
+                setInCartState(dispatch);
+
+                // set searched items from storage to state
+                setInRecentSearchState(dispatch)
             }
         }, 1000)
     }, [])

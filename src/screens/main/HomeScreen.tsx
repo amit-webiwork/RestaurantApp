@@ -109,7 +109,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
     }
   }, [CommonSettingLoaded]);
 
-  // location update on initial load
+  // token update on initial load
   useEffect(() => {
     (async () => {
       const granted = await askInitialPermission();
