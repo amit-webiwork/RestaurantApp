@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ScrollView, TouchableOpacity, View, Text, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import axios from 'axios';
@@ -18,8 +18,9 @@ import { signup, validateResource } from '../../utils/ValidateResource';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 import { useKeyboardListener } from '../../utils/customHooks/useKeyboardListener';
-import SocialLogin from '../../components/auth/SocialLogin';
-import { dumpStorage } from '../../utils/helper/CommonHelper';
+// import SocialLogin from '../../components/auth/SocialLogin';
+
+const SocialLogin = lazy(() => (import('../../components/auth/SocialLogin')));
 
 const errorObj = { name: { status: false, text: "" }, email: { status: false, text: "" }, mobile: { status: false, text: "" }, password: { status: false, text: "" } };
 
@@ -176,7 +177,9 @@ const SignUpScreen: React.FunctionComponent<any> = ({
                                         contentContainerStyle={{ top: -2 }}
                                     />
 
-                                    <SocialLogin navigation={navigation} />
+                                    <Suspense fallback={<></>}>
+                                        <SocialLogin navigation={navigation} />
+                                    </Suspense>
                                 </View>
                             </View>
                         </ScrollView>

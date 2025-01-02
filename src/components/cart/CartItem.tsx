@@ -5,8 +5,7 @@ import {
     Text,
     Image,
     TouchableOpacity,
-    Animated,
-    Dimensions
+    Animated
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useState } from 'react';
 import { ScrollView, TouchableOpacity, View, Text, StyleSheet, Keyboard, ImageBackground, Dimensions } from 'react-native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -17,7 +17,9 @@ import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 import { setProflieDetails } from '../../redux/features/profile';
 import { useKeyboardListener } from '../../utils/customHooks/useKeyboardListener';
-import SocialLogin from '../../components/auth/SocialLogin';
+// import SocialLogin from '../../components/auth/SocialLogin';
+
+const SocialLogin = lazy(() => import('../../components/auth/SocialLogin'));
 
 const { width, height } = Dimensions.get('window');
 
@@ -203,7 +205,9 @@ const LoginScreen: React.FunctionComponent<any> = ({
                                     contentContainerStyle={{ top: -2 }}
                                 />
 
-                                <SocialLogin navigation={navigation} />
+                                <Suspense fallback={<></>}>
+                                    <SocialLogin navigation={navigation} />
+                                </Suspense>
                             </View>
                         </ScrollView>
 

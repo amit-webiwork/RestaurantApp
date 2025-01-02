@@ -400,7 +400,8 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                     height: VP(30),
                     backgroundColor: '#FDFDFD',
                     bottom: VP(-30),
-                  }}></View>
+                  }}>
+                </View>
               </View>
             </ScrollView>
           </View>
