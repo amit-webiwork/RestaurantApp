@@ -19,6 +19,7 @@ import MenuScreen from '../screens/main/menu/MenuScreen';
 import CartNotificationBarSection from '../components/cart/CartNotificationBar';
 import { itemAdded } from '../redux/features/cart';
 import OrderDetailsScreen from '../screens/main/OrderDetailsScreen';
+import { proflieDetails } from '../redux/features/profile';
 
 export type BottomTabNavigatorProp = BottomTabNavigationProp<MenuStackParamList | OrderStackParamList>;
 
@@ -82,10 +83,23 @@ const TabButton = (props: { item: any; onPress: any; accessibilityState: any; })
     const textRef = useRef<any>(null);
     const isDarkMode = useColorScheme() === 'dark';
     const ItemAdded = useSelector(itemAdded);
-    const navigation = useNavigation();
+    const ProflieDetails = useSelector(proflieDetails);
+    const navigation: any = useNavigation();
 
     const color = COLORS.BLACK;
     const bgColor = COLORS.BACKGROUND;
+
+    const onPressHandler = () => {
+        if (item.route === "AccountScreen" || item.route === "Order") {
+            if (ProflieDetails?.token?.accessToken && ProflieDetails?.user?.name) {
+                onPress();
+            } else {
+                navigation.navigate(`AuthStackNavigatorV1`);
+            }
+        } else {
+            onPress();
+        }
+    }
 
     useEffect(() => {
         if (focused) {
@@ -105,7 +119,7 @@ const TabButton = (props: { item: any; onPress: any; accessibilityState: any; })
                 <CartNotificationBarSection isVisible={ItemAdded} navigation={navigation} />
             )}
             <TouchableOpacity
-                onPress={onPress}
+                onPress={onPressHandler}
                 activeOpacity={1}
                 style={[styles.container]}>
                 <Animatable.View

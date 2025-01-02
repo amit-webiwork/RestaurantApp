@@ -8,16 +8,13 @@ import { globalStyle } from '../../../utils/GlobalStyle';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import Icon, { Icons } from '../../../components/Icons';
 import { TextStyles } from '../../../utils/TextStyles';
-import { COLORS, errorMessage } from '../../../utils/Constants';
+import { COLORS } from '../../../utils/Constants';
 import MenuItemsSection from '../../../components/items/MenuItems';
 import { ButtonSection as Button } from '../../../components/Button';
 import { fetchPopularItems, papularItemLoaded, papularItems } from '../../../redux/features/items';
 import { AppDispatch } from '../../../redux/store';
 import CartLayout from '../../../components/cart/CartLayout';
-import { cartItemList, cartLoading, instructionText } from '../../../redux/features/cart';
-import { orderSubmit } from '../../../utils/ApiCall';
-import { setDialogContent } from '../../../redux/features/customDialog';
-import Warning from '../../../assets/svgs/warning.svg';
+import { cartItemList, cartLoading } from '../../../redux/features/cart';
 import NormalLoader from '../../../components/NormalLoader';
 
 function CartMenuScreen({ navigation }: { navigation: any }): React.JSX.Element {

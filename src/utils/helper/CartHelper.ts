@@ -93,6 +93,8 @@ export const setInCartState = async (dispatch: AppDispatch) => {
 
     if (cartItems.length && cartItems.length > 0) {
         dispatch(recoverCart(cartItems));
+    } else {
+        dispatch(recoverCart([]));
     }
 }
 

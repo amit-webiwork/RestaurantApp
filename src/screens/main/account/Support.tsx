@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions, ScrollView } from 'react-native';
 
-import Icon, { Icons } from '../../../components/Icons';
 import { COLORS } from '../../../utils/Constants';
 import { FS, HP, VP } from '../../../utils/Responsive';
 import { TextStyles } from '../../../utils/TextStyles';

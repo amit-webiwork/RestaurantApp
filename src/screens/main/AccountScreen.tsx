@@ -10,7 +10,6 @@ import CustomActionDialogComp from '../../components/dialogs/CustomActionDialog'
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
 import AccountSkeletonSection from '../../components/AccountSkeleton';
-import { removeStorage } from '../../utils/Storage';
 import { proflieDetails, setProflieDetails } from '../../redux/features/profile';
 import { deleteAccount } from '../../utils/ApiCall';
 import NormalLoader from '../../components/NormalLoader';

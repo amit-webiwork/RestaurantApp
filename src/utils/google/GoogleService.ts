@@ -1,7 +1,6 @@
-import { GoogleSignin, isErrorWithCode, statusCodes } from "@react-native-google-signin/google-signin";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import { errorMessage, googleKeys } from "../Constants";
-import { Alert } from "react-native";
 
 export const PROFILE_IMAGE_SIZE = 150;
 

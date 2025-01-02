@@ -3,12 +3,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import AuthStackNavigator from './AuthStackNavigator';
 import MainTabNavigator from './MainTabNavigator';
+import AuthStackNavigatorV1 from './AuthStackNavigatorV1';
 
 export type MainStackParamList = {
     AuthStackNavigator: undefined;
     MainTabNavigator: undefined;
-    SignUpScreen: undefined;
-    ForgotScreen: undefined;
+    AuthStackNavigatorV1: undefined;
 };
 
 const MainStackNavigator: React.FunctionComponent = () => {
@@ -22,6 +22,10 @@ const MainStackNavigator: React.FunctionComponent = () => {
             <Stack.Screen
                 name={`MainTabNavigator`}
                 component={MainTabNavigator}
+            />
+            <Stack.Screen
+                name={`AuthStackNavigatorV1`}
+                component={AuthStackNavigatorV1}
             />
         </Stack.Navigator>
     );

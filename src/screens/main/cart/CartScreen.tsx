@@ -22,6 +22,7 @@ import NormalLoader from '../../../components/NormalLoader';
 import { appliedCouponId, couponDiscount, couponList, couponLoaded, fetchCoupons } from '../../../redux/features/coupon';
 import { couponCalculationHandler } from '../../../utils/helper/CouponHelper';
 import { globalStyle } from '../../../utils/GlobalStyle';
+import { proflieDetails } from '../../../redux/features/profile';
 
 function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const dispatch: AppDispatch = useDispatch();
@@ -38,6 +39,7 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     const CouponLoaded = useSelector(couponLoaded);
     const AppliedCouponId = useSelector(appliedCouponId);
     const CouponDiscount = useSelector(couponDiscount);
+    const ProflieDetails = useSelector(proflieDetails);
 
     const [cookingRequestShow, setCookingRequestShow] = useState(false);
     const [itemListFiltered, setItemListFiltered] = useState<any[]>([]);
@@ -60,8 +62,12 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
     }, [PapularItems]);
 
     const handleClick = async () => {
-        dispatch(setInstructionText(instructionText));
-        navigation.navigate(`OrderSummaryScreen`);
+        if (ProflieDetails?.token?.accessToken && ProflieDetails?.user?.name) {
+            dispatch(setInstructionText(instructionText));
+            navigation.navigate(`OrderSummaryScreen`);
+        } else {
+            navigation.navigate(`AuthStackNavigatorV1`);
+        }
     }
 
     useEffect(() => {
@@ -290,17 +296,6 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
                                 LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
                                 contentContainerStyle={{ top: -2 }}
                             />
-
-                            {/* <Button
-                                text={'place order'}
-                                onPress={() => handleClick(`OrderPlacedScreen`)}
-                                textStyle={styles.buttonStyle2}
-                                isLoading={false}
-                                activeButtonText={{ opacity: .65 }}
-                                mainContainerStyle={{ flex: 1, borderRadius: HP(8) }}
-                                LinearGradienrColor={[COLORS.BUTTON, COLORS.BUTTON]}
-                                contentContainerStyle={{ top: -2 }}
-                            /> */}
                         </View>
                     </View>
                 )}

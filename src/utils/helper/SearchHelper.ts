@@ -7,5 +7,7 @@ export const setInRecentSearchState = async (dispatch: AppDispatch) => {
 
     if (searchItems.length && searchItems.length > 0) {
         dispatch(setRecentSearchItems(searchItems));
+    } else {
+        dispatch(setRecentSearchItems([]));
     }
 }

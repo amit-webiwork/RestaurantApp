@@ -1,4 +1,4 @@
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import RNFS from 'react-native-fs';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import moment from 'moment';

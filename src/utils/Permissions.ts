@@ -2,7 +2,6 @@ import { PermissionsAndroid, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Permissions from 'react-native-permissions'
 import { apiEndpoints, BACKEND_URL } from './Constants';
 import { loadStorage, saveStorage } from './Storage';
 

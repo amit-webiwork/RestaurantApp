@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, Platform, Appearance } from 'react-native';
-import { CardField, useConfirmPayment, createPaymentMethod } from '@stripe/stripe-react-native';
+import { CardField, useConfirmPayment } from '@stripe/stripe-react-native';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';

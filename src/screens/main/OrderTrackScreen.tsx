@@ -15,9 +15,6 @@ import { getOrderTrack } from '../../utils/ApiCall';
 import { formatEstimatedTime, getOrderTrackSteps } from '../../utils/helper/OrderHelper';
 import { globalStyle } from '../../utils/GlobalStyle';
 
-const { width, height } = Dimensions.get('window');
-
-
 function OrderTrackScreen({ route, navigation }: { route: any, navigation: any }): React.JSX.Element {
     const { orderData } = route.params;
 

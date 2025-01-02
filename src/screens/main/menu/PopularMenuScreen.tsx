@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 import OuterLayout from '../../../components/OuterLayout';
 import InnerBlock from '../../../components/InnerBlock';
 import { globalStyle } from '../../../utils/GlobalStyle';
-import { FS, HP, VP } from '../../../utils/Responsive';
-import Icon, { Icons } from '../../../components/Icons';
+import { HP, VP } from '../../../utils/Responsive';
 import { TextStyles } from '../../../utils/TextStyles';
 import { COLORS } from '../../../utils/Constants';
 import PopularMenuItemsSection from '../../../components/items/PopularMenuItems';

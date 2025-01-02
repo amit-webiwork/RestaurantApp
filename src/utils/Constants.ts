@@ -53,7 +53,7 @@ export const apiEndpoints = {
     priceRange: "/user/item/price-range",
     deviceToken: "/user/save-device-token",
     order: "/user/order",
-    cartConfirm: "/user/item/cart-confirm",
+    cartConfirm: "/user/item/secured/cart-confirm",
     orderList: "/user/order",
     orderFeedback: "/user/order/feedback",
     deleteOrder: "/user/order",

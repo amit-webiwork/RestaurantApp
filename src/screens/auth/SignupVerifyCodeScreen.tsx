@@ -9,7 +9,6 @@ import { AuthStackParamList } from '../../navigations/AuthStackNavigator';
 import InnerBlock from '../../components/InnerBlock';
 import { ButtonSection as Button } from '../../components/Button';
 import { FS, HP, VP } from '../../utils/Responsive';
-import { loadStorage, saveStorage } from '../../utils/Storage';
 import { TextStyles } from '../../utils/TextStyles';
 import { globalStyle } from '../../utils/GlobalStyle';
 import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, OTP_SEND_WAIT_TIME } from '../../utils/Constants';

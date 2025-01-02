@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, TouchableOpacity, View, Text, StyleSheet, Keyboard, ImageBackground, Dimensions } from 'react-native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -16,14 +15,11 @@ import { apiEndpoints, BACKEND_URL, COLORS, errorMessage, STD_CODE } from '../..
 import { login, validateResource } from '../../utils/ValidateResource';
 import { setDialogContent } from '../../redux/features/customDialog';
 import Warning from '../../assets/svgs/warning.svg';
-import { MainStackParamList } from '../../navigations/MainStackNavigator';
 import { setProflieDetails } from '../../redux/features/profile';
 import { useKeyboardListener } from '../../utils/customHooks/useKeyboardListener';
 import SocialLogin from '../../components/auth/SocialLogin';
 
 const { width, height } = Dimensions.get('window');
-
-type NavigationProp = NativeStackScreenProps<MainStackParamList>;
 
 const errorObj = { username: { status: false, text: "" }, password: { status: false, text: "" } };
 

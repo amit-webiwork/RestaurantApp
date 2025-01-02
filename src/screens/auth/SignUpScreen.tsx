@@ -21,8 +21,6 @@ import { useKeyboardListener } from '../../utils/customHooks/useKeyboardListener
 import SocialLogin from '../../components/auth/SocialLogin';
 import { dumpStorage } from '../../utils/helper/CommonHelper';
 
-type NavigationProp = NativeStackScreenProps<AuthStackParamList>;
-
 const errorObj = { name: { status: false, text: "" }, email: { status: false, text: "" }, mobile: { status: false, text: "" }, password: { status: false, text: "" } };
 
 const { width, height } = Dimensions.get('window');
@@ -100,9 +98,9 @@ const SignUpScreen: React.FunctionComponent<any> = ({
         }
     };
 
-    useEffect(() => {
-        dumpStorage();
-    }, [])
+    // useEffect(() => {
+    //     dumpStorage();
+    // }, [])
 
     return (
         <ImageBackground
