@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, BackHandler } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import { useIsFocused } from '@react-navigation/native';
@@ -95,6 +95,21 @@ function CartScreen({ navigation }: { navigation: any }): React.JSX.Element {
             setItemRerender(pre => ++pre)
         }
     }, [isFocused])
+
+    useEffect(() => {
+        const backAction = () => {
+            // Navigate to Home when the back button is pressed
+            navigation.navigate('HomeScreen');
+            return true; // Prevent the default back action
+        };
+
+        if (isFocused) {
+            const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+            // Cleanup the event listener on component unmount or when not focused
+            return () => backHandler.remove();
+        }
+    }, [isFocused, navigation]);
 
     return (
         <OuterLayout containerStyle={{ backgroundColor: "#E7E7E7" }}>
