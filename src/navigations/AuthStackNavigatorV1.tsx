@@ -22,16 +22,16 @@ const AuthStackNavigatorV1: React.FunctionComponent = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen
+                name={`LoginScreen`}
+                component={LoginScreen as React.FunctionComponent}
+            />
+            <Stack.Screen
                 name={`SignUpScreen`}
                 component={SignUpScreen as React.FunctionComponent}
             />
             <Stack.Screen
                 name={`SignupVerifyCodeScreen`}
                 component={SignupVerifyCodeScreen as React.FunctionComponent}
-            />
-            <Stack.Screen
-                name={`LoginScreen`}
-                component={LoginScreen as React.FunctionComponent}
             />
             <Stack.Screen
                 name={`ForgotScreen`}

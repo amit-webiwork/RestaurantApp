@@ -83,23 +83,10 @@ const TabButton = (props: { item: any; onPress: any; accessibilityState: any; })
     const textRef = useRef<any>(null);
     const isDarkMode = useColorScheme() === 'dark';
     const ItemAdded = useSelector(itemAdded);
-    const ProflieDetails = useSelector(proflieDetails);
     const navigation: any = useNavigation();
 
     const color = COLORS.BLACK;
     const bgColor = COLORS.BACKGROUND;
-
-    const onPressHandler = () => {
-        if (item.route === "AccountScreen" || item.route === "Order") {
-            if (ProflieDetails?.token?.accessToken && ProflieDetails?.user?.name) {
-                onPress();
-            } else {
-                navigation.navigate(`AuthStackNavigatorV1`);
-            }
-        } else {
-            onPress();
-        }
-    }
 
     useEffect(() => {
         if (focused) {
@@ -119,7 +106,7 @@ const TabButton = (props: { item: any; onPress: any; accessibilityState: any; })
                 <CartNotificationBarSection isVisible={ItemAdded} navigation={navigation} />
             )}
             <TouchableOpacity
-                onPress={onPressHandler}
+                onPress={onPress}
                 activeOpacity={1}
                 style={[styles.container]}>
                 <Animatable.View
@@ -145,12 +132,19 @@ const TabButton = (props: { item: any; onPress: any; accessibilityState: any; })
 }
 
 export default function BottomTabNavigator() {
-    // const navigation = useNavigation();
-    // const ItemAdded = useSelector(itemAdded);
+    const ProflieDetails = useSelector(proflieDetails);
+
+    // Filter tabs based on login status
+    const filteredTabs = TabArr.filter((item) => {
+        if ((item.route === "AccountScreen" || item.route === "Order") &&
+            !(ProflieDetails?.token?.accessToken && ProflieDetails?.user?.name)) {
+            return false;
+        }
+        return true;
+    });
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            {/* <CartNotificationBarSection isVisible={ItemAdded} navigation={navigation} /> */}
             <Tab.Navigator
                 initialRouteName="HomeScreen"
                 screenOptions={{
@@ -158,7 +152,7 @@ export default function BottomTabNavigator() {
                     tabBarStyle: [styles.tabBar, styles.shadow],
                 }}
             >
-                {TabArr.map((item, index) => {
+                {filteredTabs.map((item, index) => {
                     return (
                         <Tab.Screen
                             key={index}
