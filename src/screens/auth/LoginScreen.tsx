@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 0,
         alignSelf: "center",
-        marginVertical: VP(20)
+        marginVertical: VP(10)
     },
     bottomText: {
         ...TextStyles.RALEWAY_SEMI_BOLD,

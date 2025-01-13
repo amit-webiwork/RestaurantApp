@@ -207,7 +207,7 @@ function HomeScreen({ navigation }: { navigation: any }): React.JSX.Element {
                       style={{
                         ...TextStyles.ARCHITECTS_DAUGHTER_REGULAR,
                         color: COLORS.WHITE,
-                        fontSize: FS(30),
+                        fontSize: HP(30),
                       }}>
                       not your average bubble tea.
                     </Text>
